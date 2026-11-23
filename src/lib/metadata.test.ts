@@ -1,6 +1,43 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { updateMetadataEntry } from "./metadata.ts";
+import { create, type JsonValue } from "@bufbuild/protobuf";
+import { SettingsNamespaceSchema } from "@/generated/soulfire/common_pb";
+import { jsonToValue } from "@/lib/protobuf.ts";
+import { metadataEntriesFromProto, updateMetadataEntry } from "./metadata.ts";
+
+function serverMetadata(entries: Record<string, Record<string, JsonValue>>) {
+  return Object.entries(entries).map(([namespace, values]) =>
+    create(SettingsNamespaceSchema, {
+      namespace,
+      entries: Object.entries(values).map(([key, value]) => ({
+        key,
+        value: jsonToValue(value),
+      })),
+    }),
+  );
+}
+
+test("metadata reloads keep row ids for entries that still exist", () => {
+  const first = metadataEntriesFromProto(
+    serverMetadata({ bot: { level: 1, name: "a" } }),
+  );
+  assert.deepEqual(
+    first.map(({ namespace, key, value }) => [namespace, key, value]),
+    [
+      ["bot", "level", "1"],
+      ["bot", "name", '"a"'],
+    ],
+  );
+  assert.notEqual(first[0]?.id, first[1]?.id);
+
+  const reloaded = metadataEntriesFromProto(
+    serverMetadata({ bot: { name: "b", extra: true } }),
+    first,
+  );
+  assert.equal(reloaded[0]?.id, first[1]?.id);
+  assert.equal(reloaded[0]?.value, '"b"');
+  assert.ok(!first.some((entry) => entry.id === reloaded[1]?.id));
+});
 
 test("failed metadata renames retain the original value", async () => {
   const stored = new Map([["old/value", 42]]);

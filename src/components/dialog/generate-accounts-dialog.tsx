@@ -221,7 +221,7 @@ export default function GenerateAccountsDialog({
       },
     });
     if (handle === null) {
-      toast.error(t("account.import.demo"));
+      toast.info(t("account.import.demo"));
       return;
     }
     job.cancel = handle.cancel;

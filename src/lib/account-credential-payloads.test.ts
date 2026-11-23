@@ -59,4 +59,18 @@ describe("splitAccountCredentialPayloads", () => {
     const text = `${cookieJar("a")}\n  \n${cookieJar("b")}`;
     expect(splitAccountCredentialPayloads(text, COOKIES)).toHaveLength(2);
   });
+
+  test("splits compact Cookie-Editor arrays with one account per line", () => {
+    const first = '[{"name":"__Host-MSAAUTHP","value":"a"}]';
+    const second = '[{"name":"__Host-MSAAUTHP","value":"b"}]';
+    expect(
+      splitAccountCredentialPayloads(`${first}\r\n${second}\n`, COOKIES),
+    ).toEqual([first, second]);
+  });
+
+  test("keeps a pretty-printed Cookie-Editor export as one payload", () => {
+    expect(
+      splitAccountCredentialPayloads(cookieEditorExport("a"), COOKIES),
+    ).toEqual([cookieEditorExport("a")]);
+  });
 });

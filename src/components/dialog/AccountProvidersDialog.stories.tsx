@@ -25,7 +25,6 @@ const meta = {
   beforeEach: ({ parameters }) => {
     const original = globalThis.fetch;
     purchases.length = 0;
-    localStorage.removeItem("ravealts-api-key");
     globalThis.fetch = async (input, options) => {
       const url = requestUrl(input);
       if (url.endsWith("/alts/stock"))

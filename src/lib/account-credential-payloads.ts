@@ -3,7 +3,8 @@ import { AccountTypeCredentials } from "@/generated/soulfire/common_pb";
 /**
  * Splits imported text into one payload per account. Cookie jars and
  * Cookie-Editor exports span several lines, so blank lines separate those
- * accounts. Every other format has one account per line.
+ * accounts, unless every line is a compact Cookie-Editor array of its own.
+ * Every other format has one account per line.
  */
 export function splitAccountCredentialPayloads(
   text: string,
@@ -14,9 +15,15 @@ export function splitAccountCredentialPayloads(
     return [];
   }
 
+  const lines = trimmed
+    .split(/\r?\n/u)
+    .map((payload) => payload.trim())
+    .filter((payload) => payload.length > 0);
+
   if (
     accountType === AccountTypeCredentials.MICROSOFT_JAVA_COOKIES &&
-    (looksLikeCookieJar(trimmed) || looksLikeCookieEditorJson(trimmed))
+    (looksLikeCookieJar(trimmed) || looksLikeCookieEditorJson(trimmed)) &&
+    !lines.every((line) => isJsonArray(line))
   ) {
     return trimmed
       .split(/\r?\n(?:[ \t]*\r?\n)+/u)
@@ -24,10 +31,16 @@ export function splitAccountCredentialPayloads(
       .filter((payload) => payload.length > 0 && !isCommentBlock(payload));
   }
 
-  return trimmed
-    .split(/\r?\n/u)
-    .map((payload) => payload.trim())
-    .filter((payload) => payload.length > 0);
+  return lines;
+}
+
+function isJsonArray(line: string) {
+  if (!line.startsWith("[")) return false;
+  try {
+    return Array.isArray(JSON.parse(line));
+  } catch {
+    return false;
+  }
 }
 
 // Netscape cookie files start with a comment header and a blank line. Lines

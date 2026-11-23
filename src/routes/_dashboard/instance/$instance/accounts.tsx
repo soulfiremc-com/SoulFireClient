@@ -1,28 +1,20 @@
-import { createRpcClient } from "@/lib/rpc";
-
 import {
   useMutation,
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import type { ColumnDef, ReactTable } from "@tanstack/react-table";
 import {
-  ArrowLeftIcon,
   BracesIcon,
   ClipboardCopyIcon,
-  PlusIcon,
   SettingsIcon,
-  ShoppingCartIcon,
-  SparklesIcon,
   TextIcon,
   TrashIcon,
 } from "lucide-react";
-import { usePostHog } from "posthog-js/react";
-import { createContext, use, useCallback, useMemo, useState } from "react";
-import { ConfirmDialog } from "@/components/dialog/confirm-dialog.tsx";
+import { createContext, use, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { type ExternalToast, toast } from "sonner";
+import { AddAccountsMenu } from "@/components/accounts/add-accounts-menu.tsx";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import { DataTable } from "@/components/data-table/data-table.tsx";
 import {
@@ -40,38 +32,15 @@ import { DataTableSortList } from "@/components/data-table/data-table-sort-list.
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar.tsx";
 import { AccountConfigDialog } from "@/components/dialog/account-config-dialog.tsx";
 import { AccountMetadataDialog } from "@/components/dialog/account-metadata-dialog.tsx";
-import {
-  type DeviceCodeData,
-  DeviceCodeDialog,
-} from "@/components/dialog/device-code-dialog.tsx";
-import GenerateAccountsDialog from "@/components/dialog/generate-accounts-dialog.tsx";
-import ImportDialog from "@/components/dialog/import-dialog.tsx";
-import AccountProvidersDialog from "@/components/dialog/account-providers-dialog.tsx";
+import { ConfirmDialog } from "@/components/dialog/confirm-dialog.tsx";
 import InstancePageLayout from "@/components/nav/instance/instance-page-layout.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
-import {
-  InstanceSettingFieldByKey,
-  InstanceSettingsPageComponent,
-} from "@/components/settings-page.tsx";
+import { InstanceSettingsPageComponent } from "@/components/settings-page.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import {
-  Credenza,
-  CredenzaBody,
-  CredenzaContent,
-  CredenzaDescription,
-  CredenzaFooter,
-  CredenzaHeader,
-  CredenzaTitle,
-} from "@/components/ui/credenza.tsx";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
 import {
@@ -79,12 +48,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip.tsx";
-import {
-  AccountTypeCredentials,
-  AccountTypeDeviceCode,
-  MinecraftAccountProto_AccountTypeProto,
-} from "@/generated/soulfire/common_pb";
-import { MCAuthService } from "@/generated/soulfire/mc-auth_pb";
+import { MinecraftAccountProto_AccountTypeProto } from "@/generated/soulfire/common_pb";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { useDataTable } from "@/hooks/use-data-table.ts";
@@ -95,151 +59,17 @@ import {
 import type { dataTableFeatures } from "@/lib/data-table-features";
 import i18n from "@/lib/i18n";
 import { guidedTableValidateSearch } from "@/lib/parsers.ts";
-import { PAGE_HIDDEN_SETTINGS } from "@/lib/settings-discovery.ts";
-import { getConnectionErrorKind } from "@/lib/connection-errors.ts";
-import { isPostHogConfigured } from "@/lib/posthog.ts";
-import { observeServerStream } from "@/lib/protobuf.ts";
+import { requireField } from "@/lib/require-field";
 import { routeChrome } from "@/lib/route-title.ts";
+import { PAGE_HIDDEN_SETTINGS } from "@/lib/settings-discovery.ts";
 import {
-  type GenerateAccountsMode,
   getEnumEntries,
   getEnumKeyByValue,
   type InstanceInfoQueryData,
   type ProfileAccount,
 } from "@/lib/types.ts";
-import {
-  addInstanceAccount,
-  addInstanceAccountsBatch,
-  applyGeneratedAccounts,
-  removeInstanceAccountsBatch,
-  updateInstanceConfigEntry,
-} from "@/lib/utils.tsx";
-import { requireField } from "@/lib/require-field";
-import { splitAccountCredentialPayloads } from "@/lib/account-credential-payloads.ts";
-import { useCredentialLoginStream } from "@/hooks/use-credential-login-stream.ts";
-
-const CREDENTIAL_FORMAT_KEYS = {
-  [AccountTypeCredentials.OFFLINE]: "offline",
-  [AccountTypeCredentials.MICROSOFT_JAVA_CREDENTIALS]: "microsoftCredentials",
-  [AccountTypeCredentials.MICROSOFT_BEDROCK_CREDENTIALS]:
-    "microsoftCredentials",
-  [AccountTypeCredentials.MICROSOFT_JAVA_REFRESH_TOKEN]: "refreshToken",
-  [AccountTypeCredentials.MICROSOFT_JAVA_COOKIES]: "cookies",
-  [AccountTypeCredentials.MICROSOFT_JAVA_ACCESS_TOKEN]: "accessToken",
-  [AccountTypeCredentials.THE_ALTENING]: "theAltening",
-} as const satisfies Record<AccountTypeCredentials, string>;
-
-function credentialFormatKey(type: AccountTypeCredentials) {
-  return `account.import.format.${CREDENTIAL_FORMAT_KEYS[type]}` as const;
-}
-
-/** Toast options that point users who just added accounts to the bot controls. */
-function useStartBotsToastAction(): ExternalToast {
-  const { t } = useTranslation("common");
-  const navigate = useNavigate();
-  const instanceId = Route.useParams({ select: (params) => params.instance });
-  return {
-    duration: 10_000,
-    action: {
-      label: t("controls.startBots"),
-      onClick: () => {
-        void navigate({
-          to: "/instance/$instance",
-          params: { instance: instanceId },
-        });
-      },
-    },
-  };
-}
-
-function GetAccountsButton({ onClick }: { onClick: () => void }) {
-  const { t } = useTranslation("instance");
-
-  return (
-    <Button variant="outline" size="sm" onClick={onClick}>
-      <ShoppingCartIcon />
-      {t("account.getAccounts")}
-    </Button>
-  );
-}
-
-function GenerateAccountsButton() {
-  const { t } = useTranslation("instance");
-  const queryClient = useQueryClient();
-  const { instanceInfoQueryOptions } = Route.useRouteContext();
-  const transport = use(TransportContext);
-  const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
-  const profile = instanceInfo.profile;
-  const posthog = usePostHog();
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const startBotsToastAction = useStartBotsToastAction();
-
-  const { mutateAsync: applyGeneratedAccountsMutation } = useMutation({
-    mutationKey: ["instance", "accounts", "generate", instanceInfo.id],
-    scope: { id: `instance-accounts-${instanceInfo.id}` },
-    mutationFn: async ({
-      newAccounts,
-      mode,
-    }: {
-      newAccounts: ProfileAccount[];
-      mode: GenerateAccountsMode;
-    }) => {
-      await applyGeneratedAccounts(
-        newAccounts,
-        mode,
-        instanceInfo,
-        transport,
-        queryClient,
-        instanceInfoQueryOptions.queryKey,
-      );
-    },
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: instanceInfoQueryOptions.queryKey,
-      });
-    },
-  });
-
-  const existingUsernames = useMemo(
-    () => new Set(profile.accounts.map((a) => a.lastKnownName)),
-    [profile.accounts],
-  );
-
-  const handleGenerate = useCallback(
-    async (newAccounts: ProfileAccount[], mode: GenerateAccountsMode) => {
-      await applyGeneratedAccountsMutation({ newAccounts, mode });
-      if (isPostHogConfigured) {
-        posthog.capture("accounts_generated", {
-          account_count: newAccounts.length,
-          generation_mode: mode,
-        });
-      }
-    },
-    [applyGeneratedAccountsMutation, posthog],
-  );
-
-  return (
-    <>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => {
-          setDialogOpen(true);
-        }}
-      >
-        <SparklesIcon />
-        {t("account.generateAccounts")}
-      </Button>
-      <GenerateAccountsDialog
-        open={dialogOpen}
-        onOpenChange={setDialogOpen}
-        onGenerate={handleGenerate}
-        existingUsernames={existingUsernames}
-        successToast={startBotsToastAction}
-      />
-    </>
-  );
-}
+import { toastMutation } from "@/lib/error-toast.ts";
+import { removeInstanceAccountsBatch } from "@/lib/utils.tsx";
 
 export const Route = createFileRoute("/_dashboard/instance/$instance/accounts")(
   {
@@ -427,581 +257,6 @@ const columns: ColumnDef<typeof dataTableFeatures, ProfileAccount>[] = [
   },
 ];
 
-function AddButton() {
-  const { t } = useTranslation("instance");
-  const queryClient = useQueryClient();
-  const { instanceInfoQueryOptions } = Route.useRouteContext();
-  const transport = use(TransportContext);
-  const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
-  const profile = instanceInfo.profile;
-  // Batch add accounts mutation for bulk import
-  const { mutateAsync: addAccountsBatchMutation } = useMutation({
-    mutationKey: ["instance", "accounts", "add-batch", instanceInfo.id],
-    scope: { id: `instance-accounts-${instanceInfo.id}` },
-    mutationFn: async (accounts: ProfileAccount[]) => {
-      await addInstanceAccountsBatch(
-        accounts,
-        instanceInfo,
-        transport,
-        queryClient,
-        instanceInfoQueryOptions.queryKey,
-      );
-    },
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: instanceInfoQueryOptions.queryKey,
-      });
-    },
-  });
-  // Granular account add mutation for single account (device code)
-  const { mutateAsync: addAccountMutation } = useMutation({
-    mutationKey: ["instance", "accounts", "add", instanceInfo.id],
-    scope: { id: `instance-accounts-${instanceInfo.id}` },
-    mutationFn: async (account: ProfileAccount) => {
-      await addInstanceAccount(
-        account,
-        instanceInfo,
-        transport,
-        queryClient,
-        instanceInfoQueryOptions.queryKey,
-      );
-    },
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: instanceInfoQueryOptions.queryKey,
-      });
-    },
-  });
-  const [accountTypeCredentialsSelected, setAccountTypeCredentialsSelected] =
-    useState<AccountTypeCredentials | null>(null);
-  const [deviceCodeData, setDeviceCodeData] = useState<DeviceCodeData | null>(
-    null,
-  );
-  const [pendingDeviceCodeType, setPendingDeviceCodeType] =
-    useState<AccountTypeDeviceCode | null>(null);
-  const guide = Route.useSearch({ select: (search) => search.guide });
-  const [providerDialogOpen, setProviderDialogOpen] = useState(
-    guide === "providers",
-  );
-  const [initialProviderId, setInitialProviderId] = useState<
-    string | undefined
-  >();
-  const openProviderDialog = (providerId?: string) => {
-    setInitialProviderId(providerId);
-    setProviderDialogOpen(true);
-  };
-
-  const startBotsToastAction = useStartBotsToastAction();
-
-  const startCredentialLogin = useCredentialLoginStream();
-  const importCredentials = useCallback(
-    (payload: string[], credentialType: AccountTypeCredentials) => {
-      const formatHint = t(credentialFormatKey(credentialType));
-      const handle = startCredentialLogin({
-        instanceId: instanceInfo.id,
-        service: credentialType,
-        payload,
-        progressMessage: (progress) =>
-          t("account.listImportToast.loading", { ...progress }),
-        onSettled: async ({ outcome, accounts, failed, error }, toastId) => {
-          // Accounts that signed in are already authenticated. Save them for
-          // every outcome, since purchased credentials may not work again.
-          if (accounts.length > 0) {
-            try {
-              await addAccountsBatchMutation(accounts);
-            } catch (saveError) {
-              console.error(saveError);
-              toast.error(t("account.listImportToast.error"), {
-                id: toastId,
-                cancel: undefined,
-                description: t(
-                  `account.listImportToast.errorReason.${getConnectionErrorKind(saveError)}`,
-                ),
-              });
-              return;
-            }
-          }
-
-          const finished = {
-            ...startBotsToastAction,
-            id: toastId,
-            cancel: undefined,
-          };
-          if (outcome === "cancelled") {
-            if (accounts.length > 0) {
-              toast.success(
-                t("account.listImportToast.cancelledSaved", {
-                  count: accounts.length,
-                }),
-                finished,
-              );
-            }
-          } else if (outcome === "error") {
-            console.error(error);
-            const description = t(
-              `account.listImportToast.errorReason.${getConnectionErrorKind(error)}`,
-            );
-            if (accounts.length > 0) {
-              toast.warning(
-                t("account.listImportToast.errorSaved", {
-                  count: accounts.length,
-                }),
-                { ...finished, description },
-              );
-            } else {
-              toast.error(t("account.listImportToast.error"), {
-                id: toastId,
-                cancel: undefined,
-                description,
-              });
-            }
-          } else if (accounts.length === 0) {
-            toast.error(t("account.listImportToast.allFailed"), {
-              id: toastId,
-              cancel: undefined,
-              description: formatHint,
-              duration: 10_000,
-            });
-          } else if (failed > 0) {
-            toast.warning(
-              t("account.listImportToast.someFailed", {
-                count: accounts.length,
-                failed,
-              }),
-              { ...finished, description: formatHint },
-            );
-          } else {
-            toast.success(
-              t("account.listImportToast.noneFailed", {
-                count: accounts.length,
-              }),
-              finished,
-            );
-          }
-        },
-      });
-      if (handle === null) {
-        toast.error(t("account.import.demo"));
-      }
-    },
-    [
-      instanceInfo.id,
-      addAccountsBatchMutation,
-      t,
-      startCredentialLogin,
-      startBotsToastAction,
-    ],
-  );
-
-  const textSelectedCallback = useCallback(
-    (text: string) => {
-      if (accountTypeCredentialsSelected === null) return;
-
-      const textSplit = splitAccountCredentialPayloads(
-        text,
-        accountTypeCredentialsSelected,
-      );
-      if (textSplit.length === 0) {
-        toast.error(t("account.listImportToast.noAccounts"), {
-          description: t(credentialFormatKey(accountTypeCredentialsSelected)),
-        });
-        return;
-      }
-
-      setAccountTypeCredentialsSelected(null);
-      importCredentials(textSplit, accountTypeCredentialsSelected);
-    },
-    [accountTypeCredentialsSelected, importCredentials, t],
-  );
-
-  const deviceCodeSelected = useCallback(
-    (type: AccountTypeDeviceCode) => {
-      if (transport === null) {
-        return;
-      }
-
-      const abortController = new AbortController();
-      const service = createRpcClient(MCAuthService, transport);
-      toast.promise(
-        (async () => {
-          const promise = new Promise<ProfileAccount>((resolve, reject) => {
-            try {
-              const responses = service.loginDeviceCode(
-                {
-                  instanceId: instanceInfo.id,
-                  service: type,
-                },
-                {
-                  signal: abortController.signal,
-                },
-              );
-              void observeServerStream(responses, {
-                onMessage: (message) => {
-                  if (message.data.case === "account") {
-                    setDeviceCodeData(null);
-                    resolve(message.data.value);
-                  } else if (message.data.case === "deviceCode") {
-                    setDeviceCodeData({
-                      userCode: message.data.value.userCode,
-                      verificationUri: message.data.value.verificationUri,
-                      directVerificationUri:
-                        message.data.value.directVerificationUri,
-                    });
-                  }
-                },
-                onError: (e) => {
-                  console.error(e);
-                  setDeviceCodeData(null);
-                  reject(new Error(t("account.unknownError")));
-                },
-              });
-            } catch (e) {
-              setDeviceCodeData(null);
-              if (e instanceof Error) {
-                reject(e);
-              } else {
-                reject(new Error(t("account.unknownError")));
-              }
-            }
-          });
-
-          const promiseResult = await promise;
-          // Using granular add for single account
-          await addAccountMutation(promiseResult);
-        })(),
-        {
-          loading: t("account.deviceCodeImportToast.loading"),
-          success: () => ({
-            message: t("account.deviceCodeImportToast.success"),
-            ...startBotsToastAction,
-            cancel: undefined,
-          }),
-          error: (e) => {
-            console.error(e);
-            setDeviceCodeData(null);
-            return t("account.deviceCodeImportToast.error");
-          },
-          cancel: {
-            label: t("common:cancel"),
-            onClick: () => {
-              setDeviceCodeData(null);
-              abortController.abort();
-            },
-          },
-        },
-      );
-    },
-    [instanceInfo.id, addAccountMutation, t, transport, startBotsToastAction],
-  );
-
-  return (
-    <>
-      {guide && (
-        <Button
-          variant="secondary"
-          size="sm"
-          nativeButton={false}
-          render={
-            <Link
-              to="/instance/$instance"
-              params={{ instance: instanceInfo.id }}
-            />
-          }
-        >
-          <ArrowLeftIcon data-icon="inline-start" />
-          {t("setup.backToSetup")}
-        </Button>
-      )}
-      <GetAccountsButton
-        onClick={() => {
-          openProviderDialog();
-        }}
-      />
-      <GenerateAccountsButton />
-      <AccountProvidersDialog
-        open={providerDialogOpen}
-        onOpenChange={setProviderDialogOpen}
-        initialProviderId={initialProviderId}
-        onImport={importCredentials}
-        canPurchase={transport !== null}
-      />
-      <DropdownMenu>
-        <DropdownMenuTrigger render={<Button variant="outline" size="sm" />}>
-          <PlusIcon />
-          {t("account.addAccounts")}
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
-          <DropdownMenuGroup>
-            <DropdownMenuLabel>
-              {t("account.import.javaEdition")}
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => {
-                setAccountTypeCredentialsSelected(
-                  AccountTypeCredentials.OFFLINE,
-                );
-              }}
-            >
-              {t("account.import.offline")}
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => {
-                setAccountTypeCredentialsSelected(
-                  AccountTypeCredentials.MICROSOFT_JAVA_CREDENTIALS,
-                );
-              }}
-            >
-              {t("account.import.microsoftCredentials")}
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => {
-                setPendingDeviceCodeType(
-                  AccountTypeDeviceCode.MICROSOFT_JAVA_DEVICE_CODE,
-                );
-              }}
-            >
-              {t("account.import.microsoftDeviceCode")}
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => {
-                setAccountTypeCredentialsSelected(
-                  AccountTypeCredentials.MICROSOFT_JAVA_REFRESH_TOKEN,
-                );
-              }}
-            >
-              {t("account.import.microsoftRefreshToken")}
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => {
-                setAccountTypeCredentialsSelected(
-                  AccountTypeCredentials.MICROSOFT_JAVA_COOKIES,
-                );
-              }}
-            >
-              {t("account.import.microsoftCookies")}
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => {
-                setAccountTypeCredentialsSelected(
-                  AccountTypeCredentials.MICROSOFT_JAVA_ACCESS_TOKEN,
-                );
-              }}
-            >
-              {t("account.import.microsoftAccessToken")}
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuLabel>
-              {t("account.import.altProviders")}
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => {
-                openProviderDialog("ravealts");
-              }}
-            >
-              {t("account.ravealts.button")}
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => {
-                openProviderDialog("localts");
-              }}
-            >
-              Localts
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => {
-                openProviderDialog("fernan");
-              }}
-            >
-              Fernan&apos;s Club
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => {
-                setAccountTypeCredentialsSelected(
-                  AccountTypeCredentials.THE_ALTENING,
-                );
-              }}
-            >
-              {t("account.import.theAltening")}
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuLabel>
-              {t("account.import.bedrockEdition")}
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => {
-                setAccountTypeCredentialsSelected(
-                  AccountTypeCredentials.OFFLINE,
-                );
-              }}
-            >
-              {t("account.import.offline")}
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => {
-                setAccountTypeCredentialsSelected(
-                  AccountTypeCredentials.MICROSOFT_BEDROCK_CREDENTIALS,
-                );
-              }}
-            >
-              {t("account.import.microsoftCredentials")}
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => {
-                setPendingDeviceCodeType(
-                  AccountTypeDeviceCode.MICROSOFT_BEDROCK_DEVICE_CODE,
-                );
-              }}
-            >
-              {t("account.import.microsoftDeviceCode")}
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
-      {deviceCodeData !== null && (
-        <DeviceCodeDialog
-          open
-          onOpenChange={(open) => {
-            if (!open) setDeviceCodeData(null);
-          }}
-          deviceCodeData={deviceCodeData}
-        />
-      )}
-      {pendingDeviceCodeType !== null && (
-        <Credenza
-          open
-          onOpenChange={(open) => {
-            if (!open) setPendingDeviceCodeType(null);
-          }}
-        >
-          <CredenzaContent>
-            <CredenzaHeader>
-              <CredenzaTitle>
-                {t("account.deviceCodeConfirmDialog.title")}
-              </CredenzaTitle>
-              <CredenzaDescription>
-                {t("account.deviceCodeConfirmDialog.description")}
-              </CredenzaDescription>
-            </CredenzaHeader>
-            <CredenzaBody>
-              <InstanceSettingFieldByKey
-                namespace="account"
-                settingKey="use-proxies-for-account-auth"
-                invalidateQuery={async () => {
-                  await queryClient.invalidateQueries({
-                    queryKey: instanceInfoQueryOptions.queryKey,
-                  });
-                }}
-                updateConfigEntry={async (namespace, key, value) => {
-                  await updateInstanceConfigEntry(
-                    namespace,
-                    key,
-                    value,
-                    instanceInfo,
-                    transport,
-                    queryClient,
-                    instanceInfoQueryOptions.queryKey,
-                  );
-                }}
-                config={profile}
-              />
-            </CredenzaBody>
-            <CredenzaFooter>
-              <Button
-                onClick={() => {
-                  const type = pendingDeviceCodeType;
-                  setPendingDeviceCodeType(null);
-                  deviceCodeSelected(type);
-                }}
-              >
-                {t("account.deviceCodeConfirmDialog.start")}
-              </Button>
-            </CredenzaFooter>
-          </CredenzaContent>
-        </Credenza>
-      )}
-      {accountTypeCredentialsSelected !== null && (
-        <ImportDialog
-          title={t("account.import.dialog.title", {
-            type: getEnumKeyByValue(
-              AccountTypeCredentials,
-              accountTypeCredentialsSelected,
-            ),
-          })}
-          description={t(credentialFormatKey(accountTypeCredentialsSelected))}
-          closer={() => {
-            setAccountTypeCredentialsSelected(null);
-          }}
-          listener={textSelectedCallback}
-          filters={[
-            {
-              name: i18n.t("common:textFile"),
-              mimeType: "text/plain",
-              extensions: ["txt"],
-            },
-          ]}
-          allowMultiple
-          textInput={{
-            defaultValue: "",
-          }}
-          extraContent={
-            <div className="flex flex-col gap-4">
-              <InstanceSettingFieldByKey
-                namespace="account"
-                settingKey="use-proxies-for-account-auth"
-                invalidateQuery={async () => {
-                  await queryClient.invalidateQueries({
-                    queryKey: instanceInfoQueryOptions.queryKey,
-                  });
-                }}
-                updateConfigEntry={async (namespace, key, value) => {
-                  await updateInstanceConfigEntry(
-                    namespace,
-                    key,
-                    value,
-                    instanceInfo,
-                    transport,
-                    queryClient,
-                    instanceInfoQueryOptions.queryKey,
-                  );
-                }}
-                config={profile}
-              />
-              <InstanceSettingFieldByKey
-                namespace="account"
-                settingKey="account-import-concurrency"
-                invalidateQuery={async () => {
-                  await queryClient.invalidateQueries({
-                    queryKey: instanceInfoQueryOptions.queryKey,
-                  });
-                }}
-                updateConfigEntry={async (namespace, key, value) => {
-                  await updateInstanceConfigEntry(
-                    namespace,
-                    key,
-                    value,
-                    instanceInfo,
-                    transport,
-                    queryClient,
-                    instanceInfoQueryOptions.queryKey,
-                  );
-                }}
-                config={profile}
-              />
-            </div>
-          }
-        />
-      )}
-    </>
-  );
-}
-
 function ExtraHeader(props: {
   table: ReactTable<typeof dataTableFeatures, ProfileAccount>;
 }) {
@@ -1058,19 +313,16 @@ function ExtraHeader(props: {
             .getFilteredSelectedRowModel()
             .rows.map((r) => r.original);
 
-          toast.promise(
+          void toastMutation(
             removeAccountsBatchMutation(selectedRows.map((r) => r.profileId)),
             {
               loading: t("account.removeToast.loading"),
               success: t("account.removeToast.success", {
                 count: selectedRows.length,
               }),
-              error: (e) => {
-                console.error(e);
-                return t("account.removeToast.error");
-              },
+              error: t("account.removeToast.error"),
             },
-          );
+          ).catch(() => undefined);
         }}
       />
       <DataTableActionBarSelection table={props.table} />
@@ -1079,17 +331,18 @@ function ExtraHeader(props: {
 }
 
 function AccountSettingsSkeleton() {
+  const { t } = useTranslation("instance");
   return (
-    <div className="container flex size-full grow flex-col gap-4">
-      <div className="flex flex-col gap-2">
-        <Skeleton className="h-10 w-full" />
-        <Skeleton className="h-10 w-full" />
-      </div>
+    <div className="container flex size-full grow flex-col gap-8">
       <DataTableSkeleton
         columnCount={5}
         filterCount={3}
         cellWidths={["2rem", "8rem", "auto", "auto", "5rem"]}
       />
+      <div className="flex flex-col gap-4 border-t pt-6">
+        <h2 className="text-lg font-semibold">{t("account.settingsTitle")}</h2>
+        <Skeleton className="h-10 w-full" />
+      </div>
     </div>
   );
 }
@@ -1122,6 +375,7 @@ function Content() {
     select: (search) => search.focusNamespace,
   });
   const focusKey = Route.useSearch({ select: (search) => search.focusKey });
+  const guide = Route.useSearch({ select: (search) => search.guide });
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const profile = instanceInfo.profile;
   const { table } = useDataTable({
@@ -1151,21 +405,7 @@ function Content() {
   );
 
   return (
-    <div className="container flex size-full grow flex-col gap-4">
-      <div className="flex flex-col gap-2">
-        <InstanceSettingsPageComponent
-          data={requireField(
-            instanceInfo.instanceSettings.find((s) => s.id === "account"),
-            "the account settings page",
-          )}
-          disabledIds={PAGE_HIDDEN_SETTINGS["account"]}
-          focusSetting={
-            focusNamespace && focusKey
-              ? { namespace: focusNamespace, key: focusKey }
-              : undefined
-          }
-        />
-      </div>
+    <div className="container flex size-full grow flex-col gap-8">
       <AccountDialogsContext value={accountDialogs}>
         <DataTable
           table={table}
@@ -1178,10 +418,30 @@ function Content() {
         >
           <DataTableToolbar table={table}>
             <DataTableSortList table={table} />
-            <AddButton />
+            <AddAccountsMenu guide={guide} />
           </DataTableToolbar>
         </DataTable>
       </AccountDialogsContext>
+      <section
+        aria-labelledby="account-settings-heading"
+        className="flex flex-col gap-4 border-t pt-6"
+      >
+        <h2 id="account-settings-heading" className="text-lg font-semibold">
+          {t("account.settingsTitle")}
+        </h2>
+        <InstanceSettingsPageComponent
+          data={requireField(
+            instanceInfo.instanceSettings.find((s) => s.id === "account"),
+            "the account settings page",
+          )}
+          disabledIds={PAGE_HIDDEN_SETTINGS["account"]}
+          focusSetting={
+            focusNamespace && focusKey
+              ? { namespace: focusNamespace, key: focusKey }
+              : undefined
+          }
+        />
+      </section>
       {contextMenu && (
         <ContextMenuPortal
           onClose={dismiss}

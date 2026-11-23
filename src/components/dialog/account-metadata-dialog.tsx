@@ -1,27 +1,13 @@
-import { createRpcClient } from "@/lib/rpc";
-import { toFormSchema } from "@/lib/form-validation";
-import { Effect, Schema } from "effect";
-import type { JsonValue } from "@bufbuild/protobuf";
-
-import { useForm } from "@tanstack/react-form";
-import { useIsMutating, useMutation } from "@tanstack/react-query";
 import { useParams } from "@tanstack/react-router";
-import { PlusIcon, TrashIcon } from "lucide-react";
-import {
-  Suspense,
-  use,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { Effect } from "effect";
+import { use, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
+import {
+  type MetadataAdapter,
+  MetadataEditor,
+} from "@/components/metadata-editor.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import { Card, CardContent, CardHeader } from "@/components/ui/card.tsx";
 import {
   Credenza,
   CredenzaBody,
@@ -31,68 +17,57 @@ import {
   CredenzaHeader,
   CredenzaTitle,
 } from "@/components/ui/credenza.tsx";
-import {
-  Field,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-  FieldLegend,
-  FieldSet,
-} from "@/components/ui/field.tsx";
-import { Input } from "@/components/ui/input.tsx";
-import { Skeleton } from "@/components/ui/skeleton.tsx";
-import type { SettingsNamespace } from "@/generated/soulfire/common_pb";
 import { InstanceService } from "@/generated/soulfire/instance_pb";
-import {
-  metadataKeyPattern,
-  metadataNamespacePattern,
-  updateMetadataEntry,
-} from "@/lib/metadata.ts";
-import { jsonToValue, parseJsonValue, valueToJson } from "@/lib/protobuf.ts";
+import { jsonToValue } from "@/lib/protobuf.ts";
+import { createRpcClient } from "@/lib/rpc";
 import type { ProfileAccount } from "@/lib/types.ts";
-
-interface MetadataEntry {
-  id: string;
-  namespace: string;
-  key: string;
-  value: string; // JSON string for editing
-}
-
-function generateId(): string {
-  return Math.random().toString(36).slice(7);
-}
-
-function convertProtoToEntries(metadata: SettingsNamespace[]): MetadataEntry[] {
-  const entries: MetadataEntry[] = [];
-  for (const namespace of metadata) {
-    for (const entry of namespace.entries) {
-      entries.push({
-        id: generateId(),
-        namespace: namespace.namespace,
-        key: entry.key,
-        value: JSON.stringify(valueToJson(entry.value)),
-      });
-    }
-  }
-  return entries;
-}
-
-interface AccountMetadataDialogProps {
-  account: ProfileAccount;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}
 
 export function AccountMetadataDialog({
   account,
   open,
   onOpenChange,
-}: AccountMetadataDialogProps) {
+}: {
+  account: ProfileAccount;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
   const { t } = useTranslation("instance");
+  const transport = use(TransportContext);
   const instanceId = useParams({
     from: "/_dashboard/instance/$instance",
     select: (params) => params.instance,
   });
+  const accountId = account.profileId;
+  const adapter = useMemo<MetadataAdapter | null>(() => {
+    if (transport === null) return null;
+    const service = createRpcClient(InstanceService, transport);
+    return {
+      mutationKey: ["account", "metadata", instanceId, accountId],
+      load: async (signal) =>
+        (
+          await Effect.runPromise(
+            service.getAccountMetadata({ instanceId, accountId }, { signal }),
+          )
+        ).metadata,
+      set: (entry) =>
+        Effect.runPromise(
+          service.setAccountMetadataEntry({
+            instanceId,
+            accountId,
+            ...entry,
+            value: jsonToValue(entry.value),
+          }),
+        ),
+      delete: (entry) =>
+        Effect.runPromise(
+          service.deleteAccountMetadataEntry({
+            instanceId,
+            accountId,
+            ...entry,
+          }),
+        ),
+    };
+  }, [transport, instanceId, accountId]);
 
   return (
     <Credenza open={open} onOpenChange={onOpenChange}>
@@ -106,719 +81,19 @@ export function AccountMetadataDialog({
           </CredenzaDescription>
         </CredenzaHeader>
         <CredenzaBody>
-          <Suspense fallback={<DialogSkeleton />}>
-            <DialogContentInner
-              key={`${instanceId}:${account.profileId}`}
-              instanceId={instanceId}
-              account={account}
-              open={open}
-              onOpenChange={onOpenChange}
-            />
-          </Suspense>
+          {open && <MetadataEditor key={accountId} adapter={adapter} />}
         </CredenzaBody>
-      </CredenzaContent>
-    </Credenza>
-  );
-}
-
-function DialogSkeleton() {
-  return (
-    <div className="flex flex-col gap-4">
-      <Skeleton className="h-64 w-full" />
-      <div className="flex justify-end gap-2">
-        <Skeleton className="h-10 w-20" />
-      </div>
-    </div>
-  );
-}
-
-function DialogContentInner({
-  instanceId,
-  account,
-  open,
-  onOpenChange,
-}: {
-  instanceId: string;
-  account: ProfileAccount;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}) {
-  const { t } = useTranslation("instance");
-  const transport = use(TransportContext);
-
-  const [entries, setEntries] = useState<MetadataEntry[] | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [loadError, setLoadError] = useState(false);
-  const activeLoad = useRef<AbortController | null>(null);
-  const activeView = useRef(false);
-  const metadataMutationKey = [
-    "account",
-    "metadata",
-    instanceId,
-    account.profileId,
-  ];
-  const pendingMutations = useIsMutating({ mutationKey: metadataMutationKey });
-  const isMetadataReady =
-    pendingMutations === 0 && !isLoading && !loadError && entries !== null;
-
-  const loadMetadata = useCallback(async () => {
-    if (!activeView.current) return;
-    activeLoad.current?.abort();
-    const controller = new AbortController();
-    activeLoad.current = controller;
-    setIsLoading(true);
-    setLoadError(false);
-    try {
-      if (transport === null) {
-        setEntries([]);
-        return;
-      }
-      const result = await Effect.runPromise(
-        createRpcClient(InstanceService, transport).getAccountMetadata(
-          { instanceId, accountId: account.profileId },
-          { signal: controller.signal },
-        ),
-      );
-      if (controller.signal.aborted || activeLoad.current !== controller)
-        return;
-      setEntries(convertProtoToEntries(result.metadata));
-    } catch (error) {
-      if (controller.signal.aborted || activeLoad.current !== controller)
-        return;
-      console.error("Failed to load metadata:", error);
-      setLoadError(true);
-    } finally {
-      if (activeLoad.current === controller) {
-        activeLoad.current = null;
-        setIsLoading(false);
-      }
-    }
-  }, [transport, instanceId, account.profileId]);
-
-  useEffect(() => {
-    activeView.current = open;
-    if (open && pendingMutations === 0) void loadMetadata();
-    return () => {
-      activeView.current = false;
-      activeLoad.current?.abort();
-      activeLoad.current = null;
-    };
-  }, [open, loadMetadata, pendingMutations]);
-
-  // Check for duplicate namespace+key
-  const isDuplicate = useCallback(
-    (namespace: string, key: string, excludeId?: string) => {
-      if (!entries) return false;
-      return entries.some(
-        (e) =>
-          e.namespace === namespace &&
-          e.key === key &&
-          (excludeId === undefined || e.id !== excludeId),
-      );
-    },
-    [entries],
-  );
-
-  // Add entry mutation
-  const addEntryMutation = useMutation({
-    mutationKey: [...metadataMutationKey, "add"],
-    scope: { id: `account-metadata-${instanceId}-${account.profileId}` },
-    mutationFn: async (entry: {
-      namespace: string;
-      key: string;
-      value: JsonValue;
-    }) => {
-      if (transport === null) return;
-      const instanceService = createRpcClient(InstanceService, transport);
-      await Effect.runPromise(
-        instanceService.setAccountMetadataEntry({
-          instanceId,
-          accountId: account.profileId,
-          namespace: entry.namespace,
-          key: entry.key,
-          value: jsonToValue(entry.value),
-        }),
-      );
-    },
-    onSuccess: () => {
-      toast.success(t("account.metadata.addSuccess"));
-    },
-    onError: (e) => {
-      console.error(e);
-      toast.error(t("account.metadata.addError"));
-    },
-  });
-
-  // Update entry mutation
-  const { mutate: mutateUpdateEntry, isPending: isUpdateEntryPending } =
-    useMutation({
-      mutationKey: [...metadataMutationKey, "update"],
-      scope: { id: `account-metadata-${instanceId}-${account.profileId}` },
-      mutationFn: async (entry: {
-        oldNamespace: string;
-        oldKey: string;
-        namespace: string;
-        key: string;
-        value: JsonValue;
-      }) => {
-        if (transport === null) return;
-        const instanceService = createRpcClient(InstanceService, transport);
-
-        await updateMetadataEntry(entry, {
-          setEntry: (replacement) =>
-            Effect.runPromise(
-              instanceService.setAccountMetadataEntry({
-                instanceId,
-                accountId: account.profileId,
-                ...replacement,
-                value: jsonToValue(replacement.value),
-              }),
-            ),
-          deleteEntry: (original) =>
-            Effect.runPromise(
-              instanceService.deleteAccountMetadataEntry({
-                instanceId,
-                accountId: account.profileId,
-                ...original,
-              }),
-            ),
-        });
-      },
-      onError: (e) => {
-        console.error(e);
-        toast.error(t("account.metadata.updateError"));
-      },
-    });
-
-  // Delete entry mutation
-  const { mutate: mutateDeleteEntry, isPending: isDeleteEntryPending } =
-    useMutation({
-      mutationKey: [...metadataMutationKey, "delete"],
-      scope: { id: `account-metadata-${instanceId}-${account.profileId}` },
-      mutationFn: async (entry: { namespace: string; key: string }) => {
-        if (transport === null) return;
-        const instanceService = createRpcClient(InstanceService, transport);
-        await Effect.runPromise(
-          instanceService.deleteAccountMetadataEntry({
-            instanceId,
-            accountId: account.profileId,
-            namespace: entry.namespace,
-            key: entry.key,
-          }),
-        );
-      },
-      onSuccess: () => {
-        toast.success(t("account.metadata.deleteSuccess"));
-      },
-      onError: (e) => {
-        console.error(e);
-        toast.error(t("account.metadata.deleteError"));
-      },
-    });
-
-  const addEntrySchema = useMemo(
-    () =>
-      Schema.Struct({
-        namespace: Schema.Trim.check(
-          Schema.isPattern(metadataNamespacePattern, {
-            message: t("metadataValidation.invalidNamespace"),
-          }),
-        ),
-        key: Schema.Trim.check(
-          Schema.isPattern(metadataKeyPattern, {
-            message: t("metadataValidation.invalidKey"),
-          }),
-        ),
-        value: Schema.String.check(
-          Schema.isMinLength(1, {
-            message: t("account.metadata.valuePlaceholder"),
-          }),
-        ).check(
-          Schema.makeFilter(
-            (value) =>
-              parseJsonValue(value) !== undefined ||
-              t("account.metadata.invalidJson"),
-          ),
-        ),
-      }),
-    [t],
-  );
-
-  const addEntryForm = useForm({
-    defaultValues: {
-      namespace: "",
-      key: "",
-      value: "",
-    },
-    validators: {
-      onSubmit: toFormSchema(addEntrySchema),
-    },
-    onSubmit: async ({ value, formApi }) => {
-      if (!isMetadataReady) return;
-      const submitted = { ...value };
-      const namespace = submitted.namespace.trim();
-      const key = submitted.key.trim();
-      const parsedValue = parseJsonValue(submitted.value);
-
-      if (parsedValue === undefined) return;
-
-      if (transport === null) {
-        // The demo has no server, so do not show the entry as added.
-        toast.info(t("common:settingsPage.demoNotSaved"));
-        return;
-      }
-
-      if (isDuplicate(namespace, key)) {
-        toast.error(t("account.metadata.duplicateError"));
-        return;
-      }
-
-      // Add to local state
-      setEntries((prev) => [
-        ...(prev ?? []),
-        {
-          id: generateId(),
-          namespace,
-          key,
-          value: submitted.value,
-        },
-      ]);
-
-      try {
-        await addEntryMutation.mutateAsync({
-          namespace,
-          key,
-          value: parsedValue,
-        });
-      } catch {
-        // The mutation reports the error. Keep the current draft for a retry.
-        return;
-      }
-      const current = formApi.state.values;
-      if (
-        current.namespace === submitted.namespace &&
-        current.key === submitted.key &&
-        current.value === submitted.value
-      ) {
-        formApi.reset();
-      }
-    },
-  });
-
-  const handleUpdateEntry = useCallback(
-    (
-      id: string,
-      oldNamespace: string,
-      oldKey: string,
-      field: "namespace" | "key" | "value",
-      newFieldValue: string,
-    ) => {
-      if (!isMetadataReady) return false;
-
-      const entry = entries.find((e) => e.id === id);
-      if (!entry) return false;
-
-      const updatedEntry = { ...entry, [field]: newFieldValue };
-
-      // Validate
-      const parsedValue = parseJsonValue(updatedEntry.value);
-      if (
-        parsedValue === undefined ||
-        !metadataNamespacePattern.test(updatedEntry.namespace) ||
-        !metadataKeyPattern.test(updatedEntry.key)
-      )
-        return false;
-
-      if (transport === null) {
-        toast.info(t("common:settingsPage.demoNotSaved"));
-        return false;
-      }
-
-      // Check for duplicates (only if namespace or key changed)
-      if (
-        (field === "namespace" || field === "key") &&
-        isDuplicate(updatedEntry.namespace, updatedEntry.key, id)
-      ) {
-        toast.error(t("account.metadata.duplicateError"));
-        return false;
-      }
-
-      // Update local state
-      setEntries(
-        (prev) => prev?.map((e) => (e.id === id ? updatedEntry : e)) ?? [],
-      );
-
-      // Send to server
-      mutateUpdateEntry({
-        oldNamespace,
-        oldKey,
-        namespace: updatedEntry.namespace,
-        key: updatedEntry.key,
-        value: parsedValue,
-      });
-      return true;
-    },
-    [entries, isMetadataReady, isDuplicate, t, mutateUpdateEntry, transport],
-  );
-
-  const handleDeleteEntry = useCallback(
-    (id: string, namespace: string, key: string) => {
-      if (!isMetadataReady) return;
-      if (transport === null) {
-        toast.info(t("common:settingsPage.demoNotSaved"));
-        return;
-      }
-      // Remove from local state
-      setEntries((prev) => prev?.filter((e) => e.id !== id) ?? []);
-
-      // Send to server
-      mutateDeleteEntry({ namespace, key });
-    },
-    [isMetadataReady, mutateDeleteEntry, transport, t],
-  );
-
-  return (
-    <div className="flex flex-col gap-4">
-      <Card>
-        <CardHeader>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              void addEntryForm.handleSubmit();
-            }}
-          >
-            <FieldSet className="gap-3">
-              <FieldLegend variant="label">
-                {t("account.metadata.addEntryLegend")}
-              </FieldLegend>
-              <FieldGroup className="gap-3 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] md:items-start">
-                <addEntryForm.Field name="namespace">
-                  {(field) => {
-                    const isInvalid =
-                      field.state.meta.isTouched && !field.state.meta.isValid;
-
-                    return (
-                      <Field data-invalid={isInvalid} className="gap-2">
-                        <FieldLabel htmlFor={field.name}>
-                          {t("account.metadata.namespaceLabel")}
-                        </FieldLabel>
-                        <Input
-                          id={field.name}
-                          type="text"
-                          value={field.state.value}
-                          onBlur={field.handleBlur}
-                          onChange={(e) => {
-                            field.handleChange(e.currentTarget.value);
-                          }}
-                          placeholder={t(
-                            "account.metadata.namespacePlaceholder",
-                          )}
-                          aria-invalid={isInvalid}
-                          aria-describedby={
-                            isInvalid ? `${field.name}-error` : undefined
-                          }
-                        />
-                        {isInvalid ? (
-                          <FieldError
-                            id={`${field.name}-error`}
-                            errors={field.state.meta.errors}
-                          />
-                        ) : null}
-                      </Field>
-                    );
-                  }}
-                </addEntryForm.Field>
-                <addEntryForm.Field name="key">
-                  {(field) => {
-                    const isInvalid =
-                      field.state.meta.isTouched && !field.state.meta.isValid;
-
-                    return (
-                      <Field data-invalid={isInvalid} className="gap-2">
-                        <FieldLabel htmlFor={field.name}>
-                          {t("account.metadata.keyLabel")}
-                        </FieldLabel>
-                        <Input
-                          id={field.name}
-                          type="text"
-                          value={field.state.value}
-                          onBlur={field.handleBlur}
-                          onChange={(e) => {
-                            field.handleChange(e.currentTarget.value);
-                          }}
-                          placeholder={t("account.metadata.keyPlaceholder")}
-                          aria-invalid={isInvalid}
-                          aria-describedby={
-                            isInvalid ? `${field.name}-error` : undefined
-                          }
-                        />
-                        {isInvalid ? (
-                          <FieldError
-                            id={`${field.name}-error`}
-                            errors={field.state.meta.errors}
-                          />
-                        ) : null}
-                      </Field>
-                    );
-                  }}
-                </addEntryForm.Field>
-                <addEntryForm.Field name="value">
-                  {(field) => {
-                    const isInvalid =
-                      field.state.meta.isTouched && !field.state.meta.isValid;
-
-                    return (
-                      <Field data-invalid={isInvalid} className="gap-2">
-                        <FieldLabel htmlFor={field.name}>
-                          {t("account.metadata.valueLabel")}
-                        </FieldLabel>
-                        <Input
-                          id={field.name}
-                          type="text"
-                          value={field.state.value}
-                          onBlur={field.handleBlur}
-                          onChange={(e) => {
-                            field.handleChange(e.currentTarget.value);
-                          }}
-                          placeholder={t("account.metadata.valuePlaceholder")}
-                          className="font-mono"
-                          aria-invalid={isInvalid}
-                          aria-describedby={
-                            isInvalid ? `${field.name}-error` : undefined
-                          }
-                        />
-                        {isInvalid ? (
-                          <FieldError
-                            id={`${field.name}-error`}
-                            errors={field.state.meta.errors}
-                          />
-                        ) : null}
-                      </Field>
-                    );
-                  }}
-                </addEntryForm.Field>
-                <div className="md:self-end">
-                  <Button
-                    type="submit"
-                    variant="outline"
-                    disabled={!isMetadataReady || addEntryMutation.isPending}
-                  >
-                    <PlusIcon data-icon="inline-start" />
-                    {t("account.metadata.addEntryButton")}
-                  </Button>
-                </div>
-              </FieldGroup>
-            </FieldSet>
-          </form>
-        </CardHeader>
-        <CardContent
-          className="flex max-h-64 flex-col gap-2 overflow-y-auto p-4 pt-0"
-          aria-busy={isLoading}
-        >
-          {loadError && (
-            <Alert variant="destructive">
-              <AlertTitle>{t("account.metadata.loadError")}</AlertTitle>
-              <AlertDescription>
-                <div className="flex flex-col items-start gap-2">
-                  <p>{t("account.metadata.loadErrorDescription")}</p>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => void loadMetadata()}
-                  >
-                    {t("account.metadata.retryLoad")}
-                  </Button>
-                </div>
-              </AlertDescription>
-            </Alert>
-          )}
-          {isLoading && entries === null && (
-            <div className="flex flex-col gap-2">
-              <Skeleton className="h-20 w-full" />
-              <Skeleton className="h-20 w-full" />
-            </div>
-          )}
-          {isMetadataReady && entries.length === 0 && (
-            <p className="py-4 text-center text-sm text-muted-foreground">
-              {t("account.metadata.noEntries")}
-            </p>
-          )}
-          {entries?.map((entry) => (
-            <EntryRow
-              key={entry.id}
-              entry={entry}
-              onUpdate={(field, value) =>
-                handleUpdateEntry(
-                  entry.id,
-                  entry.namespace,
-                  entry.key,
-                  field,
-                  value,
-                )
-              }
-              onDelete={() => {
-                handleDeleteEntry(entry.id, entry.namespace, entry.key);
-              }}
-              isDeleting={isDeleteEntryPending}
-              isUpdating={
-                !isMetadataReady ||
-                isUpdateEntryPending ||
-                addEntryMutation.isPending
-              }
-            />
-          ))}
-        </CardContent>
-      </Card>
-      <CredenzaFooter>
-        <Button
-          variant="outline"
-          onClick={() => {
-            onOpenChange(false);
-          }}
-        >
-          {t("common:close")}
-        </Button>
-      </CredenzaFooter>
-    </div>
-  );
-}
-
-function EntryRow({
-  entry,
-  onUpdate,
-  onDelete,
-  isDeleting,
-  isUpdating,
-}: {
-  entry: MetadataEntry;
-  onUpdate: (field: "namespace" | "key" | "value", value: string) => boolean;
-  onDelete: () => void;
-  isDeleting: boolean;
-  isUpdating: boolean;
-}) {
-  const { t } = useTranslation("instance");
-
-  const [draft, setDraft] = useState(entry);
-  const isValidNamespace = metadataNamespacePattern.test(
-    draft.namespace.trim(),
-  );
-  const isValidKey = metadataKeyPattern.test(draft.key.trim());
-  const isValidJson = parseJsonValue(draft.value) !== undefined;
-
-  const saveField = (field: "namespace" | "key" | "value") => {
-    const value = field === "value" ? draft[field] : draft[field].trim();
-    const valid =
-      field === "namespace"
-        ? isValidNamespace
-        : field === "key"
-          ? isValidKey
-          : isValidJson;
-    if (valid && value !== entry[field]) {
-      const accepted = onUpdate(field, value);
-      setDraft((current) => ({
-        ...current,
-        [field]: accepted ? value : entry[field],
-      }));
-    }
-  };
-
-  return (
-    <FieldSet className="gap-3 rounded-lg border p-3">
-      <FieldLegend className="sr-only">
-        {t("account.metadata.entryLegend")}
-      </FieldLegend>
-      <FieldGroup className="gap-3 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] md:items-start">
-        <Field data-invalid={!isValidNamespace} className="gap-2">
-          <FieldLabel htmlFor={`${entry.id}-namespace`}>
-            {t("account.metadata.namespaceLabel")}
-          </FieldLabel>
-          <Input
-            id={`${entry.id}-namespace`}
-            type="text"
-            value={draft.namespace}
-            onChange={(e) => {
-              setDraft({ ...draft, namespace: e.currentTarget.value });
-            }}
-            onBlur={() => {
-              saveField("namespace");
-            }}
-            disabled={isUpdating || isDeleting}
-            placeholder={t("account.metadata.namespacePlaceholder")}
-            aria-invalid={!isValidNamespace}
-            aria-describedby={
-              isValidNamespace ? undefined : `${entry.id}-namespace-error`
-            }
-          />
-          {!isValidNamespace ? (
-            <FieldError id={`${entry.id}-namespace-error`}>
-              {t("metadataValidation.invalidNamespace")}
-            </FieldError>
-          ) : null}
-        </Field>
-        <Field data-invalid={!isValidKey} className="gap-2">
-          <FieldLabel htmlFor={`${entry.id}-key`}>
-            {t("account.metadata.keyLabel")}
-          </FieldLabel>
-          <Input
-            id={`${entry.id}-key`}
-            type="text"
-            value={draft.key}
-            onChange={(e) => {
-              setDraft({ ...draft, key: e.currentTarget.value });
-            }}
-            onBlur={() => {
-              saveField("key");
-            }}
-            disabled={isUpdating || isDeleting}
-            placeholder={t("account.metadata.keyPlaceholder")}
-            aria-invalid={!isValidKey}
-            aria-describedby={isValidKey ? undefined : `${entry.id}-key-error`}
-          />
-          {!isValidKey ? (
-            <FieldError id={`${entry.id}-key-error`}>
-              {t("metadataValidation.invalidKey")}
-            </FieldError>
-          ) : null}
-        </Field>
-        <Field data-invalid={!isValidJson} className="gap-2">
-          <FieldLabel htmlFor={`${entry.id}-value`}>
-            {t("account.metadata.valueLabel")}
-          </FieldLabel>
-          <Input
-            id={`${entry.id}-value`}
-            type="text"
-            value={draft.value}
-            onChange={(e) => {
-              setDraft({ ...draft, value: e.currentTarget.value });
-            }}
-            onBlur={() => {
-              saveField("value");
-            }}
-            disabled={isUpdating || isDeleting}
-            placeholder={t("account.metadata.valuePlaceholder")}
-            className="font-mono"
-            aria-invalid={!isValidJson}
-            aria-describedby={
-              isValidJson ? undefined : `${entry.id}-value-error`
-            }
-          />
-          {!isValidJson ? (
-            <FieldError id={`${entry.id}-value-error`}>
-              {t("account.metadata.invalidJson")}
-            </FieldError>
-          ) : null}
-        </Field>
-        <div className="md:self-end">
+        <CredenzaFooter>
           <Button
             variant="outline"
-            onClick={onDelete}
-            disabled={isDeleting || isUpdating}
+            onClick={() => {
+              onOpenChange(false);
+            }}
           >
-            <TrashIcon data-icon="inline-start" />
-            {t("account.metadata.removeEntryButton")}
+            {t("common:close")}
           </Button>
-        </div>
-      </FieldGroup>
-    </FieldSet>
+        </CredenzaFooter>
+      </CredenzaContent>
+    </Credenza>
   );
 }
