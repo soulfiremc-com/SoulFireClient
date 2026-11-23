@@ -141,3 +141,19 @@ test("URI imports round-trip Unix socket paths and credentials", () => {
     }
   }
 });
+
+test("URI imports need a port, accept any scheme case, and reject paths", () => {
+  for (const line of [
+    "http://127.0.0.1",
+    "socks5://127.0.0.1:0",
+    "http://user:pass@127.0.0.1:80/path",
+  ]) {
+    assert.throws(() => parseURIProxy(line), line);
+  }
+  assert.deepEqual(parseURIProxy("HTTP://127.0.0.1:8080"), {
+    type: ProxyProto_Type.HTTP,
+    address: "inet://127.0.0.1:8080",
+    username: undefined,
+    password: undefined,
+  });
+});

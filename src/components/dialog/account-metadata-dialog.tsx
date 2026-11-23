@@ -362,6 +362,12 @@ function DialogContentInner({
 
       if (parsedValue === undefined) return;
 
+      if (transport === null) {
+        // The demo has no server, so do not show the entry as added.
+        toast.info(t("common:settingsPage.demoNotSaved"));
+        return;
+      }
+
       if (isDuplicate(namespace, key)) {
         toast.error(t("account.metadata.duplicateError"));
         return;
@@ -423,6 +429,11 @@ function DialogContentInner({
       )
         return false;
 
+      if (transport === null) {
+        toast.info(t("common:settingsPage.demoNotSaved"));
+        return false;
+      }
+
       // Check for duplicates (only if namespace or key changed)
       if (
         (field === "namespace" || field === "key") &&
@@ -447,19 +458,23 @@ function DialogContentInner({
       });
       return true;
     },
-    [entries, isMetadataReady, isDuplicate, t, mutateUpdateEntry],
+    [entries, isMetadataReady, isDuplicate, t, mutateUpdateEntry, transport],
   );
 
   const handleDeleteEntry = useCallback(
     (id: string, namespace: string, key: string) => {
       if (!isMetadataReady) return;
+      if (transport === null) {
+        toast.info(t("common:settingsPage.demoNotSaved"));
+        return;
+      }
       // Remove from local state
       setEntries((prev) => prev?.filter((e) => e.id !== id) ?? []);
 
       // Send to server
       mutateDeleteEntry({ namespace, key });
     },
-    [isMetadataReady, mutateDeleteEntry],
+    [isMetadataReady, mutateDeleteEntry, transport, t],
   );
 
   return (

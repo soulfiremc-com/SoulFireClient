@@ -147,8 +147,7 @@
       "username": "Username",
       "password": "Password",
       "searchAddresses": "Search addresses...",
-      "searchUsernames": "Search usernames...",
-      "searchPasswords": "Search passwords..."
+      "searchUsernames": "Search usernames..."
     },
     "removeSelectedTooltip": "Remove selected proxies",
     "exportSelectedTooltip": "Export selected proxies",

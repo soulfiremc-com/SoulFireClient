@@ -403,13 +403,10 @@ const columns: ColumnDef<typeof dataTableFeatures, ProxyTableRow>[] = [
       get label() {
         return i18n.t("instance:proxy.table.password");
       },
-      get placeholder() {
-        return i18n.t("instance:proxy.table.searchPasswords");
-      },
-      variant: "text",
-      icon: TextIcon,
     },
-    enableColumnFilter: true,
+    // Filters are kept in the URL, so a password filter would leak into
+    // browser history and shared links.
+    enableColumnFilter: false,
   },
 ];
 

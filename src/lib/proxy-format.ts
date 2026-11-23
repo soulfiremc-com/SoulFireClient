@@ -43,12 +43,20 @@ export function parseNormalProxy(
 
 export function parseURIProxy(line: string): ProfileProxy | null {
   const uri = new URI(line);
-  const type = URI_PROXY_TYPES.get(uri.protocol());
+  const type = URI_PROXY_TYPES.get(uri.protocol().toLowerCase());
   if (type === undefined) return null;
   // URI.js normalizes hostless HTTP URLs; read Unix socket paths from the input.
   const unixPath = /^[^:]+:\/\/(?:[^/]*@)?(\/[^?#]*)/u.exec(line)?.[1];
   const host = uri.host();
   if (!unixPath && !host) throw new Error("Invalid proxy address");
+  if (!unixPath) {
+    // A network proxy needs a port, and a path would be silently dropped.
+    const port = Number(uri.port());
+    if (!Number.isInteger(port) || port < 1 || port > 65_535)
+      throw new Error("Invalid proxy port");
+    if (uri.path() !== "" && uri.path() !== "/")
+      throw new Error("Invalid proxy address");
+  }
   return {
     type,
     address: unixPath ? `unix://${unixPath}` : `inet://${host}`,
