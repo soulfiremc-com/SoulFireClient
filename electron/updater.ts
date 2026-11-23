@@ -65,9 +65,9 @@ export function getReadyUpdateVersion(): string | null {
 }
 
 /**
- * Starts the installer and quits. On Windows and Linux the installer starts at
- * once, so the caller must close the window and stop the integrated server
- * first. Returns false when no update is ready.
+ * Starts the installer and quits. The installer starts at once, so the caller
+ * must close the window and stop the integrated server first. Returns false
+ * when no update is ready.
  */
 export function installUpdateNow(): boolean {
   if (readyVersion === null) return false;

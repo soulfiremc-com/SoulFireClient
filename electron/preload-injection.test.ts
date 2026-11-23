@@ -1,65 +1,39 @@
 import assert from "node:assert/strict";
-import { spawn } from "node:child_process";
-import { readFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
+import { build } from "vite";
 
-const electronDir = import.meta.dirname;
-const repoRoot = path.dirname(electronDir);
-
-interface CommandResult {
-  code: number | null;
-  signal: NodeJS.Signals | null;
-  stderr: string;
-  stdout: string;
-}
-
-function runCommand(
-  command: string,
-  args: readonly string[],
-  options: { env?: NodeJS.ProcessEnv } = {},
-): Promise<CommandResult> {
-  return new Promise((resolve, reject) => {
-    const child = spawn(command, args, {
-      cwd: repoRoot,
-      env: process.env,
-      stdio: ["ignore", "pipe", "pipe"],
-      ...options,
-    });
-
-    let stdout = "";
-    let stderr = "";
-
-    child.stdout.on("data", (chunk: Buffer) => {
-      stdout += chunk.toString();
-    });
-    child.stderr.on("data", (chunk: Buffer) => {
-      stderr += chunk.toString();
-    });
-    child.on("error", reject);
-    child.on("close", (code, signal) => {
-      resolve({ code, signal, stderr, stdout });
-    });
-  });
-}
+const repoRoot = path.dirname(import.meta.dirname);
 
 test(
   "Electron preload bundle exposes the explicit bridge and no legacy desktop RPC bus",
-  {
-    timeout: 120_000,
-  },
-  async () => {
-    const build = await runCommand("bunx", ["vite", "build"], {
-      env: {
-        ...process.env,
-        SF_ELECTRON: "1",
+  { timeout: 60_000 },
+  async (t) => {
+    // Bundle only the preload entry. A full app build is slow and would
+    // overwrite the dist folders.
+    const outDir = await mkdtemp(path.join(tmpdir(), "soulfire-preload-"));
+    t.after(() => rm(outDir, { recursive: true, force: true }));
+    await build({
+      configFile: false,
+      root: repoRoot,
+      logLevel: "silent",
+      build: {
+        outDir,
+        emptyOutDir: false,
+        minify: false,
+        lib: {
+          entry: path.join(repoRoot, "electron/preload.ts"),
+          formats: ["es"],
+          fileName: () => "preload.mjs",
+        },
+        rolldownOptions: { external: ["electron"] },
       },
     });
 
-    assert.equal(build.code, 0, build.stderr || build.stdout);
-
     const preloadBundle = await readFile(
-      path.join(repoRoot, "dist-electron", "preload.mjs"),
+      path.join(outDir, "preload.mjs"),
       "utf8",
     );
 

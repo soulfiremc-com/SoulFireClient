@@ -1,8 +1,6 @@
-import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { watch } from "chokidar";
 import {
   app,
   BrowserWindow,
@@ -10,14 +8,12 @@ import {
   dialog,
   globalShortcut,
   type IpcMainInvokeEvent,
-  ipcMain,
   Menu,
   nativeImage,
   nativeTheme,
   type NativeImage,
   net,
   protocol,
-  type SaveDialogOptions,
   screen,
   session,
   shell,
@@ -25,46 +21,36 @@ import {
   type WebContents,
 } from "electron";
 import Store from "electron-store";
-import type {
-  DesktopFsWatchOptions,
-  DesktopOpenDialogOptions,
-  DesktopSaveDialogOptions,
-  DesktopTheme,
-} from "../src/lib/desktop-api";
 import { getAppConfigDir, getAppLocalDataDir } from "./native/app-paths";
 import {
   executeProviderRequest,
-  type ProviderRequest,
+  validateProviderRequest,
 } from "../src/lib/provider-request-policy";
 import { CastSessionManager } from "./cast/session-manager";
-import {
-  CastDevice,
-  CastSource,
-  DEFAULT_SETTINGS,
-  DisplaySettings,
-} from "@soulfiremc/cast-protocol";
+import { DEFAULT_SETTINGS, DisplaySettings } from "@soulfiremc/cast-protocol";
 import { Option, Schema } from "effect";
 import { DiscordPresenceManager } from "./native/discord";
-import {
-  getSoulFireServerVersion,
-  importCustomSoulFireServerJar,
-  listCustomSoulFireServerJars,
-  removeCustomSoulFireServerJar,
-  resetIntegratedData,
-  runIntegratedServer,
-} from "./native/integrated-server";
-import {
-  captureIntegratedThreadDump,
-  getIntegratedDiagnostics,
-  integratedDataDirectory,
-  validateJcmd,
-} from "./native/integrated-server-diagnostics";
 import {
   createIntegratedServerState,
   killIntegratedServer,
 } from "./native/integrated-server-process";
-import { PathAccess, withFilterExtension } from "./native/path-access";
+import { PathAccess } from "./native/path-access";
 import { resolveAppProtocolPath } from "./app-protocol";
+import {
+  CastConnectArgs,
+  CastSettingsArgs,
+  DiscordActivityArgs,
+  NoArgs,
+  PathResolveArgs,
+  PovCaptureArgs,
+  StringArg,
+  ThemeArgs,
+  WindowArgs,
+} from "./ipc/args";
+import { registerDialogIpc } from "./ipc/dialog";
+import { createFsIpc } from "./ipc/fs";
+import { createIpcRegistrar } from "./ipc/handle";
+import { registerIntegratedServerIpc } from "./ipc/integrated-server";
 import { createQuitFlow } from "./quit-flow";
 import {
   APP_PROTOCOL,
@@ -107,13 +93,6 @@ interface StoredWindowState {
 
 type StoredThemeSource = "dark" | "light" | "system";
 
-interface FsWatchRegistration {
-  changedPaths: Set<string>;
-  debounceTimer: NodeJS.Timeout | null;
-  ownerContentsId: number;
-  watcher: ReturnType<typeof watch>;
-}
-
 const windowStateStore = new Store<{
   themeSource: StoredThemeSource;
   window: StoredWindowState;
@@ -140,7 +119,6 @@ const castManager = new CastSessionManager((state) => {
   sendToMainWindow("cast:state", state);
 });
 
-const fsWatchers = new Map<number, FsWatchRegistration>();
 // Packaged builds ignore this variable. Otherwise anyone who can set the
 // environment could load a remote page with the desktop API.
 const devServerUrl =
@@ -156,11 +134,12 @@ const povInputOwners = new Map<
   number,
   { owner: BrowserWindow; target?: "pov" | undefined }
 >();
-let nextFsWatchId = 1;
 // The renderer may use the profile directory and files the user picked in a
 // native dialog. Thread dumps are the only files it may open with the shell.
 const pathAccess = new PathAccess(() => [getAppConfigDir(app)]);
 const openableFiles = new Set<string>();
+const fsIpc = createFsIpc(pathAccess, sendToMainWindow);
+// Keeps a reference so the tray icon is not garbage collected.
 let tray: Tray | null = null;
 let appStarted = false;
 const quitFlow = createQuitFlow({
@@ -194,16 +173,8 @@ function preloadPath(): string {
   return path.join(app.getAppPath(), "dist-electron", "preload.mjs");
 }
 
-function appOrigin(): string {
-  return `${APP_PROTOCOL}://${APP_PROTOCOL_HOST}`;
-}
-
-function appUrl(pathname = "/"): string {
-  return `${appOrigin()}${pathname.startsWith("/") ? pathname : `/${pathname}`}`;
-}
-
 function rendererEntryUrl(): string {
-  return devServerUrl?.toString() ?? appUrl("/");
+  return devServerUrl?.toString() ?? `${APP_PROTOCOL}://${APP_PROTOCOL_HOST}/`;
 }
 
 function resolveAssetPath(relativePath: string): string {
@@ -221,49 +192,17 @@ function loadNativeImage(assetPath: string) {
 }
 
 function appIconPath(): string {
-  switch (process.platform) {
-    case "darwin": {
-      return resolveAssetPath("build/icons/icon.png");
-    }
-    case "win32": {
-      return resolveAssetPath("build/icons/icon.ico");
-    }
-    case "aix":
-    case "android":
-    case "cygwin":
-    case "freebsd":
-    case "haiku":
-    case "linux":
-    case "netbsd":
-    case "openbsd":
-    case "sunos":
-    default: {
-      return resolveAssetPath("build/icons/icon.png");
-    }
-  }
+  return resolveAssetPath(
+    process.platform === "win32"
+      ? "build/icons/icon.ico"
+      : "build/icons/icon.png",
+  );
 }
 
 function trayIconPath(): string {
-  switch (process.platform) {
-    case "darwin": {
-      return resolveAssetPath("build/icons/trayTemplate.png");
-    }
-    case "win32": {
-      return resolveAssetPath("build/icons/icon.ico");
-    }
-    case "aix":
-    case "android":
-    case "cygwin":
-    case "freebsd":
-    case "haiku":
-    case "linux":
-    case "netbsd":
-    case "openbsd":
-    case "sunos":
-    default: {
-      return resolveAssetPath("build/icons/icon.png");
-    }
-  }
+  return process.platform === "darwin"
+    ? resolveAssetPath("build/icons/trayTemplate.png")
+    : appIconPath();
 }
 
 function windowIconOptions(): { icon?: string | NativeImage } {
@@ -293,15 +232,10 @@ function sendToMainWindow(channel: string, payload?: unknown): void {
   mainWindow.webContents.send(channel, payload);
 }
 
-// Windows and Linux start the installer as soon as electron-updater is told to
-// install. Close the window and stop Java first, so a "Stay" answer to the
-// unsaved changes prompt cancels the update restart too. On macOS, Squirrel
-// closes the windows itself and installs only after they closed.
+// Installers start as soon as electron-updater is told to install. Close the
+// window and stop Java first, so a "Stay" answer to the unsaved changes prompt
+// cancels the update restart too.
 function restartToUpdate(): void {
-  if (process.platform === "darwin") {
-    installUpdateNow();
-    return;
-  }
   quitFlow.quitWith(() => {
     if (!installUpdateNow()) app.quit();
   });
@@ -464,7 +398,7 @@ function registerSecurityHandlers(): void {
           povInputOwners.delete(contents.id);
           updatePovEscapeShortcut();
           // A reload drops the page's watch subscriptions with it.
-          cleanupFsWatchesForContents(contents.id);
+          fsIpc.cleanupForContents(contents.id);
         }
       },
     );
@@ -533,7 +467,7 @@ function registerSecurityHandlers(): void {
     });
 
     contents.on("destroyed", () => {
-      cleanupFsWatchesForContents(contents.id);
+      fsIpc.cleanupForContents(contents.id);
     });
   });
 }
@@ -668,22 +602,32 @@ async function createMainWindow(): Promise<BrowserWindow> {
     if (mainWindow === window) {
       mainWindow = null;
     }
-    void killIntegratedServer(integratedServerState);
+    killIntegratedServer(integratedServerState).catch((error: unknown) => {
+      console.error("Could not stop the integrated server", error);
+    });
     quitFlow.windowClosed();
+  });
+
+  // Moving or resizing fires many events. Write the state once the window
+  // settles, and on close so the last change is not lost.
+  let saveTimer: NodeJS.Timeout | undefined;
+  const scheduleSave = () => {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      persistWindowState(window);
+    }, 500);
+  };
+  window.on("close", () => {
+    clearTimeout(saveTimer);
+    persistWindowState(window);
   });
   window.on("resize", () => {
     sendToMainWindow("window:resized");
-    persistWindowState(window);
+    scheduleSave();
   });
-  window.on("move", () => {
-    persistWindowState(window);
-  });
-  window.on("maximize", () => {
-    persistWindowState(window);
-  });
-  window.on("unmaximize", () => {
-    persistWindowState(window);
-  });
+  window.on("move", scheduleSave);
+  window.on("maximize", scheduleSave);
+  window.on("unmaximize", scheduleSave);
 
   await window.loadURL(rendererEntryUrl());
 
@@ -781,357 +725,115 @@ function createAppTray(): void {
   });
 }
 
-// oxlint-disable-next-line typescript/no-unnecessary-type-parameters -- each handler declares the argument types of its IPC channel
-function handleIpc<Args extends unknown[], Result>(
-  channel: string,
-  handler: (
-    senderWindow: BrowserWindow,
-    ...args: Args
-  ) => Result | Promise<Result>,
-): void {
-  ipcMain.handle(channel, (event, ...args: Args) => {
-    const senderWindow = validateIpcSender(event);
-    return handler(senderWindow, ...args);
-  });
-}
-
-// The target comes from the renderer, so it is checked at runtime.
-function windowTarget(sender: BrowserWindow, target: unknown): BrowserWindow {
+// The target comes from the renderer and is decoded before this runs.
+function windowTarget(
+  sender: BrowserWindow,
+  target: "pov" | undefined,
+): BrowserWindow {
   if (target === undefined) return sender;
-  if (target !== "pov") throw new Error("Unknown window target");
   const popup = povWindows.get(sender.webContents.id);
   if (!popup || popup.isDestroyed()) throw new Error("POV window is closed");
   return popup;
 }
 
 function registerIpcHandlers(): void {
-  handleIpc("providers:request", async (_window, request: ProviderRequest) =>
-    executeProviderRequest(request, (input, init) => net.fetch(input, init)),
-  );
+  const handleIpc = createIpcRegistrar(validateIpcSender);
+
   handleIpc(
-    "pov:set-captured",
-    (owner, captured: unknown, target?: unknown) => {
-      if (
-        typeof captured !== "boolean" ||
-        (target !== undefined && target !== "pov")
-      )
-        throw new Error("Invalid POV capture");
-      if (!captured) {
-        for (const [id, capture] of povInputOwners) {
-          if (capture.owner === owner && capture.target === target)
-            povInputOwners.delete(id);
-        }
-        updatePovEscapeShortcut();
-        return;
-      }
-      const window = windowTarget(owner, target);
-      povInputOwners.set(window.webContents.id, { owner, target });
-      updatePovEscapeShortcut();
-      // Native shortcut registration is optional. Some compositors cannot reserve
-      // bare Escape; pointer capture must still work with Chromium's fallback.
+    "providers:request",
+    Schema.Tuple([Schema.Unknown]),
+    async (_window, request) => {
+      validateProviderRequest(request);
+      return executeProviderRequest(request, (input, init) =>
+        net.fetch(input, init),
+      );
     },
   );
-  handleIpc("app:quit", () => {
-    app.quit();
+
+  handleIpc("pov:set-captured", PovCaptureArgs, (owner, captured, target) => {
+    if (captured) {
+      const window = windowTarget(owner, target);
+      povInputOwners.set(window.webContents.id, { owner, target });
+    } else {
+      for (const [id, capture] of povInputOwners) {
+        if (capture.owner === owner && capture.target === target)
+          povInputOwners.delete(id);
+      }
+    }
+    // Native shortcut registration is optional. Some compositors cannot reserve
+    // bare Escape; pointer capture must still work with Chromium's fallback.
+    updatePovEscapeShortcut();
   });
 
-  handleIpc("updates:get-ready", () => getReadyUpdateVersion());
-  handleIpc("updates:install-now", () => {
+  handleIpc("app:quit", NoArgs, () => {
+    app.quit();
+  });
+  handleIpc("app:set-theme", ThemeArgs, (_window, theme) => {
+    const themeSource = theme ?? "system";
+    nativeTheme.themeSource = themeSource;
+    // Remember the choice so the next launch creates windows with the right
+    // background before the renderer loads.
+    windowStateStore.set("themeSource", themeSource);
+  });
+
+  handleIpc("updates:get-ready", NoArgs, () => getReadyUpdateVersion());
+  handleIpc("updates:install-now", NoArgs, () => {
     restartToUpdate();
   });
 
-  handleIpc("app:set-theme", (_window, theme: DesktopTheme) => {
-    setThemeSource(theme);
-  });
-
-  handleIpc(
-    "cast:connect",
-    async (
-      _window,
-      options: { device: unknown; source: unknown; relaunch?: boolean },
-    ) =>
-      castManager.connect(
-        Schema.decodeUnknownSync(CastDevice)(options.device),
-        Schema.decodeUnknownSync(CastSource)(options.source),
-        options.relaunch === true,
-      ),
+  handleIpc("cast:connect", CastConnectArgs, async (_window, options) =>
+    castManager.connect(
+      options.device,
+      options.source,
+      options.relaunch === true,
+    ),
   );
-  handleIpc("cast:discover", () => {
+  handleIpc("cast:discover", NoArgs, () => {
     castManager.discover();
   });
-  handleIpc("cast:get-state", () => castManager.getState());
-  handleIpc("cast:stop", async (_window, id: string) => {
+  handleIpc("cast:get-state", NoArgs, () => castManager.getState());
+  handleIpc("cast:stop", StringArg, async (_window, id) => {
     await castManager.stop(id);
   });
-  handleIpc("cast:stop-all", async () => {
+  handleIpc("cast:stop-all", NoArgs, async () => {
     await castManager.stopAll();
   });
-  handleIpc("cast:settings", (_window, settings: unknown) => {
-    const next = Schema.decodeUnknownSync(DisplaySettings)(settings);
-    castSettingsStore.set("display", next);
-    castManager.setSettings(next);
+  handleIpc("cast:settings", CastSettingsArgs, (_window, settings) => {
+    castSettingsStore.set("display", settings);
+    castManager.setSettings(settings);
   });
-
-  handleIpc(
-    "dialog:open",
-    async (senderWindow, options: DesktopOpenDialogOptions) =>
-      openDialog(senderWindow, options),
-  );
-
-  handleIpc(
-    "dialog:save",
-    async (senderWindow, options: DesktopSaveDialogOptions) =>
-      saveDialog(senderWindow, options),
-  );
 
   handleIpc(
     "discord:update-activity",
-    async (_window, state: string, details?: string | null) =>
-      discordPresence.update(state, details),
+    DiscordActivityArgs,
+    async (_window, state, details) => discordPresence.update(state, details),
   );
 
-  handleIpc(
-    "fs:mkdir",
-    async (
-      _window,
-      targetPath: string,
-      options?: {
-        recursive?: boolean;
-      },
-    ) => {
-      await mkdir(pathAccess.resolve(targetPath), {
-        recursive: options?.recursive === true,
-      });
+  registerDialogIpc(handleIpc, pathAccess);
+  fsIpc.register(handleIpc);
+  registerIntegratedServerIpc(handleIpc, {
+    app,
+    state: integratedServerState,
+    pathAccess,
+    allowOpenFile: (filePath) => {
+      openableFiles.add(path.resolve(filePath));
     },
-  );
-
-  handleIpc("fs:read-dir", async (_window, targetPath: string) => {
-    const entries = await readdir(pathAccess.resolve(targetPath), {
-      withFileTypes: true,
-    });
-
-    return entries.map((entry) => ({
-      isDirectory: entry.isDirectory(),
-      isFile: entry.isFile(),
-      isSymlink: entry.isSymbolicLink(),
-      name: entry.name,
-    }));
   });
 
-  handleIpc("fs:read-text-file", async (_window, targetPath: string) =>
-    readFile(pathAccess.resolve(targetPath), "utf8"),
-  );
-
-  handleIpc(
-    "fs:watch",
-    (senderWindow, targetPath: string, options?: DesktopFsWatchOptions) => {
-      const watchId = nextFsWatchId++;
-      const ownerContentsId = senderWindow.webContents.id;
-
-      const registration: FsWatchRegistration = {
-        changedPaths: new Set<string>(),
-        debounceTimer: null,
-        ownerContentsId,
-        watcher: watch(pathAccess.resolve(targetPath), {
-          ...(options?.recursive === false && { depth: 0 }),
-          ignoreInitial: true,
-          persistent: true,
-        }),
-      };
-      const delayMs = options?.delayMs ?? 0;
-
-      const flush = () => {
-        if (registration.changedPaths.size === 0) {
-          return;
-        }
-
-        sendToMainWindow(`fs:watch:${watchId}`, {
-          paths: Array.from(registration.changedPaths),
-        });
-        registration.changedPaths.clear();
-      };
-
-      const queuePath = (changedPath: string) => {
-        registration.changedPaths.add(changedPath);
-        if (delayMs === 0) {
-          flush();
-          return;
-        }
-
-        if (registration.debounceTimer !== null) {
-          clearTimeout(registration.debounceTimer);
-        }
-        registration.debounceTimer = setTimeout(flush, delayMs);
-      };
-
-      registration.watcher.on("add", queuePath);
-      registration.watcher.on("addDir", queuePath);
-      registration.watcher.on("change", queuePath);
-      registration.watcher.on("unlink", queuePath);
-      registration.watcher.on("unlinkDir", queuePath);
-      // Without a listener, chokidar's "error" event (EACCES, or the inotify
-      // watch limit) would throw in the main process.
-      registration.watcher.on("error", (error) => {
-        console.error(`File watch ${watchId} failed`, error);
-        cleanupFsWatch(watchId);
-      });
-
-      fsWatchers.set(watchId, registration);
-
-      return watchId;
-    },
-  );
-
-  handleIpc("fs:unwatch", (_window, watchId: number) => {
-    cleanupFsWatch(watchId);
-  });
-
-  handleIpc(
-    "fs:write-text-file",
-    async (_window, targetPath: string, contents: string) => {
-      const resolvedPath = pathAccess.resolve(targetPath);
-      if (typeof contents !== "string")
-        throw new TypeError("Invalid file contents");
-      await mkdir(path.dirname(resolvedPath), {
-        recursive: true,
-      });
-      await writeFile(resolvedPath, contents, "utf8");
-    },
-  );
-
-  handleIpc("integrated-server:get-version", async () =>
-    getSoulFireServerVersion(app, app.getVersion()),
-  );
-
-  handleIpc(
-    "integrated-server:get-diagnostics",
-    (_window, afterLogId?: unknown) =>
-      getIntegratedDiagnostics(app, integratedServerState, afterLogId),
-  );
-  handleIpc("integrated-server:open-data-directory", async () => {
-    const directory = integratedDataDirectory(app, integratedServerState);
-    await mkdir(directory, { recursive: true });
-    const error = await shell.openPath(directory);
-    if (error) throw new Error(error);
-  });
-  handleIpc("integrated-server:select-jcmd", async (window) => {
-    const result = await dialog.showOpenDialog(window, {
-      title: "Choose jcmd from JDK 25",
-      properties: ["openFile"],
-    });
-    const executable = result.filePaths[0];
-    if (result.canceled || !executable) return null;
-    await validateJcmd(executable);
-    integratedServerState.jcmdPath = executable;
-    return executable;
-  });
-  handleIpc("integrated-server:capture-thread-dump", async () => {
-    const dumpPath = await captureIntegratedThreadDump(
-      app,
-      integratedServerState,
-    );
-    openableFiles.add(path.resolve(dumpPath));
-    return dumpPath;
-  });
-
-  handleIpc("integrated-server:list-custom-jars", async () =>
-    listCustomSoulFireServerJars(app),
-  );
-
-  handleIpc(
-    "integrated-server:import-custom-jar",
-    async (_window, sourcePath: unknown) => {
-      if (
-        !pathAccess.isGrantedFile(sourcePath) ||
-        path.extname(sourcePath).toLowerCase() !== ".jar"
-      ) {
-        throw new Error("Choose the server jar in the file dialog first");
-      }
-      return importCustomSoulFireServerJar(app, sourcePath);
-    },
-  );
-
-  handleIpc(
-    "integrated-server:remove-custom-jar",
-    async (_window, jarId: string) => {
-      await removeCustomSoulFireServerJar(app, jarId);
-    },
-  );
-
-  handleIpc("integrated-server:kill", async () => {
-    await killIntegratedServer(integratedServerState);
-  });
-
-  handleIpc("integrated-server:reset-data", async () => {
-    await killIntegratedServer(integratedServerState);
-    await resetIntegratedData(app);
-  });
-
-  handleIpc(
-    "integrated-server:run",
-    async (
-      _window,
-      options: {
-        forceSoftwareRendering?: boolean;
-        jarSource?: {
-          jarId?: string;
-          type: "custom" | "official";
-        };
-        jvmArgs: unknown;
-      },
-    ) => {
-      const { jvmArgs } = options;
-      if (
-        !Array.isArray(jvmArgs) ||
-        !jvmArgs.every((arg): arg is string => typeof arg === "string")
-      ) {
-        throw new Error("Invalid JVM arguments");
-      }
-      return runIntegratedServer(
-        app,
-        integratedServerState,
-        jvmArgs,
-        options.jarSource?.type === "custom" && options.jarSource.jarId
-          ? {
-              jarId: options.jarSource.jarId,
-              type: "custom",
-            }
-          : {
-              type: "official",
-            },
-        app.getVersion(),
-        options.forceSoftwareRendering === true,
-      ).then((credentials) => {
-        if (credentials === null) return null;
-        const [address, token] = credentials.split("\n");
-        return {
-          address,
-          token,
-        };
-      });
-    },
-  );
-
-  handleIpc("path:app-config-dir", () => getAppConfigDir(app));
-
-  handleIpc("path:app-local-data-dir", () => getAppLocalDataDir(app));
-
-  handleIpc("path:download-dir", () => app.getPath("downloads"));
-
-  handleIpc("path:resolve", (_window, ...pathsToResolve: string[]) =>
+  handleIpc("path:app-config-dir", NoArgs, () => getAppConfigDir(app));
+  handleIpc("path:app-local-data-dir", NoArgs, () => getAppLocalDataDir(app));
+  handleIpc("path:download-dir", NoArgs, () => app.getPath("downloads"));
+  handleIpc("path:resolve", PathResolveArgs, (_window, ...pathsToResolve) =>
     path.resolve(...pathsToResolve),
   );
 
-  handleIpc("shell:open-external", async (_window, target: string) => {
+  handleIpc("shell:open-external", StringArg, async (_window, target) => {
     if (!isSafeExternalUrl(target)) {
       throw new Error(`Blocked external URL: ${target}`);
     }
-
     await shell.openExternal(target);
   });
-
-  handleIpc("shell:open-path", async (_window, target: unknown) => {
-    if (typeof target !== "string") throw new TypeError("Invalid path");
+  handleIpc("shell:open-path", StringArg, async (_window, target) => {
     const resolved = path.resolve(target);
     const openableDirectories = [getAppConfigDir(app), getAppLocalDataDir(app)];
     if (
@@ -1145,7 +847,7 @@ function registerIpcHandlers(): void {
     return shell.openPath(resolved);
   });
 
-  handleIpc("system:get-info", () => ({
+  handleIpc("system:get-info", NoArgs, () => ({
     appVersion: app.getVersion(),
     os: {
       arch: process.arch,
@@ -1156,110 +858,21 @@ function registerIpcHandlers(): void {
     },
   }));
 
-  handleIpc("window:close", (senderWindow, target?: unknown) => {
-    windowTarget(senderWindow, target).close();
+  handleIpc("window:close", WindowArgs, (sender, target) => {
+    windowTarget(sender, target).close();
   });
-
-  handleIpc("window:is-maximized", (senderWindow, target?: unknown) =>
-    windowTarget(senderWindow, target).isMaximized(),
+  handleIpc("window:is-maximized", WindowArgs, (sender, target) =>
+    windowTarget(sender, target).isMaximized(),
   );
-
-  handleIpc("window:maximize", (senderWindow, target?: unknown) => {
-    windowTarget(senderWindow, target).maximize();
+  handleIpc("window:maximize", WindowArgs, (sender, target) => {
+    windowTarget(sender, target).maximize();
   });
-
-  handleIpc("window:minimize", (senderWindow, target?: unknown) => {
-    windowTarget(senderWindow, target).minimize();
+  handleIpc("window:minimize", WindowArgs, (sender, target) => {
+    windowTarget(sender, target).minimize();
   });
-
-  handleIpc("window:unmaximize", (senderWindow, target?: unknown) => {
-    windowTarget(senderWindow, target).unmaximize();
+  handleIpc("window:unmaximize", WindowArgs, (sender, target) => {
+    windowTarget(sender, target).unmaximize();
   });
-}
-
-function cleanupFsWatch(watchId: number): void {
-  const registration = fsWatchers.get(watchId);
-  if (registration === undefined) {
-    return;
-  }
-
-  fsWatchers.delete(watchId);
-  if (registration.debounceTimer !== null) {
-    clearTimeout(registration.debounceTimer);
-  }
-  void registration.watcher.close();
-}
-
-function cleanupFsWatchesForContents(contentsId: number): void {
-  for (const [watchId, registration] of fsWatchers.entries()) {
-    if (registration.ownerContentsId === contentsId) {
-      cleanupFsWatch(watchId);
-    }
-  }
-}
-
-function dialogBaseOptions(
-  options: DesktopSaveDialogOptions,
-): Pick<SaveDialogOptions, "defaultPath" | "filters" | "title"> {
-  return {
-    ...(options.defaultPath !== undefined && {
-      defaultPath: options.defaultPath,
-    }),
-    ...(options.filters !== undefined && { filters: options.filters }),
-    ...(options.title !== undefined && { title: options.title }),
-  };
-}
-
-async function openDialog(
-  window: BrowserWindow,
-  options: DesktopOpenDialogOptions,
-): Promise<string | string[] | null> {
-  const result = await dialog.showOpenDialog(window, {
-    ...dialogBaseOptions(options),
-    properties: [
-      ...(options.directory
-        ? (["openDirectory"] as const)
-        : (["openFile"] as const)),
-      ...(options.multiple ? (["multiSelections"] as const) : []),
-    ],
-  });
-
-  if (result.canceled) {
-    return null;
-  }
-
-  for (const filePath of result.filePaths) {
-    if (options.directory) pathAccess.grantDirectory(filePath);
-    else pathAccess.grantFile(filePath);
-  }
-  return options.multiple ? result.filePaths : (result.filePaths[0] ?? null);
-}
-
-async function saveDialog(
-  window: BrowserWindow,
-  options: DesktopSaveDialogOptions,
-): Promise<string | null> {
-  const result = await dialog.showSaveDialog(
-    window,
-    dialogBaseOptions(options),
-  );
-
-  if (result.canceled || !result.filePath) {
-    return null;
-  }
-
-  const filePath = withFilterExtension(result.filePath, options.filters);
-  pathAccess.grantFile(filePath);
-  return filePath;
-}
-
-function setThemeSource(theme: DesktopTheme): void {
-  const themeSource: StoredThemeSource =
-    theme === null ? "system" : theme === "dark" ? "dark" : "light";
-  nativeTheme.themeSource = themeSource;
-  // Remember the choice so the next launch creates windows with the right
-  // background before the renderer loads.
-  windowStateStore.set("themeSource", themeSource);
 }
 
 function restoreThemeSource(): void {
