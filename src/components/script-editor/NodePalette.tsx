@@ -1,5 +1,6 @@
 import { ChevronDownIcon, GripVerticalIcon, SearchIcon } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import DynamicIcon from "@/components/dynamic-icon.tsx";
 import {
@@ -22,13 +23,13 @@ import { ScrollArea } from "@/components/ui/scroll-area.tsx";
 import { cn } from "@/lib/utils.tsx";
 import { useNodeTypes } from "./node-types-context";
 import type { CategoryInfo, NodeDefinition } from "./nodes/types.ts";
-import { useNodeTranslations } from "./useNodeTranslations";
+
+/** Drops a dragged node at a screen position. */
+type NodeDropHandler = (nodeType: string, x: number, y: number) => void;
 
 interface NodePaletteProps {
-  /** Starts a pointer drag. Without it, the palette uses tap-to-add buttons. */
-  onNodeDragStart?:
-    | ((nodeType: string, x: number, y: number) => void)
-    | undefined;
+  /** Lets nodes be dragged onto the canvas. Without it, nodes are tap-to-add buttons. */
+  onNodeDrop?: NodeDropHandler | undefined;
   /** Adds the node at the canvas center. */
   onNodeAdd: (nodeType: string) => void;
   className?: string;
@@ -37,17 +38,33 @@ interface NodePaletteProps {
 interface DraggableNodeItemProps {
   node: NodeDefinition;
   nodeLabel: string;
-  onDragStart?: ((nodeType: string, x: number, y: number) => void) | undefined;
+  onDrop?: NodeDropHandler | undefined;
   onAdd: (nodeType: string) => void;
 }
+
+/** A press only turns into a drag after the pointer moves this far. */
+const DRAG_THRESHOLD_PX = 5;
+
+const ITEM_CLASS =
+  "group flex items-center gap-2 rounded-md border border-transparent bg-muted/50 px-2 py-1.5 text-sm transition-colors select-none hover:border-border hover:bg-muted";
 
 function DraggableNodeItem({
   node,
   nodeLabel,
-  onDragStart,
+  onDrop,
   onAdd,
 }: DraggableNodeItemProps) {
-  if (!onDragStart) {
+  const gestureRef = useRef<{
+    pointerId: number;
+    startX: number;
+    startY: number;
+  } | null>(null);
+  const suppressClickRef = useRef(false);
+  const pointerRef = useRef({ x: 0, y: 0 });
+  const previewRef = useRef<HTMLDivElement | null>(null);
+  const [dragging, setDragging] = useState(false);
+
+  if (!onDrop) {
     // Mobile mode: tap to add instead of drag
     return (
       <button
@@ -56,7 +73,7 @@ function DraggableNodeItem({
         onClick={() => {
           onAdd(node.type);
         }}
-        className="group flex cursor-pointer items-center gap-2 rounded-md border border-transparent bg-muted/50 px-2 py-1.5 text-sm transition-colors select-none hover:border-border hover:bg-muted"
+        className={cn(ITEM_CLASS, "cursor-pointer")}
       >
         <DynamicIcon name={node.icon} className="size-4 shrink-0" />
         <span className="truncate">{nodeLabel}</span>
@@ -64,25 +81,103 @@ function DraggableNodeItem({
     );
   }
 
+  // The preview follows the pointer without re-rendering on every move.
+  const placePreview = () => {
+    const { x, y } = pointerRef.current;
+    previewRef.current?.style.setProperty(
+      "transform",
+      `translate(${x}px, ${y}px) translate(-50%, -50%)`,
+    );
+  };
+
+  const endGesture = () => {
+    gestureRef.current = null;
+    setDragging(false);
+  };
+
   // A drop on the canvas places the node there. A click or Enter without a
-  // drop adds it at the canvas center.
+  // drag adds it at the canvas center. Pointer capture keeps the gesture on
+  // this button, so a cancelled touch can never leave a drag behind.
   return (
-    <button
-      type="button"
-      title={node.description}
-      onPointerDown={(e) => {
-        if (e.button !== 0) return;
-        onDragStart(node.type, e.clientX, e.clientY);
-      }}
-      onClick={() => {
-        onAdd(node.type);
-      }}
-      className="group flex cursor-grab items-center gap-2 rounded-md border border-transparent bg-muted/50 px-2 py-1.5 text-sm transition-colors select-none hover:border-border hover:bg-muted active:cursor-grabbing"
-    >
-      <GripVerticalIcon className="size-3 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
-      <DynamicIcon name={node.icon} className="size-4 shrink-0" />
-      <span className="truncate">{nodeLabel}</span>
-    </button>
+    <>
+      <button
+        type="button"
+        title={node.description}
+        onPointerDown={(e) => {
+          suppressClickRef.current = false;
+          if (e.button !== 0 || !e.isPrimary) return;
+          e.currentTarget.setPointerCapture(e.pointerId);
+          gestureRef.current = {
+            pointerId: e.pointerId,
+            startX: e.clientX,
+            startY: e.clientY,
+          };
+        }}
+        onPointerMove={(e) => {
+          const gesture = gestureRef.current;
+          if (gesture?.pointerId !== e.pointerId) return;
+          pointerRef.current = { x: e.clientX, y: e.clientY };
+          if (dragging) {
+            placePreview();
+          } else if (
+            Math.hypot(e.clientX - gesture.startX, e.clientY - gesture.startY) >
+            DRAG_THRESHOLD_PX
+          ) {
+            setDragging(true);
+          }
+        }}
+        onPointerUp={(e) => {
+          if (gestureRef.current?.pointerId !== e.pointerId) return;
+          const dragged = dragging;
+          endGesture();
+          if (dragged) {
+            suppressClickRef.current = true;
+            onDrop(node.type, e.clientX, e.clientY);
+          }
+        }}
+        onPointerCancel={endGesture}
+        onLostPointerCapture={endGesture}
+        onKeyDown={(e) => {
+          if (e.key === "Escape" && gestureRef.current) {
+            e.preventDefault();
+            suppressClickRef.current = true;
+            endGesture();
+          }
+        }}
+        onClick={() => {
+          if (suppressClickRef.current) {
+            suppressClickRef.current = false;
+            return;
+          }
+          onAdd(node.type);
+        }}
+        // Vertical swipes still scroll the palette. A sideways drag moves
+        // the node toward the canvas.
+        className={cn(
+          ITEM_CLASS,
+          "cursor-grab touch-pan-y active:cursor-grabbing",
+        )}
+      >
+        <GripVerticalIcon className="size-3 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
+        <DynamicIcon name={node.icon} className="size-4 shrink-0" />
+        <span className="truncate">{nodeLabel}</span>
+      </button>
+      {dragging &&
+        createPortal(
+          <div
+            ref={(element) => {
+              previewRef.current = element;
+              placePreview();
+            }}
+            aria-hidden
+            className="pointer-events-none fixed top-0 left-0 z-50 flex items-center gap-2 rounded-md border border-border bg-muted/90 px-2 py-1.5 text-sm shadow-md"
+          >
+            <DynamicIcon name={node.icon} className="size-4 shrink-0" />
+            <span className="truncate">{nodeLabel}</span>
+          </div>,
+          document.body,
+        )}
+    </>
   );
 }
 
@@ -90,11 +185,8 @@ interface CategorySectionProps {
   categoryName: string;
   categoryInfo: CategoryInfo;
   nodes: NodeDefinition[];
-  getNodeLabel: (node: NodeDefinition) => string;
   forceOpen: boolean;
-  onNodeDragStart?:
-    | ((nodeType: string, x: number, y: number) => void)
-    | undefined;
+  onNodeDrop?: NodeDropHandler | undefined;
   onNodeAdd: (nodeType: string) => void;
 }
 
@@ -102,9 +194,8 @@ function CategorySection({
   categoryName,
   categoryInfo,
   nodes,
-  getNodeLabel,
   forceOpen,
-  onNodeDragStart,
+  onNodeDrop,
   onNodeAdd,
 }: CategorySectionProps) {
   const [userOpen, setUserOpen] = useState(true);
@@ -140,8 +231,8 @@ function CategorySection({
             <DraggableNodeItem
               key={node.type}
               node={node}
-              nodeLabel={getNodeLabel(node)}
-              onDragStart={onNodeDragStart}
+              nodeLabel={node.label}
+              onDrop={onNodeDrop}
               onAdd={onNodeAdd}
             />
           ))}
@@ -152,12 +243,11 @@ function CategorySection({
 }
 
 export function NodePalette({
-  onNodeDragStart,
+  onNodeDrop,
   onNodeAdd,
   className,
 }: NodePaletteProps) {
   const { t } = useTranslation("instance");
-  const { getNodeLabel, getCategoryName } = useNodeTranslations();
   const {
     categories,
     getNodesByCategory,
@@ -175,7 +265,7 @@ export function NodePalette({
       if (query) {
         result[category] = nodes.filter(
           (node) =>
-            getNodeLabel(node).toLowerCase().includes(query) ||
+            node.label.toLowerCase().includes(query) ||
             node.type.toLowerCase().includes(query) ||
             node.keywords?.some((kw) => kw.toLowerCase().includes(query)),
         );
@@ -185,7 +275,7 @@ export function NodePalette({
     }
 
     return result;
-  }, [searchQuery, getNodeLabel, categories, getNodesByCategory]);
+  }, [searchQuery, categories, getNodesByCategory]);
 
   const totalFilteredNodes = useMemo(
     () =>
@@ -234,12 +324,11 @@ export function NodePalette({
             return (
               <CategorySection
                 key={category}
-                categoryName={getCategoryName(category, info.name)}
+                categoryName={info.name}
                 categoryInfo={info}
                 nodes={filteredNodesByCategory[category] ?? []}
-                getNodeLabel={getNodeLabel}
                 forceOpen={searchQuery.trim() !== ""}
-                onNodeDragStart={onNodeDragStart}
+                onNodeDrop={onNodeDrop}
                 onNodeAdd={onNodeAdd}
               />
             );
@@ -247,17 +336,9 @@ export function NodePalette({
           {searchQuery && totalFilteredNodes === 0 && (
             <Empty className="border-0 p-6">
               <EmptyHeader>
-                <EmptyTitle>
-                  {t(
-                    "scripts.editor.palette.noResults",
-                    "No nodes match your search",
-                  )}
-                </EmptyTitle>
+                <EmptyTitle>{t("scripts.editor.palette.noResults")}</EmptyTitle>
                 <EmptyDescription>
-                  {t(
-                    "scripts.editor.palette.noResultsDescription",
-                    "Try a different term or clear the current filter.",
-                  )}
+                  {t("scripts.editor.palette.noResultsDescription")}
                 </EmptyDescription>
               </EmptyHeader>
             </Empty>

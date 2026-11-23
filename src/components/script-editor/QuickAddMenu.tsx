@@ -58,7 +58,12 @@ function findMatchingPort(
  * QuickAddMenu - Blender-style quick add menu (Shift+A)
  * A searchable, categorized menu for adding nodes at the cursor position.
  */
-export function QuickAddMenu() {
+export function QuickAddMenu({
+  onClosed,
+}: {
+  /** Gets focus back when the closed menu took it along. */
+  onClosed?: () => void;
+}) {
   const editor = useScriptEditor();
   const { t } = useTranslation("instance");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -127,14 +132,26 @@ export function QuickAddMenu() {
   }, [quickAddMenu, isMobile]);
 
   // Focus input when menu opens
+  const wasOpenRef = useRef(false);
   useEffect(() => {
-    if (quickAddMenu) {
-      setSearch("");
-      setSelectedIndex(0);
-      setExpandedCategory(null);
-      setTimeout(() => inputRef.current?.focus(), 0);
+    if (!quickAddMenu) {
+      // The focused search field went away with the menu.
+      const active = document.activeElement;
+      if (wasOpenRef.current && (!active || active === document.body)) {
+        onClosed?.();
+      }
+      wasOpenRef.current = false;
+      return undefined;
     }
-  }, [quickAddMenu]);
+    wasOpenRef.current = true;
+    setSearch("");
+    setSelectedIndex(0);
+    setExpandedCategory(null);
+    const timeout = setTimeout(() => inputRef.current?.focus(), 0);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [quickAddMenu, onClosed]);
 
   // Filter nodes based on search and compatibility with source socket
   const filteredNodes = useMemo(() => {

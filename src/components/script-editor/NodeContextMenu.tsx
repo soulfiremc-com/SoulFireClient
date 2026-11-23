@@ -19,6 +19,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
 } from "@/components/ui/dropdown-menu.tsx";
+import { formatShortcut } from "@/lib/platform.ts";
+import { type CanvasShortcutId, canvasShortcutKeys } from "./canvas-shortcuts";
+
+function shortcutKeys(id: CanvasShortcutId) {
+  return canvasShortcutKeys(id, formatShortcut, true);
+}
 
 interface NodeContextMenuProps {
   nodeId: string;
@@ -67,12 +73,16 @@ export function NodeContextMenu({
             <DropdownMenuItem onClick={() => onOpenGroup?.(nodeId)}>
               <LayersIcon />
               {t("scripts.editor.contextMenu.openGroup")}
-              <DropdownMenuShortcut>Tab</DropdownMenuShortcut>
+              <DropdownMenuShortcut>
+                {shortcutKeys("enterGroup")}
+              </DropdownMenuShortcut>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => onUngroup?.(nodeId)}>
               <UngroupIcon />
               {t("scripts.editor.contextMenu.ungroup")}
-              <DropdownMenuShortcut>Ctrl+Alt+G</DropdownMenuShortcut>
+              <DropdownMenuShortcut>
+                {shortcutKeys("ungroup")}
+              </DropdownMenuShortcut>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
@@ -86,7 +96,9 @@ export function NodeContextMenu({
         >
           <CopyIcon />
           {t("scripts.editor.contextMenu.duplicate")}
-          <DropdownMenuShortcut>Shift+D</DropdownMenuShortcut>
+          <DropdownMenuShortcut>
+            {shortcutKeys("duplicate")}
+          </DropdownMenuShortcut>
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => {
@@ -95,7 +107,7 @@ export function NodeContextMenu({
         >
           <PencilIcon />
           {t("scripts.editor.contextMenu.rename")}
-          <DropdownMenuShortcut>F2</DropdownMenuShortcut>
+          <DropdownMenuShortcut>{shortcutKeys("rename")}</DropdownMenuShortcut>
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => {
@@ -117,7 +129,9 @@ export function NodeContextMenu({
           {isCollapsed
             ? t("scripts.editor.contextMenu.expand")
             : t("scripts.editor.contextMenu.collapse")}
-          <DropdownMenuShortcut>H</DropdownMenuShortcut>
+          <DropdownMenuShortcut>
+            {shortcutKeys("collapse")}
+          </DropdownMenuShortcut>
         </DropdownMenuItem>
         {supportsMuting && (
           <DropdownMenuItem
@@ -129,7 +143,7 @@ export function NodeContextMenu({
             {isMuted
               ? t("scripts.editor.contextMenu.unmute")
               : t("scripts.editor.contextMenu.mute")}
-            <DropdownMenuShortcut>M</DropdownMenuShortcut>
+            <DropdownMenuShortcut>{shortcutKeys("mute")}</DropdownMenuShortcut>
           </DropdownMenuItem>
         )}
         {supportsPreview && (
@@ -142,7 +156,9 @@ export function NodeContextMenu({
             {previewEnabled
               ? t("scripts.editor.contextMenu.hidePreview")
               : t("scripts.editor.contextMenu.showPreview")}
-            <DropdownMenuShortcut>Shift+H</DropdownMenuShortcut>
+            <DropdownMenuShortcut>
+              {shortcutKeys("preview")}
+            </DropdownMenuShortcut>
           </DropdownMenuItem>
         )}
       </DropdownMenuGroup>
@@ -156,7 +172,7 @@ export function NodeContextMenu({
         >
           <TrashIcon />
           {t("scripts.editor.contextMenu.delete")}
-          <DropdownMenuShortcut>Del / X</DropdownMenuShortcut>
+          <DropdownMenuShortcut>{shortcutKeys("delete")}</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuGroup>
     </>

@@ -6,7 +6,6 @@ import { useState } from "react";
 import { expect, waitFor, within } from "storybook/test";
 import { cdp, userEvent as browserUser } from "@vitest/browser/context";
 import { ThemeProvider } from "@/components/providers/theme-provider";
-import { Toaster } from "@/components/ui/sonner";
 import {
   CategoryDefinitionSchema,
   GetNodeTypesResponseSchema,
@@ -97,7 +96,6 @@ function ScriptCanvasExample() {
             </NodeTypesProvider>
           </ReactFlowProvider>
         </ScriptEditorProvider>
-        <Toaster />
       </QueryClientProvider>
     </ThemeProvider>
   );
@@ -170,13 +168,8 @@ const meta = {
       definitions.map((definition) => protoNodeTypeToLocal(definition)),
     );
     // A stored dark theme must not leak into the canvas while the page is
-    // forced to light. Other stories can leave one behind in CI.
-    const storedTheme = localStorage.getItem("theme");
+    // forced to light. The preview restores storage after each story.
     localStorage.setItem("theme", "dark");
-    return () => {
-      if (storedTheme === null) localStorage.removeItem("theme");
-      else localStorage.setItem("theme", storedTheme);
-    };
   },
 } satisfies Meta<typeof ScriptCanvasExample>;
 export default meta;
@@ -285,12 +278,12 @@ export const NodeBadgesOpenOnTap: Story = {
     await body.findByText("Position is far away.");
     await userEvent.keyboard("{Escape}");
     await userEvent.click(
-      body.getByRole("button", { name: "12ms average run time" }),
+      body.getByRole("button", { name: "12 ms average run time" }),
     );
     await waitFor(() =>
       expect(
         document.querySelector('[data-slot="popover-content"]'),
-      ).toHaveTextContent("Average execution time: 12.40 ms (last 1 run)"),
+      ).toHaveTextContent("Average run time: 12.4 ms (last 1 run)"),
     );
   },
 };

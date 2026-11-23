@@ -4,45 +4,23 @@ import {
   EdgeLabelRenderer,
   type EdgeProps,
   getBezierPath,
+  useStore,
 } from "@xyflow/react";
 
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-
-export type DataType =
-  | "string"
-  | "number"
-  | "boolean"
-  | "object"
-  | "array"
-  | "any";
+import {
+  getPortColor,
+  getPortTypeFromDefinition,
+  type PortType,
+} from "../nodes/types";
 
 // oxlint-disable-next-line typescript/consistent-type-definitions -- React Flow requires edge data to satisfy Record<string, unknown>, which an interface does not
 export type DataEdgeData = {
-  dataType?: DataType;
   order?: number;
 };
 
 export type DataEdgeType = Edge<DataEdgeData, "data">;
-
-/**
- * Color mapping for different data types
- */
-const DATA_TYPE_COLORS: Record<DataType, string> = {
-  string: "rgb(234, 179, 8)", // Yellow
-  number: "rgb(59, 130, 246)", // Blue
-  boolean: "rgb(239, 68, 68)", // Red
-  object: "rgb(168, 85, 247)", // Purple
-  array: "rgb(34, 197, 94)", // Green
-  any: "rgb(156, 163, 175)", // Gray
-};
-
-/**
- * Get the color for a given data type
- */
-function getDataTypeColor(dataType: DataType | undefined): string {
-  return DATA_TYPE_COLORS[dataType ?? "any"];
-}
 
 function DataEdge({
   id,
@@ -54,7 +32,21 @@ function DataEdge({
   targetPosition,
   data,
   selected,
+  source,
+  sourceHandleId,
 }: EdgeProps<DataEdgeType>) {
+  // The wire takes the color of the port it leaves. Reroutes keep their
+  // resolved type in their data.
+  const portType = useStore((state) => {
+    const node = state.nodeLookup.get(source);
+    if (!node) return "any";
+    return (
+      (sourceHandleId &&
+        getPortTypeFromDefinition(node.type ?? "", sourceHandleId)) ||
+      (node.data as { resolvedType?: PortType }).resolvedType ||
+      "any"
+    );
+  });
   const [edgePath, labelX, labelY] = getBezierPath({
     sourceX,
     sourceY,
@@ -64,7 +56,7 @@ function DataEdge({
     targetPosition,
   });
 
-  const color = getDataTypeColor(data?.dataType);
+  const color = getPortColor(portType);
   const hasOrder = Number.isFinite(data?.order);
 
   return (

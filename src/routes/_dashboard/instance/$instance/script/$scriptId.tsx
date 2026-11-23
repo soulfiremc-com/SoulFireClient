@@ -18,13 +18,10 @@ import { useSelector } from "@tanstack/react-store";
 import { ReactFlowProvider, useReactFlow } from "@xyflow/react";
 import { PlusIcon, ScrollTextIcon } from "lucide-react";
 import { Suspense, use, useCallback, useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { Separator } from "react-resizable-panels";
 import { toast } from "sonner";
-import DynamicIcon from "@/components/dynamic-icon.tsx";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
-import { getNodeDisplayLabel } from "@/components/script-editor/node-label";
 import { NodePalette } from "@/components/script-editor/NodePalette.tsx";
 import { NodeTypesProvider } from "@/components/script-editor/NodeTypesContext.tsx";
 import { useNodeTypes } from "@/components/script-editor/node-types-context.ts";
@@ -348,16 +345,6 @@ function ScriptEditorContent() {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
   const executionAbortRef = useRef<AbortController | null>(null);
   const mounted = useRef(true);
-  // Pointer-based drag state (replaces HTML5 DnD which is broken in WebView2)
-  const draggedNodeTypeRef = useRef<string | null>(null);
-  const dragPreviewRef = useRef<HTMLDivElement>(null);
-  const [dragPreview, setDragPreview] = useState<{
-    icon: string;
-    label: string;
-    startX: number;
-    startY: number;
-  } | null>(null);
-
   useEffect(() => {
     mounted.current = true;
     return () => {
@@ -559,19 +546,9 @@ function ScriptEditorContent() {
             });
             toast.success(tInstance("scripts.activateSuccess"));
           } else if (event.event.case === "nodeStarted") {
-            const nodeId = event.event.value.nodeId;
-            startNode(nodeId, event.event.value.executionId);
-            addExecutionLog({
-              id: crypto.randomUUID(),
-              timestamp: new Date(),
-              level: "debug",
-              nodeId,
-              message: tInstance("scripts.nodeStarted", {
-                nodeId:
-                  getNodeDisplayLabel(editor.document.get().nodes, nodeId) ??
-                  nodeId,
-              }),
-            });
+            // The canvas highlights running nodes. Logging every node start
+            // and finish would push real errors out of the capped log.
+            startNode(event.event.value.nodeId, event.event.value.executionId);
           } else if (event.event.case === "nodeCompleted") {
             const { nodeId, executionId, outputs, executionTimeNanos } =
               event.event.value;
@@ -599,17 +576,6 @@ function ScriptEditorContent() {
                   Number(executionTimeNanos) / 1_000_000,
                 );
               }
-              addExecutionLog({
-                id: crypto.randomUUID(),
-                timestamp: new Date(),
-                level: "debug",
-                nodeId,
-                message: tInstance("scripts.nodeCompleted", {
-                  nodeId:
-                    getNodeDisplayLabel(editor.document.get().nodes, nodeId) ??
-                    nodeId,
-                }),
-              });
             });
           } else if (event.event.case === "executionStats") {
             const { nodeCount, maxCount } = event.event.value;
@@ -619,8 +585,8 @@ function ScriptEditorContent() {
               level: "info",
               nodeId: null,
               message: i18n.t("instance:scripts.executionStats", {
-                executed: String(nodeCount),
-                max: String(maxCount),
+                executed: Number(nodeCount),
+                max: Number(maxCount),
               }),
             });
           } else if (event.event.case === "nodeError") {
@@ -724,7 +690,6 @@ function ScriptEditorContent() {
     recordNodeOutputs,
     observesNodeOutputs,
     addExecutionLog,
-    editor.document,
     canViewLogs,
     acknowledgePause,
   ]);
@@ -802,41 +767,10 @@ function ScriptEditorContent() {
     [],
   );
 
-  // Handle zoom controls
-  const handleZoomIn = useCallback(() => {
-    void reactFlowInstance.zoomIn();
-  }, [reactFlowInstance]);
-
-  const handleZoomOut = useCallback(() => {
-    void reactFlowInstance.zoomOut();
-  }, [reactFlowInstance]);
-
-  const handleFitView = useCallback(() => {
-    void reactFlowInstance.fitView({ padding: 0.2 });
-  }, [reactFlowInstance]);
-
   // Handle clear logs
   const handleClearLogs = useCallback(() => {
     clearExecutionLogs();
   }, [clearExecutionLogs]);
-
-  // Handle drag & drop from palette using pointer events instead of HTML5 DnD.
-  // This keeps drag behavior consistent across browser and desktop runtimes.
-  const handleNodeDragStart = useCallback(
-    (nodeType: string, x: number, y: number) => {
-      draggedNodeTypeRef.current = nodeType;
-      const definition = getDefinition(nodeType);
-      if (definition) {
-        setDragPreview({
-          icon: definition.icon,
-          label: definition.label,
-          startX: x,
-          startY: y,
-        });
-      }
-    },
-    [getDefinition],
-  );
 
   // Click, tap, or Enter on a palette node adds it at the canvas center.
   const handleNodeAdd = useCallback(
@@ -864,53 +798,28 @@ function ScriptEditorContent() {
     [reactFlowInstance, addNode, getDefinition],
   );
 
-  useEffect(() => {
-    if (!dragPreview) return undefined;
-
-    const handlePointerMove = (event: PointerEvent) => {
-      if (dragPreviewRef.current) {
-        dragPreviewRef.current.style.transform = `translate(${event.clientX}px, ${event.clientY}px) translate(-50%, -50%)`;
-      }
-    };
-
-    const handlePointerUp = (event: PointerEvent) => {
-      const nodeType = draggedNodeTypeRef.current;
-      draggedNodeTypeRef.current = null;
-      setDragPreview(null);
-
-      if (!nodeType) return;
-
+  // The palette drags with pointer events, because HTML5 drag and drop is
+  // broken in WebView2. A drop near a wire splices the node into it.
+  const handleNodeDrop = useCallback(
+    (nodeType: string, x: number, y: number) => {
       const wrapper = reactFlowWrapper.current;
-      if (!wrapper) return;
+      const definition = getDefinition(nodeType);
+      if (!wrapper || !definition) return;
 
       const rect = wrapper.getBoundingClientRect();
-      if (
-        event.clientX < rect.left ||
-        event.clientX > rect.right ||
-        event.clientY < rect.top ||
-        event.clientY > rect.bottom
-      ) {
+      if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) {
         return;
       }
 
-      const definition = getDefinition(nodeType);
-      if (!definition) return;
-
-      const position = reactFlowInstance.screenToFlowPosition({
-        x: event.clientX,
-        y: event.clientY,
-      });
-
+      const position = reactFlowInstance.screenToFlowPosition({ x, y });
       const centeredPosition = {
         x: position.x - DEFAULT_NODE_WIDTH / 2,
         y: position.y - DEFAULT_NODE_HEIGHT / 2,
       };
-
-      // Check if dropping near an existing edge
       const closestEdge = findClosestEdge(
         position,
         30,
-        readDrawnEdgeShapes(reactFlowWrapper.current),
+        readDrawnEdgeShapes(wrapper),
       );
 
       // Adding the node and splicing it into the wire is one undo step.
@@ -920,28 +829,20 @@ function ScriptEditorContent() {
         centeredPosition,
         definition.defaultData,
       );
-
       if (closestEdge) {
         insertNodeOnEdge(newNodeId, closestEdge.id);
       }
       editor.actions.endHistoryGesture();
-    };
-
-    document.addEventListener("pointermove", handlePointerMove);
-    document.addEventListener("pointerup", handlePointerUp);
-    return () => {
-      document.removeEventListener("pointermove", handlePointerMove);
-      document.removeEventListener("pointerup", handlePointerUp);
-    };
-  }, [
-    dragPreview,
-    editor,
-    reactFlowInstance,
-    addNode,
-    getDefinition,
-    findClosestEdge,
-    insertNodeOnEdge,
-  ]);
+    },
+    [
+      editor,
+      reactFlowInstance,
+      addNode,
+      getDefinition,
+      findClosestEdge,
+      insertNodeOnEdge,
+    ],
+  );
 
   if (isMobile) {
     return (
@@ -953,9 +854,6 @@ function ScriptEditorContent() {
           onSave={handleSave}
           onStart={() => void handleStart()}
           onStop={() => void handleStop()}
-          onZoomIn={handleZoomIn}
-          onZoomOut={handleZoomOut}
-          onFitView={handleFitView}
           isSaving={isSavePending}
         />
 
@@ -1038,9 +936,6 @@ function ScriptEditorContent() {
         onSave={handleSave}
         onStart={() => void handleStart()}
         onStop={() => void handleStop()}
-        onZoomIn={handleZoomIn}
-        onZoomOut={handleZoomOut}
-        onFitView={handleFitView}
         isSaving={isSavePending}
       />
 
@@ -1048,10 +943,7 @@ function ScriptEditorContent() {
       <ResizablePanelGroup orientation="horizontal" className="flex-1">
         {/* Left sidebar - Node Palette */}
         <ResizablePanel defaultSize="20%" minSize="12.5rem" maxSize="25rem">
-          <NodePalette
-            onNodeDragStart={handleNodeDragStart}
-            onNodeAdd={handleNodeAdd}
-          />
+          <NodePalette onNodeDrop={handleNodeDrop} onNodeAdd={handleNodeAdd} />
         </ResizablePanel>
 
         <ResizableHandle withHandle />
@@ -1079,22 +971,6 @@ function ScriptEditorContent() {
           </ResizablePanelGroup>
         </ResizablePanel>
       </ResizablePanelGroup>
-
-      {/* Drag preview overlay for pointer-based DnD */}
-      {dragPreview &&
-        createPortal(
-          <div
-            ref={dragPreviewRef}
-            className="pointer-events-none fixed top-0 left-0 z-50 flex items-center gap-2 rounded-md border border-border bg-muted/90 px-2 py-1.5 text-sm shadow-md"
-            style={{
-              transform: `translate(${dragPreview.startX}px, ${dragPreview.startY}px) translate(-50%, -50%)`,
-            }}
-          >
-            <DynamicIcon name={dragPreview.icon} className="size-4 shrink-0" />
-            <span className="truncate">{dragPreview.label}</span>
-          </div>,
-          document.body,
-        )}
     </div>
   );
 }

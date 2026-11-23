@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, waitFor, within } from "storybook/test";
-import { Toaster, toast } from "sonner";
 import { encodeTerminalInteraction as marker } from "@/lib/terminal-interactions";
 import { ExecutionLogs } from "./ExecutionLogs";
 import type { LogEntry } from "./types";
@@ -50,7 +49,6 @@ const meta = {
   render: (args) => (
     <div className="h-80">
       <ExecutionLogs {...args} />
-      <Toaster />
     </div>
   ),
   beforeEach: () => {
@@ -61,7 +59,6 @@ const meta = {
       value: { writeText: copy },
     });
     return () => {
-      toast.dismiss();
       if (original) Object.defineProperty(navigator, "clipboard", original);
       else Reflect.deleteProperty(navigator, "clipboard");
     };

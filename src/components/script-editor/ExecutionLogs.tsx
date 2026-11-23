@@ -5,6 +5,7 @@ import { TerminalMessage } from "@/components/terminal-message";
 import { Badge } from "@/components/ui/badge.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { ScrollArea } from "@/components/ui/scroll-area.tsx";
+import { formatDate } from "@/lib/format.ts";
 import { cn } from "@/lib/utils.tsx";
 import type { LogEntry, LogLevel } from "./types.ts";
 
@@ -40,16 +41,17 @@ function getLogLevelStyles(level: LogLevel): {
   }
 }
 
-const timeFormatter = new Intl.DateTimeFormat(undefined, {
-  hour: "2-digit",
-  minute: "2-digit",
-  second: "2-digit",
-});
-
+// Follows the app language. Milliseconds tell apart entries from one run.
 function formatTimestamp(date: Date): string {
-  const timeStr = timeFormatter.format(date);
-  const ms = date.getMilliseconds().toString().padStart(3, "0");
-  return `${timeStr}.${ms}`;
+  return formatDate(date, {
+    year: undefined,
+    month: undefined,
+    day: undefined,
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    fractionalSecondDigits: 3,
+  });
 }
 
 interface LogEntryRowProps {
@@ -61,6 +63,7 @@ const LogEntryRow = memo(function LogEntryRow({
   entry,
   nodeLabel,
 }: LogEntryRowProps) {
+  const { t } = useTranslation("instance");
   const styles = getLogLevelStyles(entry.level);
 
   return (
@@ -80,7 +83,7 @@ const LogEntryRow = memo(function LogEntryRow({
           entry.level === "error" && "border-destructive/40 text-destructive",
         )}
       >
-        {entry.level}
+        {t(`scripts.editor.logs.levels.${entry.level}`)}
       </Badge>
       {entry.nodeId && (
         <span

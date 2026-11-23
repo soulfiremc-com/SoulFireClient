@@ -21,6 +21,7 @@ import {
   PopoverTitle,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { formatMilliseconds } from "@/lib/format.ts";
 import { cn } from "@/lib/utils";
 import { EMPTY_DIAGNOSTICS } from "@/stores/script-editor-derived";
 import { MultiInputOrderList } from "../MultiInputOrderList";
@@ -308,16 +309,18 @@ function ValidationBadges({ nodeId }: { nodeId: string }) {
         {errors.length > 0 && (
           <span
             aria-hidden
-            className="flex size-4 items-center justify-center rounded-full bg-destructive text-4xs font-bold text-white"
+            className="flex h-4 items-center gap-0.5 rounded-full border border-destructive/40 bg-destructive/10 px-1 text-2xs font-semibold text-destructive"
           >
+            <CircleAlertIcon className="size-3" />
             {errors.length}
           </span>
         )}
         {warnings.length > 0 && (
           <span
             aria-hidden
-            className="flex size-4 items-center justify-center rounded-full bg-warning-muted text-4xs font-bold text-white"
+            className="flex h-4 items-center gap-0.5 rounded-full border border-warning/40 bg-warning/10 px-1 text-2xs font-semibold text-warning-emphasis"
           >
+            <TriangleAlertIcon className="size-3" />
             {warnings.length}
           </span>
         )}
@@ -354,7 +357,8 @@ function ExecutionTimeBadge({ nodeId }: { nodeId: string }) {
   if (!times || times.length === 0) return null;
 
   const avg = times.reduce((a, b) => a + b, 0) / times.length;
-  const display = avg < 1 ? "<1ms" : `${Math.round(avg)}ms`;
+  const display =
+    avg < 1 ? `<${formatMilliseconds(1)}` : formatMilliseconds(avg);
   const colorClass =
     avg < 1
       ? "text-success"
@@ -363,8 +367,8 @@ function ExecutionTimeBadge({ nodeId }: { nodeId: string }) {
         : avg < 100
           ? "text-warning-strong"
           : "text-destructive";
-  const details = t("scripts.editor.node.avgTime", {
-    avg: avg.toFixed(2),
+  const details = t("scripts.editor.node.avgDuration", {
+    avg: formatMilliseconds(avg, 2),
     count: times.length,
   });
 

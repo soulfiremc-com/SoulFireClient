@@ -121,20 +121,10 @@ export const Route = createFileRoute("/_dashboard/instance/$instance/scripts")({
   component: InstanceScripts,
 });
 
-// The page heading is static, so only the scripts and the action wait for data.
+// The page layout shows the heading, so only the scripts wait for data.
 function ScriptsPageSkeleton() {
-  const { t } = useTranslation("instance");
   return (
-    <div className="container flex size-full grow flex-col gap-4 py-4">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex flex-col gap-1">
-          <h2 className="text-2xl font-semibold">{t("scripts.title")}</h2>
-          <p className="text-sm text-muted-foreground">
-            {t("scripts.description")}
-          </p>
-        </div>
-        <Skeleton className="h-9 w-32" />
-      </div>
+    <div className="container flex size-full grow flex-col gap-4">
       {/* Script cards grid */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {generateN(3).map((item) => (
@@ -164,6 +154,7 @@ function ScriptsPageSkeleton() {
 
 function InstanceScripts() {
   const { t } = useTranslation("common");
+  const { t: tInstance } = useTranslation("instance");
 
   return (
     <InstancePageLayout
@@ -174,6 +165,8 @@ function InstanceScripts() {
         },
       ]}
       pageName={t("pageName.instanceScripts")}
+      pageDescription={tInstance("scripts.description")}
+      pageActions={<CreateScriptDialog />}
       loadingSkeleton={<ScriptsPageSkeleton />}
     >
       <Content />
@@ -210,48 +203,7 @@ function Content() {
     value,
     label: tInstance(`scripts.sort.${value}`),
   }));
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<ScriptInfo | null>(null);
-
-  // Create script mutation
-  const createMutation = useMutation({
-    mutationKey: ["script", "create", instanceId],
-    mutationFn: async (value: (typeof createScriptSchema)["Type"]) => {
-      if (!transport) throw new Error("No transport available");
-      const client = createRpcClient(ScriptService, transport);
-      const result = await Effect.runPromise(
-        client.createScript({
-          instanceId,
-          name: value.name.trim() || tInstance("scripts.untitledScript"),
-          description: value.description.trim(),
-          nodes: [],
-          edges: [],
-          paused: true,
-        }),
-      );
-      return result;
-    },
-    onSuccess: (response) => {
-      if (isPostHogConfigured) {
-        posthog.capture("script_created");
-      }
-      toast.success(tInstance("scripts.createSuccess"));
-      setIsCreateDialogOpen(false);
-      if (response.script) {
-        void navigate({
-          to: "/instance/$instance/script/$scriptId",
-          params: { instance: instanceId, scriptId: response.script.id },
-        });
-      }
-    },
-    onError: (error) => {
-      console.error("Failed to create script:", error);
-      toast.error(tInstance("scripts.createError"));
-    },
-    onSettled: () => {
-      void queryClient.invalidateQueries({ queryKey: ["scripts", instanceId] });
-    },
-  });
 
   // A template starts off so that nothing happens before the user reviews it.
   const templateMutation = useMutation({
@@ -298,23 +250,6 @@ function Content() {
       ),
     [nodeTypesData?.nodeTypes],
   );
-
-  const form = useForm({
-    defaultValues: {
-      name: "",
-      description: "",
-    },
-    validators: {
-      onSubmit: toFormSchema(createScriptSchema),
-    },
-    onSubmit: ({ value }) => {
-      if (!transport) {
-        openDemoEditor();
-        return;
-      }
-      createMutation.mutate(value);
-    },
-  });
 
   // Delete script mutation
   const deleteMutation = useMutation({
@@ -407,7 +342,6 @@ function Content() {
   // The demo has no server. Open an unsaved editor so visitors can still try it.
   const openDemoEditor = () => {
     toast.info(t("commandPalette.feedback.demo"));
-    setIsCreateDialogOpen(false);
     void navigate({
       to: "/instance/$instance/script/$scriptId",
       params: { instance: instanceId, scriptId: "new" },
@@ -425,156 +359,54 @@ function Content() {
 
   return (
     <div className="container flex size-full grow flex-col gap-4 py-4">
-      {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex flex-col gap-1">
-          <h2 className="text-2xl font-semibold">
-            {tInstance("scripts.title")}
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            {tInstance("scripts.description")}
-          </p>
-        </div>
-        <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-          <DialogTrigger render={<Button className="gap-2" />}>
-            <PlusIcon data-icon="inline-start" />
-            {tInstance("scripts.createScript")}
-          </DialogTrigger>
-          <DialogContent>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                void form.handleSubmit();
-              }}
-            >
-              <DialogHeader>
-                <DialogTitle>
-                  {tInstance("scripts.createScriptTitle")}
-                </DialogTitle>
-                <DialogDescription>
-                  {tInstance("scripts.createScriptDescription")}
-                </DialogDescription>
-              </DialogHeader>
-              <div className="flex flex-col gap-4 py-4">
-                <form.Field name="name">
-                  {(field) => {
-                    const isInvalid =
-                      field.state.meta.isTouched && !field.state.meta.isValid;
-                    return (
-                      <Field data-invalid={isInvalid}>
-                        <FieldLabel htmlFor={field.name}>
-                          {tInstance("scripts.scriptName")}
-                        </FieldLabel>
-                        <Input
-                          id={field.name}
-                          name={field.name}
-                          value={field.state.value}
-                          onBlur={field.handleBlur}
-                          onChange={(e) => {
-                            field.handleChange(e.target.value);
-                          }}
-                          placeholder={tInstance(
-                            "scripts.scriptNamePlaceholder",
-                          )}
-                          aria-invalid={isInvalid}
-                        />
-                      </Field>
-                    );
-                  }}
-                </form.Field>
-                <form.Field name="description">
-                  {(field) => {
-                    const isInvalid =
-                      field.state.meta.isTouched && !field.state.meta.isValid;
-                    return (
-                      <Field data-invalid={isInvalid}>
-                        <FieldLabel htmlFor={field.name}>
-                          {tInstance("scripts.scriptDescription")}
-                        </FieldLabel>
-                        <Textarea
-                          id={field.name}
-                          name={field.name}
-                          value={field.state.value}
-                          onBlur={field.handleBlur}
-                          onChange={(e) => {
-                            field.handleChange(e.target.value);
-                          }}
-                          placeholder={tInstance(
-                            "scripts.scriptDescriptionPlaceholder",
-                          )}
-                          rows={3}
-                          aria-invalid={isInvalid}
-                        />
-                      </Field>
-                    );
-                  }}
-                </form.Field>
-              </div>
-              <DialogFooter>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => {
-                    setIsCreateDialogOpen(false);
-                  }}
-                >
-                  {t("cancel")}
-                </Button>
-                <Button type="submit" disabled={createMutation.isPending}>
-                  {tInstance("scripts.create")}
-                </Button>
-              </DialogFooter>
-            </form>
-          </DialogContent>
-        </Dialog>
-      </div>
-
-      <dl className="grid max-w-5xl gap-3 text-sm sm:grid-cols-3">
-        {(["saved", "on", "run"] as const).map((term) => (
-          <div key={term}>
-            <dt className="font-medium">
-              {tInstance(`scripts.lifecycle.${term}.term`)}
-            </dt>
-            <dd className="text-muted-foreground">
-              {tInstance(`scripts.lifecycle.${term}.description`)}
-            </dd>
-          </div>
-        ))}
-      </dl>
-
       {/* Scripts Grid */}
       {scripts.length === 0 ? (
-        // The header already offers a blank script, so this section only
-        // appears when there are templates to pick from.
-        templates.length > 0 && (
-          <section
-            aria-labelledby="script-first-use-title"
-            className="flex max-w-3xl flex-col gap-3"
-          >
-            <div className="flex flex-col gap-1">
-              <h3
-                id="script-first-use-title"
-                className="text-base font-semibold"
-              >
-                {tInstance("scripts.noScripts")}
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                {tInstance("scripts.noScriptsDescription")}
-              </p>
-            </div>
-            <ScriptTemplatePicker
-              templates={templates}
-              disabled={templateMutation.isPending}
-              onPick={(template) => {
-                if (!transport) {
-                  openDemoEditor();
-                  return;
-                }
-                templateMutation.mutate(template);
-              }}
-            />
-          </section>
-        )
+        <>
+          {/* Explains the terms once. The editor toolbar repeats it later. */}
+          <dl className="grid max-w-5xl gap-3 text-sm sm:grid-cols-3">
+            {(["saved", "on", "run"] as const).map((term) => (
+              <div key={term}>
+                <dt className="font-medium">
+                  {tInstance(`scripts.lifecycle.${term}.term`)}
+                </dt>
+                <dd className="text-muted-foreground">
+                  {tInstance(`scripts.lifecycle.${term}.description`)}
+                </dd>
+              </div>
+            ))}
+          </dl>
+          {/* The header already offers a blank script, so this section only
+              appears when there are templates to pick from. */}
+          {templates.length > 0 && (
+            <section
+              aria-labelledby="script-first-use-title"
+              className="flex max-w-3xl flex-col gap-3"
+            >
+              <div className="flex flex-col gap-1">
+                <h3
+                  id="script-first-use-title"
+                  className="text-base font-semibold"
+                >
+                  {tInstance("scripts.noScripts")}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {tInstance("scripts.noScriptsDescription")}
+                </p>
+              </div>
+              <ScriptTemplatePicker
+                templates={templates}
+                disabled={templateMutation.isPending}
+                onPick={(template) => {
+                  if (!transport) {
+                    openDemoEditor();
+                    return;
+                  }
+                  templateMutation.mutate(template);
+                }}
+              />
+            </section>
+          )}
+        </>
       ) : (
         <>
           <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
@@ -766,6 +598,176 @@ function Content() {
         </AlertDialogContent>
       </AlertDialog>
     </div>
+  );
+}
+
+/** Creates a blank script. In the demo, it opens an unsaved editor instead. */
+function CreateScriptDialog() {
+  const { t } = useTranslation("common");
+  const { t: tInstance } = useTranslation("instance");
+  const posthog = usePostHog();
+  const { instance: instanceId } = Route.useParams();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const transport = use(TransportContext);
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+
+  // Create script mutation
+  const createMutation = useMutation({
+    mutationKey: ["script", "create", instanceId],
+    mutationFn: async (value: (typeof createScriptSchema)["Type"]) => {
+      if (!transport) throw new Error("No transport available");
+      const client = createRpcClient(ScriptService, transport);
+      const result = await Effect.runPromise(
+        client.createScript({
+          instanceId,
+          name: value.name.trim() || tInstance("scripts.untitledScript"),
+          description: value.description.trim(),
+          nodes: [],
+          edges: [],
+          paused: true,
+        }),
+      );
+      return result;
+    },
+    onSuccess: (response) => {
+      if (isPostHogConfigured) {
+        posthog.capture("script_created");
+      }
+      toast.success(tInstance("scripts.createSuccess"));
+      setIsCreateDialogOpen(false);
+      if (response.script) {
+        void navigate({
+          to: "/instance/$instance/script/$scriptId",
+          params: { instance: instanceId, scriptId: response.script.id },
+        });
+      }
+    },
+    onError: (error) => {
+      console.error("Failed to create script:", error);
+      toast.error(tInstance("scripts.createError"));
+    },
+    onSettled: () => {
+      void queryClient.invalidateQueries({ queryKey: ["scripts", instanceId] });
+    },
+  });
+
+  const form = useForm({
+    defaultValues: {
+      name: "",
+      description: "",
+    },
+    validators: {
+      onSubmit: toFormSchema(createScriptSchema),
+    },
+    onSubmit: ({ value }) => {
+      if (!transport) {
+        openDemoEditor();
+        return;
+      }
+      createMutation.mutate(value);
+    },
+  });
+
+  // The demo has no server. Open an unsaved editor so visitors can still try it.
+  const openDemoEditor = () => {
+    toast.info(t("commandPalette.feedback.demo"));
+    setIsCreateDialogOpen(false);
+    void navigate({
+      to: "/instance/$instance/script/$scriptId",
+      params: { instance: instanceId, scriptId: "new" },
+    });
+  };
+
+  return (
+    <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+      <DialogTrigger render={<Button className="gap-2" />}>
+        <PlusIcon data-icon="inline-start" />
+        {tInstance("scripts.createScript")}
+      </DialogTrigger>
+      <DialogContent>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            void form.handleSubmit();
+          }}
+        >
+          <DialogHeader>
+            <DialogTitle>{tInstance("scripts.createScriptTitle")}</DialogTitle>
+            <DialogDescription>
+              {tInstance("scripts.createScriptDescription")}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-4 py-4">
+            <form.Field name="name">
+              {(field) => {
+                const isInvalid =
+                  field.state.meta.isTouched && !field.state.meta.isValid;
+                return (
+                  <Field data-invalid={isInvalid}>
+                    <FieldLabel htmlFor={field.name}>
+                      {tInstance("scripts.scriptName")}
+                    </FieldLabel>
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => {
+                        field.handleChange(e.target.value);
+                      }}
+                      placeholder={tInstance("scripts.scriptNamePlaceholder")}
+                      aria-invalid={isInvalid}
+                    />
+                  </Field>
+                );
+              }}
+            </form.Field>
+            <form.Field name="description">
+              {(field) => {
+                const isInvalid =
+                  field.state.meta.isTouched && !field.state.meta.isValid;
+                return (
+                  <Field data-invalid={isInvalid}>
+                    <FieldLabel htmlFor={field.name}>
+                      {tInstance("scripts.scriptDescription")}
+                    </FieldLabel>
+                    <Textarea
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => {
+                        field.handleChange(e.target.value);
+                      }}
+                      placeholder={tInstance(
+                        "scripts.scriptDescriptionPlaceholder",
+                      )}
+                      rows={3}
+                      aria-invalid={isInvalid}
+                    />
+                  </Field>
+                );
+              }}
+            </form.Field>
+          </div>
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                setIsCreateDialogOpen(false);
+              }}
+            >
+              {t("cancel")}
+            </Button>
+            <Button type="submit" disabled={createMutation.isPending}>
+              {tInstance("scripts.create")}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 }
 

@@ -10,12 +10,9 @@ import {
   PlayIcon,
   Redo2Icon,
   SaveIcon,
-  Trash2Icon,
   Undo2Icon,
   UploadIcon,
   ZapIcon,
-  ZoomInIcon,
-  ZoomOutIcon,
 } from "lucide-react";
 import { ScriptHealthButton } from "./ScriptHealthButton";
 import {
@@ -98,10 +95,6 @@ interface ScriptToolbarProps {
   onSave?: () => void;
   onStart?: () => void;
   onStop?: () => void;
-  onZoomIn?: () => void;
-  onZoomOut?: () => void;
-  onFitView?: () => void;
-  onClear?: () => void;
   isSaving?: boolean;
   isControlling?: boolean;
   className?: string;
@@ -112,10 +105,6 @@ export function ScriptToolbar({
   onSave,
   onStart,
   onStop,
-  onZoomIn,
-  onZoomOut,
-  onFitView,
-  onClear,
   isSaving = false,
   isControlling = false,
   className,
@@ -470,31 +459,6 @@ export function ScriptToolbar({
                   {t("scripts.editor.toolbar.import")}
                 </DropdownMenuItem>
               </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                <DropdownMenuItem onClick={onZoomIn}>
-                  <ZoomInIcon />
-                  {t("scripts.editor.toolbar.zoomIn")}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={onZoomOut}>
-                  <ZoomOutIcon />
-                  {t("scripts.editor.toolbar.zoomOut")}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={onFitView}>
-                  {t("scripts.editor.toolbar.fit")}
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-              {onClear && (
-                <>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuGroup>
-                    <DropdownMenuItem onClick={onClear}>
-                      <Trash2Icon />
-                      {t("scripts.editor.toolbar.clearCanvas")}
-                    </DropdownMenuItem>
-                  </DropdownMenuGroup>
-                </>
-              )}
             </DropdownMenuContent>
           </DropdownMenu>
           <input
@@ -553,61 +517,6 @@ export function ScriptToolbar({
             />
           </ButtonGroup>
 
-          <Separator orientation="vertical" className="my-auto h-6" />
-
-          {/* Clear Button */}
-          {onClear && (
-            <>
-              <Tooltip>
-                <TooltipTrigger
-                  render={
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      aria-label={t("scripts.editor.toolbar.clearCanvas")}
-                      onClick={onClear}
-                    />
-                  }
-                >
-                  <Trash2Icon className="size-4" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{t("scripts.editor.toolbar.clearCanvas")}</p>
-                </TooltipContent>
-              </Tooltip>
-              <Separator orientation="vertical" className="my-auto h-6" />
-            </>
-          )}
-
-          {/* Zoom Controls */}
-          <ButtonGroup>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={onZoomOut}
-              title={t("scripts.editor.toolbar.zoomOut")}
-              aria-label={t("scripts.editor.toolbar.zoomOut")}
-            >
-              <ZoomOutIcon className="size-4" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={onZoomIn}
-              title={t("scripts.editor.toolbar.zoomIn")}
-              aria-label={t("scripts.editor.toolbar.zoomIn")}
-            >
-              <ZoomInIcon className="size-4" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onFitView}
-              className="text-xs"
-            >
-              {t("scripts.editor.toolbar.fit")}
-            </Button>
-          </ButtonGroup>
           <KeyboardShortcutsHelp />
         </>
       )}

@@ -21,8 +21,8 @@ import { toast } from "sonner";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import { useScriptEditor } from "@/components/script-editor/script-editor-context";
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
-import { shortcutLetter } from "@/lib/keyboard-shortcuts";
 import { handleNativeCopy, handleNativePaste } from "@/lib/script-clipboard";
+import { isSingleWireInput } from "@/lib/script-graph-ops";
 import { ScriptGroupViewports } from "@/lib/script-group-viewports";
 import { ConnectionLine } from "./edges/ConnectionLine";
 import {
@@ -34,15 +34,17 @@ import { GroupBreadcrumb } from "./GroupBreadcrumb";
 import { NodeContextMenu } from "./NodeContextMenu";
 import { NodeEditingProvider } from "./NodeEditingContext";
 import { useNodeTypes } from "./node-types-context";
-import { getNodeDefinition, isPortMultiInput } from "./nodes/types";
+import { getNodeDefinition } from "./nodes/types";
+import { type CanvasShortcutId, matchCanvasShortcut } from "./canvas-shortcuts";
 import { readDrawnEdgeShapes } from "./drawn-edge-shapes";
 import { QuickAddMenu } from "./QuickAddMenu";
 import { ScriptFirstUse } from "./ScriptFirstUse";
 
 /**
- * Canvas shortcuts skip text fields, menus, and dialogs. React also bubbles
- * events from portaled menus through this tree, so the target must be in the
- * canvas DOM.
+ * Canvas shortcuts skip fields and controls inside nodes, menus, and dialogs.
+ * The canvas listens in the capture phase, so it sees these keys before the
+ * controls do. React also bubbles events from portaled menus through this
+ * tree, so the target must be in the canvas DOM.
  */
 function isCanvasShortcutTarget(container: Element, target: EventTarget) {
   if (!(target instanceof HTMLElement) || !container.contains(target))
@@ -50,10 +52,24 @@ function isCanvasShortcutTarget(container: Element, target: EventTarget) {
   return (
     !target.isContentEditable &&
     !target.closest(
-      "input, textarea, select, [role='dialog'], [role='menu'], [role='listbox']",
+      "input, textarea, select, button, [role='checkbox'], [role='combobox'], [role='dialog'], [role='menu'], [role='listbox']",
     )
   );
 }
+
+/** How long a touch or pen press on a node waits before it opens the menu. */
+const LONG_PRESS_MS = 500;
+/** Moving further than this turns a long press into a drag. */
+const LONG_PRESS_TOLERANCE_PX = 8;
+
+const ALIGN_BY_KEY: Partial<
+  Record<string, "left" | "right" | "top" | "bottom">
+> = {
+  ArrowLeft: "left",
+  ArrowRight: "right",
+  ArrowUp: "top",
+  ArrowDown: "bottom",
+};
 
 /**
  * Picks the canvas color mode from the theme on the page. A forced theme wins,
@@ -102,15 +118,9 @@ export function ScriptEditor() {
   // Blender-style actions
   const toggleMute = editor.actions.toggleMute;
   const toggleCollapse = editor.actions.toggleCollapse;
-  const toggleSocketVisibility = editor.actions.toggleSocketVisibility;
   const togglePreview = editor.actions.togglePreview;
-  const createFrame = editor.actions.createFrame;
   const duplicateSelected = editor.actions.duplicateSelected;
   const openQuickAddMenu = editor.actions.openQuickAddMenu;
-  const selectedNodeId = useSelector(
-    editor.ui,
-    (state) => state.selectedNodeId,
-  );
 
   // Group actions
   const groupEditStack = useSelector(
@@ -125,26 +135,14 @@ export function ScriptEditor() {
   const visibleNodes = useSelector(editor.visibleNodes);
   const visibleEdges = useSelector(editor.visibleEdges);
   const enterGroup = editor.actions.enterGroup;
-  const exitGroup = editor.actions.exitGroup;
-  const createGroupFromSelection = editor.actions.createGroupFromSelection;
   const ungroupSelected = editor.actions.ungroupSelected;
 
   // Reroute action
   const insertReroute = editor.actions.insertReroute;
 
-  // Selection actions
-  const selectAll = editor.actions.selectAll;
-  const selectLinked = editor.actions.selectLinked;
-  const selectSimilar = editor.actions.selectSimilar;
-  const selectShortestPath = editor.actions.selectShortestPath;
-
   // Clipboard actions
   const getSelectedForClipboard = editor.actions.getSelectedForClipboard;
   const pasteClipboardData = editor.actions.pasteClipboardData;
-
-  // Alignment actions
-  const alignNodes = editor.actions.alignNodes;
-  const distributeNodes = editor.actions.distributeNodes;
 
   // Link cutting
   const linkCutting = useSelector(editor.ui, (state) => state.linkCutting);
@@ -236,21 +234,21 @@ export function ScriptEditor() {
     [setSelectedNode],
   );
 
+  // React Flow selects the clicked node on pointer down, before the click
+  // event. Remember the node that was selected before that for Shift+click.
+  const shiftClickAnchorRef = useRef<string | null>(null);
+
   // Handle Shift+click for shortest path selection (Blender-style)
   const handleNodeClick = useCallback(
     (event: React.MouseEvent, node: { id: string }) => {
-      if (event.shiftKey) {
-        // Find the currently selected node (if any)
-        const currentlySelected = editor.document
-          .get()
-          .nodes.find((n) => n.selected);
-        if (currentlySelected && currentlySelected.id !== node.id) {
-          event.preventDefault();
-          selectShortestPath(currentlySelected.id, node.id);
-        }
+      const anchor = shiftClickAnchorRef.current;
+      shiftClickAnchorRef.current = null;
+      if (event.shiftKey && anchor && anchor !== node.id) {
+        event.preventDefault();
+        editor.actions.selectShortestPath(anchor, node.id);
       }
     },
-    [editor, selectShortestPath],
+    [editor],
   );
 
   // Double-click on a group node to enter it
@@ -263,354 +261,193 @@ export function ScriptEditor() {
     [enterGroup],
   );
 
+  /** Runs a canvas shortcut. Returns false when it does not apply here. */
+  const runShortcut = useCallback(
+    (
+      id: CanvasShortcutId,
+      key: string,
+      container: Element,
+      target: EventTarget,
+    ): boolean => {
+      // Read the graph on demand so dragging does not re-render the canvas.
+      const { nodes } = editor.document.get();
+      const { selectedNodeId, groupEditStack: stack } = editor.ui.get();
+      const selectedNodes = nodes.filter((n) => n.selected);
+      const selected = nodes.find((n) => n.id === selectedNodeId);
+      const { actions } = editor;
+      switch (id) {
+        case "undo": {
+          actions.undo();
+          return true;
+        }
+        case "redo": {
+          actions.redo();
+          return true;
+        }
+        case "selectAll": {
+          actions.selectAll();
+          return true;
+        }
+        case "deselectAll": {
+          actions.onNodesChange(
+            selectedNodes.map((n) => ({
+              type: "select" as const,
+              id: n.id,
+              selected: false,
+            })),
+          );
+          return true;
+        }
+        case "delete": {
+          actions.deleteSelected();
+          return true;
+        }
+        case "rename": {
+          if (selectedNodeId) setRenamingNodeId(selectedNodeId);
+          return true;
+        }
+        case "enterGroup": {
+          // Tab only opens or leaves a group from the canvas itself or a
+          // focused group node. Anywhere else it moves focus as usual.
+          const focusedNode =
+            target instanceof HTMLElement &&
+            target.classList.contains("react-flow__node")
+              ? nodes.find((n) => n.id === target.dataset["id"])
+              : undefined;
+          if (focusedNode?.type === "layout.group") {
+            actions.enterGroup(focusedNode.id);
+            return true;
+          }
+          if (target !== container) return false;
+          if (stack.length > 0) {
+            actions.exitGroup();
+            return true;
+          }
+          if (selected?.type === "layout.group") {
+            actions.enterGroup(selected.id);
+            return true;
+          }
+          return false;
+        }
+        case "quickAdd": {
+          const center = getCanvasCenter();
+          if (center) {
+            actions.openQuickAddMenu(
+              center.flowPosition,
+              center.screenPosition,
+            );
+          }
+          return true;
+        }
+        case "mute": {
+          if (
+            selected &&
+            getNodeDefinition(selected.type ?? "")?.supportsMuting
+          ) {
+            actions.toggleMute(selected.id);
+          }
+          return true;
+        }
+        case "collapse": {
+          if (selectedNodeId) actions.toggleCollapse(selectedNodeId);
+          return true;
+        }
+        case "hideSockets": {
+          if (selectedNodeId) actions.toggleSocketVisibility(selectedNodeId);
+          return true;
+        }
+        case "preview": {
+          if (selectedNodeId) actions.togglePreview(selectedNodeId);
+          return true;
+        }
+        case "group": {
+          if (selectedNodes.length > 0) actions.createGroupFromSelection();
+          return true;
+        }
+        case "ungroup": {
+          actions.ungroupSelected();
+          return true;
+        }
+        case "frame": {
+          if (selectedNodes.length > 0) {
+            actions.createFrame(selectedNodes.map((n) => n.id));
+          }
+          return true;
+        }
+        case "duplicate": {
+          actions.duplicateSelected();
+          return true;
+        }
+        case "selectLinked": {
+          actions.selectLinked("both");
+          return true;
+        }
+        case "selectUpstream": {
+          actions.selectLinked("upstream");
+          return true;
+        }
+        case "selectDownstream": {
+          actions.selectLinked("downstream");
+          return true;
+        }
+        case "selectSimilar": {
+          actions.selectSimilar();
+          return true;
+        }
+        case "align": {
+          const alignment = ALIGN_BY_KEY[key];
+          if (alignment && selectedNodes.length >= 2) {
+            actions.alignNodes(alignment);
+          }
+          return true;
+        }
+        case "distribute": {
+          if (selectedNodes.length >= 3) {
+            actions.distributeNodes(key === "v" ? "vertical" : "horizontal");
+          }
+          return true;
+        }
+        // Handled by copy and paste events or pointer gestures.
+        case "copy":
+        case "paste":
+        case "quickAddAtCursor":
+        case "cutLinks":
+        case "reroute": {
+          return false;
+        }
+      }
+      return false;
+    },
+    [editor, getCanvasCenter],
+  );
+
+  // Runs in the capture phase, before React Flow's own node key handling.
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
       // Escape - Stop a link cut without cutting
       if (event.key === "Escape" && editor.ui.get().linkCutting.active) {
         event.preventDefault();
+        event.stopPropagation();
         editor.actions.cancelLinkCutting();
         return;
       }
       if (!isCanvasShortcutTarget(event.currentTarget, event.target)) return;
-
-      // Read the graph on demand so dragging does not re-render the canvas.
-      const { nodes } = editor.document.get();
-      const selectedNodes = nodes.filter((n) => n.selected);
-      const commandKey = event.ctrlKey || event.metaKey;
-      // Alt shortcuts read the typed letter, or the physical key when Alt
-      // changes it, as Option does on macOS.
-      const letter = shortcutLetter(event);
-
-      // Ctrl+Z - Undo, Ctrl+Shift+Z or Ctrl+Y - Redo
-      if (commandKey && !event.altKey && event.key.toLowerCase() === "z") {
-        event.preventDefault();
-        if (event.shiftKey) editor.actions.redo();
-        else editor.actions.undo();
-        return;
-      }
+      const shortcut = matchCanvasShortcut(event);
+      if (!shortcut) return;
       if (
-        commandKey &&
-        !event.altKey &&
-        !event.shiftKey &&
-        event.key.toLowerCase() === "y"
+        shortcut.ignoredRepeat ||
+        runShortcut(
+          shortcut.id,
+          shortcut.key,
+          event.currentTarget,
+          event.target,
+        )
       ) {
         event.preventDefault();
-        editor.actions.redo();
-        return;
-      }
-
-      // A - Select all nodes (Blender-style, no modifier)
-      if (
-        event.key === "a" &&
-        !event.ctrlKey &&
-        !event.metaKey &&
-        !event.shiftKey &&
-        !event.altKey
-      ) {
-        event.preventDefault();
-        selectAll();
-        return;
-      }
-
-      // Alt+A - Deselect all nodes
-      if (
-        letter === "a" &&
-        event.altKey &&
-        !event.ctrlKey &&
-        !event.metaKey &&
-        !event.shiftKey
-      ) {
-        event.preventDefault();
-        onNodesChange(
-          nodes
-            .filter((n) => n.selected)
-            .map((n) => ({
-              type: "select" as const,
-              id: n.id,
-              selected: false,
-            })),
-        );
-        return;
-      }
-
-      // Delete/Backspace/X - Delete selected
-      if (
-        event.key === "Delete" ||
-        event.key === "Backspace" ||
-        event.key === "x"
-      ) {
-        if (
-          event.key === "x" &&
-          (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey)
-        ) {
-          return;
-        }
-        deleteSelected();
-        return;
-      }
-
-      // F2 - Rename selected node
-      if (event.key === "F2") {
-        event.preventDefault();
-        if (selectedNodeId) {
-          setRenamingNodeId(selectedNodeId);
-        }
-        return;
-      }
-
-      // Tab - Enter/Exit group
-      if (event.key === "Tab") {
-        if (event.shiftKey || event.ctrlKey || event.metaKey || event.altKey)
-          return;
-        if (groupEditStack.length > 0) {
-          event.preventDefault();
-          // If inside a group, exit
-          exitGroup();
-        } else if (selectedNodeId) {
-          // If a group node is selected, enter it
-          const selectedNode = nodes.find((n) => n.id === selectedNodeId);
-          if (selectedNode?.type === "layout.group") {
-            event.preventDefault();
-            enterGroup(selectedNodeId);
-          }
-        }
-        return;
-      }
-
-      // Shift+A - Quick add menu
-      if (
-        event.key === "A" &&
-        event.shiftKey &&
-        !event.ctrlKey &&
-        !event.metaKey
-      ) {
-        event.preventDefault();
-        const center = getCanvasCenter();
-        if (center) {
-          openQuickAddMenu(center.flowPosition, center.screenPosition);
-        }
-        return;
-      }
-
-      // M - Toggle mute on selected node
-      if (
-        event.key === "m" &&
-        !event.ctrlKey &&
-        !event.metaKey &&
-        !event.shiftKey &&
-        !event.altKey
-      ) {
-        const selected = nodes.find((n) => n.id === selectedNodeId);
-        if (
-          selected &&
-          getNodeDefinition(selected.type ?? "")?.supportsMuting
-        ) {
-          toggleMute(selected.id);
-        }
-        return;
-      }
-
-      // H - Toggle collapse on selected node (without modifiers)
-      if (
-        event.key === "h" &&
-        !event.ctrlKey &&
-        !event.metaKey &&
-        !event.shiftKey &&
-        !event.altKey
-      ) {
-        if (selectedNodeId) {
-          toggleCollapse(selectedNodeId);
-        }
-        return;
-      }
-
-      // Ctrl+H - Toggle socket visibility (hide unconnected)
-      if (
-        event.key === "h" &&
-        (event.ctrlKey || event.metaKey) &&
-        !event.shiftKey &&
-        !event.altKey
-      ) {
-        event.preventDefault();
-        if (selectedNodeId) {
-          toggleSocketVisibility(selectedNodeId);
-        }
-        return;
-      }
-
-      // Shift+H - Toggle preview on selected node
-      if (
-        (event.key === "H" || event.key === "h") &&
-        event.shiftKey &&
-        !event.ctrlKey &&
-        !event.metaKey &&
-        !event.altKey
-      ) {
-        event.preventDefault();
-        if (selectedNodeId) {
-          togglePreview(selectedNodeId);
-        }
-        return;
-      }
-
-      // Ctrl+G - Create group from selected nodes
-      if (
-        event.key === "g" &&
-        (event.ctrlKey || event.metaKey) &&
-        !event.shiftKey &&
-        !event.altKey
-      ) {
-        event.preventDefault();
-        if (selectedNodes.length > 0) {
-          createGroupFromSelection();
-        }
-        return;
-      }
-
-      // Ctrl+Alt+G - Ungroup selected group node (Blender convention)
-      if (letter === "g" && (event.ctrlKey || event.metaKey) && event.altKey) {
-        event.preventDefault();
-        ungroupSelected();
-        return;
-      }
-
-      // Ctrl+J - Create frame around selected nodes
-      if (
-        (event.key === "j" || event.key === "J") &&
-        (event.ctrlKey || event.metaKey)
-      ) {
-        event.preventDefault();
-        if (selectedNodes.length > 0) {
-          createFrame(selectedNodes.map((n) => n.id));
-        }
-        return;
-      }
-
-      // Shift+D - Duplicate selected (Blender-style)
-      if (
-        event.key === "D" &&
-        event.shiftKey &&
-        !event.ctrlKey &&
-        !event.metaKey
-      ) {
-        event.preventDefault();
-        duplicateSelected();
-        return;
-      }
-
-      // Note: Ctrl+C and Ctrl+V are handled via native onCopy/onPaste events
-      // to avoid Firefox's clipboard permission prompts
-
-      // L - Select linked (both directions, Blender-style)
-      if (
-        event.key === "l" &&
-        !event.shiftKey &&
-        !event.ctrlKey &&
-        !event.metaKey &&
-        !event.altKey
-      ) {
-        event.preventDefault();
-        selectLinked("both");
-        return;
-      }
-
-      // Ctrl+L / Cmd+L - Select upstream only
-      if (
-        (event.key === "l" || event.key === "L") &&
-        (event.ctrlKey || event.metaKey) &&
-        !event.altKey
-      ) {
-        event.preventDefault();
-        selectLinked("upstream");
-        return;
-      }
-
-      // Alt+L / ⌥L - Select downstream only
-      if (letter === "l" && event.altKey && !event.ctrlKey && !event.metaKey) {
-        event.preventDefault();
-        selectLinked("downstream");
-        return;
-      }
-
-      // Shift+S - Select similar (same node type)
-      if (
-        event.key === "S" &&
-        event.shiftKey &&
-        !event.ctrlKey &&
-        !event.metaKey
-      ) {
-        event.preventDefault();
-        selectSimilar();
-        return;
-      }
-
-      // Alignment shortcuts (Ctrl+Shift+Arrow / Cmd+Shift+Arrow)
-      if (
-        (event.ctrlKey || event.metaKey) &&
-        event.shiftKey &&
-        selectedNodes.length >= 2
-      ) {
-        switch (event.key) {
-          case "ArrowLeft": {
-            event.preventDefault();
-            alignNodes("left");
-            return;
-          }
-          case "ArrowRight": {
-            event.preventDefault();
-            alignNodes("right");
-            return;
-          }
-          case "ArrowUp": {
-            event.preventDefault();
-            alignNodes("top");
-            return;
-          }
-          case "ArrowDown": {
-            event.preventDefault();
-            alignNodes("bottom");
-            return;
-          }
-        }
-      }
-
-      // Distribute shortcuts
-      if (event.altKey && event.shiftKey && selectedNodes.length >= 3) {
-        if (letter === "h") {
-          event.preventDefault();
-          distributeNodes("horizontal");
-          return;
-        }
-        if (letter === "v") {
-          event.preventDefault();
-          distributeNodes("vertical");
-        }
+        event.stopPropagation();
       }
     },
-    [
-      editor,
-      onNodesChange,
-      deleteSelected,
-      getCanvasCenter,
-      openQuickAddMenu,
-      selectedNodeId,
-      toggleMute,
-      toggleCollapse,
-      toggleSocketVisibility,
-      togglePreview,
-      createFrame,
-      createGroupFromSelection,
-      ungroupSelected,
-      duplicateSelected,
-      groupEditStack,
-      enterGroup,
-      exitGroup,
-      selectAll,
-      selectLinked,
-      selectSimilar,
-      alignNodes,
-      distributeNodes,
-    ],
+    [editor, runShortcut],
   );
 
   // Native copy handler - uses ClipboardEvent for cross-browser support without permission prompts
@@ -676,36 +513,102 @@ export function ScriptEditor() {
     [reactFlowInstance, insertReroute],
   );
 
-  // Handle right-click on node (React Flow idiomatic pattern)
-  const handleNodeContextMenu = useCallback(
-    (event: React.MouseEvent, node: Node) => {
-      // Select the right-clicked node if it isn't already selected
-      if (!node.selected) {
+  // Selects the node, unless it is already part of the selection, and opens
+  // its menu at the pointer.
+  const openNodeMenu = useCallback(
+    (event: React.MouseEvent | MouseEvent, nodeId: string) => {
+      const { nodes } = editor.document.get();
+      if (!nodes.find((n) => n.id === nodeId)?.selected) {
         onNodesChange([
-          // Deselect all other nodes
-          ...editor.document
-            .get()
-            .nodes.filter((n) => n.selected && n.id !== node.id)
+          ...nodes
+            .filter((n) => n.selected && n.id !== nodeId)
             .map((n) => ({
               type: "select" as const,
               id: n.id,
               selected: false,
             })),
-          // Select the right-clicked node
-          { type: "select" as const, id: node.id, selected: true },
+          { type: "select" as const, id: nodeId, selected: true },
         ]);
       }
-
-      openNodeContextMenu(event, node.id);
+      openNodeContextMenu(event, nodeId);
     },
     [editor, onNodesChange, openNodeContextMenu],
   );
 
+  const handleNodeContextMenu = useCallback(
+    (event: React.MouseEvent, node: Node) => {
+      openNodeMenu(event, node.id);
+    },
+    [openNodeMenu],
+  );
+
+  // iOS fires no contextmenu event, so a long press on a node opens its menu.
+  const longPressRef = useRef<{
+    pointerId: number;
+    x: number;
+    y: number;
+    timer: ReturnType<typeof setTimeout>;
+  } | null>(null);
+
+  const cancelLongPress = useCallback(() => {
+    if (longPressRef.current) clearTimeout(longPressRef.current.timer);
+    longPressRef.current = null;
+  }, []);
+
+  useEffect(() => cancelLongPress, [cancelLongPress]);
+
+  const handlePointerDownCapture = useCallback(
+    (event: React.PointerEvent) => {
+      const nodeElement =
+        event.target instanceof Element
+          ? event.target.closest<HTMLElement>(".react-flow__node")
+          : null;
+      shiftClickAnchorRef.current =
+        event.shiftKey && nodeElement ? editor.ui.get().selectedNodeId : null;
+
+      cancelLongPress();
+      const nodeId = nodeElement?.dataset["id"];
+      if (event.pointerType === "mouse" || !event.isPrimary || !nodeId) return;
+      const { clientX, clientY, pointerId } = event;
+      longPressRef.current = {
+        pointerId,
+        x: clientX,
+        y: clientY,
+        timer: setTimeout(() => {
+          longPressRef.current = null;
+          openNodeMenu(
+            new MouseEvent("contextmenu", { clientX, clientY }),
+            nodeId,
+          );
+        }, LONG_PRESS_MS),
+      };
+    },
+    [editor, cancelLongPress, openNodeMenu],
+  );
+
+  const handlePointerMoveCapture = useCallback(
+    (event: React.PointerEvent) => {
+      const press = longPressRef.current;
+      if (
+        press?.pointerId === event.pointerId &&
+        Math.hypot(event.clientX - press.x, event.clientY - press.y) >
+          LONG_PRESS_TOLERANCE_PX
+      ) {
+        cancelLongPress();
+      }
+    },
+    [cancelLongPress],
+  );
+
+  const focusCanvas = useCallback(() => {
+    containerRef.current?.focus({ preventScroll: true });
+  }, []);
+
   // Close node context menu on pane click
   const handlePaneClick = useCallback(() => {
     dismissNodeContextMenu();
-    containerRef.current?.focus({ preventScroll: true });
-  }, [dismissNodeContextMenu]);
+    focusCanvas();
+  }, [dismissNodeContextMenu, focusCanvas]);
 
   // Handle pointer down for link cutting (Alt+drag)
   // Uses pointer events instead of mouse events to support touch/stylus
@@ -822,10 +725,10 @@ export function ScriptEditor() {
           nodes: currentNodes,
           isDirty,
         } = editor.document.get();
-        const nodeType =
-          currentNodes.find((node) => node.id === params.nodeId)?.type ?? "";
-        // Multi-input ports keep their wires, so a drag adds another one.
-        if (isPortMultiInput(nodeType, params.handleId)) return;
+        // Multi-input and execution ports keep their wires, so a drag adds
+        // another one.
+        if (!isSingleWireInput(currentNodes, params.nodeId, params.handleId))
+          return;
         const existing = currentEdges.filter(
           (e) =>
             e.target === params.nodeId && e.targetHandle === params.handleId,
@@ -929,15 +832,18 @@ export function ScriptEditor() {
   );
 
   return (
-    // oxlint-disable-next-line jsx-a11y/no-static-element-interactions -- the canvas container takes focus to receive editor shortcuts
     <div
       ref={containerRef}
       // oxlint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- the canvas container takes focus to receive editor shortcuts
       tabIndex={0}
       className="relative size-full outline-none"
-      onKeyDown={handleKeyDown}
+      onKeyDownCapture={handleKeyDown}
       onCopy={handleCopy}
       onPaste={handlePaste}
+      onPointerDownCapture={handlePointerDownCapture}
+      onPointerMoveCapture={handlePointerMoveCapture}
+      onPointerUpCapture={cancelLongPress}
+      onPointerCancelCapture={cancelLongPress}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
@@ -996,7 +902,7 @@ export function ScriptEditor() {
       {/* Group breadcrumb navigation */}
       <GroupBreadcrumb />
 
-      <QuickAddMenu />
+      <QuickAddMenu onClosed={focusCanvas} />
 
       {nodeContextMenu &&
         (() => {
