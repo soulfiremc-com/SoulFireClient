@@ -1,64 +1,38 @@
 import { createRpcClient } from "@/lib/rpc";
 import { Effect } from "effect";
 import { create } from "@bufbuild/protobuf";
-import { Code, ConnectError } from "@connectrpc/connect";
-import {
-  queryOptions,
-  useMutation,
-  useMutationState,
-  useQuery,
-  useSuspenseQuery,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
-  ArrowDownIcon,
   ArrowLeftIcon,
-  ArrowRightIcon,
-  ArrowUpIcon,
   BackpackIcon,
-  BookOpenIcon,
-  ChevronDownIcon,
-  ChevronLeftIcon,
   ChevronRightIcon,
-  ChevronUpIcon,
   CircleAlertIcon,
   ClipboardCopyIcon,
   CompassIcon,
   EyeIcon,
   Gamepad2Icon,
-  GamepadIcon,
-  HandIcon,
-  LoaderIcon,
   MonitorIcon,
-  MousePointerClickIcon,
   NetworkIcon,
-  PackageIcon,
-  PencilIcon,
   PlayIcon,
   RefreshCwIcon,
-  ShieldIcon,
   SparklesIcon,
   SquareIcon,
   SquareTerminalIcon,
-  Trash2Icon,
-  XIcon,
 } from "lucide-react";
-import {
-  Activity,
-  Suspense,
-  use,
-  useCallback,
-  useEffect,
-  useEffectEvent,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { Activity, Suspense, use, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { BotDialogForm } from "@/components/bot-dialog-form";
 import { BotChatBox } from "@/components/bot-view/bot-chat-box.tsx";
+import { BotControlsTab } from "@/components/bot-view/bot-controls.tsx";
+import { BotInventoryPanel } from "@/components/bot-view/bot-inventory-panel.tsx";
+import { BotPanel, BotPanelEmpty } from "@/components/bot-view/bot-panel.tsx";
+import {
+  botDialogQueryOptions,
+  botInfoQueryOptions,
+  toastError,
+} from "@/components/bot-view/bot-queries.ts";
+import { BotVisualPanel } from "@/components/bot-view/bot-visual-panel.tsx";
 import { BotStateBadge } from "@/components/instance-overview/bot-grid.tsx";
 import { getFailureFix } from "@/components/instance-overview/fleet-status-meta.ts";
 import { LiveFeed } from "@/components/instance-overview/live-feed.tsx";
@@ -74,10 +48,6 @@ import {
   classifyBotFailure,
   getBotDisplayState,
 } from "@/lib/bot-fleet.ts";
-import {
-  copyMinecraftText,
-  openMinecraftUrl,
-} from "@/lib/minecraft-client-actions";
 import CommandInput from "@/components/command-input.tsx";
 import { ContextMenuPortal } from "@/components/context-menu-portal.tsx";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu.tsx";
@@ -89,7 +59,6 @@ import {
 } from "@/lib/pov-connection-step";
 import { ProxyAddress } from "@/components/ProxyAddress.tsx";
 import { TerminalComponent } from "@/components/terminal.tsx";
-import { Badge } from "@/components/ui/badge.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import {
   Empty,
@@ -98,52 +67,21 @@ import {
   EmptyHeader,
   EmptyTitle,
 } from "@/components/ui/empty.tsx";
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field.tsx";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupInput,
-} from "@/components/ui/input-group.tsx";
 import {
   Item,
+  ItemActions,
   ItemContent,
   ItemDescription,
   ItemMedia,
   ItemTitle,
 } from "@/components/ui/item.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
-import { Toggle } from "@/components/ui/toggle.tsx";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group.tsx";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip.tsx";
-import {
-  type BookPage,
-  type BotContainerButtonClickRequest,
-  BotContainerButtonClickRequestSchema,
-  type BotInfoResponse,
-  type BotInventoryClickRequest,
-  BotInventoryClickRequestSchema,
-  type BotInventoryStateResponse,
-  type BotLiveState,
-  type BotMouseClickRequest,
-  BotMouseClickRequestSchema,
   BotConnectionPhase,
   BotDesiredState,
   BotService,
-  type BotSetContainerTextRequest,
-  BotSetContainerTextRequestSchema,
-  ClickType,
-  type ContainerButton,
-  type ContainerTextInput,
   GameMode,
-  type InventorySlot,
-  MouseButton,
-  type SlotRegion,
-  SlotRegionType,
 } from "@/generated/soulfire/bot_pb";
 import {
   BotCommandScopeSchema,
@@ -166,74 +104,34 @@ import {
   accountTypeToIcon,
   translateAccountType,
 } from "@/lib/account-types.ts";
-import {
-  createServerInputDraft,
-  editServerInputDraft,
-  syncServerInputDraft,
-} from "@/lib/server-input-draft";
-import { editBoxInsertion, editBoxValue } from "@/lib/minecraft-edit-box";
 import i18n from "@/lib/i18n";
-import {
-  containerMutationOptions,
-  containerMutationScopeId,
-} from "@/lib/container-mutation-options";
-import { useMutationScopePending } from "@/hooks/use-mutation-scope-pending";
-import { dialogMutationOptions } from "@/lib/dialog-mutation-options";
 import { isResourceUnavailable } from "@/lib/resource-errors";
-import { isBotNotReadyError } from "@/lib/bot-availability";
-import { applyServerDialogRefresh } from "@/lib/server-dialog-query";
 import { routeChrome } from "@/lib/route-title.ts";
 import { getEnumKeyByValue, type ProfileAccount } from "@/lib/types.ts";
 import { cn, hasInstancePermission } from "@/lib/utils.tsx";
-import { createTransport } from "@/lib/web-rpc.ts";
-import { demoBotInfo } from "@/demo-data.ts";
 import { isOneOf } from "@/lib/is-one-of";
-import { generateN } from "@/lib/generate-n.ts";
 import { formatFixed } from "@/lib/format.ts";
 import { minecraftAvatarUrl } from "@/lib/minecraft-avatar.ts";
 import { FoodBar, HeartsBar } from "@/components/minecraft/vitals.tsx";
-import { slotKeyAction } from "@/lib/inventory-slot-keys.ts";
 
 export const Route = createFileRoute(
   "/_dashboard/instance/$instance/bot/$botId",
 )({
-  beforeLoad: (props) => {
-    const { instance, botId } = props.params;
-    const botInfoQueryOptions = queryOptions({
-      queryKey: ["bot-info", instance, botId],
-      queryFn: async (queryProps): Promise<BotInfoResponse> => {
-        const transport = createTransport();
-        if (transport === null) {
-          return demoBotInfo;
-        }
-        const botService = createRpcClient(BotService, transport);
-        const result = await Effect.runPromise(
-          botService.getBotInfo(
-            { instanceId: instance, botId },
-            { signal: queryProps.signal },
-          ),
-        );
-        return result;
-      },
-      refetchInterval: 1000, // Faster polling for live data
-    });
-    return {
-      botInfoQueryOptions,
-      ...routeChrome({
-        getTitle: (match) =>
-          typeof match.loaderData === "string" && match.loaderData.trim()
-            ? match.loaderData
-            : i18n.t("common:pageName.botDetail"),
-        getIcon: () => ({
-          kind: "dynamic",
-          name: "users",
-        }),
+  beforeLoad: () => ({
+    ...routeChrome({
+      getTitle: (match) =>
+        typeof match.loaderData === "string" && match.loaderData.trim()
+          ? match.loaderData
+          : i18n.t("common:pageName.botDetail"),
+      getIcon: () => ({
+        kind: "dynamic",
+        name: "users",
       }),
-    };
-  },
+    }),
+  }),
   loader: async (props) => {
     void props.context.queryClient.prefetchQuery(
-      props.context.botInfoQueryOptions,
+      botInfoQueryOptions(props.params.instance, props.params.botId),
     );
 
     const instanceInfo = await props.context.queryClient.ensureQueryData(
@@ -251,42 +149,29 @@ export const Route = createFileRoute(
 
 function BotDetailSkeleton() {
   return (
-    <div className="container flex flex-col gap-4">
-      {/* Header with avatar */}
-      <div className="flex items-start gap-4">
-        <Skeleton className="size-16 rounded-sm" />
-        <div className="flex flex-col gap-2">
-          <Skeleton className="h-6 w-32" />
-          <div className="flex gap-2">
-            <Skeleton className="h-5 w-16" />
-            <Skeleton className="h-5 w-20" />
-          </div>
+    <div className="container flex flex-col gap-4 py-4">
+      <BotDetailHeaderSkeleton />
+      <div className="rounded-lg border">
+        <div className="border-b px-4 py-3">
+          <Skeleton className="h-8 w-full sm:w-120" />
+        </div>
+        <div className="p-4">
+          <TabPanelSkeleton />
         </div>
       </div>
-      {/* Stats cards */}
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-        {generateN(4).map((item) => (
-          <Skeleton key={item} className="h-24 w-full rounded-lg" />
-        ))}
-      </div>
-      {/* Terminal */}
-      <Skeleton className="h-[calc(75vh-8rem)] w-full rounded-md" />
-      {/* Command input */}
-      <Skeleton className="h-9 w-full rounded-md" />
     </div>
   );
 }
 
 function BotDetail() {
   const { t } = useTranslation("common");
-  const { instanceInfoQueryOptions, botInfoQueryOptions } =
-    Route.useRouteContext();
+  const { instanceInfoQueryOptions } = Route.useRouteContext();
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
+  const { botId } = Route.useParams();
   const { error: botInfoError } = useQuery({
-    ...botInfoQueryOptions,
+    ...botInfoQueryOptions(instanceInfo.id, botId),
     refetchInterval: false,
   });
-  const { botId } = Route.useParams();
 
   // Find the account
   const account = useMemo(
@@ -339,6 +224,9 @@ function BotDetail() {
         { id: "bots", content: t("breadcrumbs.bots") },
       ]}
       pageName={account.lastKnownName}
+      // The header card shows the name with the avatar and state, so the
+      // layout keeps its h1 in the breadcrumb instead of repeating it.
+      hidePageHeading
       loadingSkeleton={<BotDetailSkeleton />}
     >
       <BotDetailContent account={account} instanceId={instanceInfo.id} />
@@ -371,26 +259,6 @@ function getGameModeLabel(
       return t("bots.statsPanel.unknown");
     }
   }
-}
-
-/** Creates a bot RPC client, or fails with a translated message in the demo. */
-function createBotClient() {
-  const transport = createTransport();
-  if (transport === null) throw new Error(i18n.t("instance:bots.notConnected"));
-  return createRpcClient(BotService, transport);
-}
-
-/** The server's own reason, without the "[code]" prefix that ConnectError adds. */
-function errorDescription(error: Error): string | undefined {
-  return (
-    (error instanceof ConnectError ? error.rawMessage : error.message) ||
-    undefined
-  );
-}
-
-/** Shows a translated title with the server's reason as the description. */
-function toastError(title: string, error: Error) {
-  toast.error(title, { description: errorDescription(error) });
 }
 
 function BotDetailContent({
@@ -498,6 +366,7 @@ function BotDetailContent({
                 setActiveTab(nextTab);
               }
             }}
+            aria-label={t("bots.tabs.label")}
             variant="outline"
             size="sm"
             spacing={1}
@@ -541,7 +410,10 @@ function BotDetailContent({
           </Activity>
           <Activity mode={activeTab === "controls" ? "visible" : "hidden"}>
             <Suspense fallback={<TabPanelSkeleton />}>
-              <ControlsTab instanceId={instanceId} botId={account.profileId} />
+              <BotControlsTab
+                instanceId={instanceId}
+                botId={account.profileId}
+              />
             </Suspense>
           </Activity>
           <Activity mode={activeTab === "terminal" ? "visible" : "hidden"}>
@@ -601,10 +473,11 @@ function BotDetailHeader({
   onContextMenu: (event: React.MouseEvent, data: null) => void;
 }) {
   const { i18n: activeI18n, t } = useTranslation("instance");
-  const { botInfoQueryOptions } = Route.useRouteContext();
-  const { data: botInfo } = useSuspenseQuery(botInfoQueryOptions);
-  const isOnline = !!botInfo.liveState;
+  const { data: botInfo } = useSuspenseQuery(
+    botInfoQueryOptions(instanceId, account.profileId),
+  );
   const liveState = botInfo.liveState;
+  const isOnline = liveState !== undefined;
   const typeLabel = translateAccountType(activeI18n, typeKey);
 
   return (
@@ -639,46 +512,10 @@ function BotDetailHeader({
             <TypeIcon className="size-3" />
             {typeLabel}
           </span>
+          {liveState && <span>{getGameModeLabel(liveState.gameMode, t)}</span>}
         </ItemDescription>
       </ItemContent>
-      {isOnline && liveState && (
-        <div className="ml-auto flex flex-wrap items-center gap-3">
-          <HeartsBar
-            health={liveState.health}
-            maxHealth={liveState.maxHealth}
-            size={12}
-          />
-          <FoodBar foodLevel={liveState.foodLevel} size={12} />
-          <Tooltip>
-            <TooltipTrigger
-              render={<div className="flex items-center gap-1" />}
-            >
-              <SparklesIcon className="size-3.5 text-success" />
-              <div className="h-1.5 w-12 overflow-hidden rounded-full bg-muted">
-                <div
-                  className="h-full bg-success transition-all"
-                  style={{
-                    width: `${liveState.experienceProgress * 100}%`,
-                  }}
-                />
-              </div>
-              <span className="text-xs tabular-nums">
-                <span className="sr-only">
-                  {t("bots.statsPanel.experience")}{" "}
-                </span>
-                {t("bots.statsPanel.levelShort", {
-                  level: liveState.experienceLevel,
-                })}
-              </span>
-            </TooltipTrigger>
-            <TooltipContent>{t("bots.statsPanel.experience")}</TooltipContent>
-          </Tooltip>
-          <span className="text-xs text-muted-foreground">
-            {getGameModeLabel(liveState.gameMode, t)}
-          </span>
-        </div>
-      )}
-      <div className="flex flex-wrap items-center gap-2">
+      <ItemActions className="flex-wrap">
         <BotPowerActions
           instanceId={instanceId}
           botId={account.profileId}
@@ -701,7 +538,39 @@ function BotDetailHeader({
           <ArrowLeftIcon data-icon="inline-start" />
           {t("bots.backToBots")}
         </Button>
-      </div>
+      </ItemActions>
+      {/* Vitals get their own row so the name and actions stay readable on phones. */}
+      {liveState && (
+        <div className="flex basis-full flex-wrap items-center gap-x-6 gap-y-2 border-t pt-3">
+          <HeartsBar
+            health={liveState.health}
+            maxHealth={liveState.maxHealth}
+          />
+          <FoodBar foodLevel={liveState.foodLevel} />
+          <div
+            className="flex items-center gap-2"
+            title={t("bots.statsPanel.experience")}
+          >
+            <SparklesIcon className="size-4 text-success" />
+            <div className="h-2 w-20 overflow-hidden rounded-full bg-muted">
+              <div
+                className="h-full w-(--xp-progress) bg-success transition-all"
+                style={{
+                  "--xp-progress": `${liveState.experienceProgress * 100}%`,
+                }}
+              />
+            </div>
+            <span className="text-xs tabular-nums">
+              <span className="sr-only">
+                {t("bots.statsPanel.experience")}{" "}
+              </span>
+              {t("bots.statsPanel.levelShort", {
+                level: liveState.experienceLevel,
+              })}
+            </span>
+          </div>
+        </div>
+      )}
     </Item>
   );
 }
@@ -717,8 +586,7 @@ function BotPowerActions({
   state: BotDisplayState;
 }) {
   const { t } = useTranslation("common");
-  const { botInfoQueryOptions, instanceInfoQueryOptions, queryClient } =
-    Route.useRouteContext();
+  const { instanceInfoQueryOptions, queryClient } = Route.useRouteContext();
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const transport = use(TransportContext);
   const change = useMutation({
@@ -751,7 +619,7 @@ function BotPowerActions({
       Promise.all([
         queryClient.invalidateQueries({ queryKey: ["bot-status", instanceId] }),
         queryClient.invalidateQueries({
-          queryKey: botInfoQueryOptions.queryKey,
+          queryKey: botInfoQueryOptions(instanceId, botId).queryKey,
         }),
         queryClient.invalidateQueries({
           queryKey: ["instance-info", instanceId],
@@ -821,13 +689,16 @@ function BotStateNotice({
   onOpenControls: () => void;
 }) {
   const { t } = useTranslation("instance");
-  const { botInfoQueryOptions } = Route.useRouteContext();
-  const { data: botInfo } = useSuspenseQuery(botInfoQueryOptions);
+  const { data: botInfo } = useSuspenseQuery(
+    botInfoQueryOptions(instanceId, botId),
+  );
   const isOnline = !!botInfo.liveState;
   const state = getBotDisplayState({ isOnline, status: botInfo.status });
-  const { data: dialogData } = useQuery(
-    botDialogQueryOptions(instanceId, botId, isOnline),
-  );
+  const { data: dialogData } = useQuery({
+    ...botDialogQueryOptions(instanceId, botId),
+    enabled: isOnline,
+    refetchInterval: isOnline ? 2000 : false,
+  });
   if (isOnline && dialogData?.dialog) {
     return (
       // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role -- Alert renders a div, and the status role announces this update
@@ -898,14 +769,15 @@ function OverviewTab({
   botId: string;
   botName: string;
 }) {
-  const { botInfoQueryOptions } = Route.useRouteContext();
-  const { data: botInfo } = useSuspenseQuery(botInfoQueryOptions);
+  const { instanceInfoQueryOptions } = Route.useRouteContext();
+  const { data: botInfo } = useSuspenseQuery(
+    botInfoQueryOptions(instanceId, botId),
+  );
   const { t } = useTranslation("instance");
   const { t: tCommon } = useTranslation("common");
   const { contextMenu, handleContextMenu, dismiss, menuRef } =
     useContextMenu<null>();
   const copyToClipboard = useCopyToClipboard();
-  const { instanceInfoQueryOptions } = Route.useRouteContext();
   const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
   const canWatchFeed = hasInstancePermission(
     instanceInfo,
@@ -987,67 +859,33 @@ function OverviewTab({
             </ItemContent>
           </Item>
 
-          {/* Position */}
-          <div>
-            <h3 className="mb-2 flex items-center gap-2 text-sm font-medium">
-              <CompassIcon className="size-4" />
-              {t("bots.positionPanel.title")}
-            </h3>
-            {isOnline && liveState ? (
-              <div className="flex flex-col gap-3">
-                <div>
-                  <p className="text-xs text-muted-foreground">
-                    {t("bots.positionPanel.position")}
-                  </p>
-                  <div className="mt-1 grid grid-cols-3 gap-2 font-mono text-sm select-text">
-                    <div>
-                      <span className="text-muted-foreground">
-                        {t("bots.positionPanel.x")}:
-                      </span>{" "}
-                      {formatFixed(liveState.x, 2)}
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">
-                        {t("bots.positionPanel.y")}:
-                      </span>{" "}
-                      {formatFixed(liveState.y, 2)}
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">
-                        {t("bots.positionPanel.z")}:
-                      </span>{" "}
-                      {formatFixed(liveState.z, 2)}
-                    </div>
+          <BotPanel icon={CompassIcon} title={t("bots.positionPanel.title")}>
+            {liveState ? (
+              <dl className="grid grid-cols-3 gap-x-2 gap-y-1 font-mono text-sm select-text">
+                {(
+                  [
+                    ["x", liveState.x, 2],
+                    ["y", liveState.y, 2],
+                    ["z", liveState.z, 2],
+                    ["yaw", liveState.yRot, 1],
+                    ["pitch", liveState.xRot, 1],
+                  ] as const
+                ).map(([key, value, digits]) => (
+                  <div key={key} className="flex gap-1">
+                    <dt className="text-muted-foreground">
+                      {t(`bots.positionPanel.${key}`)}:
+                    </dt>
+                    <dd>
+                      {formatFixed(value, digits)}
+                      {digits === 1 && "°"}
+                    </dd>
                   </div>
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">
-                    {t("bots.positionPanel.rotation")}
-                  </p>
-                  <div className="mt-1 grid grid-cols-2 gap-2 font-mono text-sm select-text">
-                    <div>
-                      <span className="text-muted-foreground">
-                        {t("bots.positionPanel.pitch")}:
-                      </span>{" "}
-                      {formatFixed(liveState.xRot, 1)}°
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">
-                        {t("bots.positionPanel.yaw")}:
-                      </span>{" "}
-                      {formatFixed(liveState.yRot, 1)}°
-                    </div>
-                  </div>
-                </div>
-              </div>
+                ))}
+              </dl>
             ) : (
-              <div className="flex items-center justify-center rounded-lg bg-muted/30 p-6">
-                <p className="text-muted-foreground">
-                  {t("bots.positionPanel.offline")}
-                </p>
-              </div>
+              <BotPanelEmpty>{t("bots.positionPanel.offline")}</BotPanelEmpty>
             )}
-          </div>
+          </BotPanel>
 
           <Collapsible>
             <CollapsibleTrigger
@@ -1075,14 +913,14 @@ function OverviewTab({
                   {botId}
                 </dd>
               </dl>
-              <BotVisualPanel liveState={liveState} isOnline={isOnline} />
+              <BotVisualPanel liveState={liveState} />
             </CollapsibleContent>
           </Collapsible>
         </div>
       </div>
 
       {/* Context menu for position copy */}
-      {contextMenu && isOnline && liveState && (
+      {contextMenu && liveState && (
         <ContextMenuPortal
           onClose={dismiss}
           x={contextMenu.position.x}
@@ -1103,45 +941,6 @@ function OverviewTab({
         </ContextMenuPortal>
       )}
     </>
-  );
-}
-
-function ControlsTab({
-  instanceId,
-  botId,
-}: {
-  instanceId: string;
-  botId: string;
-}) {
-  const { botInfoQueryOptions } = Route.useRouteContext();
-  const { data: botInfo } = useSuspenseQuery(botInfoQueryOptions);
-  const isOnline = !!botInfo.liveState;
-  const liveState = botInfo.liveState;
-
-  return (
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-      <div className="flex flex-col gap-6">
-        <BotMovementPanel
-          isOnline={isOnline}
-          instanceId={instanceId}
-          botId={botId}
-          liveState={liveState}
-          movementState={botInfo.movementState}
-        />
-      </div>
-      <div className="flex flex-col gap-6">
-        <BotActionsPanel
-          isOnline={isOnline}
-          instanceId={instanceId}
-          botId={botId}
-        />
-        <BotDialogPanel
-          isOnline={isOnline}
-          instanceId={instanceId}
-          botId={botId}
-        />
-      </div>
-    </div>
   );
 }
 
@@ -1182,1849 +981,5 @@ function BotTerminalPanel({
         InstancePermission.INSTANCE_COMMAND_EXECUTION,
       ) && <CommandInput scope={commandScope} />}
     </TerminalComponent>
-  );
-}
-
-function formatItemId(itemId: string): string {
-  // Remove minecraft: prefix and format nicely
-  return itemId.replace("minecraft:", "").replaceAll("_", " ");
-}
-
-function inventoryItemImageSrc(item: InventorySlot): string | undefined {
-  if (!item.iconBase64 || !item.iconMimeType) {
-    return undefined;
-  }
-
-  return `data:${item.iconMimeType};base64,${item.iconBase64}`;
-}
-
-function InventorySlotDisplay({
-  item,
-  isSelected,
-  slotNumber,
-  onClick,
-  onRightClick,
-  onShiftClick,
-  onMiddleClick,
-  isClickable,
-  containerType,
-  regionId,
-  hotbarIndex,
-  slotIndex,
-}: {
-  item?: InventorySlot | undefined;
-  isSelected?: boolean | undefined;
-  slotNumber?: number | undefined;
-  onClick?: (() => void) | undefined;
-  onRightClick?: (() => void) | undefined;
-  onShiftClick?: (() => void) | undefined;
-  onMiddleClick?: (() => void) | undefined;
-  isClickable?: boolean | undefined;
-  containerType?: string | undefined;
-  regionId?: string | undefined;
-  hotbarIndex?: number | undefined;
-  slotIndex?: number | undefined;
-}) {
-  const { t } = useTranslation("instance");
-  const isCreativeCatalog =
-    containerType === "creative" && regionId === "creative_catalog";
-  const isCreativeTrash =
-    containerType === "creative" && regionId === "destroy_item";
-  const clickHints = isCreativeCatalog
-    ? [t("bots.inventoryPanel.creativeCatalogHint")]
-    : isCreativeTrash
-      ? [t("bots.inventoryPanel.creativeTrashHint")]
-      : [
-          t("bots.inventoryPanel.clickHints.left"),
-          t("bots.inventoryPanel.clickHints.right"),
-          t("bots.inventoryPanel.clickHints.shift"),
-        ];
-  if (onMiddleClick && !isCreativeCatalog) {
-    clickHints.push(t("bots.inventoryPanel.clickHints.middle"));
-  }
-  clickHints.push(t("bots.inventoryPanel.clickHints.keyboard"));
-
-  const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (e.shiftKey && onShiftClick) {
-      onShiftClick();
-    } else if (onClick) {
-      onClick();
-    }
-  };
-
-  const handleContextMenu = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (e.shiftKey && onShiftClick) {
-      onShiftClick();
-    } else if (onRightClick) {
-      onRightClick();
-    }
-  };
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    // Middle click (button 1)
-    if (e.button === 1 && onMiddleClick) {
-      e.preventDefault();
-      onMiddleClick();
-    }
-  };
-
-  // Keyboard users get the same click types as mouse users. The native
-  // contextmenu event already covers right clicks from the keyboard.
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    const action = slotKeyAction(e);
-    if (action === undefined) return;
-    const handler = {
-      shift: onShiftClick,
-      middle: onMiddleClick,
-    }[action];
-    if (!handler) return;
-    e.preventDefault();
-    handler();
-  };
-
-  const baseClasses = `flex size-8 items-center justify-center rounded border text-xs transition-colors ${
-    isSelected ? "ring-primary ring-2" : ""
-  } ${isClickable ? "cursor-pointer hover:border-primary/50" : ""}`;
-
-  const devInfoParts: string[] = [];
-  if (slotIndex !== undefined)
-    devInfoParts.push(
-      t("bots.inventoryPanel.slotInfo.slot", { value: slotIndex }),
-    );
-  if (item)
-    devInfoParts.push(
-      t("bots.inventoryPanel.slotInfo.item", { value: item.itemId }),
-    );
-  if (regionId !== undefined)
-    devInfoParts.push(
-      t("bots.inventoryPanel.slotInfo.region", { value: regionId }),
-    );
-  if (containerType !== undefined)
-    devInfoParts.push(
-      t("bots.inventoryPanel.slotInfo.container", { value: containerType }),
-    );
-  if (hotbarIndex !== undefined)
-    devInfoParts.push(
-      t("bots.inventoryPanel.slotInfo.hotbar", { value: hotbarIndex }),
-    );
-
-  if (!item) {
-    const description = [
-      ...(isCreativeTrash ? [t("bots.inventoryPanel.destroyItem")] : []),
-      ...devInfoParts,
-      ...(isClickable ? ["", ...clickHints] : []),
-    ].join("\n");
-    return (
-      <button
-        type="button"
-        className={`border-border bg-muted/50 ${baseClasses}`}
-        onClick={handleClick}
-        onContextMenu={handleContextMenu}
-        onMouseDown={handleMouseDown}
-        onKeyDown={handleKeyDown}
-        disabled={!isClickable}
-        aria-pressed={hotbarIndex === undefined ? undefined : isSelected}
-        aria-label={description}
-        title={description}
-      >
-        {isCreativeTrash ? (
-          <Trash2Icon className="size-4 text-muted-foreground" />
-        ) : (
-          slotNumber !== undefined && (
-            <span className="text-muted-foreground/30">{slotNumber}</span>
-          )
-        )}
-      </button>
-    );
-  }
-
-  const [tooltipName, ...tooltipDetails] = item.tooltipLines;
-  const titleParts = [
-    `${tooltipName || item.displayName || formatItemId(item.itemId)} x${item.count}`,
-    ...tooltipDetails,
-  ];
-  const itemImageSrc = inventoryItemImageSrc(item);
-  if (devInfoParts.length > 0) {
-    titleParts.push("", ...devInfoParts);
-  }
-  if (isClickable) {
-    titleParts.push("", ...clickHints);
-  }
-
-  return (
-    <button
-      type="button"
-      className={`relative overflow-hidden border-border bg-muted ${baseClasses}`}
-      onClick={handleClick}
-      onContextMenu={handleContextMenu}
-      onMouseDown={handleMouseDown}
-      onKeyDown={handleKeyDown}
-      aria-pressed={hotbarIndex === undefined ? undefined : isSelected}
-      aria-label={titleParts.join("\n")}
-      title={titleParts.join("\n")}
-      disabled={!isClickable}
-    >
-      {itemImageSrc ? (
-        <img
-          src={itemImageSrc}
-          alt=""
-          draggable={false}
-          className="size-full object-contain p-0.5 [image-rendering:pixelated]"
-        />
-      ) : (
-        <span className="max-w-full truncate px-0.5 text-center text-3xs/tight">
-          {formatItemId(item.itemId).slice(0, 6)}
-        </span>
-      )}
-      {item.count > 1 && (
-        <span className="absolute right-0.5 bottom-0 text-4xs font-bold">
-          {item.count}
-        </span>
-      )}
-    </button>
-  );
-}
-
-// Renders a single region of inventory slots
-function SlotRegionGrid({
-  region,
-  slotByIndex,
-  selectedHotbarSlot,
-  onSlotClick,
-  onHotbarSlotSelect,
-  containerType,
-}: {
-  region: SlotRegion;
-  slotByIndex: ReadonlyMap<number, InventorySlot>;
-  selectedHotbarSlot: number;
-  onSlotClick: (slotIndex: number, clickType: ClickType) => void;
-  onHotbarSlotSelect?: (slot: number) => void;
-  containerType?: string;
-}) {
-  const { t } = useTranslation("instance");
-  const isHotbar = region.type === SlotRegionType.SLOT_REGION_HOTBAR;
-  const isArmor = region.type === SlotRegionType.SLOT_REGION_ARMOR;
-  const isOutput = region.type === SlotRegionType.SLOT_REGION_OUTPUT;
-
-  return (
-    <div className="flex flex-col gap-1">
-      <p className="flex items-center gap-1 text-xs font-medium text-muted-foreground">
-        {isArmor && <ShieldIcon className="size-3" />}
-        {region.label}
-        {isOutput && (
-          <span className="text-muted-foreground/50">
-            {t("bots.inventoryPanel.output")}
-          </span>
-        )}
-      </p>
-      <div
-        className="inline-grid gap-1"
-        style={{ gridTemplateColumns: `repeat(${region.columns}, 2rem)` }}
-      >
-        {Array.from({ length: region.slotCount }, (_, i) => {
-          const slotIndex = region.startIndex + i;
-          const item = slotByIndex.get(slotIndex);
-          const isSelected = isHotbar && i === selectedHotbarSlot;
-
-          return (
-            <InventorySlotDisplay
-              key={`${region.id}-${slotIndex}`}
-              item={item}
-              isSelected={isSelected}
-              slotNumber={isHotbar ? i + 1 : undefined}
-              isClickable={region.type !== SlotRegionType.SLOT_REGION_DISPLAY}
-              onClick={() => {
-                onSlotClick(slotIndex, ClickType.LEFT_CLICK);
-              }}
-              onRightClick={() => {
-                onSlotClick(slotIndex, ClickType.RIGHT_CLICK);
-              }}
-              onShiftClick={() => {
-                onSlotClick(slotIndex, ClickType.SHIFT_LEFT_CLICK);
-              }}
-              onMiddleClick={
-                containerType === "creative" && region.id === "creative_catalog"
-                  ? () => {
-                      onSlotClick(slotIndex, ClickType.MIDDLE_CLICK);
-                    }
-                  : isHotbar && onHotbarSlotSelect
-                    ? () => {
-                        onHotbarSlotSelect(i);
-                      }
-                    : undefined
-              }
-              containerType={containerType}
-              regionId={region.id}
-              hotbarIndex={isHotbar ? i : undefined}
-              slotIndex={slotIndex}
-            />
-          );
-        })}
-      </div>
-      {isHotbar && onHotbarSlotSelect && (
-        <ToggleGroup
-          aria-label={t("bots.inventoryPanel.heldSlot")}
-          value={[String(selectedHotbarSlot)]}
-          onValueChange={(value) => {
-            const next = value[0];
-            if (next !== undefined) onHotbarSlotSelect(Number(next));
-          }}
-          variant="outline"
-          size="sm"
-          spacing={1}
-          className="flex-wrap"
-        >
-          {Array.from({ length: region.slotCount }, (_, i) => (
-            <ToggleGroupItem
-              key={`${region.id}-held-${region.startIndex + i}`}
-              value={String(i)}
-              aria-label={t("bots.inventoryPanel.holdSlot", { slot: i + 1 })}
-              title={t("bots.inventoryPanel.holdSlot", { slot: i + 1 })}
-              className="w-8"
-            >
-              {i + 1}
-            </ToggleGroupItem>
-          ))}
-        </ToggleGroup>
-      )}
-    </div>
-  );
-}
-
-function BotInventoryPanel({
-  instanceId,
-  botId,
-}: {
-  instanceId: string;
-  botId: string;
-}) {
-  const { t } = useTranslation("instance");
-  const demo = use(TransportContext) === null;
-  const { botInfoQueryOptions } = Route.useRouteContext();
-  const { data: botInfo } = useSuspenseQuery(botInfoQueryOptions);
-  const isOnline = !!botInfo.liveState;
-
-  // Query for inventory state with layout
-  const { data: inventoryState, refetch } = useSuspenseQuery(
-    queryOptions({
-      queryKey: ["inventory-state", instanceId, botId, isOnline],
-      queryFn: async (): Promise<BotInventoryStateResponse | null> => {
-        if (!isOnline) return null;
-        const transport = createTransport();
-        if (transport === null) return null;
-        const botService = createRpcClient(BotService, transport);
-        try {
-          return await Effect.runPromise(
-            botService.getInventoryState({
-              instanceId,
-              botId,
-            }),
-          );
-        } catch (error) {
-          // The bot can go offline or leave its world between status polls.
-          if (isBotNotReadyError(error)) return null;
-          throw error;
-        }
-      },
-      refetchInterval: 1000,
-    }),
-  );
-
-  const isPending = useMutationScopePending(
-    containerMutationScopeId(instanceId, botId, inventoryState?.menuId),
-  );
-
-  const requireSuccess = <
-    T extends { success: boolean; error?: string | undefined },
-  >(
-    result: T,
-  ): T => {
-    if (!result.success)
-      throw new Error(result.error || t("bots.inventoryPanel.actionRejected"));
-    return result;
-  };
-
-  const handleContainerError = useCallback(
-    (error: Error) => {
-      toastError(t("bots.inventoryPanel.actionError"), error);
-    },
-    [t],
-  );
-
-  // Mutation for clicking inventory slots
-  const { mutate: mutateClick } = useMutation({
-    ...containerMutationOptions(
-      instanceId,
-      botId,
-      inventoryState?.menuId,
-      "click",
-    ),
-    mutationFn: async (request: BotInventoryClickRequest) => {
-      const client = createBotClient();
-      return requireSuccess(
-        await Effect.runPromise(client.clickInventorySlot(request)),
-      );
-    },
-    onError: handleContainerError,
-    onSettled: () => {
-      void refetch();
-    },
-  });
-
-  // Mutation for closing container
-  const closeContainerMutation = useMutation({
-    ...containerMutationOptions(
-      instanceId,
-      botId,
-      inventoryState?.menuId,
-      "close",
-    ),
-    mutationFn: async (expectedMenuId: string | undefined) => {
-      const client = createBotClient();
-      return requireSuccess(
-        await Effect.runPromise(
-          client.closeContainer({ instanceId, botId, expectedMenuId }),
-        ),
-      );
-    },
-    onError: handleContainerError,
-    onSettled: () => {
-      void refetch();
-    },
-  });
-
-  // Mutation for clicking container buttons (stonecutter recipes, etc.)
-  const { mutate: mutateButtonClick } = useMutation({
-    ...containerMutationOptions(
-      instanceId,
-      botId,
-      inventoryState?.menuId,
-      "button",
-    ),
-    mutationFn: async (request: BotContainerButtonClickRequest) => {
-      const client = createBotClient();
-      return requireSuccess(
-        await Effect.runPromise(client.clickContainerButton(request)),
-      );
-    },
-    onError: handleContainerError,
-    onSettled: () => {
-      void refetch();
-    },
-  });
-
-  // Mutation for setting container text (anvil rename, etc.)
-  const { mutate: mutateSetText } = useMutation({
-    ...containerMutationOptions(
-      instanceId,
-      botId,
-      inventoryState?.menuId,
-      "text",
-    ),
-    mutationFn: async (request: BotSetContainerTextRequest) => {
-      const client = createBotClient();
-      return requireSuccess(
-        await Effect.runPromise(client.setContainerText(request)),
-      );
-    },
-    onError: handleContainerError,
-    onSettled: async () => {
-      await refetch();
-    },
-  });
-
-  // Hotbar selection is bot-wide, so it keeps its own queue across menu changes.
-  const { mutate: mutateSetHotbarSlot } = useMutation({
-    mutationKey: ["bot", "hotbar", "slot", instanceId, botId],
-    scope: { id: `bot-container-${instanceId}-${botId}` },
-    mutationFn: async (slot: number) => {
-      const client = createBotClient();
-      return requireSuccess(
-        await Effect.runPromise(
-          client.setHotbarSlot({ instanceId, botId, slot }),
-        ),
-      );
-    },
-    onError: handleContainerError,
-    onSettled: () => {
-      void refetch();
-    },
-  });
-
-  const handleSetText = useCallback(
-    (fieldId: string, text: string) => {
-      mutateSetText(
-        create(BotSetContainerTextRequestSchema, {
-          instanceId,
-          botId,
-          expectedMenuId: inventoryState?.menuId,
-          fieldId,
-          text,
-        }),
-      );
-    },
-    [mutateSetText, instanceId, botId, inventoryState?.menuId],
-  );
-
-  const handleButtonClick = useCallback(
-    (buttonId: number) => {
-      mutateButtonClick(
-        create(BotContainerButtonClickRequestSchema, {
-          instanceId,
-          botId,
-          expectedMenuId: inventoryState?.menuId,
-          buttonId,
-        }),
-      );
-    },
-    [mutateButtonClick, instanceId, botId, inventoryState?.menuId],
-  );
-
-  const handleSlotClick = useCallback(
-    (slotIndex: number, clickType: ClickType) => {
-      mutateClick(
-        create(BotInventoryClickRequestSchema, {
-          instanceId,
-          botId,
-          expectedMenuId: inventoryState?.menuId,
-          slot: slotIndex,
-          clickType,
-          hotbarSlot: 0,
-        }),
-      );
-    },
-    [mutateClick, instanceId, botId, inventoryState?.menuId],
-  );
-
-  const handleDropOutside = useCallback(
-    (dropAll: boolean) => {
-      mutateClick(
-        create(BotInventoryClickRequestSchema, {
-          instanceId,
-          botId,
-          expectedMenuId: inventoryState?.menuId,
-          slot: -999, // Outside slot for dropping
-          clickType: dropAll ? ClickType.LEFT_CLICK : ClickType.RIGHT_CLICK,
-          hotbarSlot: 0,
-        }),
-      );
-    },
-    [mutateClick, instanceId, botId, inventoryState?.menuId],
-  );
-
-  const handleHotbarSlotSelect = useCallback(
-    (slot: number) => {
-      mutateSetHotbarSlot(slot);
-    },
-    [mutateSetHotbarSlot],
-  );
-
-  const layout = inventoryState?.layout;
-  const slots = inventoryState?.slots ?? [];
-  const slotByIndex = new Map(slots.map((slot) => [slot.slot, slot]));
-  const carriedItem = inventoryState?.carriedItem;
-  const carriedItemImageSrc = carriedItem
-    ? inventoryItemImageSrc(carriedItem)
-    : undefined;
-  const selectedHotbarSlot = inventoryState?.selectedHotbarSlot ?? 0;
-  const isPlayerInventory = layout?.containerType === "inventory";
-  const buttons = layout?.buttons ?? [];
-  const textInputs = layout?.textInputs ?? [];
-  const anvilInputItem =
-    layout?.containerType === "anvil" ? slotByIndex.get(0) : undefined;
-  const bookPages = layout?.bookPages ?? [];
-  const currentBookPage = layout?.currentBookPage ?? 0;
-
-  return (
-    <div>
-      <div className="mb-3 flex items-center gap-2">
-        <h3 className="flex items-center gap-2 text-sm font-medium">
-          <PackageIcon className="size-4" />
-          {layout?.title || t("bots.inventoryPanel.title")}
-        </h3>
-        <div className="ml-auto flex items-center gap-2">
-          {carriedItem && (
-            <Badge
-              variant="default"
-              className="gap-1"
-              title={carriedItem.tooltipLines.join("\n") || undefined}
-            >
-              <HandIcon className="size-3" />
-              {carriedItemImageSrc && (
-                <img
-                  src={carriedItemImageSrc}
-                  alt=""
-                  draggable={false}
-                  className="size-4 object-contain [image-rendering:pixelated]"
-                />
-              )}
-              {carriedItem.tooltipLines[0] ||
-                carriedItem.displayName ||
-                formatItemId(carriedItem.itemId)}{" "}
-              x{carriedItem.count}
-            </Badge>
-          )}
-          {slots.length > 0 && (
-            <Badge variant="outline">
-              {slots.length} {t("bots.inventoryPanel.items")}
-            </Badge>
-          )}
-        </div>
-      </div>
-      {isOnline && layout ? (
-        <div className="flex flex-col gap-3">
-          {/* Container controls */}
-          {!isPlayerInventory && (
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  closeContainerMutation.mutate(inventoryState.menuId);
-                }}
-                disabled={isPending}
-              >
-                <XIcon className="mr-1 size-4" />
-                {t("bots.inventoryPanel.closeContainer")}
-              </Button>
-            </div>
-          )}
-
-          {/* Render all slot regions from layout */}
-          {layout.regions.map((region) => (
-            <SlotRegionGrid
-              key={region.id}
-              region={region}
-              slotByIndex={slotByIndex}
-              selectedHotbarSlot={selectedHotbarSlot}
-              onSlotClick={handleSlotClick}
-              onHotbarSlotSelect={handleHotbarSlotSelect}
-              containerType={layout.containerType}
-            />
-          ))}
-
-          {/* Container action buttons (stonecutter recipes, trades, etc.) */}
-          {buttons.length > 0 && (
-            <ContainerButtonsPanel
-              buttons={buttons}
-              containerType={layout.containerType}
-              onButtonClick={handleButtonClick}
-              isPending={isPending}
-            />
-          )}
-
-          {/* Text inputs (anvil rename, etc.) */}
-          {textInputs.length > 0 && (
-            <ContainerTextInputPanel
-              key={JSON.stringify([
-                inventoryState.menuId,
-                layout.containerType,
-                anvilInputItem?.itemId,
-                anvilInputItem?.count,
-                anvilInputItem?.displayName,
-              ])}
-              textInputs={textInputs}
-              containerType={layout.containerType}
-              onSetText={handleSetText}
-              isPending={isPending}
-            />
-          )}
-
-          {/* Book pages (lectern) */}
-          {bookPages.length > 0 && (
-            <BookPagesPanel
-              pages={bookPages}
-              currentPage={currentBookPage}
-              onPageChange={handleButtonClick}
-            />
-          )}
-
-          {/* Drop zone */}
-          <div className="flex items-center justify-center gap-2 rounded-lg border-2 border-dashed border-destructive/30 p-3 transition-colors hover:border-destructive/50 hover:bg-destructive/5">
-            <Trash2Icon className="size-4 text-muted-foreground" />
-            <div className="flex gap-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  handleDropOutside(false);
-                }}
-                disabled={!carriedItem}
-                className="text-xs"
-              >
-                {t("bots.inventoryPanel.dropOne")}
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  handleDropOutside(true);
-                }}
-                disabled={!carriedItem}
-                className="text-xs"
-              >
-                {t("bots.inventoryPanel.dropAll")}
-              </Button>
-            </div>
-          </div>
-
-          {/* Click instructions */}
-          <p className="text-center text-xs text-muted-foreground">
-            {layout.containerType === "creative" &&
-            layout.regions.some((region) => region.id === "creative_catalog")
-              ? t("bots.inventoryPanel.creativeCatalogHint")
-              : t("bots.inventoryPanel.clickHint")}
-          </p>
-        </div>
-      ) : (
-        <div className="flex items-center justify-center rounded-lg bg-muted/30 p-6">
-          <output className="block text-muted-foreground">
-            {!isOnline
-              ? t("bots.inventoryPanel.offline")
-              : demo
-                ? t("bots.inventoryPanel.demo")
-                : t("bots.inventoryPanel.waiting")}
-          </output>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function ContainerButtonsPanel({
-  buttons,
-  containerType,
-  onButtonClick,
-  isPending,
-}: {
-  buttons: ContainerButton[];
-  containerType: string;
-  onButtonClick: (buttonId: number) => void;
-  isPending: boolean;
-}) {
-  const { t } = useTranslation("instance");
-
-  // Get title based on container type
-  const title = (() => {
-    switch (containerType) {
-      case "creative": {
-        return t("bots.inventoryPanel.buttons.creativeTabs");
-      }
-      case "stonecutter": {
-        return t("bots.inventoryPanel.buttons.stonecutterRecipes");
-      }
-      case "enchanting": {
-        return t("bots.inventoryPanel.buttons.enchantments");
-      }
-      case "loom": {
-        return t("bots.inventoryPanel.buttons.patterns");
-      }
-      case "merchant": {
-        return t("bots.inventoryPanel.buttons.trades");
-      }
-      case "beacon": {
-        return t("bots.inventoryPanel.buttons.beaconEffects");
-      }
-      case "crafter": {
-        return t("bots.inventoryPanel.buttons.crafterSlots");
-      }
-      case "lectern": {
-        return t("bots.inventoryPanel.buttons.lecternControls");
-      }
-      default: {
-        return t("bots.inventoryPanel.buttons.actions");
-      }
-    }
-  })();
-
-  return (
-    <div className="flex flex-col gap-2">
-      <div className="text-sm font-medium text-muted-foreground">{title}</div>
-      <ToggleGroup
-        multiple
-        value={buttons
-          .filter((button) => button.selected)
-          .map((button) => String(button.buttonId))}
-        onValueChange={(value) => {
-          const nextSelection = new Set(value);
-          const changedButton = buttons.find(
-            (button) =>
-              nextSelection.has(String(button.buttonId)) !== button.selected,
-          );
-
-          if (changedButton) {
-            onButtonClick(changedButton.buttonId);
-          }
-        }}
-        variant="outline"
-        size="sm"
-        spacing={1}
-        className="max-h-48 w-full flex-wrap overflow-y-auto rounded-lg border p-2"
-      >
-        {buttons.map((button) => (
-          <ToggleGroupItem
-            key={button.buttonId}
-            value={String(button.buttonId)}
-            className="h-auto min-w-0 shrink-0 px-2 py-1 text-xs"
-            disabled={isPending || button.disabled}
-            title={button.description || undefined}
-          >
-            {button.iconItemId && containerType !== "creative" && (
-              <span className="mr-1 font-mono text-3xs opacity-60">
-                {formatItemId(button.iconItemId)}
-              </span>
-            )}
-            {button.label}
-          </ToggleGroupItem>
-        ))}
-      </ToggleGroup>
-    </div>
-  );
-}
-
-function ContainerTextInputPanel({
-  textInputs,
-  containerType,
-  onSetText,
-  isPending,
-}: {
-  textInputs: ContainerTextInput[];
-  containerType: string;
-  onSetText: (fieldId: string, text: string) => void;
-  isPending: boolean;
-}) {
-  const { t } = useTranslation("instance");
-  // Get title based on container type
-  const title =
-    containerType === "anvil"
-      ? t("bots.inventoryPanel.textInput.anvilRename")
-      : containerType === "creative"
-        ? t("bots.inventoryPanel.textInput.creativeSearch")
-        : t("bots.inventoryPanel.textInput.title");
-
-  return (
-    <div className="flex flex-col gap-2">
-      <div className="text-sm font-medium text-muted-foreground">{title}</div>
-      <div className="rounded-lg border p-2">
-        <FieldGroup className="gap-2">
-          {textInputs.map((input) => (
-            <ContainerTextInputField
-              key={input.id}
-              input={input}
-              onSetText={onSetText}
-              isPending={isPending}
-            />
-          ))}
-        </FieldGroup>
-      </div>
-    </div>
-  );
-}
-
-function ContainerTextInputField({
-  input,
-  onSetText,
-  isPending,
-}: {
-  input: ContainerTextInput;
-  onSetText: (fieldId: string, text: string) => void;
-  isPending: boolean;
-}) {
-  const { t } = useTranslation("common");
-  const id = useId();
-  const fieldRef = useRef<HTMLInputElement>(null);
-  const composition = useRef<{
-    value: string;
-    start: number;
-    end: number;
-    direction: "forward" | "backward" | "none";
-  } | null>(null);
-  const [draft, setDraft] = useState(() =>
-    createServerInputDraft(input.currentValue),
-  );
-  const current = syncServerInputDraft(draft, input.currentValue);
-  if (current !== draft) setDraft(current);
-
-  const insertText = (element: HTMLInputElement, text: string) => {
-    const start = element.selectionStart ?? element.value.length;
-    const end = element.selectionEnd ?? start;
-    const insertion = editBoxInsertion(
-      element.value,
-      text,
-      start,
-      end,
-      input.maxLength,
-    );
-    element.setRangeText(insertion, start, end, "end");
-    setDraft(editServerInputDraft(current, element.value, isPending));
-  };
-
-  const handleBeforeInput = useEffectEvent((event: InputEvent) => {
-    const element = fieldRef.current;
-    if (
-      !element ||
-      !event.cancelable ||
-      composition.current ||
-      event.isComposing ||
-      event.data === null
-    )
-      return;
-    const start = element.selectionStart ?? element.value.length;
-    const end = element.selectionEnd ?? start;
-    const insertion = editBoxInsertion(
-      element.value,
-      event.data,
-      start,
-      end,
-      input.maxLength,
-    );
-    if (insertion === event.data) return;
-    event.preventDefault();
-    if (editBoxValue(event.data, 0)) insertText(element, event.data);
-  });
-
-  useEffect(() => {
-    const element = fieldRef.current;
-    if (!element) return undefined;
-    const beforeInput = (event: InputEvent) => {
-      handleBeforeInput(event);
-    };
-    element.addEventListener("beforeinput", beforeInput);
-    return () => {
-      element.removeEventListener("beforeinput", beforeInput);
-    };
-  }, []);
-
-  return (
-    <form
-      onSubmit={(event) => {
-        event.preventDefault();
-        if (!isPending && !composition.current)
-          onSetText(input.id, current.value);
-      }}
-    >
-      <Field>
-        <FieldLabel htmlFor={id} className="sr-only">
-          {input.label}
-        </FieldLabel>
-        <InputGroup>
-          <InputGroupInput
-            ref={fieldRef}
-            id={id}
-            placeholder={input.placeholder || input.label}
-            value={current.value}
-            maxLength={input.maxLength > 0 ? input.maxLength : undefined}
-            onCompositionStart={(event) => {
-              const element = event.currentTarget;
-              const start = element.selectionStart ?? element.value.length;
-              composition.current = {
-                value: element.value,
-                start,
-                end: element.selectionEnd ?? start,
-                direction: element.selectionDirection ?? "none",
-              };
-            }}
-            onCompositionEnd={(event) => {
-              const before = composition.current;
-              composition.current = null;
-              if (!before) return;
-              const element = event.currentTarget;
-              // A browser can clip the commit but leave the caret after the
-              // full preedit. Apply the native insertion to its original range.
-              element.value = before.value;
-              element.setSelectionRange(
-                before.start,
-                before.end,
-                before.direction,
-              );
-              if (event.data) insertText(element, event.data);
-              else
-                setDraft(
-                  editServerInputDraft(current, before.value, isPending),
-                );
-            }}
-            onPaste={(event) => {
-              event.preventDefault();
-              insertText(
-                event.currentTarget,
-                event.clipboardData.getData("text/plain"),
-              );
-            }}
-            onChange={(event) => {
-              setDraft(
-                editServerInputDraft(
-                  current,
-                  composition.current
-                    ? event.target.value
-                    : editBoxValue(event.target.value, 0),
-                  isPending,
-                ),
-              );
-            }}
-          />
-          <InputGroupAddon align="inline-end">
-            <InputGroupButton
-              type="submit"
-              size="icon-xs"
-              disabled={isPending}
-              aria-label={t("save")}
-              title={t("save")}
-            >
-              <PencilIcon />
-            </InputGroupButton>
-          </InputGroupAddon>
-        </InputGroup>
-      </Field>
-    </form>
-  );
-}
-
-function BookPagesPanel({
-  pages,
-  currentPage,
-  onPageChange,
-}: {
-  pages: BookPage[];
-  currentPage: number;
-  onPageChange: (buttonId: number) => void;
-}) {
-  const { t } = useTranslation("instance");
-  // The server owns the open page.
-  const displayPage = currentPage;
-
-  const currentPageContent = pages.find((p) => p.pageNumber === displayPage);
-  const totalPages = pages.length;
-
-  const handlePrevPage = () => {
-    if (displayPage > 0) {
-      onPageChange(1); // Button ID 1 = previous page in lectern
-    }
-  };
-
-  const handleNextPage = () => {
-    if (displayPage < totalPages - 1) {
-      onPageChange(2); // Button ID 2 = next page in lectern
-    }
-  };
-
-  return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-        <BookOpenIcon className="size-4" />
-        {t("bots.inventoryPanel.bookPages.title")}
-      </div>
-      <div className="rounded-lg border p-3">
-        {/* Page content */}
-        <div className="mb-2 min-h-[100px] rounded-sm bg-muted/30 p-2 font-mono text-xs whitespace-pre-wrap select-text">
-          {currentPageContent?.content ||
-            t("bots.inventoryPanel.bookPages.emptyPage")}
-        </div>
-
-        {/* Navigation */}
-        <div className="flex items-center justify-between">
-          <Button
-            variant="outline"
-            size="sm"
-            aria-label={t("bots.inventoryPanel.bookPages.previousPage")}
-            onClick={handlePrevPage}
-            disabled={displayPage <= 0}
-          >
-            <ChevronLeftIcon className="size-4" />
-          </Button>
-          <span className="text-xs text-muted-foreground">
-            {t("bots.inventoryPanel.bookPages.pageIndicator", {
-              current: displayPage + 1,
-              total: totalPages,
-            })}
-          </span>
-          <Button
-            variant="outline"
-            size="sm"
-            aria-label={t("bots.inventoryPanel.bookPages.nextPage")}
-            onClick={handleNextPage}
-            disabled={displayPage >= totalPages - 1}
-          >
-            <ChevronRightIcon className="size-4" />
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function BotActionsPanel({
-  isOnline,
-  instanceId,
-  botId,
-}: {
-  isOnline: boolean;
-  instanceId: string;
-  botId: string;
-}) {
-  const { t } = useTranslation("instance");
-  const demo = use(TransportContext) === null;
-
-  const mutationKey = ["bot", "mouse", "click", instanceId, botId];
-  // Each click is a separate, short server action. The shared scope queues
-  // fast repeated clicks in order instead of dropping them.
-  const pendingButtons = useMutationState({
-    filters: { mutationKey, status: "pending" },
-    select: (mutation) =>
-      // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- the click mutation always receives a BotMouseClickRequest
-      (mutation.state.variables as BotMouseClickRequest | undefined)?.button,
-  });
-
-  const { mutate: mutateClick } = useMutation({
-    mutationKey,
-    scope: { id: `bot-mouse-${instanceId}-${botId}` },
-    mutationFn: async (request: BotMouseClickRequest) => {
-      const client = createBotClient();
-      const response = await Effect.runPromise(client.mouseClick(request));
-      if (!response.success) throw new Error(response.error ?? "");
-    },
-    onError: (error) =>
-      toast.error(t("bots.actionsPanel.clickError"), {
-        id: `bot-mouse-error-${instanceId}-${botId}`,
-        description: errorDescription(error),
-      }),
-  });
-  const leftPending = pendingButtons.includes(MouseButton.LEFT_BUTTON);
-  const rightPending = pendingButtons.includes(MouseButton.RIGHT_BUTTON);
-
-  const handleLeftClick = useCallback(() => {
-    mutateClick(
-      create(BotMouseClickRequestSchema, {
-        instanceId,
-        botId,
-        button: MouseButton.LEFT_BUTTON,
-      }),
-    );
-  }, [mutateClick, instanceId, botId]);
-
-  const handleRightClick = useCallback(() => {
-    mutateClick(
-      create(BotMouseClickRequestSchema, {
-        instanceId,
-        botId,
-        button: MouseButton.RIGHT_BUTTON,
-      }),
-    );
-  }, [mutateClick, instanceId, botId]);
-
-  return (
-    <div>
-      <h3 className="mb-2 flex items-center gap-2 text-sm font-medium">
-        <MousePointerClickIcon className="size-4" />
-        {t("bots.actionsPanel.title")}
-      </h3>
-      {isOnline ? (
-        <div className="flex flex-wrap gap-2">
-          {demo && (
-            <p className="w-full text-xs text-muted-foreground">
-              {t("bots.demoControls")}
-            </p>
-          )}
-          <Button
-            variant="outline"
-            onClick={handleLeftClick}
-            disabled={demo}
-            aria-busy={leftPending}
-            title={t("bots.actionsPanel.leftClickDescription")}
-          >
-            {leftPending && (
-              <LoaderIcon data-icon="inline-start" className="animate-spin" />
-            )}
-            {t("bots.actionsPanel.leftClick")}
-          </Button>
-          <Button
-            variant="outline"
-            onClick={handleRightClick}
-            disabled={demo}
-            aria-busy={rightPending}
-            title={t("bots.actionsPanel.rightClickDescription")}
-          >
-            {rightPending && (
-              <LoaderIcon data-icon="inline-start" className="animate-spin" />
-            )}
-            {t("bots.actionsPanel.rightClick")}
-          </Button>
-        </div>
-      ) : (
-        <div className="flex items-center justify-center rounded-lg bg-muted/30 p-6">
-          <p className="text-muted-foreground">
-            {t("bots.actionsPanel.offline")}
-          </p>
-        </div>
-      )}
-    </div>
-  );
-}
-
-const EMPTY_MOVEMENT_STATE = {
-  forward: false,
-  backward: false,
-  left: false,
-  right: false,
-  jump: false,
-  sneak: false,
-  sprint: false,
-};
-
-function BotMovementPanel({
-  isOnline,
-  instanceId,
-  botId,
-  liveState,
-  movementState: currentMovementState,
-}: {
-  isOnline: boolean;
-  instanceId: string;
-  botId: string;
-  liveState?: BotLiveState | undefined;
-  movementState?: typeof EMPTY_MOVEMENT_STATE | undefined;
-}) {
-  const { t } = useTranslation("instance");
-  const demo = use(TransportContext) === null;
-  const { queryClient, botInfoQueryOptions } = Route.useRouteContext();
-  const movementState = currentMovementState ?? EMPTY_MOVEMENT_STATE;
-  const mutationScopeId = `bot-movement-${instanceId}-${botId}`;
-  const isPending = useMutationScopePending(mutationScopeId);
-
-  // Mutation for setting movement state
-  const { mutate: mutateMovement } = useMutation({
-    mutationKey: ["bot", "movement", "state", instanceId, botId],
-    scope: { id: mutationScopeId },
-    mutationFn: async (state: Partial<typeof movementState>) => {
-      const client = createBotClient();
-      return Effect.runPromise(
-        client.setMovementState({
-          instanceId,
-          botId,
-          ...state,
-        }),
-      );
-    },
-    onError: (error) => {
-      toastError(t("bots.movementPanel.movementError"), error);
-    },
-    onSuccess: () =>
-      queryClient.invalidateQueries({
-        queryKey: botInfoQueryOptions.queryKey,
-      }),
-  });
-
-  // Mutation for resetting movement
-  const resetMutation = useMutation({
-    mutationKey: ["bot", "movement", "reset", instanceId, botId],
-    scope: { id: mutationScopeId },
-    mutationFn: async () => {
-      const client = createBotClient();
-      return Effect.runPromise(client.resetMovement({ instanceId, botId }));
-    },
-    onError: (error) => {
-      toastError(t("bots.movementPanel.movementError"), error);
-    },
-    onSuccess: () =>
-      queryClient.invalidateQueries({
-        queryKey: botInfoQueryOptions.queryKey,
-      }),
-  });
-
-  // Mutation for setting rotation
-  const { mutate: mutateRotation } = useMutation({
-    mutationKey: ["bot", "rotation", instanceId, botId],
-    scope: { id: mutationScopeId },
-    mutationFn: async (rotation: { yaw: number; pitch: number }) => {
-      const client = createBotClient();
-      return Effect.runPromise(
-        client.setRotation({
-          instanceId,
-          botId,
-          ...rotation,
-        }),
-      );
-    },
-    onError: (error) => {
-      toastError(t("bots.movementPanel.rotationError"), error);
-    },
-    onSuccess: () =>
-      queryClient.invalidateQueries({
-        queryKey: botInfoQueryOptions.queryKey,
-      }),
-  });
-
-  const toggleMovement = useCallback(
-    (key: keyof typeof movementState) => {
-      const newValue = !movementState[key];
-      mutateMovement({ [key]: newValue });
-    },
-    [movementState, mutateMovement],
-  );
-
-  const handleRotationChange = useCallback(
-    (deltaYaw: number, deltaPitch: number) => {
-      const currentYaw = liveState?.yRot ?? 0;
-      const currentPitch = liveState?.xRot ?? 0;
-      mutateRotation({
-        yaw: currentYaw + deltaYaw,
-        pitch: Math.max(-90, Math.min(90, currentPitch + deltaPitch)),
-      });
-    },
-    [liveState, mutateRotation],
-  );
-
-  return (
-    <div>
-      <h3 className="mb-2 flex items-center gap-2 text-sm font-medium">
-        <GamepadIcon className="size-4" />
-        {t("bots.movementPanel.title")}
-      </h3>
-      {isOnline ? (
-        <div className="flex flex-col gap-4">
-          {/* WASD Controls */}
-          <div>
-            <p className="mb-2 text-xs font-medium text-muted-foreground">
-              {t("bots.movementPanel.movement")}
-            </p>
-            {(demo || !currentMovementState) && (
-              <p className="mb-2 text-xs text-muted-foreground">
-                {demo
-                  ? t("bots.demoControls")
-                  : t("bots.movementPanel.updateServer")}
-              </p>
-            )}
-            <div className="flex flex-col items-center gap-1">
-              {/* Forward */}
-              <Toggle
-                pressed={movementState.forward}
-                variant="outline"
-                size="sm"
-                className="size-10"
-                onPressedChange={() => {
-                  toggleMovement("forward");
-                }}
-                disabled={isPending || !currentMovementState}
-                title={t("bots.movementPanel.forward")}
-              >
-                <ArrowUpIcon />
-              </Toggle>
-              {/* Left, Backward, Right */}
-              <div className="flex gap-1">
-                <Toggle
-                  pressed={movementState.left}
-                  variant="outline"
-                  size="sm"
-                  className="size-10"
-                  onPressedChange={() => {
-                    toggleMovement("left");
-                  }}
-                  disabled={isPending || !currentMovementState}
-                  title={t("bots.movementPanel.left")}
-                >
-                  <ArrowLeftIcon />
-                </Toggle>
-                <Toggle
-                  pressed={movementState.backward}
-                  variant="outline"
-                  size="sm"
-                  className="size-10"
-                  onPressedChange={() => {
-                    toggleMovement("backward");
-                  }}
-                  disabled={isPending || !currentMovementState}
-                  title={t("bots.movementPanel.backward")}
-                >
-                  <ArrowDownIcon />
-                </Toggle>
-                <Toggle
-                  pressed={movementState.right}
-                  variant="outline"
-                  size="sm"
-                  className="size-10"
-                  onPressedChange={() => {
-                    toggleMovement("right");
-                  }}
-                  disabled={isPending || !currentMovementState}
-                  title={t("bots.movementPanel.right")}
-                >
-                  <ArrowRightIcon />
-                </Toggle>
-              </div>
-            </div>
-          </div>
-
-          {/* Action buttons */}
-          <ToggleGroup
-            multiple
-            value={(["jump", "sneak", "sprint"] as const).filter(
-              (key) => movementState[key],
-            )}
-            onValueChange={(value) => {
-              for (const key of ["jump", "sneak", "sprint"] as const) {
-                if (value.includes(key) !== movementState[key]) {
-                  toggleMovement(key);
-                }
-              }
-            }}
-            variant="outline"
-            size="sm"
-            spacing={2}
-            className="flex-wrap"
-          >
-            <ToggleGroupItem
-              value="jump"
-              disabled={isPending || !currentMovementState}
-            >
-              {t("bots.movementPanel.jump")}
-            </ToggleGroupItem>
-            <ToggleGroupItem
-              value="sneak"
-              disabled={isPending || !currentMovementState}
-            >
-              {t("bots.movementPanel.sneak")}
-            </ToggleGroupItem>
-            <ToggleGroupItem
-              value="sprint"
-              disabled={isPending || !currentMovementState}
-            >
-              {t("bots.movementPanel.sprint")}
-            </ToggleGroupItem>
-            <Button
-              variant="destructive"
-              size="sm"
-              onClick={() => {
-                resetMutation.mutate();
-              }}
-              disabled={isPending || demo}
-            >
-              <SquareIcon className="mr-1 size-3" />
-              {t("bots.movementPanel.stop")}
-            </Button>
-          </ToggleGroup>
-
-          {/* Rotation controls */}
-          <div>
-            <p className="mb-2 text-xs font-medium text-muted-foreground">
-              {t("bots.movementPanel.rotation")}
-            </p>
-            <div className="flex flex-col items-center gap-1">
-              {/* Look up */}
-              <Button
-                variant="outline"
-                size="sm"
-                className="size-10"
-                onClick={() => {
-                  handleRotationChange(0, -15);
-                }}
-                disabled={isPending || demo}
-                title={t("bots.movementPanel.lookUp")}
-              >
-                <ChevronUpIcon className="size-4" />
-              </Button>
-              {/* Look left, down, right */}
-              <div className="flex gap-1">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="size-10"
-                  onClick={() => {
-                    handleRotationChange(-15, 0);
-                  }}
-                  disabled={isPending || demo}
-                  title={t("bots.movementPanel.lookLeft")}
-                >
-                  <ChevronLeftIcon className="size-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="size-10"
-                  onClick={() => {
-                    handleRotationChange(0, 15);
-                  }}
-                  disabled={isPending || demo}
-                  title={t("bots.movementPanel.lookDown")}
-                >
-                  <ChevronDownIcon className="size-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="size-10"
-                  onClick={() => {
-                    handleRotationChange(15, 0);
-                  }}
-                  disabled={isPending || demo}
-                  title={t("bots.movementPanel.lookRight")}
-                >
-                  <ChevronRightIcon className="size-4" />
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="flex items-center justify-center rounded-lg bg-muted/30 p-6">
-          <p className="text-muted-foreground">
-            {t("bots.movementPanel.offline")}
-          </p>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function botDialogQueryOptions(
-  instanceId: string,
-  botId: string,
-  isOnline: boolean,
-) {
-  return queryOptions({
-    queryKey: ["bot-dialog", instanceId, botId, isOnline],
-    queryFn: async (queryProps) => {
-      // useSuspenseQuery ignores `enabled`, so offline bots must not reach the RPC.
-      if (!isOnline) return { dialog: undefined };
-      const transport = createTransport();
-      if (transport === null) {
-        return { dialog: undefined };
-      }
-      const botService = createRpcClient(BotService, transport);
-      try {
-        return await Effect.runPromise(
-          botService.getDialog(
-            { instanceId, botId },
-            { signal: queryProps.signal },
-          ),
-        );
-      } catch (error) {
-        if (isBotNotReadyError(error)) return { dialog: undefined };
-        throw error;
-      }
-    },
-    refetchInterval: 2000, // Poll for dialog updates
-    enabled: isOnline,
-  });
-}
-
-function BotDialogPanel({
-  isOnline,
-  instanceId,
-  botId,
-}: {
-  isOnline: boolean;
-  instanceId: string;
-  botId: string;
-}) {
-  const { t } = useTranslation("instance");
-  const queryClient = Route.useRouteContext().queryClient;
-
-  const dialogQueryOptions = botDialogQueryOptions(instanceId, botId, isOnline);
-
-  const { data: dialogData } = useSuspenseQuery(dialogQueryOptions);
-  const dialog = dialogData.dialog;
-
-  const mutationOptions = dialogMutationOptions(
-    instanceId,
-    botId,
-    dialog?.screenId,
-  );
-  const isPending = useMutationScopePending(mutationOptions.scope.id);
-
-  const submitMutation = useMutation({
-    ...mutationOptions,
-    mutationFn: async ({
-      buttonIndex,
-      inputValues,
-      expectedScreenId,
-    }: {
-      buttonIndex: number;
-      inputValues: Record<string, string>;
-      expectedScreenId: string;
-    }) => {
-      const service = createBotClient();
-      const result = await Effect.runPromise(
-        service.submitDialog({
-          instanceId,
-          botId,
-          buttonIndex,
-          inputValues,
-          expectedScreenId,
-        }),
-      );
-      if (!result.success)
-        // The toast title already says the action failed, so only the
-        // server's reason goes in the description.
-        throw new Error(result.error ?? "");
-      if (result.clipboard !== undefined)
-        void copyMinecraftText(result.clipboard);
-      if (result.openUrl !== undefined) openMinecraftUrl(result.openUrl);
-      // A failed refresh must not turn an accepted action into a retryable failure.
-      return Effect.runPromise(service.getDialog({ instanceId, botId })).catch(
-        () => undefined,
-      );
-    },
-    onSuccess: (state, { expectedScreenId }) =>
-      applyServerDialogRefresh(
-        queryClient,
-        dialogQueryOptions.queryKey,
-        expectedScreenId,
-        state,
-      ),
-    onError: (error) => {
-      toastError(t("bots.dialogPanel.submitError"), error);
-      if (error instanceof ConnectError && error.code === Code.Aborted)
-        void queryClient.invalidateQueries({
-          queryKey: dialogQueryOptions.queryKey,
-        });
-    },
-  });
-
-  const getDialogTypeName = (type: number) => {
-    switch (type) {
-      case 1: {
-        return t("bots.dialogPanel.notice");
-      }
-      case 2: {
-        return t("bots.dialogPanel.confirmation");
-      }
-      case 3: {
-        return t("bots.dialogPanel.multiAction");
-      }
-      case 4: {
-        return t("bots.dialogPanel.serverLinks");
-      }
-      case 5: {
-        return t("bots.dialogPanel.dialogList");
-      }
-      default: {
-        return t("bots.dialogPanel.unknownType");
-      }
-    }
-  };
-
-  return (
-    <div>
-      <h3 className="mb-2 flex items-center gap-2 text-sm font-medium">
-        <MonitorIcon className="size-4" />
-        {t("bots.dialogPanel.title")}
-      </h3>
-      {!isOnline ? (
-        <div className="flex items-center justify-center rounded-lg bg-muted/30 p-6">
-          <p className="text-muted-foreground">
-            {t("bots.dialogPanel.offline")}
-          </p>
-        </div>
-      ) : dialog ? (
-        <div className="flex flex-col gap-4">
-          {/* Dialog info */}
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">
-                {t("bots.dialogPanel.dialogType")}:
-              </span>
-              <Badge variant="outline">{getDialogTypeName(dialog.type)}</Badge>
-            </div>
-            {dialog.id && (
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">
-                  {t("bots.dialogPanel.dialogId")}:
-                </span>
-                <code className="rounded-sm bg-muted px-2 py-1 text-xs select-text">
-                  {dialog.id}
-                </code>
-              </div>
-            )}
-          </div>
-          <BotDialogForm
-            key={`${instanceId}:${botId}:${dialog.screenId}`}
-            dialog={dialog}
-            pending={isPending}
-            onSubmit={async (buttonIndex, inputValues) => {
-              const state = await submitMutation.mutateAsync({
-                buttonIndex,
-                inputValues,
-                expectedScreenId: dialog.screenId,
-              });
-              return state?.dialog;
-            }}
-          />
-        </div>
-      ) : (
-        <div className="flex items-center justify-center rounded-lg bg-muted/30 p-6">
-          <p className="text-muted-foreground">
-            {t("bots.dialogPanel.noDialog")}
-          </p>
-        </div>
-      )}
-    </div>
-  );
-}
-
-const VANILLA_DIMENSIONS = ["overworld", "the_nether", "the_end"] as const;
-
-/** Names vanilla dimensions in the active language and shows other IDs as they are. */
-function formatDimension(
-  dimension: string,
-  t: (key: string) => string,
-): string {
-  const id = dimension.replace(/^minecraft:/u, "");
-  return isOneOf(id, VANILLA_DIMENSIONS)
-    ? t(`bots.visualPanel.dimensions.${id}`)
-    : dimension;
-}
-
-// Minecraft yaw 0 faces south and increases clockwise toward west.
-const COMPASS_DIRECTIONS = [
-  "s",
-  "sw",
-  "w",
-  "nw",
-  "n",
-  "ne",
-  "e",
-  "se",
-] as const;
-
-const getCompassDirection = (yaw: number) => {
-  const normalizedYaw = ((yaw % 360) + 360) % 360;
-  return COMPASS_DIRECTIONS[Math.round(normalizedYaw / 45) % 8] ?? "s";
-};
-
-function BotVisualPanel({
-  liveState,
-  isOnline,
-}: {
-  liveState?: BotLiveState | undefined;
-  isOnline: boolean;
-}) {
-  const { t } = useTranslation("instance");
-
-  if (!isOnline || !liveState) {
-    return (
-      <div>
-        <h3 className="mb-2 flex items-center gap-2 text-sm font-medium">
-          <EyeIcon className="size-4" />
-          {t("bots.visualPanel.title")}
-        </h3>
-        <div className="flex items-center justify-center rounded-lg bg-muted/30 p-6">
-          <p className="text-muted-foreground">
-            {t("bots.visualPanel.offline")}
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div>
-      <h3 className="mb-2 flex items-center gap-2 text-sm font-medium">
-        <EyeIcon className="size-4" />
-        {t("bots.visualPanel.title")}
-      </h3>
-      <div className="flex flex-col gap-4">
-        {/* Compass and Look direction side by side on desktop */}
-        <div className="flex flex-col items-center gap-4 md:flex-row md:justify-center md:gap-8">
-          {/* Compass */}
-          <div className="flex flex-col items-center gap-2">
-            <p className="text-xs font-medium text-muted-foreground uppercase">
-              {t("bots.visualPanel.compass")}
-            </p>
-            <div className="relative size-32">
-              {/* Compass background */}
-              <div className="absolute inset-0 rounded-full border-2 border-border bg-muted/30" />
-              {/* Cardinal directions */}
-              <span className="absolute top-1 left-1/2 -translate-x-1/2 text-xs font-bold text-muted-foreground">
-                {t("bots.visualPanel.directions.n")}
-              </span>
-              <span className="absolute bottom-1 left-1/2 -translate-x-1/2 text-xs font-bold text-muted-foreground">
-                {t("bots.visualPanel.directions.s")}
-              </span>
-              <span className="absolute top-1/2 left-1 -translate-y-1/2 text-xs font-bold text-muted-foreground">
-                {t("bots.visualPanel.directions.w")}
-              </span>
-              <span className="absolute top-1/2 right-1 -translate-y-1/2 text-xs font-bold text-muted-foreground">
-                {t("bots.visualPanel.directions.e")}
-              </span>
-              {/* Direction indicator */}
-              <div
-                className="absolute bottom-1/2 left-1/2 h-12 w-1 origin-bottom"
-                style={{
-                  transform: `translateX(-50%) rotate(${liveState.yRot + 180}deg)`,
-                }}
-              >
-                <div className="size-full rounded-full bg-primary" />
-                <div className="absolute -top-1 left-1/2 size-0 -translate-x-1/2 border-4 border-transparent border-b-primary" />
-              </div>
-              {/* Center dot */}
-              <div className="absolute top-1/2 left-1/2 size-3 -translate-1/2 rounded-full bg-primary" />
-            </div>
-            <div className="text-center">
-              <p className="text-lg font-bold select-text">
-                {t(
-                  `bots.visualPanel.directions.${getCompassDirection(liveState.yRot)}`,
-                )}
-              </p>
-              <p className="text-xs text-muted-foreground select-text">
-                {formatFixed(liveState.yRot, 1)}°
-              </p>
-            </div>
-          </div>
-
-          {/* Look direction (pitch) */}
-          <div className="flex flex-col items-center gap-2">
-            <p className="text-xs font-medium text-muted-foreground uppercase">
-              {t("bots.visualPanel.lookDirection")}
-            </p>
-            <div className="flex items-center gap-4">
-              <div className="relative h-24 w-4 overflow-hidden rounded-full bg-muted/30">
-                {/* Pitch indicator */}
-                <div
-                  className="absolute inset-x-0 h-2 rounded-full bg-primary transition-all"
-                  style={{
-                    // Pitch ranges from -90 (up) to 90 (down)
-                    // Map to percentage: -90 -> 0%, 0 -> 50%, 90 -> 100%
-                    top: `${((liveState.xRot + 90) / 180) * 100}%`,
-                    transform: "translateY(-50%)",
-                  }}
-                />
-              </div>
-              <div className="text-sm">
-                <p className="text-muted-foreground">
-                  {liveState.xRot < -30
-                    ? t("bots.visualPanel.lookingUp")
-                    : liveState.xRot > 30
-                      ? t("bots.visualPanel.lookingDown")
-                      : t("bots.visualPanel.lookingStraight")}
-                </p>
-                <p className="text-xs text-muted-foreground select-text">
-                  {formatFixed(liveState.xRot, 1)}°
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* World info */}
-        <div className="rounded-lg border border-border bg-muted/20 p-3">
-          <p className="mb-2 text-xs font-medium text-muted-foreground uppercase">
-            {t("bots.visualPanel.worldInfo")}
-          </p>
-          <div className="text-sm">
-            <div>
-              <span className="text-muted-foreground">
-                {t("bots.visualPanel.dimension")}:
-              </span>{" "}
-              <span className="font-mono select-text">
-                {liveState.dimension
-                  ? formatDimension(liveState.dimension, t)
-                  : t("bots.statsPanel.unknown")}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   );
 }

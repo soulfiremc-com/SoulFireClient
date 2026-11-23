@@ -1,5 +1,9 @@
 import { describe, expect, test } from "bun:test";
-import { slotKeyAction } from "@/lib/inventory-slot-keys.ts";
+import {
+  slotContextMenuClick,
+  slotKeyAction,
+  slotPrimaryClick,
+} from "@/lib/inventory-slot-keys.ts";
 
 function key(
   value: string,
@@ -41,5 +45,33 @@ describe("slotKeyAction", () => {
     expect(
       slotKeyAction(key("Enter", { shiftKey: true, metaKey: true })),
     ).toBeUndefined();
+  });
+});
+
+describe("slotPrimaryClick", () => {
+  test("uses the chosen click mode for a plain click or tap", () => {
+    expect(slotPrimaryClick({ shiftKey: false }, "left")).toBe("left");
+    expect(slotPrimaryClick({ shiftKey: false }, "right")).toBe("right");
+    expect(slotPrimaryClick({ shiftKey: false }, "middle")).toBe("middle");
+  });
+
+  test("quick moves on Shift+click in any mode", () => {
+    expect(slotPrimaryClick({ shiftKey: true }, "left")).toBe("shift");
+    expect(slotPrimaryClick({ shiftKey: true }, "right")).toBe("shift");
+  });
+});
+
+describe("slotContextMenuClick", () => {
+  test("right-clicks for the right button, a long press, or the Menu key", () => {
+    expect(slotContextMenuClick({ shiftKey: false, button: 2 })).toBe("right");
+    expect(slotContextMenuClick({ shiftKey: false, button: 0 })).toBe("right");
+  });
+
+  test("quick moves only for a real Shift+right-click", () => {
+    expect(slotContextMenuClick({ shiftKey: true, button: 2 })).toBe("shift");
+  });
+
+  test("right-clicks for Shift+F10, which reports no right button", () => {
+    expect(slotContextMenuClick({ shiftKey: true, button: 0 })).toBe("right");
   });
 });
