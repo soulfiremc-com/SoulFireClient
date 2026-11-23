@@ -15,7 +15,10 @@ import {
   type InstanceInfoQueryData,
   toSettingsNamespace,
 } from "@/lib/types.ts";
-import { fetchInstanceInfo } from "./instance-info-query.ts";
+import {
+  fetchInstanceInfo,
+  instanceInfoQueryOptions,
+} from "./instance-info-query.ts";
 
 const id = "instance";
 const queryKey = ["instance-info", id];
@@ -135,6 +138,38 @@ test("conditional polling refreshes permissions and bot counts while preserving 
       client.setQueryData(queryKey, result);
       onlineBots = 2;
     }
+  } finally {
+    client.clear();
+  }
+});
+
+test("without a transport the query loads the demo project for the route id", async () => {
+  const client = new QueryClient();
+  try {
+    const result = await client.fetchQuery(
+      instanceInfoQueryOptions(null, "demo-id"),
+    );
+    assert.equal(result.id, "demo-id");
+    assert.ok(result.profile.accounts.length > 0);
+    assert.ok(result.profile.proxies.length > 0);
+  } finally {
+    client.clear();
+  }
+});
+
+test("with a transport the query loads server state under the shared key", async () => {
+  const { client, conditionalRequests } = fixture();
+  const transport = createRouterTransport((router) => {
+    router.service(InstanceService, {
+      getInstanceInfo: () => ({ result: { case: "info", value: info } }),
+    });
+  });
+  try {
+    const options = instanceInfoQueryOptions(transport, id);
+    assert.deepEqual(options.queryKey, queryKey);
+    const result = await client.fetchQuery(options);
+    assert.equal(result.friendlyName, "Settings QA");
+    assert.deepEqual(conditionalRequests, []);
   } finally {
     client.clear();
   }

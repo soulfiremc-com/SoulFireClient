@@ -132,42 +132,27 @@ export function convertToInstanceProto(data: ProfileRoot): InstanceConfig {
   });
 }
 
+function settingsFromProto(
+  namespaces: readonly SettingsNamespace[],
+): BaseSettings["settings"] {
+  return Object.fromEntries(
+    namespaces.map((namespace) => [
+      namespace.namespace,
+      Object.fromEntries(
+        namespace.entries.map((entry) => [entry.key, valueToJson(entry.value)]),
+      ),
+    ]),
+  );
+}
+
 export function convertFromInstanceProto(data?: InstanceConfig): ProfileRoot {
-  if (!data) {
-    return {
-      settings: {},
-      accounts: [],
-      proxies: [],
-    };
-  }
-
-  const settings: Record<string, Record<string, JsonValue>> = {};
-  for (const namespace of data.settings) {
-    const entries: Record<string, JsonValue> = {};
-    for (const entry of namespace.entries) {
-      entries[entry.key] = valueToJson(entry.value);
-    }
-    settings[namespace.namespace] = entries;
-  }
-
   return {
-    settings,
-    accounts: data.accounts,
-    proxies: data.proxies,
+    settings: settingsFromProto(data?.settings ?? []),
+    accounts: data?.accounts ?? [],
+    proxies: data?.proxies ?? [],
   };
 }
 
 export function convertFromServerProto(data: ServerConfig): BaseSettings {
-  const settings: Record<string, Record<string, JsonValue>> = {};
-  for (const namespace of data.settings) {
-    const entries: Record<string, JsonValue> = {};
-    for (const entry of namespace.entries) {
-      entries[entry.key] = valueToJson(entry.value);
-    }
-    settings[namespace.namespace] = entries;
-  }
-
-  return {
-    settings,
-  };
+  return { settings: settingsFromProto(data.settings) };
 }

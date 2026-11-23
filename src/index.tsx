@@ -8,10 +8,16 @@ import {
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import "@/lib/i18n";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  MutationCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import { ErrorComponent } from "@/components/error-component.tsx";
 import { LoadingComponent } from "@/components/loading-component.tsx";
 import { NotFoundComponent } from "@/components/not-found-component.tsx";
+import { toastDemoReadOnly } from "@/lib/error-toast.ts";
+import { isDemoReadOnlyError } from "@/lib/instance-mutations.ts";
 import { synchronizeQuerySession } from "@/lib/query-session.ts";
 import { parseUrlSearch, stringifyUrlSearch } from "@/lib/router-search.ts";
 import { getServerType, isAuthenticated } from "@/lib/web-rpc.ts";
@@ -33,6 +39,13 @@ window.addEventListener("vite:preloadError", () => {
 });
 
 const queryClient = new QueryClient({
+  // Demo writes throw DemoReadOnlyError. Explain it once here, so each page
+  // does not need its own demo check.
+  mutationCache: new MutationCache({
+    onError: (error) => {
+      if (isDemoReadOnlyError(error)) toastDemoReadOnly();
+    },
+  }),
   defaultOptions: {
     queries: {
       retry: (failureCount, error) =>

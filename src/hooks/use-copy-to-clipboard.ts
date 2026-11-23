@@ -2,10 +2,6 @@ import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
-async function copyToClipboard(text: string): Promise<void> {
-  await navigator.clipboard.writeText(text);
-}
-
 function truncate(text: string, maxLength: number): string {
   if (text.length <= maxLength) {
     return text;
@@ -19,19 +15,20 @@ export function useCopyToClipboard(options?: { sensitive?: boolean }) {
 
   // Resolves to whether the copy worked, so callers can confirm it in place.
   return useCallback<(text: string) => Promise<boolean>>(
-    (text) => {
-      const copied = copyToClipboard(text);
-      toast.promise(copied, {
-        loading: t("clipboardCopy.loading"),
-        success: sensitive
+    async (text) => {
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch (error) {
+        console.error(error);
+        toast.error(t("clipboardCopy.error"));
+        return false;
+      }
+      toast.success(
+        sensitive
           ? t("clipboardCopy.sensitiveSuccess")
           : t("clipboardCopy.success", { content: truncate(text, 50) }),
-        error: t("clipboardCopy.error"),
-      });
-      return copied.then(
-        () => true,
-        () => false,
       );
+      return true;
     },
     [t, sensitive],
   );

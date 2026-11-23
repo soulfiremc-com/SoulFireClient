@@ -17,6 +17,7 @@ import {
   convertFromServerProto,
   type ServerInfoQueryData,
 } from "@/lib/types.ts";
+import { queryKeys } from "@/lib/query-keys.ts";
 import { requireField } from "@/lib/require-field";
 
 /**
@@ -26,7 +27,7 @@ import { requireField } from "@/lib/require-field";
 export function serverInfoQueryOptions(transport: Transport | null) {
   // oxlint-disable-next-line tanstack-query/exhaustive-deps -- The query cache is scoped to the authentication session and cleared when its transport credentials change.
   return queryOptions({
-    queryKey: ["server-info"],
+    queryKey: queryKeys.serverInfo(),
     queryFn: async ({ signal }): Promise<ServerInfoQueryData> => {
       if (transport === null) {
         const serverConfig: ServerConfig = create(ServerConfigSchema, {
