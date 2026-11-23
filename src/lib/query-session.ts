@@ -1,5 +1,4 @@
 import { desktop, isDesktopApp } from "@/lib/desktop";
-import { broadcastQueryClient } from "@tanstack/query-broadcast-client-experimental";
 import type { QueryClient } from "@tanstack/react-query";
 
 const SESSION_KEY = "query-session:v1";
@@ -18,31 +17,23 @@ export function resetQuerySession() {
   window.dispatchEvent(new Event(SESSION_CHANGE_EVENT));
 }
 
+/**
+ * Clears the query cache when the signed-in session changes. The tab that
+ * changed the session keeps running. Other tabs see the storage event and
+ * reload, so they never show data from the previous session.
+ */
 export function synchronizeQuerySession(queryClient: QueryClient) {
   let sessionId = getQuerySessionId();
-  const connect = () =>
-    broadcastQueryClient({
-      queryClient,
-      broadcastChannel: `soulfire-${sessionId}`,
-    });
-  let stopBroadcast: (() => void) | undefined = connect();
-  const disconnect = () => {
-    stopBroadcast?.();
-    stopBroadcast = undefined;
-  };
   const discardPreviousSession = () => {
     const current = getQuerySessionId();
     if (current === sessionId) return false;
     sessionId = current;
-    disconnect();
     queryClient.clear();
     if (isDesktopApp()) void desktop.cast.stopAll().catch(console.error);
     return true;
   };
   const onLocalChange = () => {
-    // This tab started the new session, so it keeps running and joins the
-    // new channel. Other tabs reload through the storage event instead.
-    if (discardPreviousSession()) stopBroadcast = connect();
+    discardPreviousSession();
   };
   const onStorage = (event: StorageEvent) => {
     if (
@@ -55,7 +46,6 @@ export function synchronizeQuerySession(queryClient: QueryClient) {
   window.addEventListener(SESSION_CHANGE_EVENT, onLocalChange);
   window.addEventListener("storage", onStorage);
   return () => {
-    disconnect();
     window.removeEventListener(SESSION_CHANGE_EVENT, onLocalChange);
     window.removeEventListener("storage", onStorage);
   };

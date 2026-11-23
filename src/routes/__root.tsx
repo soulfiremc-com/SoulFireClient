@@ -6,13 +6,13 @@ import {
 } from "@tanstack/react-router";
 import "../App.css";
 import { TanStackDevtools } from "@tanstack/react-devtools";
-import { type QueryClient, useQueryClient } from "@tanstack/react-query";
+import { type QueryClient, skipToken, useQuery } from "@tanstack/react-query";
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { useTheme } from "next-themes";
 import { NuqsAdapter } from "nuqs/adapters/tanstack-router";
 import { PostHogProvider } from "posthog-js/react";
-import { memo, useEffect, useMemo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { CustomContextMenu } from "@/components/custom-context-menu.tsx";
 import { AboutProvider } from "@/components/dialog/about-dialog.tsx";
 import {
@@ -153,24 +153,15 @@ const DocumentTitleSyncer = memo(function DocumentTitleSyncer() {
   return null;
 });
 
+const INSTANCE_PATH = /\/instance\/([^/]+)(?:\/(.*))?/u;
+
 function getPresenceForPath(
   pathname: string,
-  queryClient: QueryClient,
+  botInfo: string | undefined,
 ): { state: string; details?: string | undefined } {
-  const instanceMatch = pathname.match(/\/instance\/([^/]+)(?:\/(.*))?/u);
+  const instanceMatch = pathname.match(INSTANCE_PATH);
   if (instanceMatch) {
-    const instanceId = instanceMatch[1];
     const subPage = instanceMatch[2] ?? "";
-
-    const metrics = queryClient.getQueryData<GetInstanceMetricsResponse>([
-      "instance-metrics",
-      instanceId,
-    ]);
-    const snapshots = metrics?.snapshots;
-    const lastSnapshot = snapshots?.at(-1);
-    const botInfo = lastSnapshot
-      ? `${lastSnapshot.botsOnline}/${lastSnapshot.botsTotal} bots online`
-      : undefined;
 
     if (subPage.startsWith("bot/"))
       return { state: "Controlling a bot", details: botInfo };
@@ -209,12 +200,21 @@ function getPresenceForPath(
 }
 
 function DiscordPresenceUpdater() {
-  const location = useLocation();
-  const queryClient = useQueryClient();
-  const presence = useMemo(
-    () => getPresenceForPath(location.pathname, queryClient),
-    [location.pathname, queryClient],
-  );
+  const { pathname } = useLocation();
+  const instanceId = pathname.match(INSTANCE_PATH)?.[1];
+  // Read the metrics that the instance pages poll, without fetching them here,
+  // so the bot count follows each poll.
+  const { data: botInfo } = useQuery({
+    queryKey: ["instance-metrics", instanceId],
+    queryFn: skipToken,
+    select: (metrics: GetInstanceMetricsResponse) => {
+      const lastSnapshot = metrics.snapshots.at(-1);
+      return lastSnapshot
+        ? `${lastSnapshot.botsOnline}/${lastSnapshot.botsTotal} bots online`
+        : undefined;
+    },
+  });
+  const presence = getPresenceForPath(pathname, botInfo);
 
   useDiscordPresence(presence.state, presence.details);
 

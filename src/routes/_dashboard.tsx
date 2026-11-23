@@ -184,9 +184,7 @@ function ClientSession() {
       posthog,
       identity,
       {
-        email: clientInfo.email,
         role: clientInfo.role,
-        username: clientInfo.username,
         installation_id: installationId ?? "",
         analytics_identity_version: 2,
       },
@@ -194,15 +192,7 @@ function ClientSession() {
         analyticsConsent.resetIdentity(true);
       },
     );
-  }, [
-    clientInfo.email,
-    clientInfo.role,
-    clientInfo.username,
-    identity,
-    installationId,
-    posthog,
-    consent,
-  ]);
+  }, [clientInfo.role, identity, installationId, posthog, consent]);
 
   useProductActivation(identity ?? "", identity !== null);
   useSupportReminderUsage(clientInfo.id, !isImpersonating());

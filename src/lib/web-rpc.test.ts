@@ -20,10 +20,12 @@ const storage: Storage = {
 const originalGlobals = {
   localStorage: Object.getOwnPropertyDescriptor(globalThis, "localStorage"),
   window: Object.getOwnPropertyDescriptor(globalThis, "window"),
+  document: Object.getOwnPropertyDescriptor(globalThis, "document"),
 };
 Object.assign(globalThis, {
   localStorage: storage,
   window: Object.assign(new EventTarget(), { localStorage: storage }),
+  document: { location: { hostname: "localhost" } },
 });
 // Other test files share this process, so put the real globals back.
 afterAll(() => {
@@ -45,8 +47,14 @@ void mock.module("@/lib/posthog.ts", () => ({
   isPostHogConfigured: false,
 }));
 
-const { disconnectSession, logOut, setAuthentication } =
-  await import("./web-rpc.ts");
+const {
+  createTransport,
+  disconnectSession,
+  logOut,
+  setAuthentication,
+  startImpersonation,
+  stopImpersonation,
+} = await import("./web-rpc.ts");
 
 test("log out removes every stored token, including an old login form draft", () => {
   setAuthentication("dedicated", "https://example.com", "session-token");
@@ -55,6 +63,10 @@ test("log out removes every stored token, including an old login form draft", ()
   storage.setItem("form-mobile-integrated-server-token", "legacy-token");
   storage.setItem("form-server-address", "https://example.com");
   storage.setItem("sf-command-history", JSON.stringify(["op secret"]));
+  storage.setItem(
+    "sf-command-history:user-id@https://example.com",
+    JSON.stringify(["op secret"]),
+  );
 
   logOut();
 
@@ -64,6 +76,7 @@ test("log out removes every stored token, including an old login form draft", ()
     "server-webdav-token",
     "form-mobile-integrated-server-token",
     "sf-command-history",
+    "sf-command-history:user-id@https://example.com",
   ]) {
     expect(storage.getItem(key)).toBeNull();
   }
@@ -104,4 +117,20 @@ test("disconnecting reports no error when the local server stops", async () => {
     stopError: null,
   });
   expect(storage.getItem("server-type")).toBeNull();
+});
+
+test("polling reuses the session transport until the credentials change", () => {
+  setAuthentication("dedicated", "https://example.com", "session-token");
+  const first = createTransport();
+  expect(createTransport()).toBe(first);
+
+  startImpersonation("impersonation-token");
+  const impersonated = createTransport();
+  expect(impersonated).not.toBe(first);
+  expect(createTransport()).toBe(impersonated);
+
+  stopImpersonation();
+  setAuthentication("dedicated", "https://other.example.com", "session-token");
+  expect(createTransport()).not.toBe(first);
+  logOut();
 });

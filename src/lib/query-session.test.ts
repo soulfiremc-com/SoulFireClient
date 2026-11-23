@@ -1,6 +1,5 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { broadcastQueryClient } from "@tanstack/query-broadcast-client-experimental";
 import { CancelledError, QueryClient } from "@tanstack/react-query";
 import {
   getQuerySessionId,
@@ -66,16 +65,6 @@ async function withBrowser(
   }
 }
 
-async function until(predicate: () => boolean) {
-  const deadline = performance.now() + 2000;
-  while (!predicate()) {
-    assert.ok(performance.now() < deadline, "Expected a cache broadcast");
-    await new Promise((resolve) => {
-      setTimeout(resolve, 5);
-    });
-  }
-}
-
 test("credential changes cancel old queries and distinguish local and remote session changes", () =>
   withBrowser(async ({ storage, reloads, storageEvent }) => {
     const client = new QueryClient();
@@ -126,41 +115,5 @@ test("credential changes cancel old queries and distinguish local and remote ses
     } finally {
       stop();
       client.clear();
-    }
-  }));
-
-test("new sessions reject old broadcasts while tabs in the same session still synchronize", () =>
-  withBrowser(async () => {
-    const current = new QueryClient();
-    const oldPublisher = new QueryClient();
-    const oldWitness = new QueryClient();
-    const freshPeer = new QueryClient();
-    const channel = `soulfire-${getQuerySessionId()}`;
-    const stops = [
-      synchronizeQuerySession(current),
-      broadcastQueryClient({
-        queryClient: oldPublisher,
-        broadcastChannel: channel,
-      }),
-      broadcastQueryClient({
-        queryClient: oldWitness,
-        broadcastChannel: channel,
-      }),
-    ];
-    try {
-      oldPublisher.setQueryData(["account"], 1);
-      await until(() => current.getQueryData(["account"]) === 1);
-      // The tab that starts the new session keeps its original subscription.
-      resetQuerySession();
-      stops.push(synchronizeQuerySession(freshPeer));
-      oldPublisher.setQueryData(["account"], 2);
-      await until(() => oldWitness.getQueryData(["account"]) === 2);
-      freshPeer.setQueryData(["current"], 3);
-      await until(() => current.getQueryData(["current"]) === 3);
-      assert.equal(current.getQueryData(["account"]), undefined);
-    } finally {
-      for (const stop of stops) stop();
-      for (const client of [current, oldPublisher, oldWitness, freshPeer])
-        client.clear();
     }
   }));

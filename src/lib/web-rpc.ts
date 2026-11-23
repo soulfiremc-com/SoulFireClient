@@ -7,7 +7,7 @@ import { resetQuerySession } from "@/lib/query-session.ts";
 import { SF_SERVER_TYPES, type SFServerType } from "@/lib/types.ts";
 import { isDemo } from "@/lib/utils.tsx";
 import { isOneOf } from "@/lib/is-one-of";
-import { COMMAND_HISTORY_KEY } from "@/lib/command-history.ts";
+import { clearCommandHistory } from "@/lib/command-history.ts";
 
 const LOCAL_STORAGE_SERVER_TYPE_KEY = "server-type";
 const LOCAL_STORAGE_SERVER_ADDRESS_KEY = "server-address";
@@ -34,6 +34,10 @@ const AUTHENTICATION_KEYS = [
   LOCAL_STORAGE_SERVER_IMPERSONATION_TOKEN_KEY,
 ];
 
+let sessionTransport:
+  | { address: string; token: string; transport: Transport }
+  | undefined;
+
 function updateAuthentication(update: () => void) {
   const previous = AUTHENTICATION_KEYS.map((key) => localStorage.getItem(key));
   update();
@@ -41,8 +45,10 @@ function updateAuthentication(update: () => void) {
     AUTHENTICATION_KEYS.some(
       (key, index) => localStorage.getItem(key) !== previous[index],
     )
-  )
+  ) {
+    sessionTransport = undefined;
     resetQuerySession();
+  }
 }
 
 export const isAuthenticated = () => {
@@ -89,7 +95,7 @@ export const logOut = () => {
   // Signing out must not leave a token or the typed commands, which can hold
   // secrets, for the next person to reuse.
   removeLegacyTokens();
-  localStorage.removeItem(COMMAND_HISTORY_KEY);
+  clearCommandHistory();
 };
 
 /**
@@ -137,23 +143,31 @@ export const stopImpersonation = () => {
 export const isImpersonating = () =>
   localStorage.getItem(LOCAL_STORAGE_SERVER_IMPERSONATION_TOKEN_KEY) !== null;
 
+/**
+ * Returns the transport for the signed-in session. Polling queries call this
+ * on every fetch, so the transport is reused until the address or the token
+ * changes.
+ */
 export const createTransport = (): Transport | null => {
   if (isDemo()) {
     return null;
   }
 
   const address = localStorage.getItem(LOCAL_STORAGE_SERVER_ADDRESS_KEY);
-  let token = localStorage.getItem(LOCAL_STORAGE_SERVER_TOKEN_KEY);
+  const sessionToken = localStorage.getItem(LOCAL_STORAGE_SERVER_TOKEN_KEY);
 
-  if (!address || !token) {
+  if (!address || !sessionToken) {
     throw new Error(i18n.t("common:error.noAddressOrToken"));
   }
 
-  const impersonationToken = localStorage.getItem(
-    LOCAL_STORAGE_SERVER_IMPERSONATION_TOKEN_KEY,
-  );
-  if (impersonationToken !== null) {
-    token = impersonationToken;
+  const token =
+    localStorage.getItem(LOCAL_STORAGE_SERVER_IMPERSONATION_TOKEN_KEY) ??
+    sessionToken;
+  if (
+    sessionTransport?.address === address &&
+    sessionTransport.token === token
+  ) {
+    return sessionTransport.transport;
   }
 
   const authInterceptor: Interceptor = (next) => (request) => {
@@ -161,10 +175,12 @@ export const createTransport = (): Transport | null => {
     return next(request);
   };
 
-  return createGrpcWebTransport({
+  const transport = createGrpcWebTransport({
     baseUrl: address,
     interceptors: [authInterceptor],
   });
+  sessionTransport = { address, token, transport };
+  return transport;
 };
 
 export const createAddressOnlyTransport = (address: string): Transport =>
