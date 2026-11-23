@@ -34,7 +34,7 @@
     "test:storybook": "vitest run --project storybook",
     "test:terminal": "bun test src/lib/terminal*.test.ts src/lib/command*.test.ts src/stores/terminal-log-store.test.ts src/lib/script-logs.test.ts electron/native/integrated-server-process.test.ts",
     "test:deployment": "bun test src/lib/app-deployment.test.ts src/lib/build-environment.test.ts src/demo-data.test.ts src/lib/sdk-quickstart.test.ts src/lib/code-highlighter.test.ts",
-    "typecheck": "tsc --noEmit && tsc -p tsconfig.cast-tests.json --noEmit && tsc -p tsconfig.scripts.json --noEmit",
+    "typecheck": "tsc --noEmit && tsc -p electron/cast/tsconfig.json --noEmit && tsc -p tsconfig.scripts.json --noEmit",
     "fix": "oxlint --fix . && oxfmt .",
     "lint": "oxlint .",
     "format": "oxfmt .",
