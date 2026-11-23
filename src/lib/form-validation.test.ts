@@ -12,11 +12,7 @@ import {
   jwtSchema,
   toFormSchema,
 } from "./form-validation";
-import {
-  emailFormSchema,
-  integratedServerFormSchema,
-  tokenFormSchema,
-} from "./login-validation";
+import { emailFormSchema, tokenFormSchema } from "./login-validation";
 import { createInstanceNameSchema } from "./instance-name";
 import { createUsernameSchema, userEmailSchema } from "./user-profile";
 
@@ -52,15 +48,6 @@ test("existing validators follow language changes and retain paths for every inv
         { path: ["address"], message: messages.url },
         { path: ["email"], message: messages.email },
       ],
-    });
-    expect(
-      await toFormSchema(integratedServerFormSchema)["~standard"].validate({
-        customJarId: "",
-        jarSource: "invalid",
-        jvmArgs: "",
-      }),
-    ).toEqual({
-      issues: [{ path: ["jarSource"], message: messages.jarSource }],
     });
   }
 });

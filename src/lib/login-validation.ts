@@ -25,11 +25,3 @@ export const tokenFormSchema = Schema.Struct({
   address: serverAddressSchema,
   token: Schema.Trim.pipe(Schema.decodeTo(jwtSchema)),
 });
-
-export const integratedServerFormSchema = Schema.Struct({
-  customJarId: Schema.String,
-  jarSource: Schema.Literals(["official", "custom"])
-    .annotate({ message: "validation:jarSource" })
-    .annotateKey({ messageMissingKey: "validation:jarSource" }),
-  jvmArgs: Schema.String,
-});

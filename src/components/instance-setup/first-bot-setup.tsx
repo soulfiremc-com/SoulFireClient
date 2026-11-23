@@ -55,6 +55,11 @@ import {
   selectBotsToStart,
 } from "@/lib/bot-fleet.ts";
 import { botStatusQueryOptions } from "@/lib/bot-status-query.ts";
+import { botDisplayName } from "@/lib/bot-with-status.ts";
+import {
+  DemoReadOnlyError,
+  isDemoReadOnlyError,
+} from "@/lib/instance-mutations.ts";
 import { isPostHogConfigured } from "@/lib/posthog.ts";
 import {
   dismissFirstBotSetup,
@@ -127,7 +132,12 @@ function FirstBotConnecting({
         <CheckIcon />
         <AlertTitle>
           {t("setup.connected.title", {
-            name: connected.accountName ?? connected.profileId,
+            name: botDisplayName(
+              instanceInfo.profile.accounts.find(
+                (account) => account.profileId === connected.profileId,
+              ),
+              connected,
+            ),
           })}
         </AlertTitle>
         <AlertDescription>
@@ -219,6 +229,8 @@ export function FirstBotSetup({
   const { t } = useTranslation("instance");
   const queryClient = useQueryClient();
   const transport = use(TransportContext);
+  // The demo cannot save, so the guide previews each step instead.
+  const demo = transport === null;
   const posthog = usePostHog();
   const instanceInfoQueryOptions = useRouteContext({
     from: "/_dashboard/instance/$instance",
@@ -309,7 +321,7 @@ export function FirstBotSetup({
     mutationKey: ["bots", "start", instanceInfo.id],
     scope: { id: `bot-state-${instanceInfo.id}` },
     mutationFn: async (count: number) => {
-      if (transport === null) return [];
+      if (transport === null) throw DemoReadOnlyError.make({});
       const client = createRpcClient(BotService, transport);
       const latest = await Effect.runPromise(
         client.getBotList({ instanceId: instanceInfo.id }),
@@ -343,8 +355,11 @@ export function FirstBotSetup({
         });
       }
     },
-    onError: (error) =>
-      toast.error(t("setup.start.error"), { description: error.message }),
+    onError: (error) => {
+      // The app explains demo writes once, for every page.
+      if (isDemoReadOnlyError(error)) return;
+      toast.error(t("setup.start.error"), { description: error.message });
+    },
     onSettled: async () => {
       await Promise.all([
         invalidate(),
@@ -403,6 +418,12 @@ export function FirstBotSetup({
           {t("setup.later")}
         </Button>
       </div>
+      {demo && (
+        <Alert>
+          <CircleAlertIcon />
+          <AlertDescription>{t("common:demoReadOnly")}</AlertDescription>
+        </Alert>
+      )}
       {starting ? (
         <FirstBotConnecting
           instanceInfo={instanceInfo}
@@ -526,7 +547,9 @@ export function FirstBotSetup({
                             action={
                               <Button
                                 size="sm"
-                                disabled={!canConfigure || generate.isPending}
+                                disabled={
+                                  demo || !canConfigure || generate.isPending
+                                }
                                 onClick={() => {
                                   setGenerateOpen(true);
                                 }}
@@ -582,7 +605,7 @@ export function FirstBotSetup({
                             }
                           />
                         </ItemGroup>
-                        {accounts.length > 0 && (
+                        {(accounts.length > 0 || demo) && (
                           <Button
                             className="w-fit"
                             onClick={() => {
@@ -716,7 +739,7 @@ export function FirstBotSetup({
                             </Field>
                             <Button
                               type="submit"
-                              disabled={!validCount || start.isPending}
+                              disabled={demo || !validCount || start.isPending}
                             >
                               {start.isPending ? (
                                 <LoaderCircleIcon

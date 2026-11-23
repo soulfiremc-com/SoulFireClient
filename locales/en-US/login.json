@@ -4,10 +4,11 @@
     "connection": "Could not reach the SoulFire server. Check the URL, make sure the server is running, and try again. For a web connection, also check HTTPS and browser access settings.",
     "authentication": "The token was rejected or has expired. Check the token and try again.",
     "permission": "This account cannot access the SoulFire server. Ask the server administrator for access.",
-    "unexpected": "Could not connect to the SoulFire server. Check the URL and token, and make sure the app and server versions are compatible."
+    "unexpected": "Could not connect to the SoulFire server. Check the URL and token, and make sure the app and server versions are compatible.",
+    "rateLimited": "Too many sign-in attempts from this device. Wait 10 minutes, then try again.",
+    "emailUnexpected": "Could not sign in to the SoulFire server. Check the URL, and make sure the app and server versions are compatible."
   },
   "header": {
-    "backgroundPattern": "Decorative background pattern",
     "image": {
       "alt": "SoulFire logo"
     },
@@ -24,7 +25,7 @@
     },
     "dedicated": {
       "title": "Connect to a SoulFire server",
-      "description": "Use the address and login of a SoulFire server that you or your team already runs. This is not your Minecraft server address."
+      "description": "Use the URL and sign-in details of a SoulFire server that you or your team already runs. This is not your Minecraft server address."
     },
     "demo": {
       "title": "Try the demo",
@@ -44,9 +45,8 @@
     }
   },
   "integrated": {
-    "preparing": "Preparing to start the local SoulFire server...",
     "toast": {
-      "loading": "Starting your local SoulFire server",
+      "loading": "Starting your local SoulFire server...",
       "error": "The local SoulFire server did not start"
     },
     "retry": "Try again",
@@ -73,8 +73,6 @@
       "start": "Start local server",
       "jar": {
         "title": "Server jar",
-        "official": "Official",
-        "custom": "Custom",
         "officialTitle": "Official SoulFire server",
         "customTitle": "Custom server jar",
         "officialDescription": "Downloads and verifies the matching SoulFire release.",
@@ -101,7 +99,7 @@
     },
     "softwareRendering": {
       "title": "Force software rendering",
-      "description": "Uses bundled software rendering and does not try to use system Vulkan drivers. This may help with driver-related crashes. Can be slower and use more CPU. Requires SoulFire server 2.11 or newer."
+      "description": "Uses bundled software rendering instead of the system Vulkan drivers. This can help with driver crashes, but it can be slower and use more CPU. Requires SoulFire server 2.11 or newer."
     },
     "title": "Start SoulFire on this computer",
     "plan": {
@@ -160,11 +158,11 @@
     }
   },
   "dedicated": {
-    "description": "Enter the address of the SoulFire server, then sign in. Your Minecraft server address goes in a later step.",
+    "description": "Enter the SoulFire server URL, then sign in. Your Minecraft server address goes in a later step.",
     "form": {
       "address": {
-        "title": "Address",
-        "description": "Address of the SoulFire server, not the Minecraft server. The default port is 38765.",
+        "title": "SoulFire server URL",
+        "description": "Not your Minecraft server address. The default port is 38765.",
         "placeholder": "http://localhost:38765"
       },
       "token": {
@@ -184,11 +182,12 @@
     }
   },
   "emailCode": {
-    "description": "If you have an account, we have sent a code to <bold>{{email}}</bold>. Enter it below.",
-    "toast": {
-      "loading": "Checking code...",
-      "error": "Code is invalid"
-    },
+    "description": "If you have an account, we sent a code to <bold>{{email}}</bold>. Enter it below. The code expires after 15 minutes.",
+    "checking": "Checking code...",
+    "invalid": "This code is not correct. Check the email and try again, or send a new code.",
+    "expired": "This code has expired. Send a new code and enter it within 15 minutes.",
+    "resend": "Send a new code",
+    "resent": "If you have an account, we sent a new code to {{email}}.",
     "back": "Back"
   },
   "footer": {

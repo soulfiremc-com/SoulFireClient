@@ -4,6 +4,8 @@ import { Code, ConnectError } from "@connectrpc/connect";
 import {
   getConnectionErrorKind,
   getConnectionRetryDelay,
+  getLoginErrorMessage,
+  getRejectedCodeMessage,
 } from "./connection-errors";
 
 test("only transient RPC failures retry, with backoff and a limit", () => {
@@ -47,4 +49,30 @@ test("authentication and permission failures have distinct recovery actions", ()
     ),
     null,
   );
+});
+
+test("sign-in messages name the rate limit and do not blame a missing token", () => {
+  const limited = new ConnectError(
+    "Too many login attempts",
+    Code.ResourceExhausted,
+  );
+  assert.equal(getLoginErrorMessage(limited, "email"), "rateLimited");
+  assert.equal(getLoginErrorMessage(limited, "token"), "rateLimited");
+  const internal = new ConnectError("Mail failed", Code.Internal);
+  assert.equal(getLoginErrorMessage(internal, "email"), "emailUnexpected");
+  assert.equal(getLoginErrorMessage(internal, "token"), "unexpected");
+  const offline = ConnectError.from(new TypeError("Failed to fetch"));
+  assert.equal(getLoginErrorMessage(offline, "email"), "connection");
+  const expired = new ConnectError("Expired", Code.Unauthenticated);
+  assert.equal(getLoginErrorMessage(expired, "token"), "authentication");
+});
+
+test("a rejected email code counts as expired after 15 minutes", () => {
+  const sentAt = 1_000_000;
+  assert.equal(getRejectedCodeMessage(sentAt, sentAt + 60_000), "invalid");
+  assert.equal(
+    getRejectedCodeMessage(sentAt, sentAt + 15 * 60_000 - 1),
+    "invalid",
+  );
+  assert.equal(getRejectedCodeMessage(sentAt, sentAt + 15 * 60_000), "expired");
 });

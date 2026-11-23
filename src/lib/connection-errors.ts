@@ -25,3 +25,33 @@ export function getConnectionRetryDelay(error: unknown, attempts: number) {
   }
   return 1000 * 2 ** attempts;
 }
+
+/**
+ * Picks the launcher message for a failed sign-in. The server limits sign-in
+ * requests per client, and an email sign-in has no token to blame.
+ */
+export function getLoginErrorMessage(
+  error: unknown,
+  method: "email" | "token",
+) {
+  if (error instanceof ConnectError && error.code === Code.ResourceExhausted)
+    return "rateLimited";
+  const kind = getConnectionErrorKind(error);
+  if (
+    method === "email" &&
+    (kind === "authentication" || kind === "unexpected")
+  )
+    return "emailUnexpected";
+  return kind;
+}
+
+/** The server forgets a sign-in code 15 minutes after sending it. */
+const EMAIL_CODE_LIFETIME_MS = 15 * 60 * 1000;
+
+/**
+ * The server answers an expired code like a wrong one, so the send time
+ * tells them apart.
+ */
+export function getRejectedCodeMessage(sentAt: number, now: number) {
+  return now - sentAt >= EMAIL_CODE_LIFETIME_MS ? "expired" : "invalid";
+}
