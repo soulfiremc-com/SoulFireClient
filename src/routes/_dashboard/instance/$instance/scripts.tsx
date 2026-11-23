@@ -544,19 +544,24 @@ function Content() {
 
       {/* Scripts Grid */}
       {scripts.length === 0 ? (
-        <section
-          aria-labelledby="script-first-use-title"
-          className="flex max-w-3xl flex-col gap-3"
-        >
-          <div className="flex flex-col gap-1">
-            <h3 id="script-first-use-title" className="text-base font-semibold">
-              {tInstance("scripts.noScripts")}
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              {tInstance("scripts.noScriptsDescription")}
-            </p>
-          </div>
-          {templates.length > 0 && (
+        // The header already offers a blank script, so this section only
+        // appears when there are templates to pick from.
+        templates.length > 0 && (
+          <section
+            aria-labelledby="script-first-use-title"
+            className="flex max-w-3xl flex-col gap-3"
+          >
+            <div className="flex flex-col gap-1">
+              <h3
+                id="script-first-use-title"
+                className="text-base font-semibold"
+              >
+                {tInstance("scripts.noScripts")}
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                {tInstance("scripts.noScriptsDescription")}
+              </p>
+            </div>
             <ScriptTemplatePicker
               templates={templates}
               disabled={templateMutation.isPending}
@@ -568,18 +573,8 @@ function Content() {
                 templateMutation.mutate(template);
               }}
             />
-          )}
-          <Button
-            variant="outline"
-            className="w-fit"
-            onClick={() => {
-              setIsCreateDialogOpen(true);
-            }}
-          >
-            <PlusIcon data-icon="inline-start" />
-            {tInstance("scripts.createFirstScript")}
-          </Button>
-        </section>
+          </section>
+        )
       ) : (
         <>
           <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">

@@ -151,3 +151,32 @@ test("failed creation leaves the draft available for a genuine create retry", as
   assert.equal(editor.document.get().scriptId, "retry-id");
   assert.equal(editor.document.get().isDirty, false);
 });
+
+test("the first save of an untitled script keeps the editor clean and named", async () => {
+  const editor = getScriptEditorRouteSession(
+    undefined,
+    "instance",
+    "new",
+  ).editor;
+  editor.actions.setScriptName("");
+  const names: string[] = [];
+  const transport = createRouterTransport((router) => {
+    router.service(ScriptService, {
+      createScript(request) {
+        names.push(request.name);
+        return { script: { id: "created", name: request.name } };
+      },
+      updateScript(request) {
+        names.push(request.name ?? "");
+        return {
+          script: { id: request.scriptId, name: request.name ?? "" },
+        };
+      },
+    });
+  });
+  await saveScript(transport, "instance", editor, "Untitled");
+  assert.equal(editor.document.get().scriptName, "Untitled");
+  assert.equal(editor.document.get().isDirty, false);
+  await saveScript(transport, "instance", editor, "Untitled");
+  assert.deepEqual(names, ["Untitled", "Untitled"]);
+});

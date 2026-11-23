@@ -14,9 +14,12 @@ export async function saveScript(
   const { scriptId, lastSavedPaused } = editor.document.get();
   const snapshot = editor.actions.getScriptData();
   const client = createRpcClient(ScriptService, transport);
+  // The server rejects an empty name, so an untitled script saves as the
+  // default name.
+  const name = snapshot.name || defaultName;
   const content = {
     instanceId,
-    name: scriptId ? snapshot.name : snapshot.name || defaultName,
+    name,
     description: snapshot.description,
     nodes: nodesToProto(snapshot.nodes),
     edges: edgesToProto(snapshot.edges),
@@ -39,6 +42,16 @@ export async function saveScript(
     : await Effect.runPromise(client.createScript(content));
   if (!result.script)
     throw new Error("The server did not return the saved script.");
-  editor.actions.markSaved(snapshot, result.script.id, result.script.paused);
+  // Show the saved name, unless the user renamed the script during the save.
+  if (
+    name !== snapshot.name &&
+    editor.document.get().scriptName === snapshot.name
+  )
+    editor.actions.setScriptName(name);
+  editor.actions.markSaved(
+    { ...snapshot, name },
+    result.script.id,
+    result.script.paused,
+  );
   return result.script;
 }
