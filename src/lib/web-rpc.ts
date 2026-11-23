@@ -7,6 +7,7 @@ import { resetQuerySession } from "@/lib/query-session.ts";
 import { SF_SERVER_TYPES, type SFServerType } from "@/lib/types.ts";
 import { isDemo } from "@/lib/utils.tsx";
 import { isOneOf } from "@/lib/is-one-of";
+import { COMMAND_HISTORY_KEY } from "@/lib/command-history.ts";
 
 const LOCAL_STORAGE_SERVER_TYPE_KEY = "server-type";
 const LOCAL_STORAGE_SERVER_ADDRESS_KEY = "server-address";
@@ -85,8 +86,10 @@ export const logOut = () => {
     localStorage.removeItem(LOCAL_STORAGE_SERVER_TOKEN_KEY);
     localStorage.removeItem(LOCAL_STORAGE_SERVER_IMPERSONATION_TOKEN_KEY);
   });
-  // Signing out must not leave a token for the next person to reuse.
+  // Signing out must not leave a token or the typed commands, which can hold
+  // secrets, for the next person to reuse.
   removeLegacyTokens();
+  localStorage.removeItem(COMMAND_HISTORY_KEY);
 };
 
 /**

@@ -54,6 +54,7 @@ test("log out removes every stored token, including an old login form draft", ()
   storage.setItem("server-webdav-token", "legacy-token");
   storage.setItem("form-mobile-integrated-server-token", "legacy-token");
   storage.setItem("form-server-address", "https://example.com");
+  storage.setItem("sf-command-history", JSON.stringify(["op secret"]));
 
   logOut();
 
@@ -62,6 +63,7 @@ test("log out removes every stored token, including an old login form draft", ()
     "form-server-token",
     "server-webdav-token",
     "form-mobile-integrated-server-token",
+    "sf-command-history",
   ]) {
     expect(storage.getItem(key)).toBeNull();
   }

@@ -17,7 +17,18 @@ import { parseUrlSearch, stringifyUrlSearch } from "@/lib/router-search.ts";
 import { getServerType, isAuthenticated } from "@/lib/web-rpc.ts";
 import { routeTree } from "./routeTree.gen";
 
+// A new deployment removes old chunks, so a reload picks up the new build. A
+// chunk that stays missing (blocked, or a stale cached page) must not reload
+// the page forever, so reload at most once every 10 seconds.
 window.addEventListener("vite:preloadError", () => {
+  const key = "preload-error-reload";
+  try {
+    const last = Number(sessionStorage.getItem(key) ?? 0);
+    if (Date.now() - last < 10_000) return;
+    sessionStorage.setItem(key, String(Date.now()));
+  } catch {
+    // Without storage, still recover from the usual stale-chunk case.
+  }
   window.location.reload();
 });
 

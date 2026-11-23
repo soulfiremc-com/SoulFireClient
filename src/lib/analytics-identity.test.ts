@@ -174,3 +174,29 @@ test("legacy identity migration preserves every consent choice while replacing t
     );
   }
 });
+
+test("restoring consent after an identity reset records no new opt-in event", () => {
+  let status: AnalyticsConsentStatus = "granted";
+  const optIns: unknown[] = [];
+  const consent = createAnalyticsConsent(
+    {
+      get_explicit_consent_status: () => status,
+      set_config: () => {},
+      opt_in_capturing: (options) => {
+        optIns.push(options?.captureEventName);
+        status = "granted";
+      },
+      opt_out_capturing: () => {
+        status = "denied";
+      },
+      reset: () => {
+        status = "pending";
+      },
+    },
+    true,
+  );
+  consent.resetIdentity();
+  assert.deepEqual(optIns, [false]);
+  consent.setConsent(true);
+  assert.deepEqual(optIns, [false, undefined]);
+});

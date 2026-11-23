@@ -35,15 +35,22 @@ export function createAnalyticsConsent(
     });
   }
 
-  function setConsent(accepted: boolean) {
+  // `restore` re-applies an earlier choice, which must not record a new
+  // opt-in event.
+  function applyConsent(accepted: boolean, restore: boolean) {
     if (!configured) return;
     // Disable identification before the SDK starts sending cookieless events.
     client.set_config({
       person_profiles: accepted ? "identified_only" : "never",
     });
-    if (accepted) client.opt_in_capturing();
+    if (accepted)
+      client.opt_in_capturing(restore ? { captureEventName: false } : {});
     else client.opt_out_capturing();
     synchronize();
+  }
+
+  function setConsent(accepted: boolean) {
+    applyConsent(accepted, false);
   }
 
   function resetIdentity(resetDeviceId = false) {
@@ -52,7 +59,7 @@ export function createAnalyticsConsent(
     client.reset(resetDeviceId);
     // The SDK clears consent on reset. Keep the browser's choice across logins.
     if (status === "pending") synchronize();
-    else setConsent(status === "granted");
+    else applyConsent(status === "granted", true);
   }
 
   return {
