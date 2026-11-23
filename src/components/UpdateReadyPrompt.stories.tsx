@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Toaster, toast } from "sonner";
 import { expect, fn, waitFor, within } from "storybook/test";
 import type { SoulFireDesktopApi } from "@/lib/desktop-api";
 import { UpdateReadyPrompt } from "./update-ready-prompt";
@@ -34,17 +33,10 @@ const meta = {
       },
     } as unknown as SoulFireDesktopApi;
     return () => {
-      toast.dismiss();
       window.soulfireElectron = original;
       readyVersion = null;
     };
   },
-  render: () => (
-    <>
-      <UpdateReadyPrompt />
-      <Toaster />
-    </>
-  ),
 } satisfies Meta<typeof UpdateReadyPrompt>;
 export default meta;
 type Story = StoryObj<typeof meta>;

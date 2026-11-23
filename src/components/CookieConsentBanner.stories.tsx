@@ -11,7 +11,6 @@ import { CookieConsentBanner } from "./cookie-consent-banner";
 
 const token = "phc_soulfire_consent_test";
 const persistenceKey = `ph_${token}_posthog`;
-const consentKey = `__ph_opt_in_out_${token}`;
 let client: PostHog;
 let consent: ReturnType<typeof createAnalyticsConsent>;
 let events: CaptureResult[];
@@ -84,17 +83,13 @@ const meta = {
   title: "Privacy/Cookie consent",
   component: ConsentExample,
   beforeEach: () => {
-    localStorage.removeItem(consentKey);
-    localStorage.removeItem(persistenceKey);
-    sessionStorage.removeItem(persistenceKey);
+    // The preview clears storage. PostHog can also persist to a cookie.
     // oxlint-disable-next-line unicorn/no-document-cookie -- Preserve cookie access on browsers without the Cookie Store API.
     document.cookie = `${persistenceKey}=; path=/; max-age=0`;
     events = [];
     initializeClient();
     return async () => {
       await client.shutdown();
-      localStorage.removeItem(consentKey);
-      localStorage.removeItem(persistenceKey);
       // oxlint-disable-next-line unicorn/no-document-cookie -- Preserve cookie access on browsers without the Cookie Store API.
       document.cookie = `${persistenceKey}=; path=/; max-age=0`;
     };

@@ -20,6 +20,9 @@ const env = {
   ...process.env,
   PATH: `${join(project, "node_modules/.bin")}${delimiter}${process.env["PATH"]}`,
 };
+// Each test runs Git, the installer, and Lefthook in child processes. Bun's
+// default 5 second test timeout is too short for them on a busy machine.
+const hookTimeout = 60_000;
 function run(cwd: string, command: string, args: readonly string[]) {
   return spawnSync(command, args, { cwd, env, encoding: "utf8" });
 }
@@ -66,58 +69,80 @@ function fixture(t: TestContext): string {
   return cwd;
 }
 
-test("dependency preparation migrates the legacy Husky hook path", (t) => {
-  const cwd = fixture(t);
-  git(cwd, "config", "core.hooksPath", ".husky/_");
-  const result = run(cwd, "node", [installer]);
-  assert.equal(result.status, 0, result.stderr || result.stdout);
-  assert.equal(
-    run(cwd, "git", ["config", "--local", "--get", "core.hooksPath"]).status,
-    1,
-  );
-  assert.match(
-    readFileSync(join(cwd, ".git/hooks/pre-commit"), "utf8"),
-    /lefthook/u,
-  );
-});
+test(
+  "dependency preparation migrates the legacy Husky hook path",
+  { timeout: hookTimeout },
+  (t) => {
+    const cwd = fixture(t);
+    git(cwd, "config", "core.hooksPath", ".husky/_");
+    const result = run(cwd, "node", [installer]);
+    assert.equal(result.status, 0, result.stderr || result.stdout);
+    assert.equal(
+      run(cwd, "git", ["config", "--local", "--get", "core.hooksPath"]).status,
+      1,
+    );
+    assert.match(
+      readFileSync(join(cwd, ".git/hooks/pre-commit"), "utf8"),
+      /lefthook/u,
+    );
+  },
+);
 
-test("dependency preparation preserves a custom hook path", (t) => {
-  const cwd = fixture(t);
-  git(cwd, "config", "core.hooksPath", "custom-hooks");
-  run(cwd, "node", [installer]);
-  assert.equal(git(cwd, "config", "--get", "core.hooksPath"), "custom-hooks");
-});
+test(
+  "dependency preparation preserves a custom hook path",
+  { timeout: hookTimeout },
+  (t) => {
+    const cwd = fixture(t);
+    git(cwd, "config", "core.hooksPath", "custom-hooks");
+    run(cwd, "node", [installer]);
+    assert.equal(git(cwd, "config", "--get", "core.hooksPath"), "custom-hooks");
+  },
+);
 
-test("a real commit formats a spaced filename and preserves its unstaged changes", (t) => {
-  const cwd = fixture(t);
-  const file = join(cwd, "src/hook sample.ts");
-  writeFileSync(file, "export const first = 0;\n\nexport const second = 0;\n");
-  git(cwd, "add", ".");
-  git(cwd, "commit", "-m", "test: add hook fixture");
-  const installed = run(cwd, "node", [installer]);
-  assert.equal(installed.status, 0, installed.stderr || installed.stdout);
-  writeFileSync(file, "export const first=1;\n\nexport const second = 0;\n");
-  git(cwd, "add", "src/hook sample.ts");
-  writeFileSync(file, "export const first=1;\n\nexport const second = 2;\n");
-  git(cwd, "commit", "-m", "test: format staged changes");
-  const committed = git(cwd, "show", "HEAD:src/hook sample.ts");
-  assert.match(committed, /first = 1/u);
-  assert.match(committed, /second = 0/u);
-  assert.match(readFileSync(file, "utf8"), /second = 2/u);
-  assert.match(git(cwd, "diff", "--", "src/hook sample.ts"), /second = 2/u);
-});
+test(
+  "a real commit formats a spaced filename and preserves its unstaged changes",
+  { timeout: hookTimeout },
+  (t) => {
+    const cwd = fixture(t);
+    const file = join(cwd, "src/hook sample.ts");
+    writeFileSync(
+      file,
+      "export const first = 0;\n\nexport const second = 0;\n",
+    );
+    git(cwd, "add", ".");
+    git(cwd, "commit", "-m", "test: add hook fixture");
+    const installed = run(cwd, "node", [installer]);
+    assert.equal(installed.status, 0, installed.stderr || installed.stdout);
+    writeFileSync(file, "export const first=1;\n\nexport const second = 0;\n");
+    git(cwd, "add", "src/hook sample.ts");
+    writeFileSync(file, "export const first=1;\n\nexport const second = 2;\n");
+    git(cwd, "commit", "-m", "test: format staged changes");
+    const committed = git(cwd, "show", "HEAD:src/hook sample.ts");
+    assert.match(committed, /first = 1/u);
+    assert.match(committed, /second = 0/u);
+    assert.match(readFileSync(file, "utf8"), /second = 2/u);
+    assert.match(git(cwd, "diff", "--", "src/hook sample.ts"), /second = 2/u);
+  },
+);
 
-test("a real commit rejects invalid staged syntax", (t) => {
-  const cwd = fixture(t);
-  const installed = run(cwd, "node", [installer]);
-  assert.equal(installed.status, 0, installed.stderr || installed.stdout);
-  writeFileSync(join(cwd, "src/broken.ts"), "export const broken = ;\n");
-  git(cwd, "add", ".");
-  const result = run(cwd, "git", [
-    "commit",
-    "-m",
-    "test: reject invalid syntax",
-  ]);
-  assert.notEqual(result.status, 0);
-  assert.notEqual(run(cwd, "git", ["rev-parse", "--verify", "HEAD"]).status, 0);
-});
+test(
+  "a real commit rejects invalid staged syntax",
+  { timeout: hookTimeout },
+  (t) => {
+    const cwd = fixture(t);
+    const installed = run(cwd, "node", [installer]);
+    assert.equal(installed.status, 0, installed.stderr || installed.stdout);
+    writeFileSync(join(cwd, "src/broken.ts"), "export const broken = ;\n");
+    git(cwd, "add", ".");
+    const result = run(cwd, "git", [
+      "commit",
+      "-m",
+      "test: reject invalid syntax",
+    ]);
+    assert.notEqual(result.status, 0);
+    assert.notEqual(
+      run(cwd, "git", ["rev-parse", "--verify", "HEAD"]).status,
+      0,
+    );
+  },
+);
