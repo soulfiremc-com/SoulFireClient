@@ -3,10 +3,15 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import resourcesToBackend from "i18next-resources-to-backend";
 import { initReactI18next } from "react-i18next";
 import { loadDateFnsLocale } from "@/lib/date-fns-locale.ts";
+import { toIntlLocale } from "@/lib/intl-locale.ts";
 
 // Start loading the date-fns locale with the translations, so relative times
 // render in the active language without an English first pass.
 i18n.on("languageChanged", (language) => {
+  // Screen readers and browser translation read the page language from here.
+  document.documentElement.lang = toIntlLocale(
+    i18n.resolvedLanguage ?? language,
+  );
   loadDateFnsLocale(i18n.resolvedLanguage ?? language).catch(() => {
     // Components fall back to English dates when the chunk fails to load.
   });

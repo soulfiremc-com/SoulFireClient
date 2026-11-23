@@ -1,56 +1,6 @@
 {
   "overview": {
     "logsDescription": "Raw project output is available here when you need to inspect console details.",
-    "summary": {
-      "accounts": "Accounts",
-      "proxies": "Proxies",
-      "configured": "{{count}} configured",
-      "configuredShort": "Configured",
-      "currentRate": "Current rate",
-      "imported": "Imported"
-    },
-    "readiness": {
-      "title": "Setup",
-      "accounts": "Accounts",
-      "accountsValue": "{{count}} imported for {{requested}} requested bots",
-      "proxies": "Proxies",
-      "proxiesValue": "{{count}} configured",
-      "plugins": "Plugins",
-      "pluginsValue": "{{count}} available"
-    },
-    "activity": {
-      "title": "Activity",
-      "tick": "Tick",
-      "health": "Health",
-      "world": "World",
-      "worldValue": "{{chunks}} chunks, {{entities}} entities",
-      "connections": "Connections",
-      "connectionsValue": "+{{connections}} / -{{disconnections}}",
-      "noDataTitle": "Metrics",
-      "noDataDescription": "No runtime metrics yet."
-    },
-    "metricsUnavailable": {
-      "title": "Metrics",
-      "inactive": "Start a bot to collect live metrics.",
-      "noPermission": "You do not have permission to view bot metrics."
-    },
-    "status": {
-      "ready": "Ready",
-      "attention": "Needs attention",
-      "configured": "Configured",
-      "optional": "Optional",
-      "available": "Available",
-      "none": "None"
-    },
-    "actions": {
-      "manage": "Manage",
-      "open": "Open"
-    },
-    "spotlight": {
-      "noBots": "No bots configured yet.",
-      "idle": "Idle, waiting for instructions.",
-      "level": "Lvl {{level}}"
-    },
     "liveFeed": {
       "title": "Live feed",
       "empty": "Waiting for project activity...",
@@ -60,8 +10,10 @@
         "connected": "connected",
         "spawned": "joined the game",
         "died": "died",
+        "diedWithReason": "died: {{reason}}",
         "respawned": "respawned",
         "disconnected": "disconnected",
+        "disconnectedWithReason": "disconnected: {{reason}}",
         "unknown": "changed state"
       },
       "pause": "Pause",
@@ -106,7 +58,8 @@
       "empty": "No plugins are reporting stats yet.",
       "noPermission": "You do not have permission to view plugin stats.",
       "active": "Active",
-      "activeBots": "{{count}} active bots",
+      "activeBots_one": "{{count}} active bot",
+      "activeBots_other": "{{count}} active bots",
       "uptime": "up {{time}}"
     },
     "detailed": {
@@ -125,9 +78,12 @@
     "filterPlaceholder": "Filter proxies...",
     "listImportToast": {
       "loading": "Importing proxies...",
-      "success": "Imported {{count}} proxies",
+      "success_one": "Imported {{count}} proxy",
+      "success_other": "Imported {{count}} proxies",
       "skipped_one": "Skipped {{count}} line that could not be parsed.",
       "skipped_other": "Skipped {{count}} lines that could not be parsed.",
+      "duplicates_one": "Skipped {{count}} proxy that is already in this project.",
+      "duplicates_other": "Skipped {{count}} proxies that are already in this project.",
       "error": "Could not import proxies",
       "noProxies": "No proxies to import"
     },
@@ -138,6 +94,8 @@
         "input": "Proxy list",
         "accepted_one": "{{count}} proxy ready to import.",
         "accepted_other": "{{count}} proxies ready to import.",
+        "alreadyInProject_one": "{{count}} proxy is already in this project and will be skipped.",
+        "alreadyInProject_other": "{{count}} proxies are already in this project and will be skipped.",
         "rejected_one": "{{count}} line could not be parsed and will be skipped: line {{lines}}. To import it too, correct it here or choose another import format.",
         "rejected_other": "{{count}} lines could not be parsed and will be skipped: lines {{lines}}. To import them too, correct them here or choose another import format.",
         "confirm_one": "Import {{count}} proxy",
@@ -162,18 +120,22 @@
     },
     "removeToast": {
       "loading": "Removing proxies...",
-      "success": "Removed {{count}} proxies",
+      "success_one": "Removed {{count}} proxy",
+      "success_other": "Removed {{count}} proxies",
       "error": "Could not remove proxies"
     },
     "checkToast": {
       "loading": "Checking proxies... {{checked}}/{{total}} (Success: {{success}} Failed: {{failed}})",
-      "success": "Removed {{count}} broken proxies",
+      "success_one": "Removed {{count}} broken proxy",
+      "success_other": "Removed {{count}} broken proxies",
       "error": "Could not check proxies",
-      "successKept": "{{failed}} of {{total}} proxies failed the check. No proxies were removed."
+      "successKept_one": "{{failed}} of {{count}} proxy failed the check. No proxies were removed.",
+      "successKept_other": "{{failed}} of {{count}} proxies failed the check. No proxies were removed."
     },
     "checkDialog": {
       "title": "Check proxies",
-      "description": "You are about to check {{count}} proxies.",
+      "description_one": "You are about to check {{count}} proxy.",
+      "description_other": "You are about to check {{count}} proxies.",
       "confirm": "Start check",
       "removeFailed": "Remove proxies that fail",
       "removeFailedHelp": "A proxy can fail because of a temporary network problem. Clear this option to keep every proxy and only see the result."
@@ -199,7 +161,8 @@
     },
     "postImportCheckDialog": {
       "title": "Check imported proxies?",
-      "description": "You imported {{count}} proxies. Check them now?",
+      "description_one": "You imported {{count}} proxy. Check it now?",
+      "description_other": "You imported {{count}} proxies. Check them now?",
       "confirm": "Check proxies",
       "skip": "Skip"
     },
@@ -217,6 +180,11 @@
       "description": "This removes the selected proxies and their credentials from this project. You cannot undo this.",
       "confirm": "Remove proxies"
     },
+    "removeSingleDialog": {
+      "title": "Remove proxy {{address}}?",
+      "description": "This removes the proxy and its credentials from this project. You cannot undo this.",
+      "confirm": "Remove proxy"
+    },
     "showPassword": "Show password",
     "hidePassword": "Hide password"
   },
@@ -228,8 +196,14 @@
     "listImportToast": {
       "loading": "Importing accounts... {{checked}}/{{total}} (Success: {{success}} Failed: {{failed}})",
       "allFailed": "Could not import any accounts",
-      "someFailed": "Imported {{count}} accounts, failed to import {{failed}} accounts",
-      "noneFailed": "{{count}} accounts imported",
+      "someFailed_one": "Imported {{count}} account. Could not import {{failed}} more.",
+      "someFailed_other": "Imported {{count}} accounts. Could not import {{failed}} more.",
+      "noneFailed_one": "{{count}} account imported",
+      "noneFailed_other": "{{count}} accounts imported",
+      "cancelledSaved_one": "Import canceled. Saved {{count}} account that had already signed in.",
+      "cancelledSaved_other": "Import canceled. Saved {{count}} accounts that had already signed in.",
+      "errorSaved_one": "Import stopped. Saved {{count}} account that had already signed in.",
+      "errorSaved_other": "Import stopped. Saved {{count}} accounts that had already signed in.",
       "error": "Could not import accounts",
       "noAccounts": "No accounts found in the text",
       "errorReason": {
@@ -257,6 +231,12 @@
       "error": "Could not import account"
     },
     "generate": {
+      "replaceAllDialog": {
+        "title_one": "Replace {{count}} account?",
+        "title_other": "Replace all {{count}} accounts?",
+        "description": "This removes every account in this project, including Microsoft accounts and their saved credentials, and adds only the generated offline accounts. You cannot undo this.",
+        "confirm": "Replace all accounts"
+      },
       "title": "Generate offline accounts",
       "description": "Generate offline Java accounts with a custom name format.",
       "amount": "Amount",
@@ -270,11 +250,12 @@
       "submit": "Generate",
       "generating": "Generating...",
       "progress": "Generating accounts... {{checked}}/{{total}} (Success: {{success}} Failed: {{failed}})",
-      "success": "Generated {{count}} accounts",
+      "success_one": "Generated {{count}} account",
+      "success_other": "Generated {{count}} accounts",
       "allFailed": "Could not generate any accounts",
       "allExist": "All usernames already exist. Choose Replace existing to generate them again.",
       "error": "Could not generate accounts",
-      "invalidAmount": "Enter a whole number of at least 1.",
+      "amountOutOfRange": "Enter a whole number from 1 to {{max}}.",
       "missingNameFormat": "Enter a name format, such as Bot_%d.",
       "preview_one": "Creates {{first}}.",
       "preview_other": "Creates {{first}} to {{last}}."
@@ -305,7 +286,8 @@
     },
     "removeToast": {
       "loading": "Removing accounts...",
-      "success": "Removed {{count}} accounts",
+      "success_one": "Removed {{count}} account",
+      "success_other": "Removed {{count}} accounts",
       "error": "Could not remove accounts"
     },
     "table": {
@@ -330,6 +312,7 @@
       "pageTitle": "{{name}} - {{page}} Settings",
       "noSettings": "No settings available for this page",
       "search": "Search settings",
+      "pages": "Settings pages",
       "overrides": "Overrides",
       "allSettings": "All settings",
       "noOverrides": "This bot does not have any explicit overrides yet.",
@@ -369,7 +352,9 @@
       "openInBrowser": "Open in browser",
       "orManually": "Or enter code manually",
       "codeLabel": "Your code",
-      "urlLabel": "Go to"
+      "urlLabel": "Go to",
+      "copyCode": "Copy code",
+      "copyUrl": "Copy sign-in URL"
     },
     "ravealts": {
       "button": "Ravealts",
@@ -446,7 +431,6 @@
     "onlineCount": "{{online}} connected / {{total}} total",
     "noBots": "No bots yet. Each account in this project becomes one bot.",
     "noBotsFound": "No bots match your search.",
-    "loadingMore": "Loading more...",
     "showingCount": "Showing {{loaded}} of {{total}}",
     "allLoaded": "All {{total}} bots loaded",
     "online": "Connected",
@@ -460,17 +444,9 @@
       "disconnected": "Disconnected",
       "ping": "{{ms}} ms"
     },
-    "runtimeState": {
-      "starting": "Starting",
-      "running": "Running",
-      "retrying": "Retrying",
-      "stopping": "Stopping",
-      "failed": "Failed",
-      "waiting": "Waiting",
-      "stopped": "Stopped"
-    },
     "backToBots": "All bots",
     "demoControls": "The demo cannot control bots. Connect to a SoulFire server to use these controls.",
+    "notConnected": "Connect to a SoulFire server to control this bot.",
     "tabs": {
       "overview": "Bot view",
       "inventory": "Inventory",
@@ -487,6 +463,12 @@
       "title": "Position and rotation",
       "position": "Position",
       "rotation": "Rotation",
+      "x": "X",
+      "y": "Y",
+      "z": "Z",
+      "pitch": "Pitch",
+      "yaw": "Yaw",
+      "coordinates": "{{x}}, {{y}}, {{z}}",
       "offline": "The bot is disconnected. Position data is only available when the bot is connected."
     },
     "chatPanel": {
@@ -503,26 +485,17 @@
       "sending": "Sending...",
       "sent": "Sent."
     },
-    "commandPanel": {
-      "title": "Bot commands",
-      "placeholder": "Send command to this bot..."
-    },
-    "povPanel": {
-      "title": "Bot view",
-      "capture": "Capture",
-      "refresh": "Refresh",
-      "auto": "Auto",
-      "startAutoRefresh": "Start auto-refresh (1 second interval)",
-      "stopAutoRefresh": "Stop auto-refresh",
-      "clickToCapture": "Click Capture to render the bot's point of view",
-      "offline": "The bot is disconnected. Bot view is available when the bot connects."
-    },
     "statsPanel": {
       "health": "Health",
+      "healthLabel": "Health:",
+      "healthValue": "Health: {{value}}/{{max}}",
       "food": "Food",
+      "foodLabel": "Food:",
+      "foodValue": "Food: {{value}}/{{max}}",
       "saturation": "Saturation",
       "experience": "Experience",
       "level": "Level",
+      "levelShort": "Lv. {{level}}",
       "toNextLevel": "to next level",
       "gameMode": "Game mode",
       "survival": "Survival",
@@ -535,6 +508,15 @@
     "inventoryPanel": {
       "title": "Inventory",
       "actionRejected": "The inventory action was rejected.",
+      "actionError": "The inventory action failed",
+      "output": "(output)",
+      "slotInfo": {
+        "slot": "Slot: {{value}}",
+        "item": "Item: {{value}}",
+        "region": "Region: {{value}}",
+        "container": "Container: {{value}}",
+        "hotbar": "Hotbar: {{value}}"
+      },
       "hotbar": "Hotbar",
       "main": "Main inventory",
       "items": "items",
@@ -571,14 +553,15 @@
         "nextPage": "Next page",
         "pageIndicator": "Page {{current}} of {{total}}"
       },
-      "creativeCatalogHint": "Catalog: click to copy one, Shift+click or middle click to copy a stack. Click the same item to add one, or right click to remove one from the cursor.",
+      "creativeCatalogHint": "Catalog: click to copy one, Shift+click or middle-click to copy a stack. Click the same item to add one, or right-click to remove one from the cursor.",
       "creativeTrashHint": "Click: destroy carried items | Shift+click: clear the entire inventory",
       "destroyItem": "Destroy item",
       "clickHints": {
         "left": "Left click: pick up or place",
         "right": "Right click: pick up half or place one",
         "shift": "Shift+click: quick move",
-        "middle": "Middle click: select as active slot"
+        "middle": "Middle click: select as active slot",
+        "keyboard": "Keyboard: Enter to click, Shift+Enter to quick move, Alt+Enter to middle-click, Menu key or Shift+F10 to right-click"
       }
     },
     "visualPanel": {
@@ -588,6 +571,21 @@
       "lookingUp": "Looking up",
       "lookingDown": "Looking down",
       "lookingStraight": "Looking straight",
+      "directions": {
+        "n": "N",
+        "ne": "NE",
+        "e": "E",
+        "se": "SE",
+        "s": "S",
+        "sw": "SW",
+        "w": "W",
+        "nw": "NW"
+      },
+      "dimensions": {
+        "overworld": "Overworld",
+        "the_nether": "The Nether",
+        "the_end": "The End"
+      },
       "worldInfo": "World info",
       "dimension": "Dimension",
       "biome": "Biome",
@@ -604,6 +602,8 @@
     },
     "movementPanel": {
       "updateServer": "Update SoulFire to synchronize movement controls.",
+      "movementError": "The bot could not change its movement",
+      "rotationError": "The bot could not turn",
       "title": "Movement control",
       "movement": "Movement (WASD)",
       "forward": "Move forward (W)",
@@ -632,6 +632,7 @@
       "serverLinks": "Server links",
       "dialogList": "Dialog list",
       "unknownType": "Unknown",
+      "submitError": "The dialog action failed",
       "dismiss": "Dismiss",
       "submit": "Submit",
       "offline": "The bot is disconnected. Dialogs are only available when the bot is connected."
@@ -718,6 +719,22 @@
       "connectTimeout": "The Bot view did not connect within 15 seconds. Check that the bot is online, then try again.",
       "inputUpdateServer": "Update the SoulFire server to control bots from the Bot view.",
       "decoderUnsupported": "This browser cannot play the Bot view video. Update the browser or try another one.",
+      "videoUnsupportedBrowser": "The Bot view needs a browser that can decode video with WebCodecs, on a secure connection.",
+      "audioUnsupportedBrowser": "This browser cannot play Bot view audio.",
+      "audioDecodeUnsupported": "This browser cannot decode Bot view audio.",
+      "audioBlocked": "The browser blocked audio playback. Select Unmute to try again.",
+      "audioInvalidFrame": "The server sent audio that cannot be played.",
+      "streamMetrics": {
+        "title": "Bot view stream metrics",
+        "waitingForVideo": "Waiting for video",
+        "unknown": "n/a",
+        "fps": "FPS {{drawn}} drawn / {{received}} received",
+        "video": "Video {{mbps}} Mbit/s · {{frameKiB}} KiB/frame",
+        "target": "Target {{mbps}} Mbit/s · Receive to draw {{ms}} ms",
+        "decoder": "Decoder {{queued}} queued / {{pending}} pending",
+        "decoderWaitingForKey": "Decoder {{queued}} queued / {{pending}} pending · waiting for a keyframe",
+        "keyframes": "Keyframes {{rate}}/s · Last frame {{age}} ms ago"
+      },
       "step": {
         "online": "The bot is in the world.",
         "queued": "Waiting for a free start slot. The Bot view opens when the bot joins.",
@@ -741,16 +758,6 @@
       "health": "Health",
       "tick": "Tick"
     },
-    "botsOnline": {
-      "title": "Bots connected",
-      "online": "Connected",
-      "total": "Total"
-    },
-    "packets": {
-      "title": "Packets per second",
-      "sent": "Sent/s",
-      "received": "Recv/s"
-    },
     "bandwidth": {
       "title": "Bandwidth",
       "upload": "Upload",
@@ -761,32 +768,11 @@
       "avg": "Avg (ms)",
       "max": "Max (ms)"
     },
-    "healthFood": {
-      "title": "Health and food",
-      "health": "Avg health",
-      "food": "Avg food"
-    },
-    "chunksEntities": {
-      "title": "Chunks and entities",
-      "chunks": "Chunks",
-      "entities": "Entities"
-    },
-    "connections": {
-      "title": "Connection events",
-      "connections": "Connections",
-      "disconnections": "Disconnections"
-    },
-    "healthDistribution": {
-      "title": "Health distribution",
-      "bots": "Bots"
-    },
     "dimensions": {
-      "title": "Dimensions",
-      "bots": "Bots"
+      "title": "Dimensions"
     },
     "gameModes": {
-      "title": "Game modes",
-      "bots": "Bots"
+      "title": "Game modes"
     },
     "positions": {
       "title": "Bot positions (XZ)",
@@ -796,8 +782,6 @@
   "scripts": {
     "title": "Visual scripts",
     "description": "Scripts make your bots react to events. Build them by connecting nodes.",
-    "experimentalTitle": "Experimental feature",
-    "experimentalWarning": "This feature is experimental. Future updates can break existing scripts. Use it with caution.",
     "createScript": "New blank script",
     "createScriptTitle": "New blank script",
     "createScriptDescription": "Give the script a name. You add a trigger and actions in the editor. New scripts start off.",
@@ -890,7 +874,9 @@
         "importError": "Could not import script",
         "resumeBlocked": "Fix the errors in the script check first",
         "undo": "Undo",
-        "redo": "Redo"
+        "redo": "Redo",
+        "resumeSaveFirst": "Save your changes before you turn the script on",
+        "scriptName": "Script name"
       },
       "palette": {
         "title": "Nodes",
@@ -927,7 +913,8 @@
       "node": {
         "expand": "Expand node",
         "collapse": "Collapse node",
-        "avgTime": "Average execution time: {{avg}} ms (last {{count}} runs)",
+        "avgTime_one": "Average execution time: {{avg}} ms (last {{count}} run)",
+        "avgTime_other": "Average execution time: {{avg}} ms (last {{count}} runs)",
         "avgTimeBadge": "{{display}} average run time",
         "preview": "Preview",
         "muted": "(muted)"
@@ -936,13 +923,18 @@
         "copyValue": "Copy current value",
         "clearHistory": "Clear history",
         "current": "Current ({{time}}):",
-        "noValue": "No value received yet"
+        "noValue": "No value received yet",
+        "input": "In",
+        "output": "Out",
+        "history_one": "History ({{count}} value)",
+        "history_other": "History ({{count}} values)"
       },
       "edge": {
         "direction": "Edge direction"
       },
       "note": {
-        "placeholder": "Write a note..."
+        "placeholder": "Write a note...",
+        "contentLabel": "Note text"
       },
       "complexity": {
         "title": "Script complexity score"
@@ -989,7 +981,7 @@
         "cancel": "Cancel run",
         "completed": "Test run completed.",
         "failed": "Test run failed. Check the error details.",
-        "cancelled": "Test run cancelled.",
+        "cancelled": "Test run canceled.",
         "incomplete": "The connection ended before the test run completed.",
         "stats_one": "{{count}} node executed",
         "stats_other": "{{count}} nodes executed",
@@ -1011,7 +1003,7 @@
         "maxExecutionCount": "Max execution count",
         "maxExecutionCountPlaceholder": "100000",
         "maxExecutionCountDescription": "Maximum node executions per trigger invocation",
-        "maxExecutionTime": "Max Execution Time (ms)",
+        "maxExecutionTime": "Max execution time (ms)",
         "maxExecutionTimePlaceholder": "30000",
         "maxExecutionTimeDescription": "Maximum wall-clock time per trigger execution",
         "maxConcurrentTriggers": "Max concurrent triggers",
@@ -1066,6 +1058,46 @@
           "reroute": "Add a reroute point on a connection",
           "undo": "Undo",
           "redo": "Redo"
+        }
+      },
+      "unsavedDialog": {
+        "title": "Leave without saving?",
+        "description": "This script has changes that are not saved. If you leave, you lose them.",
+        "stay": "Stay",
+        "leave": "Leave without saving"
+      },
+      "layoutNodes": {
+        "category": {
+          "name": "Layout",
+          "description": "Nodes for organizing your script visually"
+        },
+        "reroute": {
+          "label": "Reroute",
+          "description": "A pass-through node for organizing connections"
+        },
+        "frame": {
+          "label": "Frame",
+          "description": "A visual container for grouping related nodes"
+        },
+        "group": {
+          "label": "Node group",
+          "description": "A reusable composite node containing a sub-graph"
+        },
+        "groupInput": {
+          "label": "Group input",
+          "description": "Defines inputs for a node group (inside the group)"
+        },
+        "groupOutput": {
+          "label": "Group output",
+          "description": "Defines outputs for a node group (inside the group)"
+        },
+        "debug": {
+          "label": "Debug",
+          "description": "Shows the values that pass through it while the script runs"
+        },
+        "note": {
+          "label": "Note",
+          "description": "A sticky note for adding comments and annotations"
         }
       }
     },
@@ -1472,7 +1504,11 @@
       "purchase_one": "Buy {{count}} account",
       "purchase_other": "Buy {{count}} accounts",
       "importing_one": "{{count}} account was delivered and sent to import. The progress notice shows the result.",
-      "importing_other": "{{count}} accounts were delivered and sent to import. The progress notice shows the result."
+      "importing_other": "{{count}} accounts were delivered and sent to import. The progress notice shows the result.",
+      "backupTitle": "Keep a copy of the credentials",
+      "backupDescription": "Ravealts cannot send these orders again. If an import fails, add the accounts again from this copy. It holds every order from this session. SoulFire forgets the credentials when you close this dialog.",
+      "copyCredentials_one": "Copy {{count}} credential",
+      "copyCredentials_other": "Copy {{count}} credentials"
     },
     "keyPrivacySaved": "SoulFire saves this API key on this device after it connects. Requests go directly to the provider."
   },
@@ -1497,30 +1533,30 @@
     },
     "attention": "Bots that need attention",
     "groupTitle": {
-      "failed_one": "{{count}} bot failed:",
-      "failed_other": "{{count}} bots failed:",
-      "retrying_one": "{{count}} bot is retrying:",
-      "retrying_other": "{{count}} bots are retrying:"
+      "failed_one": "{{count}} bot failed",
+      "failed_other": "{{count}} bots failed",
+      "retrying_one": "{{count}} bot is retrying",
+      "retrying_other": "{{count}} bots are retrying"
     },
     "kind": {
       "unreachable": {
-        "title": "cannot reach the Minecraft server",
+        "title": "Cannot reach the Minecraft server",
         "description": "Check that the Minecraft server is online and that the address and port in Bot Settings are correct."
       },
       "onlineAuth": {
-        "title": "the server requires Microsoft accounts",
+        "title": "The server requires Microsoft accounts",
         "description": "This server checks every player with Microsoft, so offline accounts cannot join. Add Microsoft Java accounts, or use a server with online mode turned off."
       },
       "account": {
-        "title": "account login rejected",
+        "title": "The server rejected the account login",
         "description": "The Minecraft server did not accept these accounts. Refresh the accounts, or check that each account name is used by only one bot."
       },
       "blocked": {
-        "title": "the server banned or blocked these accounts",
+        "title": "The server banned or blocked these accounts",
         "description": "The server banned these accounts or their IP address, or they are not on its whitelist. Use other accounts or proxies, or ask the server owner for access."
       },
       "throttled": {
-        "title": "the server limits connections",
+        "title": "The server limits connections",
         "description": "Bots keep retrying on their own. Start fewer bots at once or set a longer join delay."
       },
       "version": {
@@ -1528,11 +1564,11 @@
         "description": "The server runs a different Minecraft version. Choose that version in Bot Settings."
       },
       "proxy": {
-        "title": "proxy connection problem",
+        "title": "Proxy connection problem",
         "description": "Check these proxies, or remove the proxies that do not work."
       },
       "other": {
-        "title": "see the reported error",
+        "title": "Unknown connection error",
         "description": "SoulFire has no specific fix for this error. Open the bot or the logs for details."
       }
     },
@@ -1547,7 +1583,8 @@
     "restartError": "Could not restart bots",
     "restartRequested_one": "Restarting {{count}} bot. Its status updates in a few seconds.",
     "restartRequested_other": "Restarting {{count}} bots. Their status updates in a few seconds.",
-    "namesMore": "{{names}} and {{count}} more",
+    "namesMore_one": "{{names}} and {{count}} more",
+    "namesMore_other": "{{names}} and {{count}} more",
     "connectingHint_one": "{{count}} bot is still joining. Bots join one after another, so keep them running.",
     "connectingHint_other": "{{count}} bots are still joining. Bots join one after another, so keep them running.",
     "startHint": "Use Start bots to connect them to the Minecraft server.",
@@ -1619,7 +1656,8 @@
       "countInvalid_one": "You have {{count}} account, so you can start only {{count}} bot.",
       "countInvalid_other": "Enter a whole number from 1 to {{count}}.",
       "addAccounts": "Add more accounts",
-      "error": "Could not start bots"
+      "error": "Could not start bots",
+      "noneStarted": "No bots were started. Check the bot list for bots that are already running."
     },
     "connecting": {
       "title": "Connecting to the Minecraft server",

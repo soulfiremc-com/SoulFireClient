@@ -88,27 +88,13 @@
         "dialog": {
           "filter": "Java archive",
           "title": "Select SoulFire server jar"
-        }
-      }
-    },
-    "mobile": {
-      "description": "To run the SoulFire server on this device, you need to complete a few manual steps.",
-      "form": {
-        "termuxCommand": {
-          "title": "Termux command",
-          "description": "Install the <a>Termux app</a>. Run this command in Termux to install the SoulFire server. Run <copy>generate-token api</copy> to create a token. Then enter the token below."
         },
-        "token": {
-          "title": "Token",
-          "description": "Token to authenticate with the local server.",
-          "placeholder": "Secret token"
-        },
-        "back": "Back",
-        "connect": "Connect"
+        "removeError": "Could not remove the custom jar. Try again.",
+        "loadError": "Could not load your custom jars."
       }
     },
     "cancel": "Cancel startup",
-    "cancelling": "Cancelling startup...",
+    "cancelling": "Canceling startup...",
     "cancelError": "Could not cancel startup",
     "autoStart": {
       "title": "Start automatically next time",

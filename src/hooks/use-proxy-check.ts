@@ -67,6 +67,9 @@ export function useProxyCheck(
               ? t("proxy.checkToast.success", { count: result.failed })
               : t("proxy.checkToast.successKept", {
                   failed: result.failed,
+                  count: proxies.length,
+                  // Older translations use {{total}}. Keep it until Crowdin
+                  // translates the plural forms.
                   total: proxies.length,
                 }),
             { id: toastId, cancel: undefined },

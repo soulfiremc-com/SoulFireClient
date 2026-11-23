@@ -1,4 +1,4 @@
-import i18n from "@/lib/i18n.ts";
+import { useTranslation } from "react-i18next";
 import {
   type Cell,
   FlexRender,
@@ -97,6 +97,7 @@ export function DataTable<TData extends RowData>({
   className,
   ...props
 }: DataTableProps<TData>) {
+  const { t } = useTranslation("common");
   return (
     <div
       className={cn("flex w-full flex-col gap-2.5 overflow-auto", className)}
@@ -150,7 +151,7 @@ export function DataTable<TData extends RowData>({
                         <Empty className="h-full rounded-none border-0 px-4 py-8">
                           <EmptyHeader className="gap-1">
                             <EmptyTitle className="text-sm">
-                              {i18n.t("common:dataTable.noResults")}
+                              {t("dataTable.noResults")}
                             </EmptyTitle>
                           </EmptyHeader>
                         </Empty>

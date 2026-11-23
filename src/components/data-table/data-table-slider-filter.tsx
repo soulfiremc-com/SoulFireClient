@@ -1,6 +1,7 @@
 "use client";
 
-import i18n from "@/lib/i18n.ts";
+import { formatNumber } from "@/lib/format.ts";
+import { useTranslation } from "react-i18next";
 import type { Column, RowData } from "@tanstack/react-table";
 import { PlusCircle, XCircle } from "lucide-react";
 import * as React from "react";
@@ -58,6 +59,7 @@ export function DataTableSliderFilter<TData extends RowData>({
   column,
   title,
 }: DataTableSliderFilterProps<TData>) {
+  const { t } = useTranslation("common");
   const id = React.useId();
 
   const columnFilterValue = parseValuesAsNumbers(column.getFilterValue());
@@ -102,8 +104,7 @@ export function DataTableSliderFilter<TData extends RowData>({
   );
 
   const formatValue = React.useCallback(
-    (value: number) =>
-      value.toLocaleString(undefined, { maximumFractionDigits: 0 }),
+    (value: number) => formatNumber(value, { maximumFractionDigits: 0 }),
     [],
   );
 
@@ -151,7 +152,7 @@ export function DataTableSliderFilter<TData extends RowData>({
             type="button"
             variant="outline"
             size="icon-sm"
-            aria-label={i18n.t("common:dataTable.clearFilter", { title })}
+            aria-label={t("dataTable.clearFilter", { title })}
             className="border-dashed"
             onClick={onReset}
           >
@@ -195,7 +196,7 @@ export function DataTableSliderFilter<TData extends RowData>({
           <div className="flex items-center gap-4">
             <Field className="gap-2">
               <FieldLabel htmlFor={`${id}-from`} className="text-xs">
-                {i18n.t("common:dataTable.from")}
+                {t("dataTable.from")}
               </FieldLabel>
               <div className="relative">
                 <Input
@@ -221,7 +222,7 @@ export function DataTableSliderFilter<TData extends RowData>({
             </Field>
             <Field className="gap-2">
               <FieldLabel htmlFor={`${id}-to`} className="text-xs">
-                {i18n.t("common:dataTable.to")}
+                {t("dataTable.to")}
               </FieldLabel>
               <div className="relative">
                 <Input
@@ -248,7 +249,7 @@ export function DataTableSliderFilter<TData extends RowData>({
           </div>
           <Field className="gap-2">
             <FieldLabel htmlFor={`${id}-slider`} className="sr-only">
-              {title} slider
+              {t("dataTable.sliderLabel", { title })}
             </FieldLabel>
             <Slider
               id={`${id}-slider`}
@@ -261,12 +262,12 @@ export function DataTableSliderFilter<TData extends RowData>({
           </Field>
         </FieldGroup>
         <Button
-          aria-label={i18n.t("common:dataTable.clearFilter", { title })}
+          aria-label={t("dataTable.clearFilter", { title })}
           variant="outline"
           size="sm"
           onClick={onReset}
         >
-          {i18n.t("common:dataTable.clear")}
+          {t("dataTable.clear")}
         </Button>
       </PopoverContent>
     </Popover>

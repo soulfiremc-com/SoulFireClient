@@ -1,4 +1,4 @@
-import i18n from "@/lib/i18n.ts";
+import { useTranslation } from "react-i18next";
 import type { ReactTable, RowData } from "@tanstack/react-table";
 import {
   ChevronLeft,
@@ -36,6 +36,7 @@ export function DataTablePagination<TData extends RowData>({
   className,
   ...props
 }: DataTablePaginationProps<TData>) {
+  const { t } = useTranslation("common");
   const rowsPerPageLabelId = useId();
   const pageSizeItems = pageSizeOptions.map((pageSize) => ({
     label: String(pageSize),
@@ -64,7 +65,11 @@ export function DataTablePagination<TData extends RowData>({
           {...props}
         >
           <div className="text-sm text-muted-foreground">
-            {i18n.t("common:dataTable.rowsSelected", {
+            {t("dataTable.rowsSelected", {
+              selected: table.getFilteredSelectedRowModel().rows.length,
+              count: table.getFilteredRowModel().rows.length,
+              // Older translations use {{amount}} and {{total}}. Keep them
+              // until Crowdin translates the plural forms.
               amount: table.getFilteredSelectedRowModel().rows.length,
               total: table.getFilteredRowModel().rows.length,
             })}
@@ -75,7 +80,7 @@ export function DataTablePagination<TData extends RowData>({
                 id={rowsPerPageLabelId}
                 className="text-sm font-medium whitespace-nowrap"
               >
-                {i18n.t("common:dataTable.rowsPerPage")}
+                {t("dataTable.rowsPerPage")}
               </p>
               <Select
                 value={`${pagination.pageSize}`}
@@ -92,9 +97,7 @@ export function DataTablePagination<TData extends RowData>({
                 </SelectTrigger>
                 <SelectContent side="top">
                   <SelectGroup>
-                    <SelectLabel>
-                      {i18n.t("common:dataTable.rowsPerPage")}
-                    </SelectLabel>
+                    <SelectLabel>{t("dataTable.rowsPerPage")}</SelectLabel>
                     {pageSizeItems.map((pageSize) => (
                       <SelectItem key={pageSize.value} value={pageSize.value}>
                         {pageSize.label}
@@ -106,13 +109,13 @@ export function DataTablePagination<TData extends RowData>({
             </div>
             <div className="flex items-center gap-2">
               <div className="mr-2 text-sm font-medium whitespace-nowrap">
-                {i18n.t("common:dataTable.currentPage", {
+                {t("dataTable.currentPage", {
                   page: pagination.pageIndex + 1,
                   total: Math.max(table.getPageCount(), 1),
                 })}
               </div>
               <Button
-                aria-label={i18n.t("common:dataTable.goFirst")}
+                aria-label={t("dataTable.goFirst")}
                 variant="outline"
                 size="icon"
                 className="size-8"
@@ -124,7 +127,7 @@ export function DataTablePagination<TData extends RowData>({
                 <ChevronsLeft />
               </Button>
               <Button
-                aria-label={i18n.t("common:dataTable.goPrevious")}
+                aria-label={t("dataTable.goPrevious")}
                 variant="outline"
                 size="icon"
                 className="size-8"
@@ -136,7 +139,7 @@ export function DataTablePagination<TData extends RowData>({
                 <ChevronLeft />
               </Button>
               <Button
-                aria-label={i18n.t("common:dataTable.goNext")}
+                aria-label={t("dataTable.goNext")}
                 variant="outline"
                 size="icon"
                 className="size-8"
@@ -148,7 +151,7 @@ export function DataTablePagination<TData extends RowData>({
                 <ChevronRight />
               </Button>
               <Button
-                aria-label={i18n.t("common:dataTable.goLast")}
+                aria-label={t("dataTable.goLast")}
                 variant="outline"
                 size="icon"
                 className="size-8"

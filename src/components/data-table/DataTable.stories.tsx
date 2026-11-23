@@ -164,7 +164,7 @@ export const SelectAndFilter: Story = {
     await userEvent.click(secondRow);
     await expect(secondRow).toBeChecked();
     await expect(
-      canvas.getByText(`1 of ${ROW_COUNT} row(s) selected`),
+      canvas.getByText(`1 of ${ROW_COUNT} rows selected`),
     ).toBeVisible();
     await waitFor(() => expect(body.getByText("1 selected")).toBeVisible());
 

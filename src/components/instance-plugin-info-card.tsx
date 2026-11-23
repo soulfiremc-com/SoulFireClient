@@ -39,7 +39,6 @@ import type {
 import { useContextMenu } from "@/hooks/use-context-menu.ts";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard.ts";
 import { useSettingSaveError } from "@/hooks/use-setting-save-error.ts";
-import i18n from "@/lib/i18n";
 import { settingMutationOptions } from "@/lib/setting-mutation-options.ts";
 import type { BaseSettings } from "@/lib/types.ts";
 import {
@@ -245,6 +244,7 @@ export function InstancePluginInfoCard(props: {
   /** Explains a state change that the surrounding list does not show yet. */
   note?: string | undefined;
 }) {
+  const { t } = useTranslation("common");
   const instanceInfoQueryOptions = useRouteContext({
     from: "/_dashboard/instance/$instance",
     select: (context) => context.instanceInfoQueryOptions,
@@ -272,7 +272,7 @@ export function InstancePluginInfoCard(props: {
       if (!enabledIdentifier) return;
       if (!transport) {
         // The demo keeps its sample state, so say why the switch did not move.
-        toast.info(i18n.t("common:settingsPage.demoNotSaved"));
+        toast.info(t("settingsPage.demoNotSaved"));
         return;
       }
       await updateInstanceConfigEntry(
@@ -327,6 +327,7 @@ export function BotPluginInfoCard(props: {
   instanceInfoQueryKey: readonly unknown[];
   settingsDefinitions: SettingsDefinition[];
 }) {
+  const { t } = useTranslation("common");
   const transport = use(TransportContext);
   const queryClient = useQueryClient();
 
@@ -348,7 +349,7 @@ export function BotPluginInfoCard(props: {
       if (!enabledIdentifier) return;
       if (!transport) {
         // The demo keeps its sample state, so say why the switch did not move.
-        toast.info(i18n.t("common:settingsPage.demoNotSaved"));
+        toast.info(t("settingsPage.demoNotSaved"));
         return;
       }
       await updateBotConfigEntry(
@@ -386,6 +387,7 @@ export function ServerPluginInfoCard(props: {
   settingsEntry: SettingsPage;
   plugin: ServerPlugin;
 }) {
+  const { t } = useTranslation("common");
   const serverInfoQueryOptions = useRouteContext({
     from: "/_dashboard/user/admin",
     select: (context) => context.serverInfoQueryOptions,
@@ -413,7 +415,7 @@ export function ServerPluginInfoCard(props: {
       if (!enabledIdentifier) return;
       if (!transport) {
         // The demo keeps its sample state, so say why the switch did not move.
-        toast.info(i18n.t("common:settingsPage.demoNotSaved"));
+        toast.info(t("settingsPage.demoNotSaved"));
         return;
       }
       await updateServerConfigEntry(

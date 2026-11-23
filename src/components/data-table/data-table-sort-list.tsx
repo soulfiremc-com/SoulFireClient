@@ -1,6 +1,6 @@
 "use client";
 
-import i18n from "@/lib/i18n.ts";
+import { useTranslation } from "react-i18next";
 import type {
   ColumnSort,
   ReactTable,
@@ -93,6 +93,7 @@ function DataTableSortListContent<TData extends RowData>({
   disabled,
   ...props
 }: DataTableSortListContentProps<TData>) {
+  const { t } = useTranslation("common");
   const id = React.useId();
   const labelId = React.useId();
   const descriptionId = React.useId();
@@ -216,7 +217,7 @@ function DataTableSortListContent<TData extends RowData>({
           }
         >
           <ArrowDownUp className="text-muted-foreground" />
-          {i18n.t("common:dataTable.sort")}
+          {t("dataTable.sort")}
           {sorting.length > 0 && (
             <Badge
               variant="secondary"
@@ -235,8 +236,8 @@ function DataTableSortListContent<TData extends RowData>({
           <div className="flex flex-col gap-1">
             <h4 id={labelId} className="leading-none font-medium">
               {sorting.length > 0
-                ? i18n.t("common:dataTable.sortBy")
-                : i18n.t("common:dataTable.noSortingApplied")}
+                ? t("dataTable.sortBy")
+                : t("dataTable.noSortingApplied")}
             </h4>
             <p
               id={descriptionId}
@@ -246,8 +247,8 @@ function DataTableSortListContent<TData extends RowData>({
               )}
             >
               {sorting.length > 0
-                ? i18n.t("common:dataTable.modifySorting")
-                : i18n.t("common:dataTable.addSorting")}
+                ? t("dataTable.modifySorting")
+                : t("dataTable.addSorting")}
             </p>
           </div>
           {sorting.length > 0 && (
@@ -277,7 +278,7 @@ function DataTableSortListContent<TData extends RowData>({
               onClick={onSortAdd}
               disabled={columns.length === 0}
             >
-              {i18n.t("common:dataTable.addSort")}
+              {t("dataTable.addSort")}
             </Button>
             {sorting.length > 0 && (
               <Button
@@ -286,7 +287,7 @@ function DataTableSortListContent<TData extends RowData>({
                 className="rounded-sm"
                 onClick={onSortingReset}
               >
-                {i18n.t("common:dataTable.resetSorting")}
+                {t("dataTable.resetSorting")}
               </Button>
             )}
           </div>
@@ -321,6 +322,7 @@ function DataTableSortItem({
   onSortUpdate,
   onSortRemove,
 }: DataTableSortItemProps) {
+  const { t } = useTranslation("common");
   const fieldListboxId = `${sortItemId}-field-listbox`;
   const fieldTriggerId = `${sortItemId}-field-trigger`;
   const directionListboxId = `${sortItemId}-direction-listbox`;
@@ -381,13 +383,9 @@ function DataTableSortItem({
         </PopoverTrigger>
         <PopoverContent id={fieldListboxId} className="w-(--anchor-width) p-0">
           <Command>
-            <CommandInput
-              placeholder={i18n.t("common:dataTable.searchFields")}
-            />
+            <CommandInput placeholder={t("dataTable.searchFields")} />
             <CommandList>
-              <CommandEmpty>
-                {i18n.t("common:dataTable.noFieldsFound")}
-              </CommandEmpty>
+              <CommandEmpty>{t("dataTable.noFieldsFound")}</CommandEmpty>
               <CommandGroup>
                 {columns.map((column) => (
                   <CommandItem
@@ -417,7 +415,7 @@ function DataTableSortItem({
         items={sortOrderItems}
       >
         <SelectTrigger
-          aria-label={i18n.t("common:dataTable.sortDirectionFor", {
+          aria-label={t("dataTable.sortDirectionFor", {
             column: columnLabels.get(sort.id),
           })}
           aria-controls={directionListboxId}
@@ -431,9 +429,7 @@ function DataTableSortItem({
           className="min-w-(--anchor-width)"
         >
           <SelectGroup>
-            <SelectLabel>
-              {i18n.t("common:dataTable.sortDirection")}
-            </SelectLabel>
+            <SelectLabel>{t("dataTable.sortDirection")}</SelectLabel>
             {sortOrderItems.map((order) => (
               <SelectItem key={order.value} value={order.value}>
                 {order.label}
@@ -443,7 +439,7 @@ function DataTableSortItem({
         </SelectContent>
       </Select>
       <Button
-        aria-label={i18n.t("common:dataTable.removeSort", {
+        aria-label={t("dataTable.removeSort", {
           column: columnLabels.get(sort.id),
         })}
         aria-controls={sortItemId}
@@ -459,7 +455,7 @@ function DataTableSortItem({
       <SortableItemHandle
         render={
           <Button
-            aria-label={i18n.t("common:dataTable.reorderSort", {
+            aria-label={t("dataTable.reorderSort", {
               column: columnLabels.get(sort.id),
             })}
             variant="outline"

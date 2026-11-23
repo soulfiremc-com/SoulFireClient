@@ -1,6 +1,6 @@
 "use client";
 
-import i18n from "@/lib/i18n.ts";
+import { useTranslation } from "react-i18next";
 import type { CellData, Column, RowData } from "@tanstack/react-table";
 import { Check, PlusCircle, XCircle } from "lucide-react";
 import * as React from "react";
@@ -45,6 +45,7 @@ export function DataTableFacetedFilter<
   options,
   multiple,
 }: DataTableFacetedFilterProps<TData, TValue>) {
+  const { t } = useTranslation("common");
   const [open, setOpen] = React.useState(false);
   const triggerRef = React.useRef<HTMLButtonElement>(null);
 
@@ -90,7 +91,7 @@ export function DataTableFacetedFilter<
             type="button"
             variant="outline"
             size="icon-sm"
-            aria-label={i18n.t("common:dataTable.clearFilter", { title })}
+            aria-label={t("dataTable.clearFilter", { title })}
             className="border-dashed"
             onClick={onReset}
           >
@@ -127,7 +128,7 @@ export function DataTableFacetedFilter<
                     variant="secondary"
                     className="rounded-sm px-1 font-normal"
                   >
-                    {i18n.t("common:dataTable.selected", {
+                    {t("dataTable.selected", {
                       count: selectedValues.size,
                     })}
                   </Badge>
@@ -153,7 +154,7 @@ export function DataTableFacetedFilter<
         <Command>
           <CommandInput placeholder={title} />
           <CommandList className="max-h-full">
-            <CommandEmpty>{i18n.t("common:dataTable.noResults")}</CommandEmpty>
+            <CommandEmpty>{t("dataTable.noResults")}</CommandEmpty>
             <CommandGroup className="max-h-[300px] scroll-py-1 overflow-x-hidden overflow-y-auto">
               {options.map((option) => {
                 const isSelected = selectedValues.has(option.value);
@@ -196,7 +197,7 @@ export function DataTableFacetedFilter<
                     }}
                     className="justify-center text-center"
                   >
-                    {i18n.t("common:dataTable.clearFilters")}
+                    {t("dataTable.clearFilters")}
                   </CommandItem>
                 </CommandGroup>
               </>

@@ -1,6 +1,6 @@
 "use client";
 
-import i18n from "@/lib/i18n.ts";
+import { useTranslation } from "react-i18next";
 import type { Column, ReactTable, RowData } from "@tanstack/react-table";
 import { X } from "lucide-react";
 import * as React from "react";
@@ -27,6 +27,7 @@ export function DataTableToolbar<TData extends RowData>({
   className,
   ...props
 }: DataTableToolbarProps<TData>) {
+  const { t } = useTranslation("common");
   const columns = React.useMemo(
     () => table.getAllColumns().filter((column) => column.getCanFilter()),
     [table],
@@ -62,14 +63,14 @@ export function DataTableToolbar<TData extends RowData>({
           {(columnFilters) =>
             columnFilters.length > 0 ? (
               <Button
-                aria-label={i18n.t("common:dataTable.resetFilters")}
+                aria-label={t("dataTable.resetFilters")}
                 variant="outline"
                 size="sm"
                 className="border-dashed"
                 onClick={onReset}
               >
                 <X />
-                {i18n.t("common:dataTable.reset")}
+                {t("dataTable.reset")}
               </Button>
             ) : null
           }

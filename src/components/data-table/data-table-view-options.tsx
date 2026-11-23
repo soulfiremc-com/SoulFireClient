@@ -1,6 +1,6 @@
 "use client";
 
-import i18n from "@/lib/i18n.ts";
+import { useTranslation } from "react-i18next";
 import type { ReactTable, RowData } from "@tanstack/react-table";
 import { Check, Settings2 } from "lucide-react";
 import * as React from "react";
@@ -33,6 +33,7 @@ export function DataTableViewOptions<TData extends RowData>({
   disabled,
   ...props
 }: DataTableViewOptionsProps<TData>) {
+  const { t } = useTranslation("common");
   const columns = React.useMemo(
     () =>
       table
@@ -56,21 +57,17 @@ export function DataTableViewOptions<TData extends RowData>({
         }
       >
         <Settings2 className="text-muted-foreground" />
-        {i18n.t("common:dataTable.view")}
+        {t("dataTable.view")}
       </PopoverTrigger>
       <PopoverContent
-        aria-label={i18n.t("common:dataTable.toggleColumns")}
+        aria-label={t("dataTable.toggleColumns")}
         className="w-44 p-0"
         {...props}
       >
         <Command>
-          <CommandInput
-            placeholder={i18n.t("common:dataTable.searchColumns")}
-          />
+          <CommandInput placeholder={t("dataTable.searchColumns")} />
           <CommandList>
-            <CommandEmpty>
-              {i18n.t("common:dataTable.noColumnsFound")}
-            </CommandEmpty>
+            <CommandEmpty>{t("dataTable.noColumnsFound")}</CommandEmpty>
             <table.Subscribe source={table.atoms.columnVisibility}>
               {() => (
                 <CommandGroup>

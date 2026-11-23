@@ -35,5 +35,6 @@
   "emailTooLong": "Use 255 characters or fewer.",
   "jarSource": "Choose the official server or a custom jar.",
   "generationMode": "Choose how to handle existing accounts.",
-  "userRole": "Choose a role."
+  "userRole": "Choose a role.",
+  "serverUrl": "Enter an HTTP or HTTPS server URL without a username or password."
 }

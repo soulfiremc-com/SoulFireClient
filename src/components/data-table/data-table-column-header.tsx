@@ -1,6 +1,6 @@
 "use client";
 
-import i18n from "@/lib/i18n.ts";
+import { useTranslation } from "react-i18next";
 import type { CellData, Column, RowData } from "@tanstack/react-table";
 import {
   ChevronDown,
@@ -37,6 +37,7 @@ export function DataTableColumnHeader<
   className,
   ...props
 }: DataTableColumnHeaderProps<TData, TValue>) {
+  const { t } = useTranslation("common");
   if (!column.getCanSort() && !column.getCanHide()) {
     return <div className={cn(className)}>{label}</div>;
   }
@@ -72,7 +73,7 @@ export function DataTableColumnHeader<
               }}
             >
               <ChevronUp />
-              {i18n.t("common:dataTable.columnHeader.asc")}
+              {t("dataTable.columnHeader.asc")}
             </DropdownMenuCheckboxItem>
             <DropdownMenuCheckboxItem
               className="relative pr-8 pl-2 [&_svg]:text-muted-foreground [&>span:first-child]:right-2 [&>span:first-child]:left-auto"
@@ -83,7 +84,7 @@ export function DataTableColumnHeader<
               }}
             >
               <ChevronDown />
-              {i18n.t("common:dataTable.columnHeader.desc")}
+              {t("dataTable.columnHeader.desc")}
             </DropdownMenuCheckboxItem>
             {column.getIsSorted() && (
               <DropdownMenuItem
@@ -93,7 +94,7 @@ export function DataTableColumnHeader<
                 }}
               >
                 <X />
-                {i18n.t("common:dataTable.columnHeader.reset")}
+                {t("dataTable.columnHeader.reset")}
               </DropdownMenuItem>
             )}
           </>
@@ -108,7 +109,7 @@ export function DataTableColumnHeader<
             }}
           >
             <EyeOff />
-            {i18n.t("common:dataTable.columnHeader.hide")}
+            {t("dataTable.columnHeader.hide")}
           </DropdownMenuCheckboxItem>
         )}
       </DropdownMenuContent>

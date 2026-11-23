@@ -1,6 +1,6 @@
 "use client";
 
-import i18n from "@/lib/i18n.ts";
+import { useTranslation } from "react-i18next";
 import type { Column, RowData } from "@tanstack/react-table";
 import { CalendarIcon, XCircle } from "lucide-react";
 import * as React from "react";
@@ -64,6 +64,7 @@ export function DataTableDateFilter<TData extends RowData>({
   title,
   multiple,
 }: DataTableDateFilterProps<TData>) {
+  const { t } = useTranslation("common");
   const triggerRef = React.useRef<HTMLButtonElement>(null);
   const columnFilterValue = column.getFilterValue();
 
@@ -132,7 +133,7 @@ export function DataTableDateFilter<TData extends RowData>({
       const hasSelectedDates = selectedDates.from ?? selectedDates.to;
       const dateText = hasSelectedDates
         ? formatDateRange(selectedDates)
-        : i18n.t("common:dataTable.selectDateRange");
+        : t("dataTable.selectDateRange");
 
       return (
         <span className="flex items-center gap-2">
@@ -155,7 +156,7 @@ export function DataTableDateFilter<TData extends RowData>({
     const hasSelectedDate = selectedDates.length > 0;
     const dateText = hasSelectedDate
       ? formatDate(selectedDates[0])
-      : i18n.t("common:dataTable.selectDate");
+      : t("dataTable.selectDate");
 
     return (
       <span className="flex items-center gap-2">
@@ -171,7 +172,7 @@ export function DataTableDateFilter<TData extends RowData>({
         )}
       </span>
     );
-  }, [selectedDates, multiple, formatDateRange, title]);
+  }, [selectedDates, multiple, formatDateRange, title, t]);
 
   return (
     <Popover>
@@ -181,7 +182,7 @@ export function DataTableDateFilter<TData extends RowData>({
             type="button"
             variant="outline"
             size="icon-sm"
-            aria-label={i18n.t("common:dataTable.clearFilter", { title })}
+            aria-label={t("dataTable.clearFilter", { title })}
             className="border-dashed"
             onClick={onReset}
           >

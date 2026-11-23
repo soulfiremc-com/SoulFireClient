@@ -1,6 +1,5 @@
 "use client";
 
-import i18n from "@/lib/i18n.ts";
 import type { ReactTable, RowData } from "@tanstack/react-table";
 import { Loader, X } from "lucide-react";
 import * as React from "react";
@@ -229,10 +228,7 @@ function DataTableActionBarSelection<TData extends RowData>({
         >
           <p>{t("dataTable.clearSelection")}</p>
           <Kbd className="border bg-background font-mono text-2xs font-normal text-foreground shadow-xs">
-            <abbr
-              title={i18n.t("common:dataTable.escapeKey")}
-              className="no-underline"
-            >
+            <abbr title={t("dataTable.escapeKey")} className="no-underline">
               {t("dataTable.escape")}
             </abbr>
           </Kbd>

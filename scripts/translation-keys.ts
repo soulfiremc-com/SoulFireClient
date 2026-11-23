@@ -9,7 +9,8 @@
 // Keys built only from variables cannot be checked and are counted as dynamic.
 //
 // Run `node scripts/translation-keys.ts` for a report of missing and unused
-// en-US keys. scripts/translation-keys.test.ts fails on missing keys.
+// en-US keys, and for translations whose placeholders or syntax do not match
+// en-US. scripts/translation-keys.test.ts fails on missing keys.
 
 import { readdirSync, readFileSync } from "node:fs";
 import { join, relative } from "node:path";
@@ -24,6 +25,8 @@ const CatalogJson = Schema.fromJsonString(Schema.Json);
 export interface Catalog {
   leaves: Set<string>;
   bases: Set<string>;
+  /** Keys without plural suffixes whose text puts a word after `{{count}}`. */
+  countWithoutPlural: Set<string>;
 }
 
 interface Literal {
@@ -53,29 +56,33 @@ export interface TranslationKeyReport {
   missing: Finding[];
   missingPlurals: Finding[];
   unpairedPlurals: string[];
+  countWithoutPlural: string[];
   unused: string[];
   dynamic: Finding[];
   uncheckedDynamic: Finding[];
   staleAllowlist: string[];
 }
 
-/** Flatten a locale catalog into dotted leaf keys. */
+/** Flatten a locale catalog into dotted leaf keys and their values. */
 function flatten(
   value: Schema.Json,
   prefix: string,
-  result: Set<string>,
-): Set<string> {
+  result: Map<string, string>,
+): Map<string, string> {
   if (value === null || typeof value !== "object") return result;
   for (const [key, child] of Object.entries(value)) {
     const path = prefix ? `${prefix}.${key}` : key;
     if (child !== null && typeof child === "object") {
       flatten(child, path, result);
     } else {
-      result.add(path);
+      result.set(path, String(child));
     }
   }
   return result;
 }
+
+// A word after the count, as in "{{count}} proxies", needs plural forms.
+const COUNTED_WORD = /\{\{\s*count\s*\}\}\s+\p{L}/u;
 
 function stripPlural(key: string): string {
   for (const suffix of PLURAL_SUFFIXES) {
@@ -92,9 +99,17 @@ export function loadCatalogs(localeDirectory: string): Map<string, Catalog> {
     const json = Schema.decodeSync(CatalogJson)(
       readFileSync(join(localeDirectory, file), "utf8"),
     );
-    const leaves = flatten(json, "", new Set());
+    const values = flatten(json, "", new Map());
+    const leaves = new Set(values.keys());
     const bases = new Set([...leaves].map((key) => stripPlural(key)));
-    catalogs.set(namespace, { leaves, bases });
+    const countWithoutPlural = new Set(
+      [...values]
+        .filter(
+          ([key, text]) => stripPlural(key) === key && COUNTED_WORD.test(text),
+        )
+        .map(([key]) => key),
+    );
+    catalogs.set(namespace, { leaves, bases, countWithoutPlural });
   }
   return catalogs;
 }
@@ -502,6 +517,13 @@ export function checkTranslationKeys({
     }
   }
 
+  const countWithoutPlural: string[] = [];
+  for (const [namespace, catalog] of catalogs) {
+    for (const key of catalog.countWithoutPlural) {
+      countWithoutPlural.push(`${namespace}:${key}`);
+    }
+  }
+
   const unused: string[] = [];
   for (const [namespace, { bases }] of catalogs) {
     for (const key of bases) {
@@ -524,6 +546,7 @@ export function checkTranslationKeys({
     missing,
     missingPlurals,
     unpairedPlurals,
+    countWithoutPlural,
     unused,
     dynamic,
     uncheckedDynamic: dynamic.filter(({ key }) => !allowed.has(key)),
@@ -531,6 +554,93 @@ export function checkTranslationKeys({
       (entry) => !dynamic.some(({ key }) => key === entry),
     ),
   };
+}
+
+const PLACEHOLDER = /\{\{\s*([^\s,}]+)[^}]*\}\}/gu;
+// i18next JSON does not read ICU MessageFormat. Such text shows as written.
+const ICU_SYNTAX = /\{\s*\w+\s*,\s*(?:plural|select|selectordinal)\s*,/u;
+
+function placeholders(text: string): Set<string> {
+  return new Set(
+    Array.from(text.matchAll(PLACEHOLDER), (match) => match[1] ?? ""),
+  );
+}
+
+function loadValues(directory: string, file: string): Map<string, string> {
+  const json = Schema.decodeSync(CatalogJson)(
+    readFileSync(join(directory, file), "utf8"),
+  );
+  return flatten(json, "", new Map());
+}
+
+export interface LocaleReport {
+  /**
+   * Translations that use a placeholder the en-US text for the same key does
+   * not have, as `locale ns:key {{name}}`. i18next leaves such a placeholder
+   * as literal text unless the call site still passes that value.
+   */
+  placeholderMismatches: string[];
+  /** Strings written in ICU MessageFormat, as `locale ns:key`. */
+  icuStrings: string[];
+}
+
+/**
+ * Compare every translated catalog with en-US. Keys that en-US no longer has
+ * are skipped, because Crowdin removes them on the next sync.
+ */
+export function checkLocales({
+  rootDirectory,
+  sourceLocale = "en-US",
+}: {
+  rootDirectory: string;
+  sourceLocale?: string;
+}): LocaleReport {
+  const localesDirectory = join(rootDirectory, "locales");
+  const sourceDirectory = join(localesDirectory, sourceLocale);
+  const placeholderMismatches: string[] = [];
+  const icuStrings: string[] = [];
+
+  for (const file of readdirSync(sourceDirectory).toSorted()) {
+    if (!file.endsWith(".json")) continue;
+    const namespace = file.slice(0, -".json".length);
+    const source = loadValues(sourceDirectory, file);
+    // A translation can use any placeholder of the key's plural forms, and
+    // `count` whenever the key has plural forms.
+    const allowed = new Map<string, Set<string>>();
+    for (const [key, text] of source) {
+      const base = stripPlural(key);
+      const names = allowed.get(base) ?? new Set<string>();
+      for (const name of placeholders(text)) names.add(name);
+      if (base !== key) names.add("count");
+      allowed.set(base, names);
+    }
+
+    for (const locale of readdirSync(localesDirectory).toSorted()) {
+      let values: Map<string, string>;
+      try {
+        values = loadValues(join(localesDirectory, locale), file);
+      } catch {
+        continue;
+      }
+      for (const [key, text] of values) {
+        if (ICU_SYNTAX.test(text)) {
+          icuStrings.push(`${locale} ${namespace}:${key}`);
+        }
+        if (locale === sourceLocale) continue;
+        const names = allowed.get(stripPlural(key));
+        if (!names) continue;
+        for (const name of placeholders(text)) {
+          if (!names.has(name)) {
+            placeholderMismatches.push(
+              `${locale} ${namespace}:${key} {{${name}}}`,
+            );
+          }
+        }
+      }
+    }
+  }
+
+  return { placeholderMismatches, icuStrings };
 }
 
 function print(title: string, items: readonly (Finding | string)[]): void {
@@ -550,8 +660,12 @@ if (process.argv[1] === import.meta.filename) {
   print("Missing keys", result.missing);
   print("Plural problems", result.missingPlurals);
   print("Unpaired plural forms", result.unpairedPlurals);
+  print("Counts without plural forms", result.countWithoutPlural);
   print("Dynamic keys", result.dynamic);
   print("Unused keys", result.unused);
+  const locales = checkLocales({ rootDirectory });
+  print("Placeholders that en-US does not have", locales.placeholderMismatches);
+  print("ICU MessageFormat strings", locales.icuStrings);
 }
 
 // Matches the default sort order, which compares UTF-16 code units.

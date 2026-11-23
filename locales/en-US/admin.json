@@ -39,8 +39,7 @@
       "label": {
         "state": "State",
         "active": "Active",
-        "stopped": "Stopped",
-        "other": "Other"
+        "stopped": "Stopped"
       }
     },
     "usersChart": {
@@ -49,13 +48,16 @@
       "label": {
         "role": "Role",
         "user": "User",
-        "admin": "Admin",
-        "other": "Other"
+        "admin": "Admin"
       }
     }
   },
   "users": {
     "filterPlaceholder": "Filter users...",
+    "noPermission": {
+      "title": "You cannot view users",
+      "description": "Ask an administrator for permission to view the user list."
+    },
     "baseUserDialog": {
       "form": {
         "username": {
@@ -116,6 +118,9 @@
       "loading": "Signing users out...",
       "success": "Users signed out",
       "error": "Could not sign users out"
+    },
+    "impersonateToast": {
+      "error": "Could not impersonate this user"
     },
     "table": {
       "username": "Username",

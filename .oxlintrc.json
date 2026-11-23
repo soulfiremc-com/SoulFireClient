@@ -1471,84 +1471,55 @@
       }
     },
     {
-      "files": [
-        "src/routes/{__root,_dashboard,index}.tsx",
-        "src/components/nav/**/*.tsx"
-      ],
+      "files": ["src/**/*.tsx"],
       "rules": {
         "i18next/no-literal-string": [
           "error",
           {
             "mode": "jsx-only",
-            "jsx-attributes": {
+            "jsx-components": {
               "exclude": [
-                "className",
-                "styleName",
-                "style",
-                "type",
-                "key",
-                "id",
-                "width",
-                "height",
-                "align",
-                "aria-hidden",
-                "attribute",
-                "autoCapitalize",
-                "autoComplete",
-                "autoCorrect",
-                "collapsible",
-                "data-icon",
-                "defaultTheme",
-                "href",
-                "inputMode",
-                "name",
-                "orientation",
-                "size",
-                "to",
-                "value",
-                "variant"
+                "Kbd",
+                "KbdGroup",
+                "DropdownMenuShortcut",
+                "CommandShortcut",
+                "ContextMenuShortcut"
               ]
             },
+            "jsx-attributes": {
+              "include": [
+                "aria-label",
+                "aria-description",
+                "aria-placeholder",
+                "aria-roledescription",
+                "aria-valuetext",
+                "alt",
+                "description",
+                "label",
+                "placeholder",
+                "title",
+                "tooltip"
+              ],
+              "exclude": [".*"]
+            },
             "callees": {
-              "exclude": [
-                "i18n(ext)?",
-                "t",
-                "require",
-                "addEventListener",
-                "removeEventListener",
-                "postMessage",
-                "getElementById",
-                "dispatch",
-                "commit",
-                "includes",
-                "indexOf",
-                "endsWith",
-                "startsWith",
-                "createTextBlob",
-                "getItem",
-                "resolve",
-                "saveAs",
-                "setIntegratedState"
-              ]
+              "exclude": [".*"]
+            },
+            "object-properties": {
+              "exclude": [".*"]
             },
             "words": {
               "exclude": [
-                "[0-9!-/:-@[-`{-~]+",
+                "[\\s\\d!-/:-@[-`{-~·•×°–→←↑↓…]+",
                 "[A-Z_-]+",
-                "instance-page-layout",
-                "user-page-layout",
-                "json",
-                "[.]json",
-                "official",
-                "custom",
-                "prepare",
-                "start",
-                "connect",
-                "bottom",
-                "right",
-                "TanStack Query",
-                "TanStack Router",
-                "/user"
+                "[a-z0-9]+(-[a-z0-9]+)*",
+                "[a-z][a-zA-Z]*(\\.[a-zA-Z0-9_-]+)+",
+                "&gt;",
+                "🔒",
+                "Bot_%d",
+                "Localts",
+                "Fernan's Club",
+                "Fernan&apos;s Club"
               ]
             }
           }
@@ -1556,9 +1527,38 @@
       }
     },
     {
-      "files": ["**/*.{stories,test,spec}.tsx", "src/components/developer/**"],
+      "files": [
+        "**/*.{stories,test,spec}.tsx",
+        "src/components/developer/**",
+        "src/components/ui/**"
+      ],
       "rules": {
         "i18next/no-literal-string": "off"
+      }
+    },
+    {
+      "files": ["src/components/**/*.tsx"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "paths": [
+              {
+                "name": "i18next",
+                "importNames": ["t"],
+                "message": "Use the t function from useTranslation, so the component renders again when the language changes."
+              },
+              {
+                "name": "@/lib/i18n",
+                "message": "Use useTranslation in components, so they render again when the language changes."
+              },
+              {
+                "name": "@/lib/i18n.ts",
+                "message": "Use useTranslation in components, so they render again when the language changes."
+              }
+            ]
+          }
+        ]
       }
     }
   ],

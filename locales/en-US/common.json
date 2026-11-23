@@ -38,8 +38,7 @@
         "permission": "You do not have permission to open this page. Sign in with another account or ask the server administrator for access.",
         "unexpected": "The page could not load. Retry once, or share the error details when reporting the problem."
       }
-    },
-    "connectionFailed": "Connection to the SoulFire server failed."
+    }
   },
   "navigation": {
     "pending": "Loading page"
@@ -53,7 +52,7 @@
     "page": {
       "title": "Not found",
       "description": "There is no page at this address",
-      "logOut": "Sign out",
+      "home": "Go to start page",
       "reloadPage": "Reload page"
     }
   },
@@ -223,8 +222,10 @@
   },
   "dataTable": {
     "noResults": "No results.",
-    "rowsSelected": "{{amount}} of {{total}} row(s) selected",
+    "rowsSelected_one": "{{selected}} of {{count}} row selected",
+    "rowsSelected_other": "{{selected}} of {{count}} rows selected",
     "rowsPerPage": "Rows per page",
+    "sliderLabel": "{{title}} range",
     "currentPage": "Page {{page}} of {{total}}",
     "goFirst": "Go to first page",
     "goPrevious": "Go to previous page",
@@ -232,7 +233,8 @@
     "goLast": "Go to last page",
     "selectAll": "Select all",
     "selectRow": "Select row",
-    "selected": "{{count}} selected",
+    "selected_one": "{{count}} selected",
+    "selected_other": "{{count}} selected",
     "clearSelection": "Clear selection",
     "escape": "Esc",
     "filter": "Filter",
@@ -360,7 +362,6 @@
       "newEntry": "New {{name}} entry",
       "entry": "{{name}} entry {{number}}",
       "removeEntry": "Remove {{name}} entry {{number}}",
-      "saveError": "Could not save {{name}}",
       "placeholder": "Add a new entry...",
       "add": "Add",
       "remove": "Remove",
@@ -387,7 +388,6 @@
     "notSaved": "Not saved",
     "defaultValue": "Default: {{value}}",
     "resetToDefault": "Reset to default",
-    "overridden": "Set for this bot",
     "filter": "Filter this page",
     "filterPlaceholder": "Filter by name, description, or option",
     "closeFilter": "Clear and close filter",
@@ -400,10 +400,10 @@
     "demoNotSaved": "The demo does not save changes.",
     "scope": {
       "instance": "Project default. Applies to every bot in this project unless a bot has its own value.",
-      "bot": "This bot only. Values here override the project default for this bot.",
       "server": "Server setting. Applies to the whole SoulFire server and every project on it."
     },
-    "minMaxLegend": "Minimum and maximum settings"
+    "minMaxLegend": "Minimum and maximum settings",
+    "rangeValue": "{{min}} to {{max}}"
   },
   "terminal": {
     "actions": {
@@ -415,6 +415,15 @@
     },
     "noLogs": "No logs yet. Run a command to create log output.",
     "noLogsReadOnly": "No logs yet. New log lines appear here.",
+    "logsNoPermission": {
+      "title": "You cannot view server logs",
+      "description": "Ask an administrator for permission to view server logs."
+    },
+    "logsDenied": "You do not have permission to view these logs.",
+    "botLogsNoPermission": {
+      "title": "You cannot view this bot's logs",
+      "description": "Ask an administrator for permission to view logs in this instance."
+    },
     "jumpToLatest": "Jump to latest",
     "demo-1": "Welcome to demo mode! 🧪",
     "demo-2": "This is a read-only demo of SoulFire",
@@ -424,6 +433,7 @@
   "uiBreadcrumb": {
     "more": "More"
   },
+  "skipToContent": "Skip to content",
   "uiDialog": {
     "close": "Close"
   },
@@ -470,7 +480,7 @@
     "noDevices": "No devices found",
     "broadcastToast": {
       "loading": "Broadcasting message...",
-      "success": "Message broadcasted",
+      "success": "Message broadcast",
       "error": "Could not broadcast message"
     }
   },
@@ -528,7 +538,8 @@
     "unpin": "Unpin",
     "pinLabel": "Pin {{name}}",
     "unpinLabel": "Unpin {{name}}",
-    "pinLimit": "You can pin up to {{count}} commands. Unpin one first.",
+    "pinLimit_one": "You can pin up to {{count}} command. Unpin one first.",
+    "pinLimit_other": "You can pin up to {{count}} commands. Unpin one first.",
     "confirm": {
       "start_one": "Start {{count}} bot in {{project}}?",
       "start_other": "Start {{count}} bots in {{project}}?",
@@ -643,6 +654,7 @@
     "loadProfile": "Import configuration",
     "loadFromFile": "Load from file",
     "profileSaved": "Configuration exported",
+    "profileSaveError": "Could not export configuration",
     "saveProfile": "Export configuration",
     "deleteInstance": "Delete project",
     "controlsGroup": "Controls",
@@ -676,7 +688,6 @@
     "adminLogs": "Logs",
     "adminTerminal": "Terminal",
     "users": "Users",
-    "adminScripts": "Scripts",
     "serverSettings": "Server settings",
     "devSettings": "Dev settings",
     "theme": {
@@ -696,7 +707,8 @@
     "logOutToast": {
       "loading": "Signing out...",
       "success": "Signed out",
-      "error": "Could not sign out"
+      "error": "Could not sign out",
+      "stopError": "Signed out, but the local SoulFire server did not stop. It may still be running."
     },
     "exit": "Exit",
     "stopImpersonating": "Stop impersonating",
@@ -732,7 +744,6 @@
     "accountSettings": "Accounts",
     "metaSettings": "Project settings",
     "discoverPlugins": "Plugins",
-    "adminScripts": "Scripts",
     "instanceScripts": "Scripts"
   },
   "access": {
@@ -809,6 +820,7 @@
   },
   "auditLog": {
     "filterPlaceholder": "Filter audit logs...",
+    "refresh": "Refresh",
     "user": "User",
     "action": "Action",
     "type": "Type",
@@ -819,6 +831,12 @@
     "changedBotDesiredState": "Changed bot desired state",
     "restartedBots": "Restarted bots",
     "calledPluginRpc": "Called plugin RPC",
+    "types": {
+      "EXECUTE_COMMAND": "Command",
+      "BOT_DESIRED_STATE_CHANGE": "Bot state change",
+      "BOT_RESTART": "Bot restart",
+      "PLUGIN_RPC": "Plugin RPC"
+    },
     "contextMenu": {
       "copyUsername": "Copy username",
       "copyCommand": "Copy command"
@@ -827,39 +845,6 @@
   "toggleTheme": "Toggle theme",
   "pickADate": "Pick a date",
   "scripts": {
-    "filterPlaceholder": "Filter scripts...",
-    "baseScriptDialog": {
-      "form": {
-        "scriptName": {
-          "min": "Script names must be at least 3 characters",
-          "max": "Script names must be at most 32 characters",
-          "regex": "Use lowercase letters, numbers, and dashes. The name must start and end with a letter or number.",
-          "label": "Name",
-          "placeholder": "my-script",
-          "description": "The name of the script."
-        },
-        "elevatedPermissions": {
-          "label": "Elevated permissions",
-          "description": "The script runs with elevated permissions. Only administrators can enable this option."
-        }
-      }
-    },
-    "addScriptDialog": {
-      "title": "Add a new script",
-      "description": "Scripts are small programs that automate tasks and other actions on the SoulFire server.",
-      "form": {
-        "cancel": "Cancel",
-        "add": "Add"
-      }
-    },
-    "updateScriptDialog": {
-      "title": "Update script",
-      "description": "Update the script's information.",
-      "form": {
-        "cancel": "Cancel",
-        "update": "Update"
-      }
-    },
     "removeToast": {
       "loading": "Removing scripts...",
       "success": "Scripts removed",
@@ -879,17 +864,7 @@
       "loading": "Restarting script...",
       "success": "Script restarted",
       "error": "Could not restart script"
-    },
-    "table": {
-      "type": "Type",
-      "scriptName": "Name",
-      "language": "Language",
-      "elevatedPermissions": "Elevated permissions",
-      "createdAt": "Created",
-      "actions": "Actions"
-    },
-    "globalScript": "Global",
-    "instanceScript": "Project"
+    }
   },
   "contextMenu": {
     "actions": "Actions",
@@ -903,6 +878,7 @@
     },
     "bot": {
       "goToBot": "Go to bot",
+      "actions": "Actions for {{name}}",
       "copyUsername": "Copy username",
       "copyUuid": "Copy profile ID",
       "copyCoordinates": "Copy coordinates"
@@ -922,7 +898,8 @@
     "openDirectory": "Open data directory",
     "openDirectoryError": "Could not open the data directory",
     "elapsed": "{{count}}s elapsed",
-    "quiet": "No new output for {{count}} seconds. Startup may still be working. Capture a thread dump to see what Java is doing.",
+    "quiet_one": "No new output for {{count}} second. Startup may still be working. Capture a thread dump to see what Java is doing.",
+    "quiet_other": "No new output for {{count}} seconds. Startup may still be working. Capture a thread dump to see what Java is doing.",
     "status": {
       "idle": "Not started",
       "preparing": "Preparing Java and server files",
@@ -950,7 +927,8 @@
     "jcmdHelp": "Thread dumps need jcmd from JDK 25. The bundled Java runtime does not include it. Install a JDK 25 and choose jcmd (jcmd.exe on Windows) in its bin directory.",
     "openDump": "Open thread dump",
     "filter": "Filter process output",
-    "truncated": "{{count}} older log lines were omitted. Full server logs remain in the data directory.",
+    "truncated_one": "{{count}} older log line was omitted. Full server logs remain in the data directory.",
+    "truncated_other": "{{count}} older log lines were omitted. Full server logs remain in the data directory.",
     "privacy": "Reports include local paths and recent logs. Review reports and thread dumps for personal information before sharing. Nothing is uploaded automatically."
   },
   "instanceUnavailable": {
