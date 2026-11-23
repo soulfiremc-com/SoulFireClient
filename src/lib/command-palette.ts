@@ -111,6 +111,8 @@ interface CatalogOptions {
       >
     | undefined;
   demo?: boolean | undefined;
+  /** The desktop app serves pages from app://, which nothing else can open. */
+  desktop?: boolean | undefined;
 }
 
 type SettingsTarget =
@@ -276,6 +278,7 @@ export function createPaletteCommands({
   indexed = [],
   server,
   demo = false,
+  desktop = false,
 }: CatalogOptions): PaletteCommand[] {
   const commands: PaletteCommand[] = [];
   const canGlobal = (permission: GlobalPermission) =>
@@ -797,13 +800,14 @@ export function createPaletteCommands({
       keywords: ["theme", "appearance", theme],
     });
   }
-  add({
-    id: "copy-url",
-    label: t("commandPalette.copyUrl"),
-    icon: "link",
-    group: "actions",
-    action: "copy-url",
-  });
+  if (!desktop)
+    add({
+      id: "copy-url",
+      label: t("commandPalette.copyUrl"),
+      icon: "link",
+      group: "actions",
+      action: "copy-url",
+    });
   add({
     id: "refresh",
     label: t("commandPalette.refresh"),

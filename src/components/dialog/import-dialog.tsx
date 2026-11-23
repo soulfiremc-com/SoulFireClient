@@ -421,9 +421,6 @@ function MainDialog(
                   disabled={isPending}
                   onClick={() => {
                     read(async (signal) => {
-                      if (isDesktopApp()) {
-                        return [await desktop.clipboard.readText()];
-                      }
                       const mimeTypes = new Set(
                         props.filters.map((f) => f.mimeType),
                       );

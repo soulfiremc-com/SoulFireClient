@@ -1,4 +1,4 @@
-import { clipboard, contextBridge, ipcRenderer } from "electron";
+import { contextBridge, ipcRenderer } from "electron";
 import type { SoulFireDesktopApi } from "../src/lib/desktop-api";
 
 function invoke<T>(channel: string, ...args: unknown[]): Promise<T> {
@@ -56,12 +56,6 @@ const desktopApi: SoulFireDesktopApi = {
     stopAll: () => invoke("cast:stop-all"),
     setSettings: (settings) => invoke("cast:settings", settings),
     onState: (callback) => subscribe("cast:state", callback),
-  },
-  clipboard: {
-    readText: async () => clipboard.readText(),
-    writeText: async (text: string) => {
-      await clipboard.writeText(text);
-    },
   },
   dialog: {
     open: async (options) => invoke("dialog:open", options),

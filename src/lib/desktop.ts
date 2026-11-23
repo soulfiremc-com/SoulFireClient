@@ -104,14 +104,6 @@ export const desktop = {
     onState: (callback: (state: CastState) => void) =>
       requireDesktopRuntime().cast.onState(callback),
   },
-  clipboard: {
-    async readText(): Promise<string> {
-      return requireDesktopRuntime().clipboard.readText();
-    },
-    async writeText(text: string): Promise<void> {
-      await requireDesktopRuntime().clipboard.writeText(text);
-    },
-  },
   dialog: {
     async open(options: DesktopOpenDialogOptions) {
       return requireDesktopRuntime().dialog.open(options);

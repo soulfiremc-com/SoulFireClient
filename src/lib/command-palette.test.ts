@@ -168,6 +168,16 @@ test("creation and administration require granted permissions", () => {
   );
 });
 
+const offersCopyUrl = (desktop: boolean) =>
+  createPaletteCommands({ t, instances: [], desktop }).some(
+    (command) => command.id === "copy-url",
+  );
+
+test("the desktop app offers no Copy URL command", () => {
+  assert.equal(offersCopyUrl(false), true);
+  assert.equal(offersCopyUrl(true), false);
+});
+
 test("current project indexes bot identities, scripts, and setting labels without values", () => {
   const commands = createPaletteCommands({
     t,

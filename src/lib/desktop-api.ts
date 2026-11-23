@@ -169,10 +169,6 @@ export interface SoulFireDesktopApi {
     setSettings: (settings: DisplaySettings) => Promise<void>;
     onState: (callback: (state: CastState) => void) => Promise<DesktopUnlisten>;
   };
-  clipboard: {
-    readText: () => Promise<string>;
-    writeText: (text: string) => Promise<void>;
-  };
   dialog: {
     open: (
       options: DesktopOpenDialogOptions,

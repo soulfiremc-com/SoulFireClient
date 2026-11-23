@@ -317,7 +317,7 @@ function DiagnosticsDetails() {
           disabled={!data || action !== null}
           onClick={() =>
             void runAction("copy", async () => {
-              await desktop.clipboard.writeText(
+              await navigator.clipboard.writeText(
                 createReport(await desktop.integratedServer.getDiagnostics()),
               );
               toast.success(t("integratedDiagnostics.copied"));

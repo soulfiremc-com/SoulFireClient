@@ -108,7 +108,7 @@ import {
   resolvePalettePins,
   togglePalettePin,
 } from "@/lib/command-palette-pins";
-import { desktop, formatShortcut, isDesktopApp, isMac } from "@/lib/desktop";
+import { formatShortcut, isDesktopApp, isMac } from "@/lib/desktop";
 import { hasOpenDialog } from "@/lib/keyboard-shortcuts";
 import { fetchInstanceInfo } from "@/lib/instance-info-query";
 import { scriptListQueryOptions } from "@/lib/script-service";
@@ -477,6 +477,7 @@ function CommandPaletteContent({
         indexed: browsing ? [] : index.projects,
         server: canReadServer && !browsing ? index.server : undefined,
         demo,
+        desktop: isDesktopApp(),
       }),
     [
       t,
@@ -776,8 +777,7 @@ function CommandPaletteContent({
               ? window.location.href
               : command.projectId;
           if (!value) return;
-          if (isDesktopApp()) await desktop.clipboard.writeText(value);
-          else await navigator.clipboard.writeText(value);
+          await navigator.clipboard.writeText(value);
           toast.success(t("commandPalette.copied"));
           break;
         }

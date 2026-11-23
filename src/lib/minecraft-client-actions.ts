@@ -4,9 +4,7 @@ import { t } from "i18next";
 
 export async function copyMinecraftText(text: string, win: Window = window) {
   try {
-    await (isDesktopApp()
-      ? desktop.clipboard.writeText(text)
-      : win.navigator.clipboard.writeText(text));
+    await win.navigator.clipboard.writeText(text);
   } catch {
     toast.error(t("common:minecraftActions.copyError"));
   }
