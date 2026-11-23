@@ -20,7 +20,7 @@ import {
   UserIcon,
   VenetianMaskIcon,
 } from "lucide-react";
-import { use, useEffect, useState } from "react";
+import { createContext, use, useEffect, useState } from "react";
 import { ConfirmDialog } from "@/components/dialog/confirm-dialog.tsx";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -81,6 +81,7 @@ import {
   ROOT_USER_ID,
   timestampToDate,
 } from "@/lib/utils.tsx";
+import { settleEach } from "@/lib/settle-each.ts";
 import { startImpersonation } from "@/lib/web-rpc.ts";
 
 export const Route = createFileRoute("/_dashboard/user/admin/users")({
@@ -353,35 +354,32 @@ const columns: ColumnDef<typeof dataTableFeatures, UserListResponse_User>[] = [
   },
 ];
 
+// Rows open the one edit dialog that the table renders.
+const EditUserContext = createContext<(user: UserListResponse_User) => void>(
+  () => {},
+);
+
 function UpdateUserButton(props: {
   row: Row<typeof dataTableFeatures, UserListResponse_User>;
 }) {
   const { t } = useTranslation("admin");
-  const [open, setOpen] = useState(false);
+  const editUser = use(EditUserContext);
   const permissions = useUserPermissions();
   if (!permissions.update) return null;
 
   return (
-    <>
-      <Button
-        aria-label={t("users.contextMenu.editUser")}
-        title={t("users.contextMenu.editUser")}
-        disabled={!isManageableUser(props.row.original, permissions.clientInfo)}
-        variant="secondary"
-        size="sm"
-        onClick={() => {
-          setOpen(true);
-        }}
-      >
-        <PencilIcon />
-      </Button>
-      <ManageUserDialog
-        mode="edit"
-        user={props.row.original}
-        open={open}
-        setOpen={setOpen}
-      />
-    </>
+    <Button
+      aria-label={t("users.contextMenu.editUser")}
+      title={t("users.contextMenu.editUser")}
+      disabled={!isManageableUser(props.row.original, permissions.clientInfo)}
+      variant="secondary"
+      size="sm"
+      onClick={() => {
+        editUser(props.row.original);
+      }}
+    >
+      <PencilIcon />
+    </Button>
   );
 }
 
@@ -432,6 +430,13 @@ function AddButton() {
   );
 }
 
+type BatchAction = "remove" | "invalidate";
+
+const batchToastKeys = {
+  remove: "users.removeToast",
+  invalidate: "users.invalidateToast",
+} as const;
+
 function ExtraHeader(props: {
   table: ReactTable<typeof dataTableFeatures, UserListResponse_User>;
 }) {
@@ -439,21 +444,24 @@ function ExtraHeader(props: {
   const queryClient = useQueryClient();
   const transport = use(TransportContext);
   const { usersQueryOptions } = Route.useRouteContext();
-  const { mutateAsync: deleteUsersMutation } = useMutation({
-    mutationKey: ["users", "delete-batch"],
-    mutationFn: async (user: UserListResponse_User[]) => {
+  const { mutateAsync: runBatch } = useMutation({
+    mutationKey: ["users", "batch"],
+    mutationFn: ({
+      action,
+      users,
+    }: {
+      action: BatchAction;
+      users: UserListResponse_User[];
+    }) => {
       if (transport === null) {
-        return;
+        throw new Error("The demo cannot change users");
       }
-
       const userService = createRpcClient(UserService, transport);
-      for (const u of user) {
-        await Effect.runPromise(
-          userService.deleteUser({
-            id: u.id,
-          }),
-        );
-      }
+      return settleEach(users, (user) =>
+        action === "remove"
+          ? Effect.runPromise(userService.deleteUser({ id: user.id }))
+          : Effect.runPromise(userService.invalidateSessions({ id: user.id })),
+      );
     },
     onSettled: async () => {
       await queryClient.invalidateQueries({
@@ -461,28 +469,55 @@ function ExtraHeader(props: {
       });
     },
   });
-  const { mutateAsync: invalidateUsersMutation } = useMutation({
-    mutationKey: ["users", "invalidate-sessions-batch"],
-    mutationFn: async (user: UserListResponse_User[]) => {
-      if (transport === null) {
-        return;
-      }
 
-      const userService = createRpcClient(UserService, transport);
-      for (const u of user) {
-        await Effect.runPromise(
-          userService.invalidateSessions({
-            id: u.id,
+  async function confirmBatch(action: BatchAction) {
+    if (transport === null) {
+      toast.info(t("common:demoReadOnly"));
+      return;
+    }
+
+    const users = props.table
+      .getFilteredSelectedRowModel()
+      .rows.map((row) => row.original);
+    const keys = batchToastKeys[action];
+    const toastId = toast.loading(t(`${keys}.loading`));
+    try {
+      const { succeeded, failed } = await runBatch({ action, users });
+      for (const { error } of failed) {
+        console.error(error);
+      }
+      // Failed rows stay selected so the admin can retry them.
+      const succeededIds = new Set(succeeded.map((user) => user.id));
+      props.table.setRowSelection((selection) =>
+        Object.fromEntries(
+          Object.entries(selection).filter(([id]) => !succeededIds.has(id)),
+        ),
+      );
+      if (failed.length === 0) {
+        toast.success(t(`${keys}.success`, { count: succeeded.length }), {
+          id: toastId,
+        });
+      } else if (succeeded.length === 0) {
+        toast.error(t(`${keys}.error`, { count: failed.length }), {
+          id: toastId,
+        });
+      } else {
+        toast.warning(
+          t(`${keys}.partial`, {
+            succeeded: succeeded.length,
+            failed: failed.length,
+            total: users.length,
           }),
+          { id: toastId },
         );
       }
-    },
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: usersQueryOptions.queryKey,
+    } catch (error) {
+      console.error(error);
+      toast.error(t(`${keys}.error`, { count: users.length }), {
+        id: toastId,
       });
-    },
-  });
+    }
+  }
 
   const [removeOpen, setRemoveOpen] = useState(false);
   const [signOutOpen, setSignOutOpen] = useState(false);
@@ -508,30 +543,7 @@ function ExtraHeader(props: {
             title={t("users.removeDialog.title", { count: selectedCount })}
             description={t("users.removeDialog.description")}
             confirmLabel={t("users.removeDialog.confirm")}
-            onConfirm={() => {
-              if (transport === null) {
-                toast.info(t("common:demoReadOnly"));
-                return undefined;
-              }
-
-              const selectedRows = props.table
-                .getFilteredSelectedRowModel()
-                .rows.map((r) => r.original);
-
-              const promise = deleteUsersMutation(selectedRows);
-              toast.promise(promise, {
-                loading: t("users.removeToast.loading"),
-                success: () => {
-                  props.table.resetRowSelection();
-                  return t("users.removeToast.success");
-                },
-                error: (e) => {
-                  console.error(e);
-                  return t("users.removeToast.error");
-                },
-              });
-              return promise;
-            }}
+            onConfirm={() => confirmBatch("remove")}
           />
         </>
       )}
@@ -552,27 +564,7 @@ function ExtraHeader(props: {
             title={t("users.invalidateDialog.title", { count: selectedCount })}
             description={t("users.invalidateDialog.description")}
             confirmLabel={t("users.invalidateDialog.confirm")}
-            onConfirm={() => {
-              if (transport === null) {
-                toast.info(t("common:demoReadOnly"));
-                return undefined;
-              }
-
-              const selectedRows = props.table
-                .getFilteredSelectedRowModel()
-                .rows.map((r) => r.original);
-
-              const promise = invalidateUsersMutation(selectedRows);
-              toast.promise(promise, {
-                loading: t("users.invalidateToast.loading"),
-                success: t("users.invalidateToast.success"),
-                error: (e) => {
-                  console.error(e);
-                  return t("users.invalidateToast.error");
-                },
-              });
-              return promise;
-            }}
+            onConfirm={() => confirmBatch("invalidate")}
           />
         </>
       )}
@@ -676,72 +668,74 @@ function UsersTable() {
   const canImpersonate = manageable && permissions.impersonate;
 
   return (
-    <div className="container flex size-full grow flex-col gap-4">
-      <DataTable
-        table={table}
-        onRowContextMenu={handleContextMenu}
-        actionBar={
-          <DataTableActionBar table={table}>
-            <ExtraHeader table={table} />
-          </DataTableActionBar>
-        }
-      >
-        <DataTableToolbar table={table}>
-          <DataTableSortList table={table} />
-          <AddButton />
-        </DataTableToolbar>
-      </DataTable>
-      {contextMenu && (
-        <ContextMenuPortal
-          onClose={dismiss}
-          x={contextMenu.position.x}
-          y={contextMenu.position.y}
-          menuRef={menuRef}
+    <EditUserContext value={setEditUser}>
+      <div className="container flex size-full grow flex-col gap-4">
+        <DataTable
+          table={table}
+          onRowContextMenu={handleContextMenu}
+          actionBar={
+            <DataTableActionBar table={table}>
+              <ExtraHeader table={table} />
+            </DataTableActionBar>
+          }
         >
-          {canEdit && (
-            <DropdownMenuItem
-              onClick={() => {
-                setEditUser(contextMenu.data);
-                dismiss();
-              }}
-            >
-              <PencilIcon />
-              {t("users.contextMenu.editUser")}
-            </DropdownMenuItem>
-          )}
-          {canImpersonate && (
-            <DropdownMenuItem
-              onClick={() => {
-                void impersonate(contextMenu.data.id);
-                dismiss();
-              }}
-            >
-              <VenetianMaskIcon />
-              {t("users.contextMenu.impersonate")}
-            </DropdownMenuItem>
-          )}
-          {(canEdit || canImpersonate) && <DropdownMenuSeparator />}
-          <DropdownMenuItem
-            onClick={() => {
-              void copyToClipboard(contextMenu.data.id);
-              dismiss();
-            }}
+          <DataTableToolbar table={table}>
+            <DataTableSortList table={table} />
+            <AddButton />
+          </DataTableToolbar>
+        </DataTable>
+        {contextMenu && (
+          <ContextMenuPortal
+            onClose={dismiss}
+            x={contextMenu.position.x}
+            y={contextMenu.position.y}
+            menuRef={menuRef}
           >
-            <ClipboardCopyIcon />
-            {t("users.contextMenu.copyUserId")}
-          </DropdownMenuItem>
-        </ContextMenuPortal>
-      )}
-      {editUser && (
-        <ManageUserDialog
-          mode="edit"
-          user={editUser}
-          open
-          setOpen={(open) => {
-            if (!open) setEditUser(null);
-          }}
-        />
-      )}
-    </div>
+            {canEdit && (
+              <DropdownMenuItem
+                onClick={() => {
+                  setEditUser(contextMenu.data);
+                  dismiss();
+                }}
+              >
+                <PencilIcon />
+                {t("users.contextMenu.editUser")}
+              </DropdownMenuItem>
+            )}
+            {canImpersonate && (
+              <DropdownMenuItem
+                onClick={() => {
+                  void impersonate(contextMenu.data.id);
+                  dismiss();
+                }}
+              >
+                <VenetianMaskIcon />
+                {t("users.contextMenu.impersonate")}
+              </DropdownMenuItem>
+            )}
+            {(canEdit || canImpersonate) && <DropdownMenuSeparator />}
+            <DropdownMenuItem
+              onClick={() => {
+                void copyToClipboard(contextMenu.data.id);
+                dismiss();
+              }}
+            >
+              <ClipboardCopyIcon />
+              {t("users.contextMenu.copyUserId")}
+            </DropdownMenuItem>
+          </ContextMenuPortal>
+        )}
+        {editUser && (
+          <ManageUserDialog
+            mode="edit"
+            user={editUser}
+            open
+            setOpen={(open) => {
+              if (!open) setEditUser(null);
+            }}
+          />
+        )}
+      </div>
+    </EditUserContext>
   );
 }

@@ -28,7 +28,7 @@ interface HasTimestamp {
   timestamp?: Timestamp | undefined;
 }
 
-export interface PaddedSnapshot<T> {
+interface PaddedSnapshot<T> {
   timestampMs: number;
   timeLabel: string;
   snapshot: T | null;
@@ -44,11 +44,11 @@ export function formatChartAxisTime(timestampMs: number): string {
   return timeFormatter(false).format(timestampMs);
 }
 
-export function formatChartTooltipTime(timestampMs: number): string {
+function formatChartTooltipTime(timestampMs: number): string {
   return timeFormatter(true).format(timestampMs);
 }
 
-export function getSnapshotTimestampMs(
+function getSnapshotTimestampMs(
   snapshot: HasTimestamp | null | undefined,
 ): number | null {
   if (!snapshot?.timestamp) {

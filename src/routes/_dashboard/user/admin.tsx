@@ -13,6 +13,7 @@ import {
   UserService,
 } from "@/generated/soulfire/user_pb";
 import i18n from "@/lib/i18n";
+import { queryKeys } from "@/lib/query-keys.ts";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 import { serverMetricsQueryOptions } from "@/lib/server-metrics-query.ts";
 import { serverInfoQueryOptions } from "@/lib/server-info-query.ts";
@@ -22,7 +23,7 @@ export const Route = createFileRoute("/_dashboard/user/admin")({
   beforeLoad: (props) => {
     const serverInfoOptions = serverInfoQueryOptions(createTransport());
     const usersQueryOptions = queryOptions({
-      queryKey: ["users"],
+      queryKey: queryKeys.users(),
       queryFn: async (context): Promise<UserListResponse> => {
         const transport = createTransport();
         if (transport === null) {
@@ -43,34 +44,22 @@ export const Route = createFileRoute("/_dashboard/user/admin")({
         }
 
         const userService = createRpcClient(UserService, transport);
-        const result = await Effect.runPromise(
-          userService.listUsers(
-            {},
-            {
-              signal: context.signal,
-            },
-          ),
+        return Effect.runPromise(
+          userService.listUsers({}, { signal: context.signal }),
         );
-
-        return result;
       },
-      refetchInterval: 3000,
+      // Users change rarely, and this page's own edits refetch the list.
+      refetchInterval: 30_000,
     });
     const serverMetricsOptions = serverMetricsQueryOptions(createTransport());
     props.abortController.signal.addEventListener("abort", () => {
-      void props.context.queryClient.cancelQueries({
-        queryKey: serverInfoOptions.queryKey,
-      });
-    });
-    props.abortController.signal.addEventListener("abort", () => {
-      void props.context.queryClient.cancelQueries({
-        queryKey: usersQueryOptions.queryKey,
-      });
-    });
-    props.abortController.signal.addEventListener("abort", () => {
-      void props.context.queryClient.cancelQueries({
-        queryKey: serverMetricsOptions.queryKey,
-      });
+      for (const { queryKey } of [
+        serverInfoOptions,
+        usersQueryOptions,
+        serverMetricsOptions,
+      ]) {
+        void props.context.queryClient.cancelQueries({ queryKey });
+      }
     });
     return {
       serverInfoQueryOptions: serverInfoOptions,

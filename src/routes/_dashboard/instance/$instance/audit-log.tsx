@@ -8,6 +8,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import {
   BotIcon,
   ClipboardCopyIcon,
+  LockIcon,
   PlugIcon,
   RefreshCwIcon,
   SquareTerminalIcon,
@@ -25,7 +26,15 @@ import InstancePageLayout from "@/components/nav/instance/instance-page-layout.t
 import { SFTimeAgo } from "@/components/sf-timeago.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
 import { Button } from "@/components/ui/button.tsx";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty.tsx";
 import { UserAvatar } from "@/components/user-avatar.tsx";
+import { InstancePermission } from "@/generated/soulfire/common_pb";
 import {
   type InstanceAuditLogResponse,
   type InstanceAuditLogResponse_AuditLogEntry,
@@ -40,13 +49,14 @@ import { calendarDateRangeFilter } from "@/lib/calendar-date-range-filter";
 import type { dataTableFeatures } from "@/lib/data-table-features";
 import i18n from "@/lib/i18n";
 import { dataTableValidateSearch } from "@/lib/parsers.ts";
+import { queryKeys } from "@/lib/query-keys.ts";
 import { staticRouteChrome } from "@/lib/route-title.ts";
 import {
   getEnumEntries,
   getEnumKeyByValue,
   mapUnionToValue,
 } from "@/lib/types.ts";
-import { timestampToDate } from "@/lib/utils.tsx";
+import { hasInstancePermission, timestampToDate } from "@/lib/utils.tsx";
 import { createTransport } from "@/lib/web-rpc.ts";
 import { requireField } from "@/lib/require-field";
 
@@ -57,7 +67,7 @@ export const Route = createFileRoute(
   beforeLoad: (props) => {
     const { instance } = props.params;
     const auditLogQueryOptions = queryOptions({
-      queryKey: ["instance-audit-log", instance],
+      queryKey: queryKeys.instanceAuditLog(instance),
       queryFn: async (context): Promise<InstanceAuditLogResponse> => {
         const transport = createTransport();
         if (transport === null) {
@@ -99,9 +109,23 @@ export const Route = createFileRoute(
     };
   },
   loader: (props) => {
-    void props.context.queryClient.prefetchQuery(
-      props.context.auditLogQueryOptions,
-    );
+    const { queryClient, instanceInfoQueryOptions, auditLogQueryOptions } =
+      props.context;
+    // Reading the audit log needs its own permission. Without it the request
+    // always fails.
+    void queryClient
+      .ensureQueryData(instanceInfoQueryOptions)
+      .then((instanceInfo) =>
+        hasInstancePermission(
+          instanceInfo,
+          InstancePermission.READ_INSTANCE_AUDIT_LOGS,
+        )
+          ? queryClient.prefetchQuery(auditLogQueryOptions)
+          : undefined,
+      )
+      .catch(() => {
+        // The page reads the project itself and shows its error state.
+      });
   },
   component: AuditLog,
 });
@@ -300,6 +324,33 @@ function AuditLog() {
 }
 
 function Content() {
+  const { t } = useTranslation("common");
+  const { instanceInfoQueryOptions } = Route.useRouteContext();
+  const { data: instanceInfo } = useSuspenseQuery(instanceInfoQueryOptions);
+  if (
+    !hasInstancePermission(
+      instanceInfo,
+      InstancePermission.READ_INSTANCE_AUDIT_LOGS,
+    )
+  ) {
+    return (
+      <Empty>
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <LockIcon />
+          </EmptyMedia>
+          <EmptyTitle>{t("auditLog.noPermission.title")}</EmptyTitle>
+          <EmptyDescription>
+            {t("auditLog.noPermission.description")}
+          </EmptyDescription>
+        </EmptyHeader>
+      </Empty>
+    );
+  }
+  return <AuditLogTable />;
+}
+
+function AuditLogTable() {
   const { t } = useTranslation("common");
   const { auditLogQueryOptions } = Route.useRouteContext();
   const {

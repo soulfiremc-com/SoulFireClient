@@ -10,6 +10,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { StatTile } from "@/components/admin-metrics/stat-tile.tsx";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   type ChartConfig,
@@ -20,10 +21,7 @@ import {
   ChartTooltipContent,
   type CustomTooltipProps,
 } from "@/components/ui/chart";
-import type {
-  GetServerMetricsResponse,
-  ServerMetricsSnapshot,
-} from "@/generated/soulfire/metrics_pb";
+import type { ServerMetricsSnapshot } from "@/generated/soulfire/metrics_pb";
 import {
   BYTES_PER_MEGABYTE,
   formatMegabytes,
@@ -78,57 +76,43 @@ function formatTooltipLabel(payload: CustomTooltipProps["payload"]) {
     : "";
 }
 
-export function ServerMetricsSummaryCards({
-  data,
+/// Stat tiles for the newest snapshot. Values the server could not measure are
+/// left out instead of shown as placeholders.
+export function ServerMetricsTiles({
+  latest,
 }: {
-  data: GetServerMetricsResponse;
+  latest: ServerMetricsSnapshot;
 }) {
   const { t } = useTranslation("admin");
-  const latest = data.snapshots.length > 0 ? data.snapshots.at(-1) : null;
-
-  const items = [
-    {
-      label: t("overview.serverMetrics.summary.cpu"),
-      value: latest
-        ? latest.processCpuLoad >= 0
-          ? formatNumber(latest.processCpuLoad, {
-              style: "percent",
-              maximumFractionDigits: 1,
-            })
-          : "-"
-        : "-",
-    },
-    {
-      label: t("overview.serverMetrics.summary.heapUsed"),
-      value: latest ? formatMB(Number(latest.heapUsedBytes)) : "-",
-    },
-    {
-      label: t("overview.serverMetrics.summary.threads"),
-      value: latest ? formatNumber(latest.threadCount) : "-",
-    },
-    {
-      label: t("overview.serverMetrics.summary.botsOnline"),
-      value: latest
-        ? `${formatNumber(latest.totalBotsOnline)}/${formatNumber(latest.totalBotsTotal)}`
-        : "-/-",
-    },
-    {
-      label: t("overview.serverMetrics.summary.uptime"),
-      value: latest ? formatUptime(Number(latest.uptimeMs)) : "-",
-    },
-  ];
 
   return (
-    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-5">
-      {items.map((item) => (
-        <Card key={item.label} size="sm">
-          <CardContent className="flex flex-col items-center py-2">
-            <span className="text-xs text-muted-foreground">{item.label}</span>
-            <span className="font-mono text-lg font-bold">{item.value}</span>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
+    <>
+      {latest.processCpuLoad >= 0 && (
+        <StatTile
+          label={t("overview.serverMetrics.summary.cpu")}
+          value={formatNumber(latest.processCpuLoad, {
+            style: "percent",
+            maximumFractionDigits: 1,
+          })}
+        />
+      )}
+      <StatTile
+        label={t("overview.serverMetrics.summary.heapUsed")}
+        value={formatMB(Number(latest.heapUsedBytes))}
+      />
+      <StatTile
+        label={t("overview.serverMetrics.summary.threads")}
+        value={formatNumber(latest.threadCount)}
+      />
+      <StatTile
+        label={t("overview.serverMetrics.summary.botsOnline")}
+        value={`${formatNumber(latest.totalBotsOnline)}/${formatNumber(latest.totalBotsTotal)}`}
+      />
+      <StatTile
+        label={t("overview.serverMetrics.summary.uptime")}
+        value={formatUptime(Number(latest.uptimeMs))}
+      />
+    </>
   );
 }
 

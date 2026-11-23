@@ -1,6 +1,5 @@
 {
   "overview": {
-    "welcome": "Welcome back, {{name}}",
     "serverMetrics": {
       "sectionTitle": "Server metrics",
       "summary": {
@@ -31,29 +30,19 @@
         "total": "Total",
         "daemon": "Daemon",
         "online": "Connected"
-      }
+      },
+      "collecting": "Charts appear once the server has recorded a few samples."
     },
-    "instancesChart": {
-      "title": "Total projects on this server",
-      "instances": "Projects",
-      "label": {
-        "state": "State",
-        "active": "Active",
-        "stopped": "Stopped"
-      }
-    },
-    "usersChart": {
-      "title": "Total users on this server",
+    "stats": {
       "users": "Users",
-      "label": {
-        "role": "Role",
-        "user": "User",
-        "admin": "Admin"
-      }
+      "admins_one": "{{count}} admin",
+      "admins_other": "{{count}} admins",
+      "projects": "Projects",
+      "active_one": "{{count}} active",
+      "active_other": "{{count}} active"
     }
   },
   "users": {
-    "filterPlaceholder": "Filter users...",
     "noPermission": {
       "title": "You cannot view users",
       "description": "Ask an administrator for permission to view the user list."
@@ -61,17 +50,17 @@
     "baseUserDialog": {
       "form": {
         "username": {
-          "min": "Usernames must be at least 3 characters",
-          "max": "Usernames must be at most 32 characters",
-          "regex": "Usernames must be lowercase, begin with an alphanumeric character, followed by more alphanumeric characters or dashes, and end with an alphanumeric character.",
+          "min": "Use at least 3 characters.",
+          "max": "Use 32 characters or fewer.",
+          "regex": "Use only lowercase letters, numbers, and dashes. Start and end with a letter or number.",
           "label": "Username",
           "placeholder": "Enter username",
-          "description": "A unique username that identifies the user"
+          "description": "A unique name that identifies the user."
         },
         "email": {
           "label": "Email",
           "placeholder": "Enter email",
-          "description": "The email address of the user used for notifications and login"
+          "description": "The user's email address for sign-in and notifications."
         },
         "role": {
           "label": "Role",
@@ -84,18 +73,18 @@
     },
     "addUserDialog": {
       "title": "Add a new user",
-      "description": "Add a new user to this server",
+      "description": "Add a user to this SoulFire server.",
       "form": {
         "cancel": "Cancel",
         "add": "Add user"
       }
     },
     "updateUserDialog": {
-      "title": "Update user",
-      "description": "Update the user's information",
+      "title": "Edit user",
+      "description": "Change this user's details.",
       "form": {
         "cancel": "Cancel",
-        "update": "Update user"
+        "update": "Save changes"
       }
     },
     "profileConflict": "That username or email is already in use. Choose another.",
@@ -111,13 +100,19 @@
     },
     "removeToast": {
       "loading": "Removing users...",
-      "success": "Users removed",
-      "error": "Could not remove users"
+      "success_one": "Removed {{count}} user",
+      "success_other": "Removed {{count}} users",
+      "partial": "Removed {{succeeded}} of {{total}} users. {{failed}} could not be removed.",
+      "error_one": "Could not remove {{count}} user",
+      "error_other": "Could not remove {{count}} users"
     },
     "invalidateToast": {
       "loading": "Signing users out...",
-      "success": "Users signed out",
-      "error": "Could not sign users out"
+      "success_one": "Signed out {{count}} user",
+      "success_other": "Signed out {{count}} users",
+      "partial": "Signed out {{succeeded}} of {{total}} users. {{failed}} could not be signed out.",
+      "error_one": "Could not sign out {{count}} user",
+      "error_other": "Could not sign out {{count}} users"
     },
     "impersonateToast": {
       "error": "Could not impersonate this user"
