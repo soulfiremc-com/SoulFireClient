@@ -9,18 +9,26 @@ import {
   PovService,
   type PovStreamFeedback,
 } from "@/generated/soulfire/pov_pb";
-import { Cause, Deferred, Effect, Fiber, Result, Stream } from "effect";
+import { Cause, Clock, Deferred, Effect, Fiber, Result, Stream } from "effect";
 import { t } from "i18next";
-import { povCodecs, povDisplayFps } from "@/lib/pov-display";
+import { povCodecs } from "@/lib/pov-display";
 import { PovInputQueue } from "@/lib/pov-input-queue";
 import { createRpcClient } from "@/lib/rpc";
 
-const CONNECTION_TIMEOUT_MS = 15_000;
+// The server gives native rendering 30 s to produce the first frame. Leave
+// room for the input WebSocket handshake that follows it.
+const CONNECTION_TIMEOUT_MS = 35_000;
+// A reconnect only counts as recovered once its input socket stays open.
+const STABLE_CONNECTION_MS = 5000;
+// Give up after this many attempts in a row that never opened the input socket.
+const MAX_UNREADY_ATTEMPTS = 5;
 // Batch input to the display rate, and check the heartbeat and backpressure
 // often enough to send one roughly every 500 ms.
 const INPUT_BATCH_MS = 16;
 const HEARTBEAT_CHECK_MS = 250;
 const SIZE_POLL_MS = 100;
+
+export type PovSession = ReturnType<typeof startPovSession>;
 
 // Bound both input and frame queues. A replacement stream always gets a fresh lease and sequence.
 export function startPovSession(
@@ -28,12 +36,11 @@ export function startPovSession(
   inputUrl: string,
   instanceId: string,
   botId: string,
-  dimensions: () => { width: number; height: number; maxFps?: number } | null,
+  dimensions: () => { width: number; height: number; maxFps: number } | null,
   onFrame: (frame: PovFrame) => void,
   onError: (error: Error) => void,
   onReconnecting: () => void,
   feedback: () => PovStreamFeedback | undefined,
-  maxFps?: number,
   onClipboard: (text: string) => void = () => {},
   onOpenUrl: (url: string) => void = () => {},
 ) {
@@ -69,6 +76,14 @@ export function startPovSession(
   const connectionTimeout = new ConnectError(
     t("instance:bots.pov.connectTimeout"),
     Code.DeadlineExceeded,
+  );
+  const inputUnavailable = new ConnectError(
+    t("instance:bots.pov.inputUnavailable"),
+    Code.Unavailable,
+  );
+  const reconnectFailed = new ConnectError(
+    t("instance:bots.pov.reconnectFailed"),
+    Code.Unavailable,
   );
 
   function stop() {
@@ -174,22 +189,12 @@ export function startPovSession(
             ),
           ),
         );
-        const [displayFps, codecs] = yield* Effect.all(
-          [
-            maxFps === undefined
-              ? Effect.tryPromise({
-                  try: () => povDisplayFps(window),
-                  catch: (error) => error,
-                })
-              : Effect.succeed(maxFps),
-            Effect.tryPromise({
-              try: () => povCodecs(),
-              catch: (error) => error,
-            }),
-          ],
-          { concurrency: "unbounded" },
-        );
+        const codecs = yield* Effect.tryPromise({
+          try: () => povCodecs(),
+          catch: (error) => error,
+        });
         let failures = 0;
+        let unreadyAttempts = 0;
         while (!isStopped()) {
           const size = dimensions();
           if (!size) {
@@ -197,9 +202,10 @@ export function startPovSession(
             yield* Effect.sleep(SIZE_POLL_MS);
             continue;
           }
+          const health = { openedAt: undefined as number | undefined };
           const result = yield* Effect.result(
             Effect.scoped(
-              // oxlint-disable-next-line eslint/no-loop-func -- the session runs to completion inside this iteration and resets the failure count for the next one
+              // oxlint-disable-next-line eslint/no-loop-func -- the session runs to completion inside this iteration
               Effect.gen(function* () {
                 const current = yield* Effect.acquireRelease(
                   Effect.sync(() => ({
@@ -249,7 +255,6 @@ export function startPovSession(
                       botId,
                       sessionId: current.id,
                       ...size,
-                      maxFps: size.maxFps ?? displayFps,
                       codecs,
                     },
                     { signal: current.abort.signal },
@@ -283,6 +288,7 @@ export function startPovSession(
                                 );
                                 ready = true;
                                 connectedOnce = true;
+                                health.openedAt = Date.now();
                                 flush();
                               }
                             };
@@ -312,13 +318,19 @@ export function startPovSession(
                             // oxlint-disable-next-line unicorn/prefer-add-event-listener -- the session keeps one handler per socket event and clears them when it releases the socket
                             socket.onerror = socket.onclose = () => {
                               if (
-                                attempt === current &&
-                                !current.abort.signal.aborted
+                                attempt !== current ||
+                                current.abort.signal.aborted
                               )
-                                reconnect();
+                                return;
+                              // A first socket that never opens cannot carry
+                              // input, so retrying would only hide the problem.
+                              reconnect(
+                                health.openedAt === undefined && !connectedOnce
+                                  ? inputUnavailable
+                                  : undefined,
+                              );
                             };
                           }
-                          failures = 0;
                           if (
                             (frame.clipboardSequence === 0n ||
                               frame.clipboardSequence === clipboardSequence) &&
@@ -353,6 +365,7 @@ export function startPovSession(
             const error = result.failure;
             if (
               (error === connectionTimeout && !connectedOnce) ||
+              error === inputUnavailable ||
               (error instanceof ConnectError &&
                 [
                   Code.NotFound,
@@ -364,6 +377,14 @@ export function startPovSession(
                 ].includes(error.code))
             )
               return yield* Effect.fail(error);
+          }
+          if (health.openedAt === undefined) {
+            if (++unreadyAttempts >= MAX_UNREADY_ATTEMPTS)
+              return yield* Effect.fail(reconnectFailed);
+          } else {
+            unreadyAttempts = 0;
+            const now = yield* Clock.currentTimeMillis;
+            if (now - health.openedAt >= STABLE_CONNECTION_MS) failures = 0;
           }
           if (stopped) break;
           onReconnecting();

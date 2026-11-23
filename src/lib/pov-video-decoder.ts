@@ -15,6 +15,9 @@ export class PovVideoDecoder {
   private recoveries = 0;
   private closed = false;
   private readonly metadata = new Map<number, PovFrame>();
+  // Codec support does not change during a session. Remembering it lets a
+  // resize reconfigure at once and decode the keyframe that announced it.
+  private readonly acceleration = new Map<string, HardwareAcceleration>();
 
   private readonly output: (frame: VideoFrame, metadata: PovFrame) => void;
   private readonly requestKeyFrame: () => void;
@@ -70,10 +73,20 @@ export class PovVideoDecoder {
     if (this.closed) return;
     const configuration = `${chunk.codec}/${chunk.width}/${chunk.height}`;
     if (this.configuration !== configuration) {
-      this.reset();
+      const acceleration = this.acceleration.get(chunk.codec);
+      if (acceleration === undefined) {
+        this.reset();
+        this.configuration = configuration;
+        void this.configure(chunk, this.generation);
+        return;
+      }
+      try {
+        this.reconfigure(chunk, acceleration);
+      } catch (reason) {
+        this.recover(reason);
+        return;
+      }
       this.configuration = configuration;
-      void this.configure(chunk, this.generation);
-      return;
     }
     const decoder = this.decoder;
     if (decoder?.state !== "configured") return;
@@ -135,15 +148,26 @@ export class PovVideoDecoder {
       this.error(reason instanceof Error ? reason : new Error(String(reason)));
   }
 
+  // Keep the decoder for the same codec and wait for the next keyframe.
+  private reconfigure(chunk: PovFrame, acceleration: HardwareAcceleration) {
+    const config = decoderConfig(chunk, acceleration);
+    const decoder = this.decoder;
+    if (decoder?.state === "configured" && this.config?.codec === chunk.codec) {
+      decoder.reset();
+      decoder.configure(config);
+      this.config = config;
+      this.metadata.clear();
+      this.waitingForKey = true;
+      this.lastSequence = 0n;
+      return;
+    }
+    this.reset();
+    this.createDecoder(config, this.generation);
+  }
+
   private async configure(chunk: PovFrame, generation: number) {
     try {
-      const config: VideoDecoderConfig = {
-        codec: chunk.codec,
-        codedWidth: chunk.width,
-        codedHeight: chunk.height,
-        optimizeForLatency: true,
-        hardwareAcceleration: "prefer-hardware",
-      };
+      const config = decoderConfig(chunk, "prefer-hardware");
       let support = await VideoDecoder.isConfigSupported(config);
       if (!support.supported) {
         config.hardwareAcceleration = "no-preference";
@@ -152,26 +176,11 @@ export class PovVideoDecoder {
       if (this.closed || generation !== this.generation) return;
       if (!support.supported)
         throw new Error(t("instance:bots.pov.decoderUnsupported"));
-      this.decoder = new VideoDecoder({
-        output: (frame) => {
-          try {
-            if (this.closed || generation !== this.generation) return;
-            const metadata = this.metadata.get(frame.timestamp);
-            this.metadata.delete(frame.timestamp);
-            if (metadata) {
-              this.failures = 0;
-              this.output(frame, metadata);
-            }
-          } finally {
-            frame.close();
-          }
-        },
-        error: (error) => {
-          if (generation === this.generation) this.recover(error);
-        },
-      });
-      this.decoder.configure(config);
-      this.config = config;
+      this.acceleration.set(
+        chunk.codec,
+        config.hardwareAcceleration ?? "no-preference",
+      );
+      this.createDecoder(config, generation);
       // Frames arriving during capability detection were discarded. Resume at a fresh IDR.
       this.requestKey();
     } catch (reason) {
@@ -181,4 +190,40 @@ export class PovVideoDecoder {
         );
     }
   }
+
+  private createDecoder(config: VideoDecoderConfig, generation: number) {
+    this.decoder = new VideoDecoder({
+      output: (frame) => {
+        try {
+          if (this.closed || generation !== this.generation) return;
+          const metadata = this.metadata.get(frame.timestamp);
+          this.metadata.delete(frame.timestamp);
+          if (metadata) {
+            this.failures = 0;
+            this.output(frame, metadata);
+          }
+        } finally {
+          frame.close();
+        }
+      },
+      error: (error) => {
+        if (generation === this.generation) this.recover(error);
+      },
+    });
+    this.decoder.configure(config);
+    this.config = config;
+  }
+}
+
+function decoderConfig(
+  chunk: PovFrame,
+  hardwareAcceleration: HardwareAcceleration,
+): VideoDecoderConfig {
+  return {
+    codec: chunk.codec,
+    codedWidth: chunk.width,
+    codedHeight: chunk.height,
+    optimizeForLatency: true,
+    hardwareAcceleration,
+  };
 }

@@ -11,6 +11,13 @@ interface PovPlayerState {
   fullscreen: boolean;
 }
 
+export type PovPlayerStore = ReturnType<typeof createPovPlayerStore>;
+
+/** True while keyboard, mouse, touch, and gamepad input go to the bot. */
+export function isCaptured(state: Pick<PovPlayerState, "capture">): boolean {
+  return state.capture === "captured";
+}
+
 export function createPovPlayerStore() {
   let captureAttempt = 0;
   return createStore(

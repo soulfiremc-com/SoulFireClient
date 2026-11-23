@@ -28,9 +28,18 @@ export class PovStreamMetrics {
   private readonly arrivals = new Map<bigint, number>();
   private targetBitrate = 0;
   private format: string | null = null;
-  decoder:
+  private decoder:
     | (() => { pending: number; queued: number; waitingForKey: boolean })
     | null = null;
+
+  /** Reads decoder queue stats for the overlay, or stops with null. */
+  watchDecoder(
+    decoder:
+      | (() => { pending: number; queued: number; waitingForKey: boolean })
+      | null,
+  ) {
+    this.decoder = decoder;
+  }
 
   receive(frame: PovFrame, now = performance.now()) {
     this.received++;

@@ -4,7 +4,12 @@ import {
   type PovInputEvent,
   PovInputEvent_Kind as Kind,
 } from "@/generated/soulfire/pov_pb";
-import { PovTouchInput } from "./pov-touch-input";
+import { PovInputQueue } from "./pov-input-queue";
+import {
+  POV_TOUCH_CONTROLS_SOURCE,
+  PovCanvasTouches,
+  PovTouchInput,
+} from "./pov-touch-input";
 
 const actions = (events: PovInputEvent[]) =>
   events.map(({ kind, code, action }) => [kind, code, action]);
@@ -52,4 +57,32 @@ test("a screen change releases every held control and allows inventory to reopen
   assert.deepEqual(actions(input.update(2, [{ code: 69 }])), [
     [Kind.KEY, 69, 1],
   ]);
+});
+
+test("a camera drag on the canvas does not release the Attack button", () => {
+  const queue = new PovInputQueue();
+  const controls = new PovTouchInput();
+  for (const event of controls.update(1, [{ code: 0, mouse: true }]))
+    queue.enqueue(event, POV_TOUCH_CONTROLS_SOURCE);
+  const canvas = new PovCanvasTouches();
+  assert.equal(canvas.start(2, 10, 10, false), null);
+  assert.deepEqual(canvas.move(2, 15, 7), { x: 5, y: -3 });
+  assert.equal(canvas.end(2), null);
+  assert.deepEqual(actions(queue.drain()), [[Kind.BUTTON, 0, 1]]);
+});
+
+test("a GUI click stays pressed until the last canvas finger lifts", () => {
+  const queue = new PovInputQueue();
+  const canvas = new PovCanvasTouches();
+  const send = (input: ReturnType<PovCanvasTouches["end"]>) => {
+    if (input) queue.enqueue(input.event, input.source);
+  };
+  send(canvas.start(1, 0, 0, true));
+  send(canvas.start(2, 5, 5, true));
+  send(canvas.end(1));
+  assert.deepEqual(actions(queue.drain()), [[Kind.BUTTON, 0, 1]]);
+  send(canvas.end(2));
+  assert.deepEqual(actions(queue.drain()), [[Kind.BUTTON, 0, 0]]);
+  assert.equal(canvas.end(2), null);
+  assert.equal(canvas.move(2, 1, 1), null);
 });

@@ -1,31 +1,19 @@
 import { useEffect, useEffectEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
-import {
-  type PovInputEvent,
-  PovInputEvent_Kind as Kind,
-} from "@/generated/soulfire/pov_pb";
+import type { PovInputEvent } from "@/generated/soulfire/pov_pb";
 import { PovTouchInput } from "@/lib/pov-touch-input";
 
 export function PovTouchControls({
-  keyEvent,
-  buttonEvent,
+  send,
   screenOpen,
 }: {
-  keyEvent: (code: number, pressed: boolean) => void;
-  buttonEvent: (code: number, pressed: boolean) => void;
+  send: (events: PovInputEvent[]) => void;
   screenOpen: boolean;
 }) {
   const { t } = useTranslation("instance");
   // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
   const [input] = useState(() => new PovTouchInput());
-  const send = (events: PovInputEvent[]) => {
-    for (const event of events)
-      (event.kind === Kind.BUTTON ? buttonEvent : keyEvent)(
-        event.code,
-        event.action !== 0,
-      );
-  };
   const releaseHeld = useEffectEvent(() => {
     send(input.reset());
   });

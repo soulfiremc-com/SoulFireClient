@@ -41,7 +41,7 @@ test("reconnect clears timing associations and samples reflect decoder backlog",
   metrics.receive(frame, 10);
   metrics.reconnect();
   metrics.draw(frame, 100);
-  metrics.decoder = () => ({ queued: 2, pending: 3, waitingForKey: true });
+  metrics.watchDecoder(() => ({ queued: 2, pending: 3, waitingForKey: true }));
   const stats = metrics.sample(1000);
   assert.equal(stats.receiveToDrawMs, null);
   assert.equal(stats.queued, 2);

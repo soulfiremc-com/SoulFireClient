@@ -93,14 +93,13 @@ function fixture(mode: "no-frame" | "frame" | "offline" | "transient") {
     "ws://localhost/pov/input",
     "project",
     "bot",
-    () => ({ width: 640, height: 480 }),
+    () => ({ width: 640, height: 480, maxFps: 60 }),
     () => {},
     (error) => {
       errors.push(error);
     },
     () => {},
     () => undefined,
-    60,
   );
   sessions.push(session);
   return {
@@ -115,7 +114,7 @@ test("a watch stream with no first frame stops after its connection deadline", a
   const state = fixture("no-frame");
   await settle();
   expect(state.calls()).toBe(1);
-  jest.advanceTimersByTime(15_000);
+  jest.advanceTimersByTime(35_000);
   await settle();
   expect(state.errors).toHaveLength(1);
   expect(ConnectError.from(state.errors[0]).code).toBe(Code.DeadlineExceeded);
@@ -129,7 +128,7 @@ test("the input WebSocket handshake shares the connection deadline", async () =>
   const state = fixture("frame");
   await settle();
   expect(Socket.instances).toHaveLength(1);
-  jest.advanceTimersByTime(15_000);
+  jest.advanceTimersByTime(35_000);
   await settle();
   expect(state.errors).toHaveLength(1);
   expect(Socket.instances[0]?.readyState).toBe(3);
@@ -161,12 +160,53 @@ test("a slow reconnect after a working stream retries instead of failing", async
   jest.advanceTimersByTime(500);
   await settle();
   expect(state.calls()).toBe(2);
-  jest.advanceTimersByTime(15_000);
+  jest.advanceTimersByTime(35_000);
   await settle();
   expect(state.errors).toHaveLength(0);
   jest.advanceTimersByTime(500);
   await settle();
+  expect(state.calls()).toBe(2);
+  jest.advanceTimersByTime(500);
+  await settle();
   expect(state.calls()).toBe(3);
+});
+
+test("a first input socket that closes before opening stops the session", async () => {
+  const state = fixture("frame");
+  await settle();
+  assertDefined(Socket.instances[0], "No socket").close();
+  await settle();
+  jest.advanceTimersByTime(60_000);
+  await settle();
+  expect(state.calls()).toBe(1);
+  expect(state.errors).toHaveLength(1);
+  expect(ConnectError.from(state.errors[0]).code).toBe(Code.Unavailable);
+});
+
+test("reconnects back off and give up when the input socket never opens", async () => {
+  const state = fixture("frame");
+  await settle();
+  const first = assertDefined(Socket.instances[0], "No first socket");
+  first.open();
+  first.close();
+  await settle();
+  const delays = [500, 1000, 2000, 4000, 5000];
+  for (const [index, delay] of delays.entries()) {
+    jest.advanceTimersByTime(delay - 1);
+    await settle();
+    expect(state.calls()).toBe(index + 1);
+    jest.advanceTimersByTime(1);
+    await settle();
+    expect(state.calls()).toBe(index + 2);
+    // Each new stream sends a frame, but its input socket fails.
+    assertDefined(Socket.instances[index + 1], "No socket").close();
+    await settle();
+  }
+  expect(state.errors).toHaveLength(1);
+  expect(ConnectError.from(state.errors[0]).code).toBe(Code.Unavailable);
+  jest.advanceTimersByTime(60_000);
+  await settle();
+  expect(state.calls()).toBe(delays.length + 1);
 });
 
 test("input is sent in one batch shortly after it is queued", async () => {

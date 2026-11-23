@@ -147,13 +147,24 @@ test("decoder recovers at keyframes after backlog and releases stale output afte
     );
     decoder.accept(chunk(16));
     assert.equal(decoders[0].decodeQueueSize, 2, "Continue after the keyframe");
-    decoder.accept(chunk(11, true, 800));
-    await settle();
-    decoder.accept(chunk(12, true, 800));
+    const keysBeforeResize = requestedKeys;
+    decoder.accept(chunk(17, true, 800));
+    assert.equal(decoders.length, 1, "Reuse the decoder after a resize");
+    assert.equal(decoders[0].resets, 3);
+    assert.equal(
+      decoders[0].decodeQueueSize,
+      1,
+      "Decode the keyframe that announced new dimensions",
+    );
+    assert.equal(requestedKeys, keysBeforeResize);
+    decoder.accept(chunk(18, false, 800));
+    assert.equal(decoders[0].decodeQueueSize, 2);
+    decoder.reset();
+    decoder.accept(chunk(1, true, 800));
     assert.equal(
       decoders[1]?.decodeQueueSize,
       1,
-      "Resume with new dimensions and a keyframe",
+      "Configure a new decoder at once after a reconnect",
     );
     assert.deepEqual(errors, []);
   } finally {
