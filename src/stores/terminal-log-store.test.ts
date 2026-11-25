@@ -1,23 +1,45 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { setTimeout as delay } from "node:timers/promises";
+import { jest } from "bun:test";
 import { create } from "@bufbuild/protobuf";
-import { Code, ConnectError, createRouterTransport } from "@connectrpc/connect";
-import { createRpcClient } from "@/lib/rpc";
 import {
+  Code,
+  ConnectError,
+  createRouterTransport,
+  type Transport,
+} from "@connectrpc/connect";
+import { AtomRegistry } from "effect/reactivity";
+import {
+  type LogScope,
   LogScopeSchema,
   LogStringSchema,
   LogsService,
 } from "@/generated/soulfire/logs_pb";
 import {
-  createTerminalLogSession,
-  getTerminalLogSession,
   mergeTerminalLines,
+  terminalLogAtoms,
   toTerminalLine,
 } from "./terminal-log-store";
 
 const scope = () =>
   create(LogScopeSchema, { scope: { case: "global", value: {} } });
+/** Opens a view of the logs of a scope, like a mounted terminal. */
+function open(
+  transport: Transport,
+  logScope: LogScope = scope(),
+  registry = AtomRegistry.make(),
+) {
+  const atoms = terminalLogAtoms(transport, logScope);
+  const state = () => registry.get(atoms.state);
+  return {
+    atoms,
+    registry,
+    state,
+    ids: () => state().entries.map((entry) => Number(entry.id)),
+    close: registry.mount(atoms.session),
+  };
+}
 const message = (id: number) =>
   create(LogStringSchema, {
     id: String(id),
@@ -97,7 +119,7 @@ test("the buffer trims only after it overflows by a batch of lines", () => {
   assert.ok(trims <= 4, `expected few trims, got ${trims}`);
 });
 
-test("same connection and scope share one stream until the last consumer leaves", async () => {
+test("views of one connection and scope share a stream that stops with the last view", async () => {
   let subscriptions = 0;
   let cancellations = 0;
   const transport = createRouterTransport((router) => {
@@ -119,29 +141,67 @@ test("same connection and scope share one stream until the last consumer leaves"
       },
     });
   });
-  const first = getTerminalLogSession(transport, scope());
-  const second = getTerminalLogSession(transport, scope());
-  assert.equal(first, second);
-  const stopFirst = first.retain();
-  const stopSecond = second.retain();
+  const first = open(transport);
+  const second = open(transport, scope(), first.registry);
+  assert.equal(first.atoms.state, second.atoms.state);
   try {
     await delay(90);
     assert.equal(subscriptions, 1);
-    assert.deepEqual(
-      first.state.get().entries.map((entry) => Number(entry.id)),
-      [1, 2],
-    );
-    stopFirst();
+    assert.deepEqual(first.ids(), [1, 2]);
+    first.close();
+    await delay(10);
     assert.equal(cancellations, 0);
-    stopSecond();
+    second.close();
     await delay(10);
     assert.equal(cancellations, 1);
-    assert.equal(getTerminalLogSession(transport, scope()), first);
-    stopFirst();
-    assert.equal(first.active, false);
+    // The closed scope keeps its logs for the next view.
+    assert.deepEqual(open(transport, scope(), first.registry).ids(), [1, 2]);
   } finally {
-    stopFirst();
-    stopSecond();
+    first.close();
+    second.close();
+  }
+});
+
+test("closed views keep cached logs for five minutes", async () => {
+  const transport = createRouterTransport((router) => {
+    router.service(LogsService, {
+      getPrevious: () => ({ messages: [message(1)] }),
+      // oxlint-disable-next-line require-yield -- history is enough for this test
+      async *subscribe(_, context) {
+        await new Promise<void>((resolve) => {
+          context.signal.addEventListener(
+            "abort",
+            () => {
+              resolve();
+            },
+            { once: true },
+          );
+        });
+      },
+    });
+  });
+  const view = open(transport);
+  await delay(50);
+  assert.deepEqual(view.ids(), [1]);
+  jest.useFakeTimers();
+  try {
+    view.close();
+    // Let the registry remove the session and start the idle timer.
+    for (let step = 0; step < 3; step++) {
+      jest.advanceTimersByTime(0);
+      await new Promise<void>((resolve) => {
+        setImmediate(resolve);
+      });
+    }
+    // Reading the logs would restart the idle timer, so look at the cache.
+    const cached = () => view.registry.getNodes().has(view.atoms.state);
+    jest.advanceTimersByTime(5 * 60_000 - 1000);
+    assert.equal(cached(), true);
+    jest.advanceTimersByTime(2000);
+    assert.equal(cached(), false);
+    assert.deepEqual(view.ids(), []);
+  } finally {
+    jest.useRealTimers();
   }
 });
 
@@ -172,28 +232,25 @@ test("batches stream updates and rejects history that completes after disposal",
       },
     });
   });
-  const session = createTerminalLogSession(
-    createRpcClient(LogsService, transport),
-    scope(),
-  );
+  const view = open(transport);
   let updates = 0;
-  const subscription = session.state.subscribe(() => {
+  const unsubscribe = view.registry.subscribe(view.atoms.state, () => {
     updates++;
   });
-  const stop = session.retain();
   try {
     await delay(90);
     assert.equal(updates, 1);
-    assert.equal(session.state.get().entries.length, 10);
-    stop();
+    assert.equal(view.state().entries.length, 10);
+    view.close();
+    await delay(10);
     finishHistory?.();
     await delay(10);
-    assert.equal(session.state.get().historyLoaded, false);
-    assert.equal(session.state.get().entries.length, 10);
+    assert.equal(view.state().historyLoaded, false);
+    assert.equal(view.state().entries.length, 10);
   } finally {
-    stop();
+    view.close();
     finishHistory?.();
-    subscription.unsubscribe();
+    unsubscribe();
   }
 });
 
@@ -228,27 +285,20 @@ test("restarted sessions reject an older snapshot that ignored cancellation", as
       },
     });
   });
-  const session = createTerminalLogSession(
-    createRpcClient(LogsService, transport),
-    scope(),
-  );
-  const stopOld = session.retain();
+  const old = open(transport);
   await delay(10);
-  stopOld();
-  const stopNew = session.retain();
+  old.close();
+  await delay(10);
+  const view = open(transport, scope(), old.registry);
   try {
     await delay(90);
     finishOld();
     await delay(10);
-    assert.deepEqual(
-      session.state.get().entries.map((entry) => Number(entry.id)),
-      [10, 20],
-    );
-    assert.equal(session.state.get().historyLoaded, true);
+    assert.deepEqual(view.ids(), [10, 20]);
+    assert.equal(view.state().historyLoaded, true);
   } finally {
     finishOld();
-    stopOld();
-    stopNew();
+    view.close();
   }
 });
 
@@ -263,19 +313,15 @@ test("streams reconnect after completion and stop retrying when released", async
       },
     });
   });
-  const session = createTerminalLogSession(
-    createRpcClient(LogsService, transport),
-    scope(),
-  );
-  const stop = session.retain();
+  const view = open(transport);
   try {
     await delay(1150);
     assert.equal(subscriptions, 2);
-    stop();
+    view.close();
     await delay(1100);
     assert.equal(subscriptions, 2);
   } finally {
-    stop();
+    view.close();
   }
 });
 
@@ -346,11 +392,7 @@ test("reconnecting catches up retained history without duplicating live entries"
       },
     });
   });
-  const session = createTerminalLogSession(
-    createRpcClient(LogsService, transport),
-    scope(),
-  );
-  const stop = session.retain();
+  const view = open(transport);
   try {
     await delay(90);
     history = [message(1), message(2)];
@@ -362,13 +404,10 @@ test("reconnecting catches up retained history without duplicating live entries"
       }),
     ]);
     await delay(90);
-    assert.deepEqual(
-      session.state.get().entries.map((entry) => Number(entry.id)),
-      [1, 2, 3],
-    );
+    assert.deepEqual(view.ids(), [1, 2, 3]);
   } finally {
     endFirst();
-    stop();
+    view.close();
   }
 });
 
@@ -417,39 +456,29 @@ test("the first live response queues catch-up behind an in-flight snapshot", asy
       },
     });
   });
-  const session = createTerminalLogSession(
-    createRpcClient(LogsService, transport),
-    scope(),
-  );
-  const stop = session.retain();
+  const view = open(transport);
   try {
     await delay(90);
-    assert.deepEqual(
-      session.state.get().entries.map((entry) => Number(entry.id)),
-      [3],
-    );
+    assert.deepEqual(view.ids(), [3]);
     finishSnapshot();
     await delay(90);
-    assert.deepEqual(
-      session.state.get().entries.map((entry) => Number(entry.id)),
-      [1, 2, 3],
-    );
+    assert.deepEqual(view.ids(), [1, 2, 3]);
     assert.equal(peak, 1);
     assert.equal(requests, 2);
   } finally {
     finishSnapshot();
-    stop();
+    view.close();
   }
 });
 
 test("releasing one scope stops its own stream and leaves other scopes open", async () => {
-  const open = new Set<string>();
+  const streams = new Set<string>();
   const transport = createRouterTransport((router) => {
     router.service(LogsService, {
       getPrevious: () => ({ messages: [] }),
       async *subscribe(request, context) {
         const key = request.scope?.scope.case ?? "";
-        open.add(key);
+        streams.add(key);
         yield { message: message(1) };
         await new Promise<void>((resolve) => {
           context.signal.addEventListener(
@@ -460,29 +489,28 @@ test("releasing one scope stops its own stream and leaves other scopes open", as
             { once: true },
           );
         });
-        open.delete(key);
+        streams.delete(key);
       },
     });
   });
-  const global = getTerminalLogSession(transport, scope());
-  const personal = getTerminalLogSession(
+  const global = open(transport);
+  const personal = open(
     transport,
     create(LogScopeSchema, { scope: { case: "personal", value: {} } }),
+    global.registry,
   );
-  const releaseGlobal = global.retain();
-  const releasePersonal = personal.retain();
   try {
     await delay(90);
-    assert.deepEqual([...open].toSorted(), ["global", "personal"]);
-    releaseGlobal();
+    assert.deepEqual([...streams].toSorted(), ["global", "personal"]);
+    global.close();
     await delay(10);
-    assert.deepEqual([...open], ["personal"]);
-    releasePersonal();
+    assert.deepEqual([...streams], ["personal"]);
+    personal.close();
     await delay(10);
-    assert.deepEqual([...open], []);
+    assert.deepEqual([...streams], []);
   } finally {
-    releaseGlobal();
-    releasePersonal();
+    global.close();
+    personal.close();
   }
 });
 
@@ -514,23 +542,19 @@ test("repeated message text from different sources stays visible", async () => {
       },
     });
   });
-  const session = createTerminalLogSession(
-    createRpcClient(LogsService, transport),
-    scope(),
-  );
-  const stop = session.retain();
+  const view = open(transport);
   try {
     await delay(90);
     assert.deepEqual(
-      session.state.get().entries.map((entry) => entry.botAccountName),
+      view.state().entries.map((entry) => entry.botAccountName),
       ["A", "B", "C", "D"],
     );
   } finally {
-    stop();
+    view.close();
   }
 });
 
-test("a refused scope stops retrying until the session is retained again", async () => {
+test("a refused scope stops retrying until a view opens it again", async () => {
   let historyCalls = 0;
   let subscribeCalls = 0;
   const transport = createRouterTransport((router) => {
@@ -546,29 +570,26 @@ test("a refused scope stops retrying until the session is retained again", async
       },
     });
   });
-  const session = createTerminalLogSession(
-    createRpcClient(LogsService, transport),
-    scope(),
-  );
-  const release = session.retain();
+  const view = open(transport);
   try {
     await delay(100);
-    assert.equal(session.state.get().denied, true);
-    assert.equal(session.state.get().historyLoaded, true);
+    assert.equal(view.state().denied, true);
+    assert.equal(view.state().historyLoaded, true);
     const calls = historyCalls + subscribeCalls;
     // A retry would start after about three seconds; none may start at all.
     await delay(3200);
     assert.equal(historyCalls + subscribeCalls, calls);
   } finally {
-    release();
+    view.close();
   }
-  const again = session.retain();
+  await delay(10);
+  const again = open(transport, scope(), view.registry);
   try {
     await delay(100);
-    assert.ok(subscribeCalls >= 2, "retaining again must retry");
-    assert.equal(session.state.get().denied, true);
+    assert.ok(subscribeCalls >= 2, "opening again must retry");
+    assert.equal(again.state().denied, true);
   } finally {
-    again();
+    again.close();
   }
 });
 
@@ -587,24 +608,18 @@ test("a refused scope drops the logs it cached while access was allowed", async 
       },
     });
   });
-  const session = createTerminalLogSession(
-    createRpcClient(LogsService, transport),
-    scope(),
-  );
-  const release = session.retain();
+  const view = open(transport);
   await delay(100);
-  assert.deepEqual(
-    session.state.get().entries.map((entry) => entry.id),
-    ["1", "2"],
-  );
-  release();
+  assert.deepEqual(view.ids(), [1, 2]);
+  view.close();
   allowed = false;
-  const again = session.retain();
+  await delay(10);
+  const again = open(transport, scope(), view.registry);
   try {
     await delay(100);
-    assert.equal(session.state.get().denied, true);
-    assert.deepEqual(session.state.get().entries, []);
+    assert.equal(again.state().denied, true);
+    assert.deepEqual(again.state().entries, []);
   } finally {
-    again();
+    again.close();
   }
 });

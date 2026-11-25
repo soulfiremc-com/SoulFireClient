@@ -9,7 +9,10 @@ import {
   ShoppingCartIcon,
   WalletIcon,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useAtom } from "@effect/atom-react";
+import { Option } from "effect";
+import { AsyncResult } from "effect/reactivity";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { AccountImport } from "@/components/providers/flows/fernan-flow.tsx";
 import { UncertainNotice } from "@/components/providers/flows/fernan-flow.tsx";
@@ -50,6 +53,7 @@ import {
   type LocaltsOrder,
   type LocaltsProduct,
 } from "@/lib/localts.ts";
+import { localtsCatalogAtom } from "@/lib/provider-catalog-atoms.ts";
 import { ProviderApiError } from "@/lib/provider-request.ts";
 import { isOneOf } from "@/lib/is-one-of";
 import { LOCALTS_IMPORT_FORMATS } from "@/lib/localts";
@@ -96,8 +100,9 @@ export function LocaltsFlow({
   const [stage, setStage] = useState<Stage>("connect");
   const [mode, setMode] = useState("buy");
   const [key, setKey] = useState("");
-  const [products, setProducts] = useState<LocaltsProduct[] | null>(null);
-  const [catalogFailed, setCatalogFailed] = useState(false);
+  const [catalogResult, setProducts] = useAtom(localtsCatalogAtom);
+  const products = Option.getOrNull(AsyncResult.value(catalogResult));
+  const catalogFailed = AsyncResult.isFailure(catalogResult);
   const [balance, setBalance] = useState<number | null>(null);
   const [selected, setSelected] = useState("");
   const [amount, setAmount] = useState(1);
@@ -116,20 +121,6 @@ export function LocaltsFlow({
   const total = product && validAmount ? localtsPrice(product, amount) : null;
   const insufficient = total !== null && balance !== null && balance < total;
 
-  useEffect(() => {
-    const request = new AbortController();
-    void fetchLocaltsProducts(request.signal)
-      .then((result) => {
-        if (!request.signal.aborted) setProducts(result);
-      })
-      .catch(() => {
-        if (!request.signal.aborted) setCatalogFailed(true);
-      });
-    return () => {
-      request.abort();
-    };
-  }, []);
-
   const go = (next: Stage) => {
     setError(null);
     setStage(next);
@@ -145,7 +136,6 @@ export function LocaltsFlow({
       setBalance(credits);
       setOrders(latest);
       setProducts(catalog);
-      setCatalogFailed(false);
       // Fresh stock and balance data make another explicit order safe to review.
       setPurchased(false);
       setStage("choose");

@@ -6,6 +6,7 @@ import {
   ProviderApiError,
   providerResponseEffect,
   runProviderEffect,
+  withProviderHttp,
 } from "@/lib/provider-request.ts";
 
 const RAVEALTS_BASE_URL = "https://api.ravealts.com";
@@ -91,11 +92,9 @@ export class RavealtsApiError extends TaggedFailure<
   }
 }
 
-export async function fetchStock(): Promise<RavealtsStockResponse> {
-  return runProviderEffect(
-    ravealtsRequest<RavealtsStockResponse>("/alts/stock"),
-  );
-}
+export const loadRavealtsStock = withProviderHttp(
+  ravealtsRequest<RavealtsStockResponse>("/alts/stock"),
+);
 
 export async function fetchKeyInfo(
   apiKey: string,

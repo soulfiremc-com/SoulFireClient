@@ -67,6 +67,12 @@ const providerHttp: Context.Service.Shape<typeof ProviderHttp> = {
     }),
 };
 
+/** Runs provider requests through the regular HTTP client. */
+export const withProviderHttp = <A, E>(
+  effect: Effect.Effect<A, E, ProviderHttp>,
+): Effect.Effect<A, E> =>
+  Effect.provideService(effect, ProviderHttp, providerHttp);
+
 export async function runProviderEffect<A, E>(
   effect: Effect.Effect<A, E, ProviderHttp>,
   signal?: AbortSignal,

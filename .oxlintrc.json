@@ -950,11 +950,18 @@
     {
       "files": [
         "src/components/command-input.tsx",
+        "src/components/instance-overview/live-feed{,-atom,-atom.test}.ts{,x}",
+        "src/components/providers/flows/{localts,ravealts}-flow.tsx",
+        "src/hooks/use-bot-status-stream.ts",
         "src/hooks/use-palette-search-index.ts",
+        "src/hooks/use-terminal-logs.ts",
         "src/lib/command-completion-request{,.test}.ts",
         "src/lib/command-palette-index{,.test}.ts",
+        "src/lib/provider-catalog-atoms{,.test}.ts",
         "src/lib/script-editor-atoms{,.test}.ts",
-        "src/routes/_dashboard/instance/$instance/script/$scriptId.tsx"
+        "src/lib/watch-bot-statuses{,.test}.ts",
+        "src/routes/_dashboard/instance/$instance/script/$scriptId.tsx",
+        "src/stores/terminal-log-store{,.test}.ts"
       ],
       "rules": {
         "effecttsgo/unstable-api-usage": "off"

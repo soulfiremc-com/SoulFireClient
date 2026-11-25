@@ -1,18 +1,36 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { setTimeout as delay } from "node:timers/promises";
+import { jest } from "bun:test";
 import { create } from "@bufbuild/protobuf";
-import { Code, ConnectError, createRouterTransport } from "@connectrpc/connect";
+import {
+  Code,
+  ConnectError,
+  createRouterTransport,
+  type Transport,
+} from "@connectrpc/connect";
 import { QueryClient } from "@tanstack/react-query";
+import { AtomRegistry } from "effect/reactivity";
 import {
   type BotListResponse,
   BotListResponseSchema,
   BotRuntimeState,
   BotService,
 } from "@/generated/soulfire/bot_pb";
-import { watchBotStatuses } from "./watch-bot-statuses.ts";
+import { botStatusWatchAtom } from "./watch-bot-statuses.ts";
 
 const instanceId = "instance";
+
+/** Mounts the watch like a component would and returns its unmount. */
+function watchBotStatuses(
+  transport: Transport,
+  queryClient: QueryClient,
+  id: string,
+) {
+  return AtomRegistry.make().mount(
+    botStatusWatchAtom(transport, queryClient, id),
+  );
+}
 
 function update(profileId: string) {
   return {
@@ -275,6 +293,56 @@ test("permission and unsupported-stream failures never reconnect", async () => {
     assert.equal(attempts.size, 3);
   } finally {
     for (const stop of stops) stop();
+    cache.clear();
+  }
+});
+
+test("reconnects back off from one second and reset after a status event", async () => {
+  const cache = new QueryClient();
+  const attempts: number[] = [];
+  const transport = createRouterTransport((router) => {
+    router.service(BotService, {
+      async *watchBotStatuses(_request, context) {
+        attempts.push(Date.now());
+        if (attempts.length === 3) {
+          yield update("bot");
+          return;
+        }
+        if (attempts.length < 5) throw new ConnectError("", Code.Unavailable);
+        await new Promise<void>((resolve) => {
+          context.signal.addEventListener(
+            "abort",
+            () => {
+              resolve();
+            },
+            { once: true },
+          );
+        });
+      },
+    });
+  });
+  jest.useFakeTimers();
+  const stop = watchBotStatuses(transport, cache, instanceId);
+  try {
+    for (
+      let elapsed = 0;
+      elapsed < 7000 && attempts.length < 5;
+      elapsed += 50
+    ) {
+      jest.advanceTimersByTime(50);
+      await new Promise<void>((resolve) => {
+        setImmediate(resolve);
+      });
+    }
+    const waits = attempts.slice(1).map((time, index) => {
+      const previous = attempts[index] ?? time;
+      return Math.round((time - previous) / 500) * 500;
+    });
+    // The event on the third stream resets the wait for its reconnect.
+    assert.deepEqual(waits, [1000, 2000, 1000, 2000]);
+  } finally {
+    stop();
+    jest.useRealTimers();
     cache.clear();
   }
 });

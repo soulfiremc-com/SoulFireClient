@@ -1,16 +1,7 @@
-import { createRpcClient } from "@/lib/rpc";
-
+import { useAtomValue } from "@effect/atom-react";
 import type { TFunction } from "i18next";
 import { PauseIcon, PlayIcon } from "lucide-react";
-import {
-  memo,
-  use,
-  useEffect,
-  useEffectEvent,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { memo, use, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TransportContext } from "@/components/providers/transport-context.tsx";
 import { Button } from "@/components/ui/button.tsx";
@@ -22,16 +13,11 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area.tsx";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group.tsx";
 import { BotLifecycleKind } from "@/generated/soulfire/bot_live_pb";
-import {
-  type InstanceEvent,
-  InstanceLiveService,
-} from "@/generated/soulfire/instance_live_pb";
 import { toIntlLocale } from "@/lib/intl-locale.ts";
-import { observeServerStream } from "@/lib/protobuf.ts";
-import { cn, timestampToDate } from "@/lib/utils.tsx";
-import { addFeedEntry, type FeedEntry } from "./live-feed-buffer.ts";
+import { cn } from "@/lib/utils.tsx";
+import { liveFeedAtom } from "./live-feed-atom.ts";
+import type { FeedEntry } from "./live-feed-buffer.ts";
 
-const MAX_FEED_ENTRIES = 200;
 const FEED_COLUMNS =
   "grid grid-cols-[6.5rem_minmax(0,1fr)] gap-x-3 sm:grid-cols-[5.5rem_7.5rem_minmax(0,1fr)]";
 type FeedFilter = "all" | "chat" | "lifecycle";
@@ -141,18 +127,15 @@ export function LiveFeed({
 }) {
   const { t, i18n } = useTranslation("instance");
   const transport = use(TransportContext);
-  const [entries, setEntries] = useState<FeedEntry[]>([]);
-  const [pausedEntries, setPausedEntries] = useState<FeedEntry[] | null>(null);
+  const { entries, reconnecting } = useAtomValue(
+    liveFeedAtom(canWatch ? transport : null, instanceId, botName),
+  );
+  const [pausedEntries, setPausedEntries] = useState<
+    readonly FeedEntry[] | null
+  >(null);
   const [filter, setFilter] = useState<FeedFilter>("all");
-  const [reconnecting, setReconnecting] = useState(false);
   const viewportRef = useRef<HTMLDivElement>(null);
   const followingRef = useRef(true);
-  const nextIdRef = useRef(0);
-  // Events change this buffer right away. React shows it at most once per
-  // frame, so a chat line that reaches 1000 bots causes one render.
-  const bufferRef = useRef<FeedEntry[]>([]);
-  const frameRef = useRef<number | null>(null);
-  const reconnectingRef = useRef(false);
   const displayedEntries = pausedEntries ?? entries;
   const visibleEntries = useMemo(
     () =>
@@ -172,83 +155,6 @@ export function LiveFeed({
       }),
     [locale],
   );
-
-  const receiveEvent = useEffectEvent((event: InstanceEvent) => {
-    if (reconnectingRef.current) {
-      reconnectingRef.current = false;
-      setReconnecting(false);
-    }
-    if (event.event.case !== "chat" && event.event.case !== "lifecycle") return;
-    if (botName !== undefined && event.botName !== botName) return;
-    const timestamp =
-      event.event.case === "chat" && event.event.value.receivedAt
-        ? timestampToDate(event.event.value.receivedAt)
-        : new Date();
-    const entry: FeedEntry =
-      event.event.case === "chat"
-        ? {
-            id: nextIdRef.current++,
-            botNames: [event.botName],
-            timestamp,
-            kind: "chat",
-            senderName: event.event.value.senderName,
-            text: event.event.value.plainText,
-          }
-        : {
-            id: nextIdRef.current++,
-            botNames: [event.botName],
-            timestamp,
-            kind: "lifecycle",
-            lifecycleKind: event.event.value.kind,
-            message: event.event.value.message,
-          };
-    addFeedEntry(bufferRef.current, entry, MAX_FEED_ENTRIES);
-    frameRef.current ??= requestAnimationFrame(() => {
-      frameRef.current = null;
-      setEntries([...bufferRef.current]);
-    });
-  });
-
-  useEffect(
-    () => () => {
-      if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
-    },
-    [],
-  );
-
-  useEffect(() => {
-    if (!canWatch || transport === null) return undefined;
-    const controller = new AbortController();
-    const service = createRpcClient(InstanceLiveService, transport);
-    let retryTimer: ReturnType<typeof setTimeout> | undefined;
-    function retry(delay: number) {
-      if (controller.signal.aborted) return;
-      reconnectingRef.current = true;
-      setReconnecting(true);
-      retryTimer = setTimeout(connect, delay);
-    }
-    function connect() {
-      if (controller.signal.aborted) return;
-      const responses = service.watchInstanceEvents(
-        { instanceId, filter: { includeChat: true, includeLifecycle: true } },
-        { signal: controller.signal },
-      );
-      void observeServerStream(responses, {
-        onMessage: receiveEvent,
-        onError: () => {
-          retry(3000);
-        },
-        onComplete: () => {
-          retry(1000);
-        },
-      });
-    }
-    connect();
-    return () => {
-      controller.abort();
-      clearTimeout(retryTimer);
-    };
-  }, [instanceId, transport, canWatch]);
 
   useEffect(() => {
     const viewport = viewportRef.current;

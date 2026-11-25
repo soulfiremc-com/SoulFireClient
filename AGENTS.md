@@ -40,7 +40,7 @@ bun run generate-routes    # Regenerate TanStack Router route tree
 - **Frontend**: React 19, TypeScript, Tailwind CSS 4
 - **Desktop**: Electron
 - **Routing**: TanStack Router (file-based in `src/routes/`)
-- **State**: TanStack Store for editor, POV control, and terminal log state; TanStack Query for server state
+- **State**: TanStack Store for editor and POV control state; Effect atoms (`@effect/atom-react`) for terminal logs and live streams; TanStack Query for server state
 - **API**: gRPC-Web via Connect RPC using generated bindings in `src/generated/`
 - **UI**: shadcn/ui components, Radix primitives, Lucide icons
 
@@ -51,7 +51,7 @@ bun run generate-routes    # Regenerate TanStack Router route tree
 - `src/components/script-editor/` - Visual node-based script editor built on React Flow
 - `src/lib/web-rpc.ts` - gRPC transport setup and auth token management
 - `src/lib/script-service.ts` - Query options and proto↔JS conversion utilities
-- `src/stores/` - TanStack Store sessions for the script editor, POV controls, and terminal logs
+- `src/stores/` - TanStack Store sessions for the script editor and POV controls, and the terminal log atoms
 - `scripts/generate-legacy-updater-assets.ts` - Legacy updater bridge for already-installed Tauri clients
 
 ### Import Alias

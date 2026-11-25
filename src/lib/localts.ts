@@ -5,6 +5,7 @@ import {
   providerJsonEffect,
   runProviderEffect,
   type ProviderFetch,
+  withProviderHttp,
 } from "@/lib/provider-request.ts";
 
 // Contract: https://localts.store/api-docs (authenticated documentation).
@@ -100,6 +101,8 @@ export function fetchLocaltsProducts(
 ): Promise<LocaltsProduct[]> {
   return runProviderEffect(productsEffect(), signal, fetcher);
 }
+
+export const loadLocaltsProducts = withProviderHttp(productsEffect());
 
 export function fetchLocaltsBalance(
   key: string,

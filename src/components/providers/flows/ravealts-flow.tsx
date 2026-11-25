@@ -8,7 +8,10 @@ import {
   ShoppingCartIcon,
   WalletIcon,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useAtomRefresh, useAtomValue } from "@effect/atom-react";
+import { Option } from "effect";
+import { AsyncResult } from "effect/reactivity";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { AccountImport } from "@/components/providers/flows/fernan-flow.tsx";
 import { UncertainNotice } from "@/components/providers/flows/fernan-flow.tsx";
@@ -39,15 +42,14 @@ import { useProviderTask } from "@/hooks/use-provider-task.ts";
 import { ProviderApiError } from "@/lib/provider-request.ts";
 import {
   fetchKeyInfo,
-  fetchStock,
   formatStockType,
   getRavealtsApiKey,
   mapPurchasedAccounts,
   purchaseAccounts,
   RavealtsApiError,
-  type RavealtsStock,
   setRavealtsApiKey,
 } from "@/lib/ravealts.ts";
+import { ravealtsStockAtom } from "@/lib/provider-catalog-atoms.ts";
 
 type Stage = "connect" | "choose" | "review" | "import";
 const skeletonSlots = ["first", "second"];
@@ -89,8 +91,10 @@ export function RavealtsFlow({
   const [stage, setStage] = useState<Stage>("connect");
   const [key, setKey] = useState(() => getRavealtsApiKey());
   const [credits, setCredits] = useState<number | null>(null);
-  const [stock, setStock] = useState<RavealtsStock | null>(null);
-  const [stockFailed, setStockFailed] = useState(false);
+  const stockResult = useAtomValue(ravealtsStockAtom);
+  const loadStock = useAtomRefresh(ravealtsStockAtom);
+  const stock = Option.getOrNull(AsyncResult.value(stockResult))?.stock ?? null;
+  const stockFailed = AsyncResult.isFailure(stockResult);
   const [selected, setSelected] = useState("");
   const [amount, setAmount] = useState(1);
   // Ravealts cannot deliver an order again, so keep the credentials until the
@@ -107,25 +111,6 @@ export function RavealtsFlow({
   const maxAmount = Math.min(10, selectedStock);
   const validAmount =
     Number.isInteger(amount) && amount >= 1 && amount <= maxAmount;
-
-  const loadStock = (signal?: AbortSignal) =>
-    fetchStock()
-      .then((result) => {
-        if (signal?.aborted) return undefined;
-        setStock(result.stock);
-        setStockFailed(false);
-        return undefined;
-      })
-      .catch(() => {
-        if (!signal?.aborted) setStockFailed(true);
-      });
-  useEffect(() => {
-    const request = new AbortController();
-    void loadStock(request.signal);
-    return () => {
-      request.abort();
-    };
-  }, []);
 
   const go = (next: Stage) => {
     setError(null);
@@ -235,7 +220,7 @@ export function RavealtsFlow({
                     setDelivered((previous) => [...previous, ...payload]);
                     setLastOrderSize(payload.length);
                     setStage("import");
-                    void loadStock();
+                    loadStock();
                     void fetchKeyInfo(key.trim())
                       .then((result) => {
                         setCredits(result.available_credits);
