@@ -59,6 +59,7 @@
     "@dnd-kit/modifiers": "^9.0.0",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
+    "@effect/atom-react": "4.1.4",
     "@icons-pack/react-simple-icons": "^13.13.0",
     "@soulfiremc/cast-protocol": "./vendor/soulfiremc-cast-protocol-1.0.1.tgz",
     "@tanstack/match-sorter-utils": "^9.0.0",

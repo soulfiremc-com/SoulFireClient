@@ -1,65 +1,113 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { create } from "@bufbuild/protobuf";
+import { ConnectError } from "@connectrpc/connect";
+import { Effect } from "effect";
+import { Atom, AtomRegistry } from "effect/reactivity";
 import {
   type CommandCompletion,
   CommandCompletionSchema,
 } from "@/generated/soulfire/command_pb";
-import { CommandCompletionRequest } from "./command-completion-request";
+import {
+  type CommandCompletionRequest,
+  makeCommandCompletionAtom,
+} from "./command-completion-request";
 
-function deferred() {
-  let resolve!: (value: CommandCompletion[]) => void;
-  let reject!: (reason: unknown) => void;
-  const promise = new Promise<CommandCompletion[]>((accept, fail) => {
-    resolve = accept;
-    reject = fail;
+const settle = (ms = 0) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, ms);
   });
-  return { promise, resolve, reject };
-}
 
 const suggestions = () => [create(CommandCompletionSchema)];
 
-test("only the latest completion can survive out-of-order replies", async () => {
-  const request = new CommandCompletionRequest();
-  const old = deferred();
-  let oldSignal!: AbortSignal;
-  const pending = request.run((signal) => {
-    oldSignal = signal;
-    return old.promise;
-  });
-  const values = suggestions();
-  const latest = await request.run(async () => values);
-  assert.equal(oldSignal.aborted, true);
-  assert.equal(latest?.suggestions, values);
-  old.resolve(suggestions());
-  assert.equal(await pending, undefined);
-  request.cancel();
-  assert.equal(latest.signal.aborted, true);
-});
-
-test("cancellation suppresses late failures and successful replies", async () => {
-  const request = new CommandCompletionRequest();
-  const failed = deferred();
-  const pendingFailure = request.run(() => failed.promise);
-  request.cancel();
-  failed.reject(new Error("Test failure"));
-  assert.equal(await pendingFailure, undefined);
-  const succeeded = deferred();
-  const pendingSuccess = request.run(() => succeeded.promise);
-  request.cancel();
-  succeeded.resolve(suggestions());
-  assert.equal(await pendingSuccess, undefined);
-});
-
-test("a current failure is reported and a retry can still succeed", async () => {
-  const request = new CommandCompletionRequest();
-  const failure = new Error("Test failure");
-  await assert.rejects(
-    request.run(async () => {
-      throw failure;
+function recorder() {
+  const received: CommandCompletion[][] = [];
+  const failures: unknown[] = [];
+  return {
+    received,
+    failures,
+    request: (
+      load: CommandCompletionRequest["load"],
+      delayMs = 0,
+    ): CommandCompletionRequest => ({
+      delayMs,
+      load,
+      onSuggestions: (values) => {
+        received.push(values);
+      },
+      onFailure: (error) => {
+        failures.push(error);
+      },
     }),
-    (error) => error === failure,
+  };
+}
+
+function setup() {
+  const atom = makeCommandCompletionAtom();
+  const registry = AtomRegistry.make();
+  registry.mount(atom);
+  return { atom, registry };
+}
+
+test("a newer completion request interrupts the older one", async () => {
+  const { atom, registry } = setup();
+  const { received, failures, request } = recorder();
+  let oldInterrupted = false;
+  registry.set(
+    atom,
+    request(
+      Effect.never.pipe(
+        Effect.onInterrupt(() =>
+          Effect.sync(() => {
+            oldInterrupted = true;
+          }),
+        ),
+      ),
+    ),
   );
+  await settle();
   const values = suggestions();
-  assert.equal((await request.run(async () => values))?.suggestions, values);
+  registry.set(atom, request(Effect.succeed(values)));
+  await settle();
+  assert.equal(oldInterrupted, true);
+  assert.deepEqual(received, [values]);
+  assert.deepEqual(failures, []);
+});
+
+test("debounced requests start only after typing pauses", async () => {
+  const { atom, registry } = setup();
+  const { received, request } = recorder();
+  let loads = 0;
+  const load = Effect.sync(() => {
+    loads++;
+    return suggestions();
+  });
+  registry.set(atom, request(load, 20));
+  await settle(5);
+  registry.set(atom, request(load, 20));
+  await settle(5);
+  assert.equal(loads, 0);
+  await settle(30);
+  assert.equal(loads, 1);
+  assert.equal(received.length, 1);
+});
+
+test("interrupting suppresses a late failure, and a later request still works", async () => {
+  const { atom, registry } = setup();
+  const { received, failures, request } = recorder();
+  registry.set(
+    atom,
+    request(Effect.fail(new ConnectError("Test failure")), 10),
+  );
+  registry.set(atom, Atom.Interrupt);
+  await settle(20);
+  assert.deepEqual(failures, []);
+  const failure = new ConnectError("Current failure");
+  registry.set(atom, request(Effect.fail(failure)));
+  await settle();
+  assert.deepEqual(failures, [failure]);
+  const values = suggestions();
+  registry.set(atom, request(Effect.succeed(values)));
+  await settle();
+  assert.deepEqual(received, [values]);
 });

@@ -1,5 +1,7 @@
 import { createRpcClient } from "@/lib/rpc";
+import { useAtomSet } from "@effect/atom-react";
 import { Effect } from "effect";
+import { Atom } from "effect/reactivity";
 import { ConnectError } from "@connectrpc/connect";
 import {
   type KeyboardEventHandler,
@@ -31,7 +33,7 @@ import { getCommandTokenRange } from "@/lib/command-token";
 import { getConnectionErrorKind } from "@/lib/connection-errors";
 import { isExpectedError } from "@/lib/error-reporting";
 import { getCommandSuggestionsPosition } from "@/lib/command-suggestions-position";
-import { CommandCompletionRequest } from "@/lib/command-completion-request";
+import { makeCommandCompletionAtom } from "@/lib/command-completion-request";
 import { cn } from "@/lib/utils";
 import {
   appendCommandHistory,
@@ -131,13 +133,17 @@ export default function CommandInput(props: { scope: CommandScope }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const pendingCaret = useRef<number | null>(null);
   // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
-  const [completionRequest] = useState(() => new CommandCompletionRequest());
+  const [completionAtom] = useState(makeCommandCompletionAtom);
+  const requestCompletions = useAtomSet(completionAtom);
+  // Stops a waiting or running completion request.
+  const cancelCompletions = useCallback(() => {
+    requestCompletions(Atom.Interrupt);
+  }, [requestCompletions]);
   useLayoutEffect(() => {
     const cursor = pendingCaret.current;
     pendingCaret.current = null;
     if (cursor !== null) inputRef.current?.setSelectionRange(cursor, cursor);
   }, [inputValue, cursorPosition]);
-  const completionFetchTimeout = useRef<number | null>(null);
   const [isFocused, setIsFocused] = useState(false);
   // Focusing on load opens the on-screen keyboard and hides the log on phones.
   // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
@@ -185,17 +191,11 @@ export default function CommandInput(props: { scope: CommandScope }) {
     };
   }, []);
 
-  const resetCompletionFetchDebounce = useCallback(() => {
-    if (completionFetchTimeout.current !== null) {
-      window.clearTimeout(completionFetchTimeout.current);
-      completionFetchTimeout.current = null;
-    }
-  }, []);
-
   const fetchCompletions = useCallback(
-    async (
+    (
       text: string,
       cursor: number,
+      delayMs: number,
       accept: (state: CompletionState) => void = setCompletionState,
     ) => {
       if (transport === null) return;
@@ -208,50 +208,43 @@ export default function CommandInput(props: { scope: CommandScope }) {
           input.selectionStart === cursor
         );
       };
-      try {
-        const result = await completionRequest.run(async (signal) => {
-          const response = await Effect.runPromise(
-            createRpcClient(CommandService, transport).tabCompleteCommand(
-              { scope: props.scope, command: text, cursor },
-              { signal },
-            ),
-          );
-          return response.suggestions;
-        });
-        if (!result || result.signal.aborted || !isCurrent()) return;
-        accept({
-          baseText: text,
-          cursor,
-          receivedCompletions: result.suggestions,
-          index: null,
-          replacementRange: getCommandTokenRange(text, cursor),
-        });
-      } catch (error) {
-        // A dropped connection or a bot that is not in a world yet is not a
-        // client defect. Show an inline hint instead of reporting it.
-        if (!isExpectedError(error) && !isBotNotReadyError(error))
-          console.error("Could not load command completions", error);
-        if (!isCurrent()) return;
-        setCompletionState({
-          baseText: text,
-          cursor,
-          receivedCompletions: [],
-          index: null,
-          replacementRange: getCommandTokenRange(text, cursor),
-          failed: true,
-        });
-      }
+      requestCompletions({
+        delayMs,
+        load: createRpcClient(CommandService, transport)
+          .tabCompleteCommand({ scope: props.scope, command: text, cursor })
+          .pipe(Effect.map((response) => response.suggestions)),
+        onSuggestions: (suggestions) => {
+          if (!isCurrent()) return;
+          accept({
+            baseText: text,
+            cursor,
+            receivedCompletions: suggestions,
+            index: null,
+            replacementRange: getCommandTokenRange(text, cursor),
+          });
+        },
+        onFailure: (error) => {
+          // A dropped connection or a bot that is not in a world yet is not a
+          // client defect. Show an inline hint instead of reporting it.
+          if (!isExpectedError(error) && !isBotNotReadyError(error))
+            console.error("Could not load command completions", error);
+          if (!isCurrent()) return;
+          setCompletionState({
+            baseText: text,
+            cursor,
+            receivedCompletions: [],
+            index: null,
+            replacementRange: getCommandTokenRange(text, cursor),
+            failed: true,
+          });
+        },
+      });
     },
-    [completionRequest, props.scope, transport],
+    [props.scope, requestCompletions, transport],
   );
 
-  const handleTabPress = async (
-    text: string,
-    cursor: number,
-    direction: 1 | -1,
-  ) => {
-    resetCompletionFetchDebounce();
-    completionRequest.cancel();
+  const handleTabPress = (text: string, cursor: number, direction: 1 | -1) => {
+    cancelCompletions();
     const applyCompletions = (receivedState: CompletionState) => {
       let completionStateNew = receivedState;
       const suggestionsList = completionStateNew.receivedCompletions ?? [];
@@ -307,7 +300,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
       completionState.baseText !== text ||
       completionState.cursor !== cursor
     ) {
-      await fetchCompletions(text, cursor, (state) => {
+      fetchCompletions(text, cursor, 0, (state) => {
         const count = state.receivedCompletions?.length ?? 0;
         applyCompletions({
           ...state,
@@ -348,17 +341,16 @@ export default function CommandInput(props: { scope: CommandScope }) {
   const scheduleCompletionFetch = useCallback(
     (text: string, cursor: number) => {
       setSuggestionsDismissed(false);
-      resetCompletionFetchDebounce();
-      completionRequest.cancel();
       // An empty prompt opens suggestions only on Tab. Opening them on focus
       // or after Enter covered the output, and clicking the log refocused the
       // prompt, so the popup could not be dismissed by clicking.
-      if (text === "") return;
-      completionFetchTimeout.current = window.setTimeout(() => {
-        void fetchCompletions(text, cursor);
-      }, COMPLETION_DEBOUNCE_MS);
+      if (text === "") {
+        cancelCompletions();
+        return;
+      }
+      fetchCompletions(text, cursor, COMPLETION_DEBOUNCE_MS);
     },
-    [completionRequest, fetchCompletions, resetCompletionFetchDebounce],
+    [cancelCompletions, fetchCompletions],
   );
 
   const replacementRangeStart = completionState.replacementRange?.start ?? null;
@@ -412,10 +404,9 @@ export default function CommandInput(props: { scope: CommandScope }) {
     }));
     return () => {
       inputRevision.current++;
-      resetCompletionFetchDebounce();
-      completionRequest.cancel();
+      cancelCompletions();
     };
-  }, [completionRequest, props.scope, transport, resetCompletionFetchDebounce]);
+  }, [cancelCompletions, props.scope, transport]);
 
   useLayoutEffect(() => {
     if (!isFocused) {
@@ -486,8 +477,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
 
   const acceptCompletion = useCallback(
     (index: number) => {
-      resetCompletionFetchDebounce();
-      completionRequest.cancel();
+      cancelCompletions();
       const element = inputRef.current;
       if (!element) {
         return;
@@ -533,7 +523,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
         };
       });
     },
-    [completionRequest, resetCompletionFetchDebounce, updateInputValue],
+    [cancelCompletions, updateInputValue],
   );
 
   const cycleSuggestion = useCallback(
@@ -594,8 +584,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
         return;
       }
       inputRef.current?.focus({ preventScroll: true });
-      resetCompletionFetchDebounce();
-      completionRequest.cancel();
+      cancelCompletions();
       updateInputValue(value);
       pendingCaret.current = value.length;
       setCursorPosition(value.length);
@@ -638,8 +627,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
       currentTarget.selectionStart === currentTarget.selectionEnd
     ) {
       e.preventDefault();
-      resetCompletionFetchDebounce();
-      completionRequest.cancel();
+      cancelCompletions();
       updateInputValue("");
       pendingCaret.current = 0;
       setCursorPosition(0);
@@ -658,8 +646,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
     if (e.key === "Escape" && !suggestionsDismissed) {
       e.preventDefault();
       e.stopPropagation();
-      resetCompletionFetchDebounce();
-      completionRequest.cancel();
+      cancelCompletions();
       setSuggestionsDismissed(true);
       return;
     }
@@ -684,8 +671,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
       });
       pendingCaret.current = 0;
       setCursorPosition(0);
-      resetCompletionFetchDebounce();
-      completionRequest.cancel();
+      cancelCompletions();
 
       if (transport === null || currentVal === "") {
         return;
@@ -701,8 +687,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
           !currentTarget.isConnected
         )
           return;
-        resetCompletionFetchDebounce();
-        completionRequest.cancel();
+        cancelCompletions();
         updateInputValue(submittedText);
         pendingCaret.current = submittedText.length;
         setCursorPosition(submittedText.length);
@@ -723,7 +708,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
       if (suggestionsDismissed) return;
       e.preventDefault();
       const direction: 1 | -1 = e.shiftKey ? -1 : 1;
-      void handleTabPress(currentTarget.value, caretPosition, direction);
+      handleTabPress(currentTarget.value, caretPosition, direction);
       return;
     }
 
@@ -830,8 +815,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
           onScroll={updateCaretPosition}
           onCompositionStart={() => {
             composing.current = true;
-            resetCompletionFetchDebounce();
-            completionRequest.cancel();
+            cancelCompletions();
             setSuggestionsDismissed(true);
           }}
           onCompositionEnd={(event) => {
@@ -851,8 +835,7 @@ export default function CommandInput(props: { scope: CommandScope }) {
             scheduleCompletionFetch(value, position);
           }}
           onBlur={() => {
-            resetCompletionFetchDebounce();
-            completionRequest.cancel();
+            cancelCompletions();
             setIsFocused(false);
           }}
         />

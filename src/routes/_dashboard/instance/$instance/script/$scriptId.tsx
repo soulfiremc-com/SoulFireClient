@@ -1,5 +1,7 @@
 import { createRpcClient } from "@/lib/rpc";
+import { useAtomSet } from "@effect/atom-react";
 import { Effect } from "effect";
+import { Atom } from "effect/reactivity";
 
 import {
   useMutation,
@@ -64,11 +66,12 @@ import { Skeleton } from "@/components/ui/skeleton.tsx";
 import { InstancePermission } from "@/generated/soulfire/common_pb";
 import {
   DiagnosticSeverity,
+  type ScriptEvent,
   ScriptService,
 } from "@/generated/soulfire/script_pb";
 import { useIsMobile } from "@/hooks/use-mobile.ts";
 import i18n from "@/lib/i18n";
-import { observeServerStream, valueToJson } from "@/lib/protobuf.ts";
+import { valueToJson } from "@/lib/protobuf.ts";
 import { routeChrome } from "@/lib/route-title.ts";
 import { saveScript } from "@/lib/save-script";
 import {
@@ -79,10 +82,15 @@ import {
   scriptStatusQueryOptions,
 } from "@/lib/script-service.ts";
 import { hasInstancePermission, isDemo } from "@/lib/utils.tsx";
+import {
+  makeScriptActivationAtom,
+  makeScriptValidationAtom,
+} from "@/lib/script-editor-atoms";
 import { scriptLogLevel, watchScriptLogs } from "@/lib/script-logs";
 import { createTransport } from "@/lib/web-rpc.ts";
 import { getQuerySessionId } from "@/lib/query-session.ts";
 import { getScriptEditorRouteSession } from "@/stores/script-editor-route-session";
+import type { ValidationDiagnostic } from "@/stores/script-editor-derived";
 
 import "@xyflow/react/dist/style.css";
 
@@ -343,7 +351,9 @@ function ScriptEditorContent() {
   const [nodePaletteOpen, setNodePaletteOpen] = useState(false);
   const [executionLogsOpen, setExecutionLogsOpen] = useState(false);
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
-  const executionAbortRef = useRef<AbortController | null>(null);
+  // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
+  const [activationAtom] = useState(makeScriptActivationAtom<ScriptEvent>);
+  const activate = useAtomSet(activationAtom);
   const mounted = useRef(true);
   useEffect(() => {
     mounted.current = true;
@@ -370,53 +380,50 @@ function ScriptEditorContent() {
   const validationGraph = useSelector(editor.validationGraph);
   const setValidationDiagnostics = editor.actions.setValidationDiagnostics;
 
+  // oxlint-disable-next-line react/hook-use-state -- Keep the lazily initialized value for the lifetime of the component.
+  const [validationAtom] = useState(
+    makeScriptValidationAtom<ValidationDiagnostic[]>,
+  );
+  const validate = useAtomSet(validationAtom);
+
   useEffect(() => {
-    if (!transport || scriptId === "new") return undefined;
-    const controller = new AbortController();
-    const validate = async () => {
-      try {
-        const client = createRpcClient(ScriptService, transport);
-        const result = await Effect.runPromise(
-          client.validateScript(
-            {
-              instanceId,
-              nodes: nodesToProto(validationGraph.nodes),
-              edges: edgesToProto(validationGraph.edges),
-            },
-            { signal: controller.signal },
+    if (!transport || scriptId === "new") {
+      validate(Atom.Interrupt);
+      return;
+    }
+    validate({
+      validate: createRpcClient(ScriptService, transport)
+        .validateScript({
+          instanceId,
+          nodes: nodesToProto(validationGraph.nodes),
+          edges: edgesToProto(validationGraph.edges),
+        })
+        .pipe(
+          Effect.map((result) =>
+            result.diagnostics.map((d) => ({
+              nodeId: d.nodeId,
+              edgeId: d.edgeId,
+              message: d.message,
+              severity:
+                d.severity === DiagnosticSeverity.DIAGNOSTIC_WARNING
+                  ? "warning"
+                  : "error",
+            })),
           ),
-        );
-        if (
-          controller.signal.aborted ||
-          editor.validationGraph.get() !== validationGraph
-        )
-          return;
-        setValidationDiagnostics(
-          result.diagnostics.map((d) => ({
-            nodeId: d.nodeId,
-            edgeId: d.edgeId,
-            message: d.message,
-            severity:
-              d.severity === DiagnosticSeverity.DIAGNOSTIC_WARNING
-                ? "warning"
-                : "error",
-          })),
-        );
-      } catch {
-        // Validation is best-effort. Keep the last successful diagnostics.
-      }
-    };
-    const timeout = setTimeout(() => void validate(), 500);
-    return () => {
-      clearTimeout(timeout);
-      controller.abort();
-    };
+        ),
+      onDiagnostics: (diagnostics) => {
+        // The store can hold a newer graph before its validation starts.
+        if (editor.validationGraph.get() === validationGraph)
+          setValidationDiagnostics(diagnostics);
+      },
+    });
   }, [
     transport,
     instanceId,
     scriptId,
     validationGraph,
     setValidationDiagnostics,
+    validate,
     editor,
   ]);
 
@@ -505,14 +512,6 @@ function ScriptEditorContent() {
       queryKey: ["script-status", instanceId, scriptId],
     });
 
-    // Abort any existing execution
-    if (executionAbortRef.current) {
-      executionAbortRef.current.abort();
-    }
-
-    const abortController = new AbortController();
-    executionAbortRef.current = abortController;
-
     setActive(true);
     setActiveNode(null);
     addExecutionLog({
@@ -523,159 +522,145 @@ function ScriptEditorContent() {
       message: tInstance("scripts.activating"),
     });
 
-    try {
-      const client = createRpcClient(ScriptService, transport);
-      const responses = client.activateScript(
-        { instanceId, scriptId },
-        { signal: abortController.signal },
-      );
-      let started = false;
-      void observeServerStream(responses, {
-        onMessage: (event) => {
-          if (abortController.signal.aborted) return;
-          if (event.event.case === "scriptStarted") {
-            started = true;
-            acknowledgePause(false);
-            setIsControlling(false);
-            addExecutionLog({
-              id: crypto.randomUUID(),
-              timestamp: new Date(),
-              level: "info",
-              nodeId: null,
-              message: tInstance("scripts.activated"),
-            });
-            toast.success(tInstance("scripts.activateSuccess"));
-          } else if (event.event.case === "nodeStarted") {
-            // The canvas highlights running nodes. Logging every node start
-            // and finish would push real errors out of the capped log.
-            startNode(event.event.value.nodeId, event.event.value.executionId);
-          } else if (event.event.case === "nodeCompleted") {
-            const { nodeId, executionId, outputs, executionTimeNanos } =
-              event.event.value;
-            // One update per event keeps node selectors from running twice.
-            batch(() => {
-              completeNode(nodeId, executionId);
-              // Converting outputs is costly, so skip nodes nobody watches.
-              if (
-                Object.keys(outputs).length > 0 &&
-                observesNodeOutputs(nodeId)
-              ) {
-                recordNodeOutputs(
-                  nodeId,
-                  Object.fromEntries(
-                    Object.entries(outputs).map(([port, value]) => [
-                      port,
-                      valueToJson(value),
-                    ]),
-                  ),
-                );
-              }
-              if (executionTimeNanos > 0n) {
-                addNodeExecutionTime(
-                  nodeId,
-                  Number(executionTimeNanos) / 1_000_000,
-                );
-              }
-            });
-          } else if (event.event.case === "executionStats") {
-            const { nodeCount, maxCount } = event.event.value;
-            addExecutionLog({
-              id: crypto.randomUUID(),
-              timestamp: new Date(),
-              level: "info",
-              nodeId: null,
-              message: i18n.t("instance:scripts.executionStats", {
-                executed: Number(nodeCount),
-                max: Number(maxCount),
-              }),
-            });
-          } else if (event.event.case === "nodeError") {
-            const { nodeId, errorMessage } = event.event.value;
-            completeNode(nodeId, event.event.value.executionId);
-            if (!canViewLogs)
-              addExecutionLog({
-                id: crypto.randomUUID(),
-                timestamp: new Date(),
-                level: "error",
-                nodeId,
-                message: tInstance("scripts.nodeError", {
-                  error: errorMessage,
-                }),
-              });
-          } else if (event.event.case === "scriptLog" && !canViewLogs) {
-            const { nodeId, level, message } = event.event.value;
-            addExecutionLog({
-              id: crypto.randomUUID(),
-              timestamp: new Date(),
-              level: scriptLogLevel(level),
-              nodeId: nodeId ?? null,
-              message,
-            });
-          } else if (event.event.case === "scriptCompleted") {
-            const success = event.event.value.success;
-            setActive(false);
-            setActiveNode(null);
-            void queryClient.invalidateQueries({
-              queryKey: ["script-status", instanceId, scriptId],
-            });
-            addExecutionLog({
-              id: crypto.randomUUID(),
-              timestamp: new Date(),
-              level: success ? "info" : "warn",
-              nodeId: null,
-              message: success
-                ? tInstance("scripts.executionCompletedSuccess")
-                : tInstance("scripts.deactivated"),
-            });
-            if (success) {
-              toast.success(tInstance("scripts.executionCompleted"));
-            }
-          }
-        },
-        onError: (error) => {
-          if (abortController.signal.aborted) return;
-          console.error("Script monitoring stream error:", error);
-          setHasExecutionStream(false);
-          setActive(false);
-          setActiveNode(null);
+    let started = false;
+    // A new activation stops the stream of the previous one.
+    activate({
+      events: createRpcClient(ScriptService, transport).activateScript({
+        instanceId,
+        scriptId,
+      }),
+      onEvent: (event) => {
+        if (event.event.case === "scriptStarted") {
+          started = true;
+          acknowledgePause(false);
           setIsControlling(false);
-          void queryClient.invalidateQueries({
-            queryKey: ["script-status", instanceId, scriptId],
-          });
-          const message =
-            error instanceof Error ? error.message : String(error);
           addExecutionLog({
             id: crypto.randomUUID(),
             timestamp: new Date(),
-            level: started ? "warn" : "error",
+            level: "info",
             nodeId: null,
-            message: tInstance(
-              started ? "scripts.monitoringError" : "scripts.executionError",
-              {
-                error: message,
-              },
-            ),
+            message: tInstance("scripts.activated"),
           });
-          if (started)
-            toast.warning(tInstance("scripts.monitoringDisconnected"));
-          else toast.error(tInstance("scripts.activateError"));
-        },
-        onComplete: () => {
-          if (abortController.signal.aborted) return;
-          setHasExecutionStream(false);
+          toast.success(tInstance("scripts.activateSuccess"));
+        } else if (event.event.case === "nodeStarted") {
+          // The canvas highlights running nodes. Logging every node start
+          // and finish would push real errors out of the capped log.
+          startNode(event.event.value.nodeId, event.event.value.executionId);
+        } else if (event.event.case === "nodeCompleted") {
+          const { nodeId, executionId, outputs, executionTimeNanos } =
+            event.event.value;
+          // One update per event keeps node selectors from running twice.
+          batch(() => {
+            completeNode(nodeId, executionId);
+            // Converting outputs is costly, so skip nodes nobody watches.
+            if (
+              Object.keys(outputs).length > 0 &&
+              observesNodeOutputs(nodeId)
+            ) {
+              recordNodeOutputs(
+                nodeId,
+                Object.fromEntries(
+                  Object.entries(outputs).map(([port, value]) => [
+                    port,
+                    valueToJson(value),
+                  ]),
+                ),
+              );
+            }
+            if (executionTimeNanos > 0n) {
+              addNodeExecutionTime(
+                nodeId,
+                Number(executionTimeNanos) / 1_000_000,
+              );
+            }
+          });
+        } else if (event.event.case === "executionStats") {
+          const { nodeCount, maxCount } = event.event.value;
+          addExecutionLog({
+            id: crypto.randomUUID(),
+            timestamp: new Date(),
+            level: "info",
+            nodeId: null,
+            message: i18n.t("instance:scripts.executionStats", {
+              executed: Number(nodeCount),
+              max: Number(maxCount),
+            }),
+          });
+        } else if (event.event.case === "nodeError") {
+          const { nodeId, errorMessage } = event.event.value;
+          completeNode(nodeId, event.event.value.executionId);
+          if (!canViewLogs)
+            addExecutionLog({
+              id: crypto.randomUUID(),
+              timestamp: new Date(),
+              level: "error",
+              nodeId,
+              message: tInstance("scripts.nodeError", {
+                error: errorMessage,
+              }),
+            });
+        } else if (event.event.case === "scriptLog" && !canViewLogs) {
+          const { nodeId, level, message } = event.event.value;
+          addExecutionLog({
+            id: crypto.randomUUID(),
+            timestamp: new Date(),
+            level: scriptLogLevel(level),
+            nodeId: nodeId ?? null,
+            message,
+          });
+        } else if (event.event.case === "scriptCompleted") {
+          const success = event.event.value.success;
           setActive(false);
           setActiveNode(null);
-          setIsControlling(false);
-        },
-      });
-    } catch (error) {
-      if (abortController.signal.aborted) return;
-      console.error("Failed to activate script:", error);
-      setHasExecutionStream(false);
-      setActive(false);
-      setIsControlling(false);
-      toast.error(tInstance("scripts.activateError"));
-    }
+          void queryClient.invalidateQueries({
+            queryKey: ["script-status", instanceId, scriptId],
+          });
+          addExecutionLog({
+            id: crypto.randomUUID(),
+            timestamp: new Date(),
+            level: success ? "info" : "warn",
+            nodeId: null,
+            message: success
+              ? tInstance("scripts.executionCompletedSuccess")
+              : tInstance("scripts.deactivated"),
+          });
+          if (success) {
+            toast.success(tInstance("scripts.executionCompleted"));
+          }
+        }
+      },
+      onError: (error) => {
+        console.error("Script monitoring stream error:", error);
+        setHasExecutionStream(false);
+        setActive(false);
+        setActiveNode(null);
+        setIsControlling(false);
+        void queryClient.invalidateQueries({
+          queryKey: ["script-status", instanceId, scriptId],
+        });
+        const message = error instanceof Error ? error.message : String(error);
+        addExecutionLog({
+          id: crypto.randomUUID(),
+          timestamp: new Date(),
+          level: started ? "warn" : "error",
+          nodeId: null,
+          message: tInstance(
+            started ? "scripts.monitoringError" : "scripts.executionError",
+            {
+              error: message,
+            },
+          ),
+        });
+        if (started) toast.warning(tInstance("scripts.monitoringDisconnected"));
+        else toast.error(tInstance("scripts.activateError"));
+      },
+      onComplete: () => {
+        setHasExecutionStream(false);
+        setActive(false);
+        setActiveNode(null);
+        setIsControlling(false);
+      },
+    });
   }, [
     transport,
     instanceId,
@@ -692,16 +677,14 @@ function ScriptEditorContent() {
     addExecutionLog,
     canViewLogs,
     acknowledgePause,
+    activate,
   ]);
 
   // Handle script deactivation
   const handleStop = useCallback(async () => {
     setHasExecutionStream(false);
-    // Abort the streaming connection
-    if (executionAbortRef.current) {
-      executionAbortRef.current.abort();
-      executionAbortRef.current = null;
-    }
+    // Stop following the activation stream.
+    activate(Atom.Interrupt);
 
     const documentScriptId = editor.document.get().scriptId;
     if (scriptId === "new" && !documentScriptId) {
@@ -755,17 +738,8 @@ function ScriptEditorContent() {
     editor,
     addExecutionLog,
     acknowledgePause,
+    activate,
   ]);
-
-  // Cleanup on unmount
-  useEffect(
-    () => () => {
-      if (executionAbortRef.current) {
-        executionAbortRef.current.abort();
-      }
-    },
-    [],
-  );
 
   // Handle clear logs
   const handleClearLogs = useCallback(() => {

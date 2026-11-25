@@ -949,6 +949,19 @@
   "overrides": [
     {
       "files": [
+        "src/components/command-input.tsx",
+        "src/hooks/use-palette-search-index.ts",
+        "src/lib/command-completion-request{,.test}.ts",
+        "src/lib/command-palette-index{,.test}.ts",
+        "src/lib/script-editor-atoms{,.test}.ts",
+        "src/routes/_dashboard/instance/$instance/script/$scriptId.tsx"
+      ],
+      "rules": {
+        "effecttsgo/unstable-api-usage": "off"
+      }
+    },
+    {
+      "files": [
         "electron/cast/{errors,metrics-source,request-id,session-manager,transport}.ts",
         "electron/native/integrated-server{,-download,-process}.ts",
         "scripts/{prepare-electron-release-assets,refresh-electron-updater-metadata,translation-keys}.ts"
