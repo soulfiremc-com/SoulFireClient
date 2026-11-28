@@ -1,80 +1,71 @@
 {
   "overview": {
-    "welcome": "Tervetuloa takaisin, {{name}} 🧙",
     "serverMetrics": {
-      "sectionTitle": "Palvelimen mittarit",
+      "sectionTitle": "",
       "summary": {
         "cpu": "Suoritin",
-        "heapUsed": "Käytetty kasa",
+        "heapUsed": "",
         "threads": "Säikeet",
-        "botsOnline": "Yhdistetyt botit",
+        "botsOnline": "",
         "uptime": "Käyttöaika"
       },
       "cpuUsage": {
-        "title": "Prosessorin käyttö (%)"
+        "title": ""
       },
       "memoryUsage": {
-        "title": "Kasa-muisti (MB)"
+        "title": ""
       },
       "threadCount": {
-        "title": "Säikeiden määrä"
+        "title": ""
       },
       "aggregateBots": {
-        "title": "Yhdistetyt botit (kaikki instanssit)"
+        "title": ""
       },
       "legend": {
-        "process": "Prosessi",
+        "process": "",
         "system": "Järjestelmä",
-        "used": "Käytössä",
-        "committed": "Varattu",
-        "max": "Enint.",
+        "used": "",
+        "committed": "",
+        "max": "",
         "total": "Yhteensä",
-        "daemon": "Daemon",
+        "daemon": "",
         "online": "Yhdistetty"
-      }
+      },
+      "collecting": ""
     },
-    "instancesChart": {
-      "title": "Instanssien kokonaismäärä tällä palvelimella",
-      "instances": "Instanssit",
-      "label": {
-        "state": "Tila",
-        "active": "Aktiivinen",
-        "stopped": "Pysäytetty",
-        "other": "Muu"
-      }
-    },
-    "usersChart": {
-      "title": "Käyttäjien kokonaismäärä tällä palvelimella",
+    "stats": {
       "users": "Käyttäjät",
-      "label": {
-        "role": "Rooli",
-        "user": "Käyttäjä",
-        "admin": "Ylläpitäjä",
-        "other": "Muu"
-      }
+      "projects": "",
+      "admins_one": "",
+      "admins_other": "",
+      "active_one": "",
+      "active_other": ""
     }
   },
   "users": {
-    "filterPlaceholder": "Suodata käyttäjiä...",
+    "noPermission": {
+      "title": "",
+      "description": ""
+    },
     "baseUserDialog": {
       "form": {
         "username": {
-          "min": "Käyttäjätunnuksen pitää olla vähintään 3 merkkiä pitkä",
-          "max": "Käyttäjätunnuksen pitää olla enintään 32 merkkiä pitkä",
-          "regex": "Käyttäjätunnuksen tulee olla pienaakkosilla, alkaa aakkosnumeerisella merkillä, jonka jälkeen voi olla lisää aakkosnumeerisia merkkejä tai tavuviivoja, ja päättyä aakkosnumeeriseen merkkiin.",
+          "min": "",
+          "max": "",
+          "regex": "",
           "label": "Käyttäjätunnus",
           "placeholder": "Anna käyttäjätunnus",
-          "description": "Yksilöllinen käyttäjätunnus, joka tunnistaa käyttäjän"
+          "description": ""
         },
         "email": {
           "label": "Sähköposti",
           "placeholder": "Anna sähköposti",
-          "description": "Käyttäjän sähköpostiosoite, jota käytetään ilmoituksiin ja kirjautumiseen"
+          "description": ""
         },
         "role": {
           "label": "Rooli",
           "placeholder": "Valitse rooli",
-          "description": "Käyttäjän rooli. Ylläpitäjät voivat hallita käyttäjiä ja kaikkia instansseja. Käyttäjät voivat hallita vain omia instanssejaan.",
+          "description": "",
           "user": "Käyttäjä",
           "admin": "Ylläpitäjä"
         }
@@ -82,71 +73,80 @@
     },
     "addUserDialog": {
       "title": "Lisää uusi käyttäjä",
-      "description": "Lisää uusi käyttäjä tälle palvelimelle",
+      "description": "",
       "form": {
         "cancel": "Peruuta",
-        "add": "Lisää käyttäjä"
+        "add": ""
       }
     },
     "updateUserDialog": {
-      "title": "Päivitä käyttäjä",
-      "description": "Päivitä käyttäjän tiedot",
+      "title": "",
+      "description": "",
       "form": {
         "cancel": "Peruuta",
-        "update": "Päivitä käyttäjä"
+        "update": ""
       }
     },
     "profileConflict": "",
     "addToast": {
       "loading": "Lisätään käyttäjää...",
-      "success": "Käyttäjä lisätty",
-      "error": "Käyttäjän lisääminen epäonnistui"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "Päivitetään käyttäjää...",
-      "success": "Käyttäjä päivitetty",
-      "error": "Käyttäjän päivitys epäonnistui"
+      "success": "",
+      "error": ""
     },
     "removeToast": {
       "loading": "Poistetaan käyttäjiä...",
-      "success": "Käyttäjät poistettu",
-      "error": "Käyttäjien poistaminen epäonnistui"
+      "partial": "",
+      "success_one": "",
+      "success_other": "",
+      "error_one": "",
+      "error_other": ""
     },
     "invalidateToast": {
-      "loading": "Kirjataan käyttäjiä ulos...",
-      "success": "Käyttäjät kirjattu ulos",
-      "error": "Uloskirjautuminen epäonnistui"
+      "loading": "",
+      "partial": "",
+      "success_one": "",
+      "success_other": "",
+      "error_one": "",
+      "error_other": ""
+    },
+    "impersonateToast": {
+      "error": ""
     },
     "table": {
       "username": "Käyttäjätunnus",
       "email": "Sähköposti",
       "role": "Rooli",
       "createdAt": "Luotu",
-      "minIssuedAt": "Istunnot voimassa alkaen",
+      "minIssuedAt": "",
       "actions": "Toiminnot",
       "searchUsernames": "Etsi käyttäjätunnuksia...",
       "searchEmails": "Etsi sähköpostiosoitteita...",
       "searchCreatedAts": "Etsi luontipäivämääriä...",
-      "searchMinIssuedAts": "Hae istuntojen päivämääriä..."
+      "searchMinIssuedAts": ""
     },
     "removeSelectedTooltip": "Poista valitut käyttäjät",
-    "logOutSelectedTooltip": "Kirjaa valitut käyttäjät ulos",
+    "logOutSelectedTooltip": "",
     "contextMenu": {
-      "editUser": "Muokkaa käyttäjää",
+      "editUser": "",
       "impersonate": "Aja käyttäjäksi",
-      "copyUserId": "Kopioi käyttäjätunnus"
+      "copyUserId": ""
     },
     "removeDialog": {
-      "title_one": "Poistetaanko {{count}} käyttäjä?",
-      "title_other": "Poistetaanko {{count}} käyttäjää?",
-      "description": "Tämä poistaa valitut käyttäjät ja heidän käyttöoikeutensa pysyvästi. Tätä ei voi kumota.",
-      "confirm": "Poista käyttäjät"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     },
     "invalidateDialog": {
-      "title_one": "Kirjataanko {{count}} käyttäjä ulos?",
-      "title_other": "Kirjataanko {{count}} käyttäjää ulos?",
-      "description": "Tämä päättää valittujen käyttäjien kaikki istunnot ja tokenit. Heidän on kirjauduttava uudelleen.",
-      "confirm": "Kirjaa käyttäjät ulos"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     }
   }
 }

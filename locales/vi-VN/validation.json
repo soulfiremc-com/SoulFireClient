@@ -1,39 +1,41 @@
 {
   "string": {
-    "undefined": "Nhập một giá trị.",
-    "null": "Nhập một giá trị.",
-    "number": "Nhập một giá trị.",
-    "boolean": "Nhập một giá trị.",
-    "array": "Nhập một giá trị.",
-    "object": "Nhập một giá trị.",
-    "nan": "Nhập một giá trị.",
-    "infinity": "Nhập một giá trị."
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "number": {
-    "undefined": "Nhập một số.",
-    "null": "Nhập một số.",
-    "string": "Nhập một số.",
-    "boolean": "Nhập một số.",
-    "array": "Nhập một số.",
-    "object": "Nhập một số.",
-    "nan": "Nhập một số.",
-    "infinity": "Nhập một số."
+    "undefined": "",
+    "null": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "object": {
-    "undefined": "Nhập giá trị hợp lệ.",
-    "null": "Nhập giá trị hợp lệ.",
-    "number": "Nhập giá trị hợp lệ.",
-    "string": "Nhập giá trị hợp lệ.",
-    "boolean": "Nhập giá trị hợp lệ.",
-    "array": "Nhập giá trị hợp lệ.",
-    "nan": "Nhập giá trị hợp lệ.",
-    "infinity": "Nhập giá trị hợp lệ."
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "nan": "",
+    "infinity": ""
   },
-  "email": "Nhập địa chỉ email hợp lệ.",
-  "url": "Nhập URL hợp lệ.",
-  "jwt": "Nhập token hợp lệ.",
-  "emailTooLong": "Dùng tối đa 255 ký tự.",
-  "jarSource": "Chọn máy chủ chính thức hoặc jar tùy chỉnh.",
-  "generationMode": "Chọn cách xử lý các tài khoản hiện có.",
-  "userRole": "Chọn một vai trò."
+  "email": "",
+  "url": "",
+  "jwt": "",
+  "emailTooLong": "",
+  "generationMode": "",
+  "userRole": "",
+  "serverUrl": "",
+  "pattern": "",
+  "minLength_other": ""
 }

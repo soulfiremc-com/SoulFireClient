@@ -1,80 +1,71 @@
 {
   "overview": {
-    "welcome": "Välkommen tillbaka, {{name}} 🧙",
     "serverMetrics": {
-      "sectionTitle": "Serverstatistik​er​/Mätvärden​",
+      "sectionTitle": "",
       "summary": {
         "cpu": "CPU",
-        "heapUsed": "Använt heapminne",
+        "heapUsed": "",
         "threads": "Trådar",
-        "botsOnline": "Anslutna bottar",
+        "botsOnline": "",
         "uptime": "Drifttid"
       },
       "cpuUsage": {
-        "title": "CPU-användning (%)"
+        "title": ""
       },
       "memoryUsage": {
-        "title": "Heap-minne (MB)"
+        "title": ""
       },
       "threadCount": {
-        "title": "Trådantal"
+        "title": ""
       },
       "aggregateBots": {
-        "title": "Anslutna bottar (alla instanser)"
+        "title": ""
       },
       "legend": {
-        "process": "Process",
+        "process": "",
         "system": "System",
-        "used": "Använt",
-        "committed": "Reserverat",
-        "max": "Max",
+        "used": "",
+        "committed": "",
+        "max": "",
         "total": "Totalt",
-        "daemon": "Daemon",
+        "daemon": "",
         "online": "Ansluten"
-      }
+      },
+      "collecting": ""
     },
-    "instancesChart": {
-      "title": "Totalt antal instanser på den här servern",
-      "instances": "Instanser",
-      "label": {
-        "state": "Status",
-        "active": "Aktiv",
-        "stopped": "Stoppad",
-        "other": "Annat"
-      }
-    },
-    "usersChart": {
-      "title": "Totalt antal användare på den här servern",
+    "stats": {
       "users": "Användare",
-      "label": {
-        "role": "Roll",
-        "user": "Användare",
-        "admin": "Admin",
-        "other": "Annat"
-      }
+      "projects": "",
+      "admins_one": "",
+      "admins_other": "",
+      "active_one": "",
+      "active_other": ""
     }
   },
   "users": {
-    "filterPlaceholder": "Filtrera användare...",
+    "noPermission": {
+      "title": "",
+      "description": ""
+    },
     "baseUserDialog": {
       "form": {
         "username": {
-          "min": "Användarnamn måste vara minst 3 tecken",
-          "max": "Användarnamn får vara högst 32 tecken",
-          "regex": "Användarnamn måste vara med små bokstäver, börja med en alfanumerisk tecken, följt av fler alfanumeriska tecken eller bindestreck, och sluta med en alfanumerisk tecken.",
+          "min": "",
+          "max": "",
+          "regex": "",
           "label": "Användarnamn",
           "placeholder": "Ange användarnamn",
-          "description": "Ett unikt användarnamn som identifierar användaren"
+          "description": ""
         },
         "email": {
           "label": "E-post",
           "placeholder": "Ange e-post",
-          "description": "Användarens e-postadress används för aviseringar och inloggning"
+          "description": ""
         },
         "role": {
           "label": "Roll",
           "placeholder": "Välj en roll",
-          "description": "Användarens roll. Administratörer kan hantera användare och alla instanser. Användare kan endast hantera sina egna instanser.",
+          "description": "",
           "user": "Användare",
           "admin": "Admin"
         }
@@ -82,71 +73,80 @@
     },
     "addUserDialog": {
       "title": "Lägg till en ny användare",
-      "description": "Lägg till en ny användare på den här servern",
+      "description": "",
       "form": {
         "cancel": "Avbryt",
-        "add": "Lägg till användare"
+        "add": ""
       }
     },
     "updateUserDialog": {
-      "title": "Uppdatera användare",
-      "description": "Uppdatera användarens information",
+      "title": "",
+      "description": "",
       "form": {
         "cancel": "Avbryt",
-        "update": "Uppdatera användare"
+        "update": ""
       }
     },
     "profileConflict": "",
     "addToast": {
       "loading": "Lägger till användare...",
-      "success": "Användaren tillagd",
-      "error": "Misslyckades med att lägga till användaren"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "Uppdaterar användare...",
-      "success": "Användare uppdaterad",
-      "error": "Misslyckades med att uppdatera användaren"
+      "success": "",
+      "error": ""
     },
     "removeToast": {
       "loading": "Tar bort användare...",
-      "success": "Användare borttagna",
-      "error": "Misslyckades med att ta bort användare"
+      "partial": "",
+      "success_one": "",
+      "success_other": "",
+      "error_one": "",
+      "error_other": ""
     },
     "invalidateToast": {
-      "loading": "Loggar ut användare...",
-      "success": "Användare utloggade",
-      "error": "Misslyckades med att logga ut användare"
+      "loading": "",
+      "partial": "",
+      "success_one": "",
+      "success_other": "",
+      "error_one": "",
+      "error_other": ""
+    },
+    "impersonateToast": {
+      "error": ""
     },
     "table": {
       "username": "Användarnamn",
       "email": "E-post",
       "role": "Roll",
       "createdAt": "Skapad",
-      "minIssuedAt": "Sessioner giltiga sedan",
+      "minIssuedAt": "",
       "actions": "Åtgärder",
       "searchUsernames": "Sök användarnamn...",
       "searchEmails": "Sök e-postadresser...",
       "searchCreatedAts": "Sök efter skapelsedatum...",
-      "searchMinIssuedAts": "Sök sessionsdatum..."
+      "searchMinIssuedAts": ""
     },
     "removeSelectedTooltip": "Ta bort valda användare",
-    "logOutSelectedTooltip": "Logga ut valda användare",
+    "logOutSelectedTooltip": "",
     "contextMenu": {
-      "editUser": "Redigera användare",
+      "editUser": "",
       "impersonate": "Imitera",
-      "copyUserId": "Kopiera användar-ID"
+      "copyUserId": ""
     },
     "removeDialog": {
-      "title_one": "Ta bort {{count}} användare?",
-      "title_other": "Ta bort {{count}} användare?",
-      "description": "Detta tar permanent bort de valda användarna och deras åtkomst. Det går inte att ångra.",
-      "confirm": "Ta bort användare"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     },
     "invalidateDialog": {
-      "title_one": "Logga ut {{count}} användare?",
-      "title_other": "Logga ut {{count}} användare?",
-      "description": "Detta avslutar alla sessioner och token för de valda användarna. De måste logga in igen.",
-      "confirm": "Logga ut användare"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     }
   }
 }

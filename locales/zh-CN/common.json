@@ -4,16 +4,47 @@
   "cancel": "取消",
   "save": "保存",
   "saving": "正在保存...",
+  "demoReadOnly": "",
+  "errorToast": {
+    "connection": "",
+    "authentication": "",
+    "permission": ""
+  },
+  "analyticsConsent": {
+    "title": "",
+    "description": "",
+    "cookieless": "",
+    "accept": "",
+    "decline": "",
+    "preferences": "",
+    "privacyPolicy": "",
+    "cookiePolicy": ""
+  },
   "error": {
     "noAddressOrToken": "未找到服务器地址或令牌",
     "page": {
-      "title": "出错",
-      "description": "页面未加载。请打开控制台查看更多信息。",
-      "logOut": "退出登录",
+      "logOut": "",
       "reloadPage": "重新载入页面",
-      "showDetails": "显示详情"
-    },
-    "connectionFailed": "连接 SoulFire 服务器失败。"
+      "showDetails": "显示详情",
+      "connectionSettings": "",
+      "restartLocalServer": "",
+      "reconnecting": "",
+      "kindTitle": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": "出错"
+      },
+      "recovery": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      }
+    }
+  },
+  "navigation": {
+    "pending": ""
   },
   "queryStatus": {
     "failed": "",
@@ -24,12 +55,9 @@
     "page": {
       "title": "未找到",
       "description": "此地址没有页面",
-      "logOut": "退出登录",
+      "home": "",
       "reloadPage": "重新载入页面"
     }
-  },
-  "pending": {
-    "connecting": "正在连接..."
   },
   "dialog": {
     "about": {
@@ -38,11 +66,11 @@
       "type": "类型",
       "value": "值",
       "fields": {
-        "serverVersion": "服务器版本",
-        "serverCommit": "服务器提交",
-        "serverBranch": "服务器分支",
-        "minecraftVersion": "Minecraft 版本",
-        "operatingSystem": "操作系统",
+        "serverVersion": "",
+        "serverCommit": "",
+        "serverBranch": "",
+        "minecraftVersion": "",
+        "operatingSystem": "",
         "platform": "平台",
         "locale": "语言",
         "architecture": "建筑",
@@ -53,42 +81,44 @@
     },
     "support": {
       "title": "支持 SoulFire.",
-      "description": "SoulFire 是免费的开源项目，由社区倾心打造。",
-      "body": "如果 SoulFire 对您有帮助，请考虑支持该项目。您的贡献将帮助我们支付服务器费用、资助开发，使 SoulFire 能持续免费提供给所有人。",
+      "body": "",
       "dismiss": "稍后再说",
-      "action": "支持 SoulFire."
+      "action": "支持 SoulFire.",
+      "alreadySupport": "",
+      "neverRemind": "",
+      "reminderFrequency": ""
     },
     "createInstance": {
-      "title": "创建一个新实例",
-      "description": "为实例命名一个你能识别的名称，例如“我的Minecraft机器人”。",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "label": "一个友好的名称",
-          "placeholder": "我的 Minecraft 机器人",
-          "description": "您想要赋予此实例的名称"
+          "label": "",
+          "placeholder": "",
+          "description": ""
         },
         "cancel": "取消",
-        "create": "创建"
+        "create": ""
       },
       "createToast": {
-        "loading": "正在创建实例...",
-        "success": "实例已成功创建",
-        "error": "创建实例失败"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "duplicateInstance": {
-      "title": "复制实例",
-      "description": "使用“{{name}}”的配置文件创建一个新实例。",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "description": "为复制的实例命名。"
+          "description": ""
         },
-        "duplicate": "复制"
+        "duplicate": ""
       },
       "duplicateToast": {
-        "loading": "正在复制实例...",
-        "success": "实例已成功复制",
-        "error": "复制实例失败"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "import": {
@@ -97,40 +127,56 @@
         "fromUrl": "从 URL",
         "firstClipboardItem": "剪贴板包含多个项目。SoulFire将使用第一个项目。",
         "fromClipboard": "从剪贴板",
+        "clipboardError": "",
+        "fileError": "",
+        "emptyFile": "",
+        "unsupportedFile": "",
+        "emptyClipboard": "",
         "textarea": {
-          "placeholder": "将文本放在这里...",
-          "submit": "从文本加载"
+          "label": "",
+          "placeholder": "",
+          "submit": "从文本加载",
+          "empty": ""
         }
       },
       "url": {
         "description": "SoulFire服务器会向此URL发送GET请求并导入响应。",
         "form": {
           "url": {
-            "placeholder": "将 URL 放在这里...",
-            "empty": "请输入一个有效的 URL"
+            "placeholder": "",
+            "empty": ""
           }
         },
         "submit": "从 URL 加载",
         "toast": {
           "loading": "正在下载数据...",
-          "success": "数据已加载",
-          "error": "下载数据失败",
+          "success": "",
+          "error": "",
           "httpError": "",
           "empty": ""
         }
       }
     },
     "deleteInstance": {
-      "title": "删除实例？",
-      "description": "这会永久删除“{{name}}”及其数据。此操作无法撤销。",
-      "descriptionUnnamed": "这会永久删除此实例及其数据。此操作无法撤销。"
+      "title": "",
+      "description": "",
+      "descriptionUnnamed": ""
+    },
+    "importConfiguration": {
+      "title": "",
+      "description": "",
+      "confirm": ""
     }
   },
   "commandInput": {
-    "placeholder": "输入命令（输入“help”查看列表）",
-    "emptySuggestions": "输入以请求建议或按 Tab 键。",
+    "label": "",
+    "suggestions": "",
+    "placeholder": "",
     "noSuggestions": "暂无可用建议。",
-    "emptySuggestionsPrefix": "输入以获取建议，或按"
+    "suggestionsUnavailable": "",
+    "botNotReady": "",
+    "connectionLost": "",
+    "demoUnavailable": ""
   },
   "controls": {
     "start": "开始",
@@ -141,25 +187,27 @@
     "startCount": "要启动的机器人数量",
     "startToast": {
       "loading": "正在启动机器人...",
-      "success": "机器人状态已更新",
-      "error": "启动机器人失败"
+      "success": "",
+      "error": ""
     },
     "restartToast": {
       "loading": "正在重启机器人...",
       "success": "机器人正在重新连接",
-      "error": "重启机器人失败"
+      "error": ""
     },
     "stopToast": {
       "loading": "正在停止机器人...",
       "success": "机器人正在停止",
-      "error": "停止机器人失败"
+      "error": ""
     },
-    "permissionDenied": "您没有权限在此实例中启动或停止机器人。",
+    "permissionDenied": "",
     "serverUpdateRequired": "服务器未报告机器人控制权限。请检查您的服务器和客户端版本是否匹配。",
     "startBots": "启动机器人",
-    "moreActions": "更多机器人操作",
-    "generateFirst": "创建账户以启动您的第一个机器人。",
-    "startCountHelp": "启动额外的机器人，已运行的机器人将保持连接。",
+    "allRunning": "",
+    "generateFirst": "",
+    "startCountHelp": "",
+    "target": "",
+    "changeTarget": "",
     "startAllCount": "启动全部 {{count}} 个",
     "validCount": "请输入一个介于 1 和 {{count}} 之间的整数。",
     "positiveCount": "请输入至少为 1 的整数。",
@@ -168,14 +216,12 @@
     "stopCount_other": "停止 {{count}} 个机器人",
     "restartCount_other": "重启 {{count}} 个机器人"
   },
-  "botFleetSummary": "{{online}} 个已连接 · {{desired}} 个设为运行 · 共 {{total}} 个",
-  "icon": {
-    "invalidName": "无效的图标名称: {{name}}"
-  },
+  "botFleetSummary": "",
+  "botFleetSummaryEmpty": "",
   "dataTable": {
     "noResults": "无结果。",
-    "rowsSelected": "已选择 {{amount}} 行（共 {{total}} 行）",
     "rowsPerPage": "每页行数",
+    "sliderLabel": "",
     "currentPage": "第 {{page}} 页，共 {{total}} 页",
     "goFirst": "转到第一页",
     "goPrevious": "转到上一页",
@@ -183,7 +229,6 @@
     "goLast": "转到最后一页",
     "selectAll": "全选",
     "selectRow": "选择行",
-    "selected": "已选择 {{count}} 项",
     "clearSelection": "清除选择",
     "escape": "Esc",
     "filter": "筛选",
@@ -220,6 +265,8 @@
     "addSorting": "添加排序以整理行。",
     "addSort": "添加排序方式",
     "resetSorting": "重置排序",
+    "removeSort": "",
+    "reorderSort": "",
     "columnHeader": {
       "asc": "升序",
       "desc": "降序",
@@ -250,69 +297,147 @@
       "asc": "升序",
       "desc": "降序"
     },
-    "openFilterMenu": "打开筛选菜单",
-    "filterOperator": "筛选运算符",
-    "filterValue": "筛选值",
-    "sortDirection": "排序方向",
-    "selectJoinOperator": "选择连接运算符",
-    "joinOperator": "连接运算符",
-    "escapeKey": "Escape",
-    "selectDate": "选择日期",
-    "selectDateRange": "选择日期范围",
-    "clearFilter": "清除 {{title}} 筛选",
-    "clearFilters": "清除筛选",
-    "clear": "清除",
-    "from": "从",
-    "to": "到",
-    "sortDirectionFor": "{{column}} 的排序方向",
-    "minValue": "{{label}} 最小值",
-    "maxValue": "{{label}} 最大值"
+    "openFilterMenu": "",
+    "filterOperator": "",
+    "filterValue": "",
+    "sortDirection": "",
+    "selectJoinOperator": "",
+    "joinOperator": "",
+    "escapeKey": "",
+    "selectDate": "",
+    "selectDateRange": "",
+    "clearFilter": "",
+    "clearFilters": "",
+    "clear": "",
+    "from": "",
+    "to": "",
+    "sortDirectionFor": "",
+    "minValue": "",
+    "maxValue": "",
+    "rowsSelected_other": "",
+    "selected_other": ""
   },
   "pluginCard": {
-    "version": "版本: {{version}}",
-    "author": "作者: {{author}}",
-    "license": "许可：{{license}}",
-    "website": "网站"
+    "website": "网站",
+    "meta": "",
+    "configure": "",
+    "enable": ""
   },
   "settingsPage": {
-    "saveError": "无法保存 {{name}}",
-    "namespacesNotFound": "未找到设置命名空间",
+    "sections": {
+      "provider": {
+        "title": "",
+        "description": ""
+      },
+      "requests": {
+        "title": "",
+        "description": ""
+      },
+      "movement": {
+        "title": "",
+        "description": ""
+      },
+      "costs": {
+        "title": "",
+        "description": ""
+      },
+      "search": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "autoSave": "",
+    "saveError": "",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "无法保存 {{name}}",
       "placeholder": "添加新条目...",
       "add": "添加",
-      "remove": "删除"
+      "remove": "删除",
+      "removeAll": "",
+      "undo": "",
+      "count_other": "{{count}} 个条目",
+      "removedAll_other": ""
     },
     "combo": {
-      "searchPlaceholder": "搜索值..."
+      "searchPlaceholder": "搜索值...",
+      "selectPlaceholder": "",
+      "empty": "",
+      "more_other": ""
     },
     "invalidNumberToast": {
-      "title": "无效数字",
-      "description": "值必须介于 {{min}} 和 {{max}} 之间"
+      "description": ""
     },
-    "minMaxLegend": "最小值和最大值设置"
+    "saving": "正在保存...",
+    "saved": "",
+    "notSaved": "",
+    "defaultValue": "",
+    "resetToDefault": "",
+    "filter": "",
+    "filterPlaceholder": "",
+    "closeFilter": "",
+    "searchEverywhere": "",
+    "noMatches": "",
+    "otherPages": "",
+    "demoNotSaved": "",
+    "scope": {
+      "instance": "",
+      "server": ""
+    },
+    "minMaxLegend": "",
+    "rangeValue": "",
+    "advanced_other": ""
   },
   "terminal": {
+    "actions": {
+      "run_command": "",
+      "suggest_command": "",
+      "copy_to_clipboard": "复制到剪贴板",
+      "open_url": "",
+      "unavailable": ""
+    },
     "noLogs": "暂时没有日志。运行命令以生成日志输出。",
-    "demo-1": "欢迎来到演示模式！🧪",
-    "demo-2": "这是一个只读的 SoulFire 实例",
-    "demo-3": "在决定安装 SoulFire 之前，请先查看所有菜单和功能",
-    "demo-4": "如果您想要加入我们的Discord服务器，请访问： https://soulfiremc.com/discord"
+    "noLogsReadOnly": "",
+    "logsNoPermission": {
+      "title": "",
+      "description": ""
+    },
+    "logsDenied": "",
+    "botLogsNoPermission": {
+      "title": "",
+      "description": ""
+    },
+    "jumpToLatest": "",
+    "commandsNoPermission": {
+      "title": "",
+      "description": ""
+    },
+    "demo": {
+      "welcome": "",
+      "logs": "",
+      "commands": "",
+      "install": "",
+      "discord": ""
+    }
   },
-  "uiBreadcrumb": {
-    "more": "更多"
-  },
+  "skipToContent": "",
   "uiDialog": {
     "close": "关闭"
   },
   "uiSheet": {
     "close": "关闭"
   },
+  "updateReady": {
+    "title": "",
+    "description": "",
+    "restart": "",
+    "later": ""
+  },
   "uiSidebar": {
-    "toggle": "切换侧边栏"
+    "toggle": "",
+    "title": "",
+    "description": ""
   },
   "window": {
     "minimize": "最小化",
@@ -333,93 +458,210 @@
   },
   "castMenu": {
     "title": "投放",
-    "disconnected": "与 {{device}} 断开连接",
-    "alreadyConnected": "已连接 {{device}}",
     "connectToast": {
       "loading": "正在连接到 {{device}} ...",
       "success": "已连接至 {{device}}",
-      "error": "无法连接到{{device}}"
+      "error": ""
     },
-    "noDevices": "未找到设备",
     "broadcastToast": {
       "loading": "正在广播消息…",
-      "success": "消息已播报",
-      "error": "广播消息失败"
+      "success": "",
+      "error": ""
     }
   },
   "commandPalette": {
+    "title": "",
+    "trigger": "",
+    "triggerLabel": "",
+    "shortcutHint": "",
+    "description": "",
+    "placeholder": "",
+    "emptyTitle": "",
+    "emptyHint": "",
+    "emptyTitlePartial": "",
+    "emptyHintPartial": "",
+    "loading": "",
+    "loadError": "",
+    "retry": "重试",
+    "index": {
+      "progress": "",
+      "server": "",
+      "serverFailed": "",
+      "failed_other": "",
+      "failedWithServer_other": ""
+    },
+    "copyProjectId": "",
+    "copyUrl": "",
+    "copied": "",
+    "refresh": "",
+    "clearRecents": "",
+    "actionError": "",
+    "serverOverview": "",
+    "serverContext": "",
+    "browseProject": "",
+    "allProjects": "",
+    "changeScope": "",
+    "searchAllProjects": "",
+    "pickProjectPlaceholder": "",
+    "browsingPlaceholder": "",
+    "projectUnavailable": "",
+    "matchedBy": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "全部",
+      "projects": "",
+      "bots": "机器人",
+      "scripts": "脚本",
+      "settings": "设置",
+      "actions": "操作"
+    },
+    "pin": "",
+    "unpin": "",
+    "pinLabel": "",
+    "unpinLabel": "",
+    "confirm": {
+      "description": "",
+      "confirmStart": "启动机器人",
+      "confirmStop": "",
+      "confirmRestart": "",
+      "cancel": "取消",
+      "unavailable": "",
+      "start_other": "",
+      "stop_other": "",
+      "restart_other": ""
+    },
     "feedback": {
+      "start": {
+        "loading": "",
+        "error": "",
+        "success_other": ""
+      },
+      "stop": {
+        "loading": "",
+        "error": "",
+        "success_other": ""
+      },
+      "restart": {
+        "loading": "",
+        "error": "",
+        "success_other": ""
+      },
       "activate": {
-        "loading": "正在开启脚本...",
-        "success": "脚本已开启",
-        "error": "无法开启脚本。请重试。"
+        "loading": "",
+        "success": "",
+        "error": ""
       },
       "deactivate": {
-        "loading": "正在关闭脚本...",
-        "success": "脚本已关闭",
-        "error": "无法关闭脚本。请重试。"
-      }
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "busy": "",
+      "demo": ""
     },
     "operations": {
-      "activateScript": "开启脚本 {{name}}",
-      "deactivateScript": "关闭脚本 {{name}}"
+      "startBot": "",
+      "stopBot": "",
+      "restartBot": "",
+      "activateScript": "",
+      "deactivateScript": "",
+      "startBots_other": "启动 {{count}} 个机器人",
+      "stopBots_other": "停止 {{count}} 个机器人",
+      "retryBots_other": ""
     },
     "status": {
-      "active": "开",
-      "paused": "关"
-    }
+      "connected": "已连接",
+      "starting": "正在启动",
+      "retrying": "正在重试",
+      "failed": "失败了",
+      "stopping": "正在停止",
+      "stopped": "已停止",
+      "active": "",
+      "paused": ""
+    },
+    "theme": {
+      "light": "",
+      "dark": "",
+      "system": ""
+    },
+    "keys": {
+      "navigate": "",
+      "select": "",
+      "close": "关闭",
+      "back": "返回"
+    },
+    "groups": {
+      "pinned": "",
+      "recent": "",
+      "navigation": "",
+      "currentProject": "",
+      "projects": "",
+      "settings": "设置",
+      "bots": "机器人",
+      "scripts": "脚本",
+      "admin": "",
+      "actions": "操作",
+      "results": "",
+      "projectPages": ""
+    },
+    "missingPin": {
+      "label": "",
+      "description": ""
+    },
+    "moreResults_other": "",
+    "pinLimit_other": ""
   },
   "instanceSidebar": {
     "readDocumentation": "阅读文档",
-    "backToDashboard": "返回实例列表",
+    "backToDashboard": "",
     "deleteToast": {
-      "loading": "正在删除实例...",
-      "success": "实例已删除",
-      "error": "删除实例失败"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "instancesGroup": "实例",
-    "createInstance": "创建实例",
+    "instancesGroup": "",
+    "createInstance": "",
     "loadProfileToast": {
-      "loading": "正在加载配置文件...",
-      "success": "配置文件已加载",
-      "error": "加载配置文件失败"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "loadProfile": "加载配置文件",
+    "loadProfile": "",
     "loadFromFile": "从文件中加载",
-    "profileSaved": "配置文件已保存",
-    "saveProfile": "保存配置文件",
-    "deleteInstance": "删除实例",
+    "profileSaved": "",
+    "profileSaveError": "",
+    "saveProfile": "",
+    "deleteInstance": "",
     "controlsGroup": "控制",
     "overview": "概况",
     "terminal": "终端",
     "bots": "机器人",
-    "audit-log": "审计日志",
+    "audit-log": "",
     "settingsGroup": "设置",
     "extensionsGroup": "扩展",
-    "botSettings": "机器人设置",
     "accountSettings": "账户",
-    "metaSettings": "实例设置",
+    "metaSettings": "",
     "proxySettings": "代理",
-    "aiSettings": "AI设置",
-    "pathfindingSettings": "路径寻路设置",
     "discoverPlugins": "插件",
-    "instanceScripts": "脚本"
+    "togglePluginSettings": "",
+    "instanceScripts": "脚本",
+    "configurationFileType": "",
+    "exportWarning": "",
+    "fleetStatusEmpty": "",
+    "fleetStatus_other": ""
   },
   "userSidebar": {
     "readDocumentation": "阅读文档",
     "userGroup": "用户",
-    "instances": "实例",
+    "instances": "",
     "access": "访问权限",
-    "createInstance": "创建实例",
+    "createInstance": "",
     "settings": "设置",
     "adminGroup": "管理员",
     "adminOverview": "概况",
     "adminLogs": "日志",
     "adminTerminal": "终端",
     "users": "用户",
-    "adminScripts": "脚本",
-    "serverSettings": "服务器设置",
-    "devSettings": "开发者设置",
     "theme": {
       "title": "主题",
       "system": "系统",
@@ -433,11 +675,12 @@
     "dataDir": "数据目录",
     "supportSoulFire": "支持 SoulFire.",
     "about": "关于",
-    "logOut": "退出登录",
+    "logOut": "",
     "logOutToast": {
-      "loading": "正在登出…",
-      "success": "已登出",
-      "error": "登出失败"
+      "loading": "",
+      "success": "",
+      "error": "",
+      "stopError": ""
     },
     "exit": "退出",
     "stopImpersonating": "",
@@ -455,52 +698,51 @@
     "extensions": "扩展",
     "bots": "机器人"
   },
-  "noInstancesFound": "未找到实例",
+  "noInstancesFound": "",
+  "noInstancesDescription": "",
+  "noInstancesNoPermission": "",
   "pageName": {
     "terminal": "终端",
     "logs": "日志",
-    "audit-log": "审计日志",
+    "audit-log": "",
     "bots": "机器人",
-    "botDetail": "机器人详情",
-    "instances": "实例",
+    "botDetail": "",
+    "instances": "",
     "access": "访问权限",
     "settings": "设置",
     "proxySettings": "代理",
     "overview": "概况",
     "users": "用户",
     "accountSettings": "账户",
-    "metaSettings": "实例设置",
+    "metaSettings": "",
     "discoverPlugins": "插件",
-    "adminScripts": "脚本",
     "instanceScripts": "脚本"
   },
   "access": {
     "webdav": {
-      "title": "WebDAV 访问",
-      "description": "WebDAV提供对实例文件、脚本和其他文件的访问。",
-      "publicAddress": "公共 WebDAV 地址",
-      "personalToken": "个人 WebDAV Token",
-      "securityWarning": "请保管好你的WebDAV个人令牌。这将授权访问你的文件。使用该令牌作为WebDAV密码，无需用户名。如果程序需要请输入任意值，如“soulfire”。",
-      "addressDescription": "使用此地址访问你的文件。一些客户端需要使用dav://或davs://代替http://或https://。"
+      "title": "",
+      "description": "",
+      "securityWarning": "",
+      "addressDescription": ""
     },
     "api": {
-      "title": "API 访问",
-      "description": "使用 SoulFire API 从你自己的程序管理实例。",
-      "publicAddress": "公共 API 地址",
-      "personalToken": "个人 API Token",
-      "securityWarning": "请保管好你的API个人令牌。这将授权访问API。",
-      "addressDescription": "使用此地址访问API。"
+      "title": "",
+      "description": "",
+      "securityWarning": ""
     },
     "token": {
-      "generate": "生成 Token",
-      "placeholder": "请选择下方的“生成 Token”",
+      "generate": "",
+      "placeholder": "",
       "generating": "正在生成 token...",
-      "success": "令牌生成成功",
-      "error": "生成 token 失败",
-      "copy": "复制 Token"
+      "success": "",
+      "error": "",
+      "copy": "",
+      "label": "",
+      "noPermission": ""
     },
     "address": {
-      "copy": "复制地址"
+      "copy": "",
+      "label": "地址"
     },
     "documentation": "文档",
     "howToConnect": "如何连接"
@@ -508,45 +750,45 @@
   "uploadToMcLogs": "上传到 mclo.gs",
   "mcLogsUpload": {
     "loading": "正在上传到 mclo.gs...",
-    "success": "已上传到 mclo.gs！在此查看：{{url}}",
-    "error": "上传到 mclo.gs 失败"
+    "success": "",
+    "error": ""
   },
   "searchWithGoogle": "使用 Google 搜索",
   "copyToClipboard": "复制到剪贴板",
   "clipboardCopy": {
-    "loading": "正在复制到剪贴板...",
     "success": "已将“{{content}}”复制到剪贴板",
-    "error": "复制到剪贴板失败"
+    "error": "",
+    "sensitiveSuccess": ""
   },
   "instanceName": {
     "required": "",
     "max": "",
     "singleLine": "",
     "saved": "",
-    "saveError": "无法更新实例名称"
+    "saveError": ""
   },
   "userSettings": {
     "avatar": {
       "title": "头像",
-      "description": "您的用户头像基于您的账户邮箱地址。您可以在以下网址更改邮箱地址的头像",
-      "gravatar": "Gravatar"
+      "hint": ""
     },
     "username": {
       "uiName": "用户名",
-      "description": "您的用户名用于在界面和日志中标识您。"
+      "description": ""
     },
     "email": {
       "uiName": "电子邮箱",
-      "description": "您的邮箱用于登录和通知。"
+      "description": ""
     },
+    "autoSave": "",
+    "noPermission": "",
     "saved": "",
     "conflict": "",
-    "saveError": "无法更新 {{field}}"
+    "saveError": ""
   },
   "auditLog": {
-    "filterPlaceholder": "筛选审计日志...",
+    "refresh": "刷新",
     "user": "用户",
-    "action": "操作",
     "type": "类型",
     "timestamp": "",
     "searchUsers": "搜索用户...",
@@ -554,99 +796,69 @@
     "executedCommand": "执行的命令：{{data}}",
     "changedBotDesiredState": "机器人目标状态已更改",
     "restartedBots": "已重启机器人",
+    "calledPluginRpc": "",
+    "types": {
+      "EXECUTE_COMMAND": "",
+      "BOT_DESIRED_STATE_CHANGE": "",
+      "BOT_RESTART": "",
+      "PLUGIN_RPC": ""
+    },
     "contextMenu": {
-      "copyUsername": "复制用户名",
-      "copyCommand": "复制命令"
+      "copyUsername": "",
+      "copyCommand": ""
+    },
+    "noPermission": {
+      "title": "",
+      "description": ""
     }
   },
   "toggleTheme": "切换主题",
-  "pickADate": "选日期",
   "scripts": {
-    "filterPlaceholder": "筛选脚本...",
-    "baseScriptDialog": {
-      "form": {
-        "scriptName": {
-          "min": "脚本名称至少需要3个字符",
-          "max": "脚本名称最多允许32个字符",
-          "regex": "请使用小写字母、数字和短横线。名称必须以字母或数字开头和结尾。",
-          "label": "名称",
-          "placeholder": "我的脚本",
-          "description": "脚本的名称。"
-        },
-        "elevatedPermissions": {
-          "label": "高级权限",
-          "description": "脚本将以提升的权限运行。只有管理员可以启用此选项。"
-        }
-      }
-    },
-    "addScriptDialog": {
-      "title": "添加新脚本",
-      "description": "脚本是可自动化任务及其他操作的SoulFire服务器小程序。",
-      "form": {
-        "cancel": "取消",
-        "add": "添加"
-      }
-    },
-    "updateScriptDialog": {
-      "title": "更新脚本",
-      "description": "更新脚本信息。",
-      "form": {
-        "cancel": "取消",
-        "update": "更新"
-      }
-    },
     "removeToast": {
       "loading": "正在删除脚本...",
-      "success": "脚本已删除",
-      "error": "删除脚本失败"
+      "success": "",
+      "error": ""
     },
     "addToast": {
       "loading": "正在添加脚本...",
-      "success": "脚本已添加",
-      "error": "添加脚本失败"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "正在更新脚本...",
-      "success": "脚本已更新",
-      "error": "更新脚本失败"
+      "success": "",
+      "error": ""
     },
     "restartToast": {
       "loading": "正在重启脚本...",
-      "success": "脚本已重启",
-      "error": "重启脚本失败"
-    },
-    "table": {
-      "type": "类型",
-      "scriptName": "名称",
-      "language": "语言",
-      "elevatedPermissions": "高级权限",
-      "createdAt": "创建时间",
-      "actions": "操作"
-    },
-    "globalScript": "全局",
-    "instanceScript": "实例"
+      "success": "",
+      "error": ""
+    }
   },
   "contextMenu": {
+    "actions": "操作",
     "instance": {
-      "goToInstance": "前往实例",
-      "duplicateInstance": "复制实例",
-      "copyInstanceId": "复制实例 ID",
-      "copyInstanceName": "复制实例名称",
-      "deleteInstance": "删除实例"
+      "goToInstance": "",
+      "duplicateInstance": "",
+      "copyInstanceId": "",
+      "copyInstanceName": "",
+      "actions": "",
+      "deleteInstance": ""
     },
     "bot": {
-      "goToBot": "前往 Bot",
-      "copyUsername": "复制用户名",
-      "copyUuid": "复制档案 ID",
-      "copyCoordinates": "复制坐标"
+      "goToBot": "",
+      "actions": "",
+      "copyUsername": "",
+      "copyUuid": "",
+      "copyCoordinates": ""
     },
     "plugin": {
-      "enable": "启用",
-      "disable": "禁用",
-      "openSettings": "打开设置",
-      "copyPluginName": "复制插件名称",
-      "copyVersion": "复制版本",
-      "openWebsite": "打开网站"
+      "enable": "",
+      "disable": "",
+      "openSettings": "",
+      "copyPluginName": "",
+      "copyVersion": "",
+      "openWebsite": ""
     }
   },
   "integratedDiagnostics": {
@@ -655,7 +867,6 @@
     "openDirectory": "打开数据目录",
     "openDirectoryError": "无法打开数据目录",
     "elapsed": "已过去 {{count}} 秒",
-    "quiet": "{{count}} 秒内无新输出。启动可能仍在进行中。捕获线程转储以查看 Java 正在执行的操作。",
     "status": {
       "idle": "未启动",
       "preparing": "正在准备 Java 和服务器文件",
@@ -668,7 +879,7 @@
     "noOutput": "正在等待进程输出...",
     "noMatches": "没有匹配的输出。",
     "java": "Java 可执行文件",
-    "jar": "服务器 JAR 包",
+    "jar": "",
     "data": "数据目录",
     "port": "RPC 端口",
     "exit": "退出代码或信号",
@@ -683,32 +894,155 @@
     "jcmdHelp": "线程转储需要 JDK 25 的 jcmd。捆绑的 Java 运行时不包含该工具。请安装 JDK 25，并在其 bin 目录中选择 jcmd（Windows 下为 jcmd.exe）。",
     "openDump": "打开线程转储",
     "filter": "过滤进程输出",
-    "truncated": "已省略 {{count}} 条较旧的日志行。完整的服务器日志仍保存在数据目录中。",
-    "privacy": "报告包括本地路径和最近的日志。分享前请仔细检查报告和线程转储中是否有个人信息。不自动上传任何内容。"
+    "privacy": "报告包括本地路径和最近的日志。分享前请仔细检查报告和线程转储中是否有个人信息。不自动上传任何内容。",
+    "quiet_other": "",
+    "truncated_other": ""
   },
   "instanceUnavailable": {
     "title": "",
-    "description": ""
+    "description": "",
+    "retry": ""
   },
   "botUnavailable": {
     "title": "",
     "description": ""
   },
+  "discover": {
+    "noPluginsTitle": "",
+    "noPluginsDescription": "",
+    "search": "",
+    "noMatches": "",
+    "filterLabel": "",
+    "scope": "",
+    "tasks": {
+      "all": "全部",
+      "connect": "",
+      "survive": "",
+      "chat": "",
+      "diagnose": "",
+      "other": "其他"
+    },
+    "enabledHeading": "",
+    "availableHeading": "可用",
+    "movesToAvailable": "",
+    "movesToEnabled": ""
+  },
   "sdk": {
+    "title": "",
+    "description": "",
+    "docs": "",
+    "connectionTitle": "",
+    "connectionDescription": "",
+    "serverUrl": "",
+    "noUrl": "",
+    "copyUrl": "",
+    "token": "",
+    "copyToken": "",
+    "tokenHelp": "",
+    "tokenSetupHelp": "",
+    "impersonatingHelp": "",
+    "generateToken": "",
+    "generating": "正在生成 token...",
+    "tokenPermission": "",
+    "tokenError": "",
+    "tokenRetry": "",
+    "demoBody": "",
+    "demoBadge": "",
+    "localBadge": "",
+    "remoteBadge": "",
+    "unavailableBadge": "",
+    "missingUrlHelp": "",
+    "localHelp": "",
+    "integratedHelp": "",
+    "targetTitle": "",
+    "copyInstanceId": "",
+    "openBots": "",
+    "openAccounts": "",
+    "exampleTitle": "",
+    "language": "",
+    "recipe": "",
+    "bot": "机器人",
     "botOnline": "已连接",
-    "botOffline": "已断开"
+    "botOffline": "",
+    "noBotsTitle": "",
+    "noBotsBody": "",
+    "stoppedTitle": "",
+    "stoppedBody": "",
+    "copyScript": "",
+    "copyAgentPrompt": "",
+    "previewAgentPrompt": "",
+    "agentPrompt": "",
+    "saveScript": "",
+    "runTitle": "",
+    "pythonRequirement": "",
+    "typescriptRequirement": "",
+    "shell": "",
+    "install": "",
+    "run": "",
+    "copyInstall": "",
+    "copyRun": "",
+    "replaceToken": "",
+    "version": "",
+    "recipes": {
+      "list-bots": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "read-state": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "send-chat": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      }
+    },
+    "helpTitle": "",
+    "help": {
+      "connection": {
+        "title": "",
+        "body": ""
+      },
+      "authentication": {
+        "title": "",
+        "body": ""
+      },
+      "compatibility": {
+        "title": "",
+        "body": ""
+      }
+    },
+    "reference": "",
+    "moreExamples": ""
   },
   "minecraftActions": {
-    "copyError": "无法复制文本。请使用 HTTPS 或允许访问剪贴板。",
-    "openError": "无法打开链接。",
-    "popupBlocked": "浏览器拦截了新标签页。",
-    "openLink": "打开链接"
+    "copyError": "",
+    "openError": "",
+    "popupBlocked": "",
+    "openLink": ""
   },
   "instanceIcon": {
-    "label": "图标",
-    "description": "应用中显示的实例图标。"
+    "label": "",
+    "description": "",
+    "searchPlaceholder": "",
+    "empty": "",
+    "saveError": "",
+    "more_other": ""
   },
   "unknown": "未知",
-  "minecraftHead": "Minecraft 头像",
-  "textFile": "文本文件"
+  "minecraftHead": "",
+  "textFile": "",
+  "settingsPageName": {
+    "bot": "",
+    "account": "",
+    "proxy": "",
+    "ai": "",
+    "pathfinding": "",
+    "server": "",
+    "dev": ""
+  },
+  "instanceCount_other": ""
 }

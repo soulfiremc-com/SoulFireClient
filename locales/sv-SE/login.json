@@ -1,4 +1,13 @@
 {
+  "connection": {
+    "checking": "",
+    "connection": "",
+    "authentication": "",
+    "permission": "",
+    "unexpected": "",
+    "rateLimited": "",
+    "emailUnexpected": ""
+  },
   "header": {
     "image": {
       "alt": "SoulFire-logotyp"
@@ -7,103 +16,159 @@
   },
   "newUser": "Ny på SoulFire? Läs <a>kom-igång-guiden</a>.",
   "connect": {
-    "title": "Anslut till en SoulFire-server",
-    "description": "Välj vilken typ av SoulFire-server du vill ansluta till.",
+    "title": "",
+    "description": "",
     "integrated": {
-      "title": "Integrerad server (lokal)",
-      "description": "Kör en SoulFire-server på denna enhet. Installationen sker automatiskt. Det här alternativet kräver desktop- eller Android-appen."
+      "title": "",
+      "description": "",
+      "webDescription": ""
     },
     "dedicated": {
-      "title": "Dedikerad server (fjärr)",
-      "description": "Ansluter till en fjärransluten SoulFire-server med dess adress och token."
+      "title": "",
+      "description": ""
     },
     "demo": {
-      "title": "Demoserver",
-      "description": "Ger en skrivskyddad server med demodata. SoulFire sparar inte några ändringar."
+      "title": "",
+      "description": "",
+      "linkDescription": ""
+    },
+    "recommended": "",
+    "path": {
+      "label": "",
+      "app": "",
+      "server": "",
+      "minecraft": ""
+    },
+    "saved": {
+      "title": "",
+      "withAddress": ""
     }
   },
   "integrated": {
-    "preparing": "Förbereder att starta integrerad server...",
     "toast": {
-      "loading": "Startar integrerad server...",
-      "success": "Integrerad server startad på {{time}}s",
-      "error": "Misslyckades med att starta integrerad server"
+      "loading": "",
+      "error": ""
     },
-    "retry": "Försök igen",
+    "retry": "",
     "reset": {
-      "button": "Återställ data",
+      "button": "",
       "loading": "Återställer SoulFire-data...",
-      "success": "SoulFire-data återställdes. Försök starta om.",
-      "error": "Det gick inte att återställa SoulFire-data"
+      "success": "",
+      "error": "",
+      "confirmTitle": "",
+      "confirmDescription": "",
+      "keep": ""
     },
-    "description": "Den integrerade servern körs på din dator. Du kan ändra Java-startargumenten nedan.",
+    "description": "",
     "form": {
       "jvmArgs": {
         "title": "JVM-argument",
         "description": "Java VM-argument för SoulFire. Lägg till <bold>-Xmx4G</bold> för att använda 4 GB RAM. Standard är 25% av tillgängligt RAM.",
-        "placeholder": "Dina JVM-argument här"
+        "placeholder": "Dina JVM-argument här",
+        "reset": ""
       },
       "back": "Tillbaka",
-      "start": "Starta",
+      "start": "",
       "jar": {
-        "title": "Server-jar",
-        "official": "Officiell",
-        "custom": "Anpassad",
-        "officialTitle": "Officiell SoulFire-server",
-        "customTitle": "Anpassad server-jar",
-        "officialDescription": "Laddar ned och verifierar den matchande SoulFire-versionen.",
-        "customDescription": "Kör en importerad jar. SoulFire verifierar eller uppdaterar den inte.",
-        "import": "Importera jar",
-        "importSuccess": "Importerade {{name}}",
-        "importError": "Det gick inte att importera den anpassade SoulFire-jaren",
-        "selectCustomFirst": "Importera och välj en anpassad jar innan du startar.",
+        "title": "",
+        "officialTitle": "",
+        "customTitle": "",
+        "officialDescription": "",
+        "customDescription": "",
+        "import": "",
+        "remove": "",
+        "importSuccess": "",
+        "importError": "",
+        "selectCustomFirst": "",
         "dialog": {
-          "filter": "Java-arkiv",
-          "title": "Välj SoulFire-serverns jar"
-        }
-      }
-    },
-    "mobile": {
-      "description": "För att köra den integrerade servern på mobil måste du genomföra några manuella steg.",
-      "form": {
-        "termuxCommand": {
-          "title": "Termux-kommando",
-          "description": "Installera <a>Termux-appen</a>. Kör detta kommando i Termux för att installera SoulFire-servern. Kör <copy>generate-token api</copy> för att skapa en token. Ange sedan token nedan."
+          "filter": "",
+          "title": ""
         },
-        "token": {
-          "title": "Token",
-          "description": "Token för att autentisera mot den lokala servern.",
-          "placeholder": "Hemlig token"
-        },
-        "back": "Tillbaka",
-        "connect": "Anslut"
+        "removeError": "",
+        "loadError": ""
       }
     },
     "cancel": "Avbryt start",
-    "cancelling": "Avbryter start...",
+    "cancelling": "",
     "cancelError": "Kunde inte avbryta start",
     "autoStart": {
       "title": "Starta automatiskt nästa gång.",
       "description": "Hoppa över servervalet och använd dessa inställningar när SoulFire öppnas."
-    }
+    },
+    "softwareRendering": {
+      "title": "",
+      "description": ""
+    },
+    "title": "",
+    "plan": {
+      "prepare": "",
+      "start": "",
+      "connect": ""
+    },
+    "advanced": {
+      "title": "",
+      "description": ""
+    },
+    "progress": {
+      "label": "",
+      "description": "",
+      "prepare": {
+        "title": "",
+        "description": ""
+      },
+      "start": {
+        "title": "",
+        "description": ""
+      },
+      "connect": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "details": "",
+    "changeSettings": "",
+    "useExisting": "",
+    "failure": {
+      "port-in-use": {
+        "title": "",
+        "description": ""
+      },
+      "out-of-memory": {
+        "title": "",
+        "description": ""
+      },
+      "java": {
+        "title": "",
+        "description": ""
+      },
+      "custom-jar": {
+        "title": "",
+        "description": ""
+      },
+      "download": {
+        "title": "",
+        "description": ""
+      },
+      "unknown": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "failedAttempts_one": "",
+    "failedAttempts_other": ""
   },
   "dedicated": {
-    "description": "Ange adressen och token för SoulFire-servern.",
-    "toast": {
-      "loading": "Ansluter till server...",
-      "success": "Ansluten till server",
-      "error": "Misslyckades med att ansluta till servern"
-    },
+    "description": "",
     "form": {
       "address": {
-        "title": "Adress",
-        "description": "Adress till din SoulFire-server.",
+        "title": "",
+        "description": "",
         "placeholder": "http://localhost:38765"
       },
       "token": {
         "title": "Token",
         "placeholder": "Hemlig token",
-        "description": "Token för att autentisera mot servern."
+        "description": ""
       },
       "email": {
         "title": "E-post",
@@ -113,16 +178,16 @@
       "back": "Tillbaka",
       "useToken": "Använd token",
       "useEmail": "Använd e-post",
-      "login": "Logga in"
+      "login": ""
     }
   },
   "emailCode": {
-    "description": "Om du har ett konto har vi skickat en kod till <bold>{{email}}</bold>. Ange den nedan.",
-    "toast": {
-      "loading": "Kontrollerar kod...",
-      "success": "Inloggad",
-      "error": "Ogiltig kod"
-    },
+    "description": "",
+    "checking": "",
+    "invalid": "",
+    "expired": "",
+    "resend": "",
+    "resent": "",
     "back": "Tillbaka"
   },
   "footer": {

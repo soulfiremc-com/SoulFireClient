@@ -1,80 +1,71 @@
 {
   "overview": {
-    "welcome": "फिर से स्वागत है, {{name}} 🧙",
     "serverMetrics": {
-      "sectionTitle": "सर्वर मीट्रिक्स​",
+      "sectionTitle": "",
       "summary": {
         "cpu": "सीपीयू",
-        "heapUsed": "हीप उपयोग",
+        "heapUsed": "",
         "threads": "थ्रेड्स",
-        "botsOnline": "कनेक्टेड बॉट्स",
+        "botsOnline": "",
         "uptime": "अपटाइम"
       },
       "cpuUsage": {
-        "title": "सीपीयू उपयोग (%)"
+        "title": ""
       },
       "memoryUsage": {
-        "title": "हीप मेमोरी (MB)"
+        "title": ""
       },
       "threadCount": {
-        "title": "थ्रेड संख्या"
+        "title": ""
       },
       "aggregateBots": {
-        "title": "कनेक्टेड बॉट्स (सभी इंस्टेंस)"
+        "title": ""
       },
       "legend": {
-        "process": "प्रोसेस",
+        "process": "",
         "system": "सिस्टम",
-        "used": "उपयोग में",
-        "committed": "आरक्षित",
-        "max": "अधिकतम",
+        "used": "",
+        "committed": "",
+        "max": "",
         "total": "कुल",
-        "daemon": "Daemon",
+        "daemon": "",
         "online": "कनेक्टेड"
-      }
+      },
+      "collecting": ""
     },
-    "instancesChart": {
-      "title": "इस सर्वर पर कुल इंस्टेंस",
-      "instances": "इंस्टेंस",
-      "label": {
-        "state": "स्थिति",
-        "active": "सक्रिय",
-        "stopped": "बंद हुआ",
-        "other": "अन्य"
-      }
-    },
-    "usersChart": {
-      "title": "इस सर्वर पर कुल उपयोगकर्ता",
+    "stats": {
       "users": "उपयोगकर्ता",
-      "label": {
-        "role": "भूमिका",
-        "user": "उपयोगकर्ता",
-        "admin": "प्रशासक",
-        "other": "अन्य"
-      }
+      "projects": "",
+      "admins_one": "",
+      "admins_other": "",
+      "active_one": "",
+      "active_other": ""
     }
   },
   "users": {
-    "filterPlaceholder": "उपयोगकर्ता छाँटें...",
+    "noPermission": {
+      "title": "",
+      "description": ""
+    },
     "baseUserDialog": {
       "form": {
         "username": {
-          "min": "उपयोगकर्ता नाम कम से कम 3 अक्षरों का होना चाहिए",
-          "max": "उपयोगकर्ता नाम अधिकतम 32 अक्षरों का होना चाहिए",
-          "regex": "उपयोगकर्ता नाम छोटे अक्षरों में होना चाहिए, अल्फ़ान्यूमेरिक अक्षर से शुरू हो, उसके बाद अल्फ़ान्यूमेरिक अक्षर या डैश हो सकते हैं, और अल्फ़ान्यूमेरिक अक्षर पर समाप्त होना चाहिए।",
+          "min": "",
+          "max": "",
+          "regex": "",
           "label": "उपयोगकर्ता नाम",
           "placeholder": "उपयोगकर्ता नाम दर्ज करें",
-          "description": "एक विशिष्ट उपयोगकर्ता नाम जो उपयोगकर्ता की पहचान करता है"
+          "description": ""
         },
         "email": {
           "label": "ईमेल",
           "placeholder": "ईमेल दर्ज करें",
-          "description": "उन उपयोगकर्ता का ईमेल पता जिसका इस्तेमाल सूचना और लॉगिन के लिए किया जाएगा"
+          "description": ""
         },
         "role": {
           "label": "भूमिका",
           "placeholder": "एक भूमिका चुनें",
-          "description": "उपयोगकर्ता की भूमिका। एडमिन उपयोगकर्ताओं और सभी इंस्टेंस को प्रबंधित कर सकते हैं। उपयोगकर्ता केवल अपनी स्वयं की इंस्टेंस को प्रबंधित कर सकते हैं।",
+          "description": "",
           "user": "उपयोगकर्ता",
           "admin": "प्रशासक"
         }
@@ -82,71 +73,80 @@
     },
     "addUserDialog": {
       "title": "एक नया उपयोगकर्ता जोड़ें",
-      "description": "इस सर्वर पर एक नया उपयोगकर्ता जोड़ें",
+      "description": "",
       "form": {
         "cancel": "रद्द करें",
-        "add": "उपयोगकर्ता जोड़ें"
+        "add": ""
       }
     },
     "updateUserDialog": {
-      "title": "उपयोगकर्ता अपडेट करें",
-      "description": "उपयोगकर्ता की जानकारी अपडेट करें",
+      "title": "",
+      "description": "",
       "form": {
         "cancel": "रद्द करें",
-        "update": "उपयोगकर्ता अपडेट करें"
+        "update": ""
       }
     },
     "profileConflict": "",
     "addToast": {
       "loading": "उपयोगकर्ता जोड़ा जा रहा है...",
-      "success": "उपयोगकर्ता जोड़ा गया",
-      "error": "उपयोगकर्ता जोड़ने में विफल"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "उपयोगकर्ता अपडेट किया जा रहा है...",
-      "success": "उपयोगकर्ता अपडेट किया गया",
-      "error": "उपयोगकर्ता अपडेट करने में विफल"
+      "success": "",
+      "error": ""
     },
     "removeToast": {
       "loading": "उपयोगकर्ताओं को हटाया जा रहा है...",
-      "success": "उपयोगकर्ता हटाए गए",
-      "error": "उपयोगकर्ताओं को हटाने में विफल"
+      "partial": "",
+      "success_one": "",
+      "success_other": "",
+      "error_one": "",
+      "error_other": ""
     },
     "invalidateToast": {
-      "loading": "उपयोगकर्ताओं को लॉग आउट किया जा रहा है...",
-      "success": "उपयोगकर्ता लॉग आउट कर दिए गए",
-      "error": "उपयोगकर्ताओं को लॉग आउट करने में विफल"
+      "loading": "",
+      "partial": "",
+      "success_one": "",
+      "success_other": "",
+      "error_one": "",
+      "error_other": ""
+    },
+    "impersonateToast": {
+      "error": ""
     },
     "table": {
       "username": "उपयोगकर्ता नाम",
       "email": "ईमेल",
       "role": "भूमिका",
       "createdAt": "निर्मित",
-      "minIssuedAt": "सेशन इस समय से मान्य",
+      "minIssuedAt": "",
       "actions": "क्रियाएँ",
       "searchUsernames": "यूज़रनेम खोजें...",
       "searchEmails": "ईमेल खोजें...",
       "searchCreatedAts": "निर्माण तिथि खोजें...",
-      "searchMinIssuedAts": "सेशन की तारीखें खोजें..."
+      "searchMinIssuedAts": ""
     },
     "removeSelectedTooltip": "चयनित उपयोगकर्ताओं को हटाएँ",
-    "logOutSelectedTooltip": "चयनित उपयोगकर्ताओं को लॉगआउट करें",
+    "logOutSelectedTooltip": "",
     "contextMenu": {
-      "editUser": "यूज़र संपादित करें",
+      "editUser": "",
       "impersonate": "रूप धारण करें",
-      "copyUserId": "यूज़र आईडी कॉपी करें"
+      "copyUserId": ""
     },
     "removeDialog": {
-      "title_one": "{{count}} उपयोगकर्ता हटाएँ?",
-      "title_other": "{{count}} उपयोगकर्ता हटाएँ?",
-      "description": "इससे चुने गए उपयोगकर्ता और उनकी पहुँच स्थायी रूप से हट जाती है। इसे पूर्ववत नहीं किया जा सकता।",
-      "confirm": "उपयोगकर्ता हटाएँ"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     },
     "invalidateDialog": {
-      "title_one": "{{count}} उपयोगकर्ता को साइन आउट करें?",
-      "title_other": "{{count}} उपयोगकर्ताओं को साइन आउट करें?",
-      "description": "इससे चुने गए उपयोगकर्ताओं के सभी सेशन और टोकन समाप्त हो जाते हैं। उन्हें फिर से साइन इन करना होगा।",
-      "confirm": "उपयोगकर्ताओं को साइन आउट करें"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     }
   }
 }

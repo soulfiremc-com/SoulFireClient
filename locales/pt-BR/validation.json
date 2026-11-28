@@ -1,39 +1,42 @@
 {
   "string": {
-    "undefined": "Digite um valor.",
-    "null": "Digite um valor.",
-    "number": "Digite um valor.",
-    "boolean": "Digite um valor.",
-    "array": "Digite um valor.",
-    "object": "Digite um valor.",
-    "nan": "Digite um valor.",
-    "infinity": "Digite um valor."
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "number": {
-    "undefined": "Digite um número.",
-    "null": "Digite um número.",
-    "string": "Digite um número.",
-    "boolean": "Digite um número.",
-    "array": "Digite um número.",
-    "object": "Digite um número.",
-    "nan": "Digite um número.",
-    "infinity": "Digite um número."
+    "undefined": "",
+    "null": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "object": {
-    "undefined": "Digite um valor válido.",
-    "null": "Digite um valor válido.",
-    "number": "Digite um valor válido.",
-    "string": "Digite um valor válido.",
-    "boolean": "Digite um valor válido.",
-    "array": "Digite um valor válido.",
-    "nan": "Digite um valor válido.",
-    "infinity": "Digite um valor válido."
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "nan": "",
+    "infinity": ""
   },
-  "email": "Digite um endereço de e-mail válido.",
-  "url": "Digite uma URL válida.",
-  "jwt": "Digite um token válido.",
-  "emailTooLong": "Use no máximo 255 caracteres.",
-  "jarSource": "Escolha o servidor oficial ou um jar personalizado.",
-  "generationMode": "Escolha como tratar as contas existentes.",
-  "userRole": "Escolha uma função."
+  "email": "",
+  "url": "",
+  "jwt": "",
+  "emailTooLong": "",
+  "generationMode": "",
+  "userRole": "",
+  "serverUrl": "",
+  "pattern": "",
+  "minLength_one": "",
+  "minLength_other": ""
 }

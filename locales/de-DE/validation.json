@@ -1,39 +1,42 @@
 {
   "string": {
-    "undefined": "Gib einen Wert ein.",
-    "null": "Gib einen Wert ein.",
-    "number": "Gib einen Wert ein.",
-    "boolean": "Gib einen Wert ein.",
-    "array": "Gib einen Wert ein.",
-    "object": "Gib einen Wert ein.",
-    "nan": "Gib einen Wert ein.",
-    "infinity": "Gib einen Wert ein."
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "number": {
-    "undefined": "Gib eine Zahl ein.",
-    "null": "Gib eine Zahl ein.",
-    "string": "Gib eine Zahl ein.",
-    "boolean": "Gib eine Zahl ein.",
-    "array": "Gib eine Zahl ein.",
-    "object": "Gib eine Zahl ein.",
-    "nan": "Gib eine Zahl ein.",
-    "infinity": "Gib eine Zahl ein."
+    "undefined": "",
+    "null": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "object": {
-    "undefined": "Gib einen gültigen Wert ein.",
-    "null": "Gib einen gültigen Wert ein.",
-    "number": "Gib einen gültigen Wert ein.",
-    "string": "Gib einen gültigen Wert ein.",
-    "boolean": "Gib einen gültigen Wert ein.",
-    "array": "Gib einen gültigen Wert ein.",
-    "nan": "Gib einen gültigen Wert ein.",
-    "infinity": "Gib einen gültigen Wert ein."
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "nan": "",
+    "infinity": ""
   },
-  "email": "Gib eine gültige E-Mail-Adresse ein.",
-  "url": "Gib eine gültige URL ein.",
-  "jwt": "Gib ein gültiges Token ein.",
-  "emailTooLong": "Verwende höchstens 255 Zeichen.",
-  "jarSource": "Wähle den offiziellen Server oder eine benutzerdefinierte Jar.",
-  "generationMode": "Wähle, wie mit vorhandenen Konten umgegangen wird.",
-  "userRole": "Wähle eine Rolle."
+  "email": "",
+  "url": "",
+  "jwt": "",
+  "emailTooLong": "",
+  "generationMode": "",
+  "userRole": "",
+  "serverUrl": "",
+  "pattern": "",
+  "minLength_one": "",
+  "minLength_other": ""
 }

@@ -1,80 +1,69 @@
 {
   "overview": {
-    "welcome": "Selamat datang kembali, {{name}} 🧙",
     "serverMetrics": {
-      "sectionTitle": "Metrix Server",
+      "sectionTitle": "",
       "summary": {
         "cpu": "CPU",
-        "heapUsed": "Heap Digunakan",
+        "heapUsed": "",
         "threads": "Thread",
-        "botsOnline": "Bot terhubung",
+        "botsOnline": "",
         "uptime": "Waktu Aktif"
       },
       "cpuUsage": {
-        "title": "Penggunaan CPU (%)"
+        "title": ""
       },
       "memoryUsage": {
-        "title": "Memori Heap (MB)"
+        "title": ""
       },
       "threadCount": {
-        "title": "Jumlah Thread"
+        "title": ""
       },
       "aggregateBots": {
-        "title": "Bot terhubung (semua instansi)"
+        "title": ""
       },
       "legend": {
-        "process": "Proses",
+        "process": "",
         "system": "Sistem",
-        "used": "Terpakai",
-        "committed": "Dialokasikan",
-        "max": "Maks",
+        "used": "",
+        "committed": "",
+        "max": "",
         "total": "Total",
-        "daemon": "Daemon",
+        "daemon": "",
         "online": "Terhubung"
-      }
+      },
+      "collecting": ""
     },
-    "instancesChart": {
-      "title": "Total instansi di server ini",
-      "instances": "Instansi",
-      "label": {
-        "state": "Status",
-        "active": "Aktif",
-        "stopped": "Dihentikan",
-        "other": "Lainnya"
-      }
-    },
-    "usersChart": {
-      "title": "Total pengguna di server ini",
+    "stats": {
       "users": "Pengguna",
-      "label": {
-        "role": "Peran",
-        "user": "Pengguna",
-        "admin": "Admin",
-        "other": "Lainnya"
-      }
+      "projects": "",
+      "admins_other": "",
+      "active_other": ""
     }
   },
   "users": {
-    "filterPlaceholder": "Cari pengguna...",
+    "noPermission": {
+      "title": "",
+      "description": ""
+    },
     "baseUserDialog": {
       "form": {
         "username": {
-          "min": "Nama pengguna harus minimal 3 karakter",
-          "max": "Nama pengguna maksimal 32 karakter",
-          "regex": "Nama pengguna harus berupa huruf kecil, dimulai dengan karakter alfanumerik, diikuti karakter alfanumerik atau tanda hubung, dan diakhiri dengan karakter alfanumerik.",
+          "min": "",
+          "max": "",
+          "regex": "",
           "label": "Nama Pengguna",
           "placeholder": "Masukkan nama pengguna",
-          "description": "Nama pengguna unik yang mengidentifikasi pengguna"
+          "description": ""
         },
         "email": {
           "label": "Email",
           "placeholder": "Masukkan email",
-          "description": "Alamat email pengguna yang digunakan untuk notifikasi dan login"
+          "description": ""
         },
         "role": {
           "label": "Peran",
           "placeholder": "Pilih peran",
-          "description": "Peran pengguna. Admin dapat mengelola pengguna dan semua instansi. Pengguna hanya dapat mengelola instansi mereka sendiri.",
+          "description": "",
           "user": "Pengguna",
           "admin": "Admin"
         }
@@ -82,69 +71,74 @@
     },
     "addUserDialog": {
       "title": "Tambah pengguna baru",
-      "description": "Tambahkan pengguna baru ke server ini",
+      "description": "",
       "form": {
         "cancel": "Batal",
-        "add": "Tambah Pengguna"
+        "add": ""
       }
     },
     "updateUserDialog": {
-      "title": "Perbarui pengguna",
-      "description": "Perbarui informasi pengguna",
+      "title": "",
+      "description": "",
       "form": {
         "cancel": "Batal",
-        "update": "Perbarui Pengguna"
+        "update": ""
       }
     },
     "profileConflict": "",
     "addToast": {
       "loading": "Menambah pengguna...",
-      "success": "Pengguna berhasil ditambahkan",
-      "error": "Gagal menambah pengguna"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "Memperbarui pengguna...",
-      "success": "Pengguna berhasil diperbarui",
-      "error": "Gagal memperbarui pengguna"
+      "success": "",
+      "error": ""
     },
     "removeToast": {
       "loading": "Menghapus pengguna...",
-      "success": "Pengguna berhasil dihapus",
-      "error": "Gagal menghapus pengguna"
+      "partial": "",
+      "success_other": "",
+      "error_other": ""
     },
     "invalidateToast": {
-      "loading": "Mengeluarkan pengguna...",
-      "success": "Pengguna berhasil keluar",
-      "error": "Gagal mengeluarkan pengguna"
+      "loading": "",
+      "partial": "",
+      "success_other": "",
+      "error_other": ""
+    },
+    "impersonateToast": {
+      "error": ""
     },
     "table": {
       "username": "Nama Pengguna",
       "email": "Email",
       "role": "Peran",
       "createdAt": "Dibuat",
-      "minIssuedAt": "Sesi berlaku sejak",
+      "minIssuedAt": "",
       "actions": "Aksi",
       "searchUsernames": "Cari nama pengguna...",
       "searchEmails": "Cari email...",
       "searchCreatedAts": "Cari tanggal pembuatan...",
-      "searchMinIssuedAts": "Cari tanggal sesi..."
+      "searchMinIssuedAts": ""
     },
     "removeSelectedTooltip": "Hapus pengguna yang dipilih",
-    "logOutSelectedTooltip": "Keluar dari pengguna yang dipilih",
+    "logOutSelectedTooltip": "",
     "contextMenu": {
-      "editUser": "Edit Pengguna",
+      "editUser": "",
       "impersonate": "Menjadi Pengguna Ini",
-      "copyUserId": "Salin ID Pengguna"
+      "copyUserId": ""
     },
     "removeDialog": {
-      "title_other": "Hapus {{count}} pengguna?",
-      "description": "Tindakan ini menghapus pengguna yang dipilih dan aksesnya secara permanen. Tindakan ini tidak dapat dibatalkan.",
-      "confirm": "Hapus pengguna"
+      "description": "",
+      "confirm": "",
+      "title_other": ""
     },
     "invalidateDialog": {
-      "title_other": "Keluarkan {{count}} pengguna?",
-      "description": "Tindakan ini mengakhiri semua sesi dan token pengguna yang dipilih. Mereka harus masuk lagi.",
-      "confirm": "Keluarkan pengguna"
+      "description": "",
+      "confirm": "",
+      "title_other": ""
     }
   }
 }

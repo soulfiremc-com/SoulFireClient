@@ -1,80 +1,75 @@
 {
   "overview": {
-    "welcome": "Witamy ponownie, {{name}}🧙",
     "serverMetrics": {
-      "sectionTitle": "Metryki serwera",
+      "sectionTitle": "",
       "summary": {
         "cpu": "CPU",
-        "heapUsed": "Użycie sterty",
+        "heapUsed": "",
         "threads": "Wątki",
-        "botsOnline": "Połączone boty",
+        "botsOnline": "",
         "uptime": "Czas działania"
       },
       "cpuUsage": {
-        "title": "Użycie CPU (%)"
+        "title": ""
       },
       "memoryUsage": {
-        "title": "Pamięć sterty (MB)"
+        "title": ""
       },
       "threadCount": {
-        "title": "Liczba wątków"
+        "title": ""
       },
       "aggregateBots": {
-        "title": "Połączone boty (wszystkie instancje)"
+        "title": ""
       },
       "legend": {
-        "process": "Proces",
+        "process": "",
         "system": "System",
-        "used": "Używana",
-        "committed": "Zarezerwowana",
-        "max": "Maks.",
-        "total": "Łącznie",
-        "daemon": "Daemon",
+        "used": "",
+        "committed": "",
+        "max": "",
+        "total": "Razem",
+        "daemon": "",
         "online": "Połączono"
-      }
+      },
+      "collecting": ""
     },
-    "instancesChart": {
-      "title": "Wszystkie instancje na tym serwerze",
-      "instances": "Instancje",
-      "label": {
-        "state": "Stan",
-        "active": "Aktywny",
-        "stopped": "Zatrzymana",
-        "other": "Inne"
-      }
-    },
-    "usersChart": {
-      "title": "Wszyscy użytkownicy na tym serwerze",
+    "stats": {
       "users": "Użytkownicy",
-      "label": {
-        "role": "Role",
-        "user": "Użytkownik",
-        "admin": "Administrator",
-        "other": "Inne"
-      }
+      "projects": "",
+      "admins_one": "",
+      "admins_few": "",
+      "admins_many": "",
+      "admins_other": "",
+      "active_one": "",
+      "active_few": "",
+      "active_many": "",
+      "active_other": ""
     }
   },
   "users": {
-    "filterPlaceholder": "Filtruj użytkowników...",
+    "noPermission": {
+      "title": "",
+      "description": ""
+    },
     "baseUserDialog": {
       "form": {
         "username": {
-          "min": "Nazwa użytkownika musi mieć co najmniej 3 znaki",
-          "max": "Nazwa użytkownika może mieć maksymalnie 32 znaki",
-          "regex": "Nazwy użytkowników muszą być pisane małymi literami, zaczynać się od znaku alfanumerycznego, następnie zawierać kolejne znaki alfanumeryczne lub myślniki, a kończyć się znakiem alfanumerycznym.",
+          "min": "",
+          "max": "",
+          "regex": "",
           "label": "Nazwa użytkownika",
           "placeholder": "Wpisz nazwę użytkownika",
-          "description": "Unikalna nazwa użytkownika identyfikująca użytkownika"
+          "description": ""
         },
         "email": {
           "label": "E-mail",
           "placeholder": "Wpisz adres e-mail",
-          "description": "Adres e-mail użytkownika używany do powiadomień i logowania"
+          "description": ""
         },
         "role": {
           "label": "Role",
           "placeholder": "Wybierz rolę",
-          "description": "Rola użytkownika. Administratorzy mogą zarządzać użytkownikami i wszystkimi instancjami. Zwykli użytkownicy mogą zarządzać tylko własnymi instancjami.",
+          "description": "",
           "user": "Użytkownik",
           "admin": "Administrator"
         }
@@ -82,75 +77,92 @@
     },
     "addUserDialog": {
       "title": "Dodaj nowego użytkownika",
-      "description": "Dodaj nowego użytkownika do tego serwera",
+      "description": "",
       "form": {
         "cancel": "Anuluj",
-        "add": "Dodaj użytkownika"
+        "add": ""
       }
     },
     "updateUserDialog": {
-      "title": "Aktualizuj użytkownika",
-      "description": "Zaktualizuj informacje o użytkowniku",
+      "title": "",
+      "description": "",
       "form": {
         "cancel": "Anuluj",
-        "update": "Aktualizuj użytkownika"
+        "update": ""
       }
     },
     "profileConflict": "",
     "addToast": {
       "loading": "Dodawanie użytkownika...",
-      "success": "Użytkownik został dodany",
-      "error": "Nie udało się dodać użytkownika"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "Aktualizowanie użytkownika...",
-      "success": "Użytkownik został zaktualizowany",
-      "error": "Nie udało się zaktualizować użytkownika"
+      "success": "",
+      "error": ""
     },
     "removeToast": {
       "loading": "Usuwanie użytkowników...",
-      "success": "Użytkownicy zostali usunięci",
-      "error": "Nie udało się usunąć użytkowników"
+      "partial": "",
+      "success_one": "",
+      "success_few": "",
+      "success_many": "",
+      "success_other": "",
+      "error_one": "",
+      "error_few": "",
+      "error_many": "",
+      "error_other": ""
     },
     "invalidateToast": {
-      "loading": "Wylogowywanie użytkowników...",
-      "success": "Wylogowano użytkowników",
-      "error": "Nie udało się wylogować użytkowników"
+      "loading": "",
+      "partial": "",
+      "success_one": "",
+      "success_few": "",
+      "success_many": "",
+      "success_other": "",
+      "error_one": "",
+      "error_few": "",
+      "error_many": "",
+      "error_other": ""
+    },
+    "impersonateToast": {
+      "error": ""
     },
     "table": {
       "username": "Nazwa użytkownika",
       "email": "E-mail",
       "role": "Role",
       "createdAt": "Utworzono",
-      "minIssuedAt": "Sesje ważne od",
+      "minIssuedAt": "",
       "actions": "Akcje",
       "searchUsernames": "Szukaj nazw użytkowników...",
       "searchEmails": "Szukaj adresów e-mail...",
       "searchCreatedAts": "Wyszukaj daty utworzenia...",
-      "searchMinIssuedAts": "Szukaj dat sesji..."
+      "searchMinIssuedAts": ""
     },
     "removeSelectedTooltip": "Usuń wybranych użytkowników",
-    "logOutSelectedTooltip": "Wyloguj wybranych użytkowników",
+    "logOutSelectedTooltip": "",
     "contextMenu": {
-      "editUser": "Edytuj użytkownika",
+      "editUser": "",
       "impersonate": "Podszyj się",
-      "copyUserId": "Kopiuj ID użytkownika"
+      "copyUserId": ""
     },
     "removeDialog": {
-      "title_one": "Usunąć {{count}} użytkownika?",
-      "title_few": "Usunąć {{count}} użytkowników?",
-      "title_many": "Usunąć {{count}} użytkowników?",
-      "title_other": "Usunąć {{count}} użytkownika?",
-      "description": "To trwale usunie wybranych użytkowników i ich dostęp. Tej operacji nie można cofnąć.",
-      "confirm": "Usuń użytkowników"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_few": "",
+      "title_many": "",
+      "title_other": ""
     },
     "invalidateDialog": {
-      "title_one": "Wylogować {{count}} użytkownika?",
-      "title_few": "Wylogować {{count}} użytkowników?",
-      "title_many": "Wylogować {{count}} użytkowników?",
-      "title_other": "Wylogować {{count}} użytkownika?",
-      "description": "To zakończy wszystkie sesje i tokeny wybranych użytkowników. Będą musieli zalogować się ponownie.",
-      "confirm": "Wyloguj użytkowników"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_few": "",
+      "title_many": "",
+      "title_other": ""
     }
   }
 }

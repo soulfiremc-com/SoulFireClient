@@ -4,16 +4,47 @@
   "cancel": "Annuleren",
   "save": "Opslaan",
   "saving": "Bezig met opslaan...",
+  "demoReadOnly": "",
+  "errorToast": {
+    "connection": "",
+    "authentication": "",
+    "permission": ""
+  },
+  "analyticsConsent": {
+    "title": "",
+    "description": "",
+    "cookieless": "",
+    "accept": "",
+    "decline": "",
+    "preferences": "",
+    "privacyPolicy": "",
+    "cookiePolicy": ""
+  },
   "error": {
     "noAddressOrToken": "Geen serveradres of token gevonden",
     "page": {
-      "title": "Fout",
-      "description": "De pagina is niet geladen. Open de console voor meer informatie.",
-      "logOut": "Uitloggen",
+      "logOut": "",
       "reloadPage": "Pagina herladen",
-      "showDetails": "Details weergeven"
-    },
-    "connectionFailed": "Verbinding met de SoulFire-server mislukt."
+      "showDetails": "Details weergeven",
+      "connectionSettings": "",
+      "restartLocalServer": "",
+      "reconnecting": "",
+      "kindTitle": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": "Fout"
+      },
+      "recovery": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      }
+    }
+  },
+  "navigation": {
+    "pending": ""
   },
   "queryStatus": {
     "failed": "",
@@ -24,12 +55,9 @@
     "page": {
       "title": "Niet gevonden",
       "description": "Er is geen pagina op dit adres",
-      "logOut": "Uitloggen",
+      "home": "",
       "reloadPage": "Pagina herladen"
     }
-  },
-  "pending": {
-    "connecting": "Verbinden..."
   },
   "dialog": {
     "about": {
@@ -38,11 +66,11 @@
       "type": "Type",
       "value": "Waarde",
       "fields": {
-        "serverVersion": "Serverversie",
-        "serverCommit": "Servercommit",
-        "serverBranch": "Serverbranch",
-        "minecraftVersion": "Minecraft-versie",
-        "operatingSystem": "Besturingssysteem",
+        "serverVersion": "",
+        "serverCommit": "",
+        "serverBranch": "",
+        "minecraftVersion": "",
+        "operatingSystem": "",
         "platform": "Platform",
         "locale": "Taal",
         "architecture": "Architectuur",
@@ -53,42 +81,44 @@
     },
     "support": {
       "title": "Steun SoulFire",
-      "description": "SoulFire is gratis en open-source, gebouwd met liefde door de community.",
-      "body": "Als SoulFire nuttig voor je is geweest, overweeg dan om het project te steunen. Jouw bijdrage helpt de serverkosten te dekken, ontwikkeling te financieren en SoulFire gratis te houden voor iedereen.",
+      "body": "",
       "dismiss": "Misschien later",
-      "action": "Steun SoulFire"
+      "action": "Steun SoulFire",
+      "alreadySupport": "",
+      "neverRemind": "",
+      "reminderFrequency": ""
     },
     "createInstance": {
-      "title": "Een nieuwe instantie aanmaken",
-      "description": "Geef de instantie een herkenbare naam, zoals \"Mijn Minecraft Bot\".",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "label": "Vriendelijke naam",
-          "placeholder": "Mijn Minecraft Bot",
-          "description": "De naam die je aan deze instantie wilt geven."
+          "label": "",
+          "placeholder": "",
+          "description": ""
         },
         "cancel": "Annuleren",
-        "create": "Aanmaken"
+        "create": ""
       },
       "createToast": {
-        "loading": "Instantie wordt aangemaakt...",
-        "success": "Instantie succesvol aangemaakt",
-        "error": "Maken van instantie mislukt"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "duplicateInstance": {
-      "title": "Instantie dupliceren",
-      "description": "Maak een nieuwe instantie aan met het profiel van \"{{name}}\".",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "description": "De naam voor de gedupliceerde instantie."
+          "description": ""
         },
-        "duplicate": "Dupliceren"
+        "duplicate": ""
       },
       "duplicateToast": {
-        "loading": "Instantie wordt gedupliceerd...",
-        "success": "Instantie succesvol gedupliceerd",
-        "error": "Dupliceren van instantie mislukt"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "import": {
@@ -97,40 +127,56 @@
         "fromUrl": "Van URL",
         "firstClipboardItem": "Het klembord bevat meerdere items. SoulFire gebruikt het eerste item.",
         "fromClipboard": "Uit klembord",
+        "clipboardError": "",
+        "fileError": "",
+        "emptyFile": "",
+        "unsupportedFile": "",
+        "emptyClipboard": "",
         "textarea": {
-          "placeholder": "Voer hier tekst in...",
-          "submit": "Laden vanaf tekst"
+          "label": "",
+          "placeholder": "",
+          "submit": "Laden vanaf tekst",
+          "empty": ""
         }
       },
       "url": {
         "description": "De SoulFire-server stuurt een GET-verzoek naar deze URL en importeert het antwoord.",
         "form": {
           "url": {
-            "placeholder": "Voer hier een URL in...",
-            "empty": "Voer een geldige URL in"
+            "placeholder": "",
+            "empty": ""
           }
         },
         "submit": "Laden van URL",
         "toast": {
           "loading": "Data wordt gedownload...",
-          "success": "Data geladen",
-          "error": "Downloaden van data mislukt",
+          "success": "",
+          "error": "",
           "httpError": "",
           "empty": ""
         }
       }
     },
     "deleteInstance": {
-      "title": "Instantie verwijderen?",
-      "description": "Dit verwijdert '{{name}}' en de bijbehorende gegevens definitief. Je kunt dit niet ongedaan maken.",
-      "descriptionUnnamed": "Dit verwijdert deze instantie en de bijbehorende gegevens definitief. Je kunt dit niet ongedaan maken."
+      "title": "",
+      "description": "",
+      "descriptionUnnamed": ""
+    },
+    "importConfiguration": {
+      "title": "",
+      "description": "",
+      "confirm": ""
     }
   },
   "commandInput": {
-    "placeholder": "Voer commando in (typ 'help' voor lijst)",
-    "emptySuggestions": "Typ om suggesties aan te vragen of druk op Tab.",
+    "label": "",
+    "suggestions": "",
+    "placeholder": "",
     "noSuggestions": "Geen suggesties beschikbaar.",
-    "emptySuggestionsPrefix": "Typ om suggesties op te vragen of druk op"
+    "suggestionsUnavailable": "",
+    "botNotReady": "",
+    "connectionLost": "",
+    "demoUnavailable": ""
   },
   "controls": {
     "start": "Start",
@@ -141,25 +187,27 @@
     "startCount": "Aantal bots om te starten",
     "startToast": {
       "loading": "Bots worden gestart...",
-      "success": "Botstatus bijgewerkt",
-      "error": "Starten van bots mislukt"
+      "success": "",
+      "error": ""
     },
     "restartToast": {
       "loading": "Bots worden herstart...",
       "success": "Bots verbinden opnieuw",
-      "error": "Herstarten van bots mislukt"
+      "error": ""
     },
     "stopToast": {
       "loading": "Bots worden gestopt...",
       "success": "Bots worden gestopt",
-      "error": "Stoppen van bots mislukt"
+      "error": ""
     },
-    "permissionDenied": "Je hebt geen toestemming om bots in dit exemplaar te starten of te stoppen.",
+    "permissionDenied": "",
     "serverUpdateRequired": "De server heeft de machtigingen voor botbediening niet gerapporteerd. Controleer of de server- en clientversies overeenkomen.",
     "startBots": "Bots starten",
-    "moreActions": "Meer botacties",
-    "generateFirst": "Maak accounts aan om je eerste bots te starten.",
-    "startCountHelp": "Start extra bots. Lopende bots blijven verbonden.",
+    "allRunning": "",
+    "generateFirst": "",
+    "startCountHelp": "",
+    "target": "",
+    "changeTarget": "",
     "startAllCount": "Start alle {{count}}",
     "validCount": "Voer een geheel getal in tussen 1 en {{count}}.",
     "positiveCount": "Voer een geheel getal van ten minste 1 in.",
@@ -172,14 +220,12 @@
     "restartCount_one": "Herstart {{count}} bot",
     "restartCount_other": "Herstart {{count}} bots"
   },
-  "botFleetSummary": "{{online}} verbonden · {{desired}} ingesteld om te draaien · {{total}} totaal",
-  "icon": {
-    "invalidName": "Ongeldige pictogramnaam: {{name}}"
-  },
+  "botFleetSummary": "",
+  "botFleetSummaryEmpty": "",
   "dataTable": {
     "noResults": "Geen resultaten.",
-    "rowsSelected": "{{amount}} van {{total}} rij(en) geselecteerd",
     "rowsPerPage": "Rijen per pagina",
+    "sliderLabel": "",
     "currentPage": "Pagina {{page}} van {{total}}",
     "goFirst": "Ga naar eerste pagina",
     "goPrevious": "Ga naar vorige pagina",
@@ -187,7 +233,6 @@
     "goLast": "Ga naar laatste pagina",
     "selectAll": "Alles selecteren",
     "selectRow": "Rij selecteren",
-    "selected": "{count, plural, one {{count} geselecteerd} other {{count} geselecteerd}}",
     "clearSelection": "Selectie wissen",
     "escape": "Esc",
     "filter": "Filter",
@@ -224,6 +269,8 @@
     "addSorting": "Voeg sortering toe om je rijen te ordenen.",
     "addSort": "Sortering toevoegen",
     "resetSorting": "Sortering resetten",
+    "removeSort": "",
+    "reorderSort": "",
     "columnHeader": {
       "asc": "Opl.",
       "desc": "Afl.",
@@ -254,69 +301,153 @@
       "asc": "Opl.",
       "desc": "Afl."
     },
-    "openFilterMenu": "Filtermenu openen",
-    "filterOperator": "Filteroperator",
-    "filterValue": "Filterwaarde",
-    "sortDirection": "Sorteerrichting",
-    "selectJoinOperator": "Koppeloperator selecteren",
-    "joinOperator": "Koppeloperator",
-    "escapeKey": "Escape",
-    "selectDate": "Datum selecteren",
-    "selectDateRange": "Datumbereik selecteren",
-    "clearFilter": "Filter {{title}} wissen",
-    "clearFilters": "Filters wissen",
-    "clear": "Wissen",
-    "from": "Van",
-    "to": "Tot",
-    "sortDirectionFor": "Sorteerrichting voor {{column}}",
-    "minValue": "Minimumwaarde voor {{label}}",
-    "maxValue": "Maximumwaarde voor {{label}}"
+    "openFilterMenu": "",
+    "filterOperator": "",
+    "filterValue": "",
+    "sortDirection": "",
+    "selectJoinOperator": "",
+    "joinOperator": "",
+    "escapeKey": "",
+    "selectDate": "",
+    "selectDateRange": "",
+    "clearFilter": "",
+    "clearFilters": "",
+    "clear": "",
+    "from": "",
+    "to": "",
+    "sortDirectionFor": "",
+    "minValue": "",
+    "maxValue": "",
+    "rowsSelected_one": "",
+    "rowsSelected_other": "",
+    "selected_one": "",
+    "selected_other": ""
   },
   "pluginCard": {
-    "version": "Versie: {{version}}",
-    "author": "Auteur: {{author}}",
-    "license": "Licentie: {{license}}",
-    "website": "Website"
+    "website": "Website",
+    "meta": "",
+    "configure": "",
+    "enable": ""
   },
   "settingsPage": {
-    "saveError": "{{name}} kon niet worden opgeslagen",
-    "namespacesNotFound": "Instelling-namespaces niet gevonden",
+    "sections": {
+      "provider": {
+        "title": "",
+        "description": ""
+      },
+      "requests": {
+        "title": "",
+        "description": ""
+      },
+      "movement": {
+        "title": "",
+        "description": ""
+      },
+      "costs": {
+        "title": "",
+        "description": ""
+      },
+      "search": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "autoSave": "",
+    "saveError": "",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "{{name}} kon niet worden opgeslagen",
       "placeholder": "Een nieuw item toevoegen...",
       "add": "Toevoegen",
-      "remove": "Verwijderen"
+      "remove": "Verwijderen",
+      "removeAll": "",
+      "undo": "",
+      "count_one": "{{count}} item",
+      "count_other": "{{count}} items",
+      "removedAll_one": "",
+      "removedAll_other": ""
     },
     "combo": {
-      "searchPlaceholder": "Waarde zoeken..."
+      "searchPlaceholder": "Waarde zoeken...",
+      "selectPlaceholder": "",
+      "empty": "",
+      "more_one": "",
+      "more_other": ""
     },
     "invalidNumberToast": {
-      "title": "Ongeldig getal",
-      "description": "De waarde moet tussen {{min}} en {{max}} liggen"
+      "description": ""
     },
-    "minMaxLegend": "Minimum- en maximuminstellingen"
+    "saving": "Bezig met opslaan...",
+    "saved": "",
+    "notSaved": "",
+    "defaultValue": "",
+    "resetToDefault": "",
+    "filter": "",
+    "filterPlaceholder": "",
+    "closeFilter": "",
+    "searchEverywhere": "",
+    "noMatches": "",
+    "otherPages": "",
+    "demoNotSaved": "",
+    "scope": {
+      "instance": "",
+      "server": ""
+    },
+    "minMaxLegend": "",
+    "rangeValue": "",
+    "advanced_one": "",
+    "advanced_other": ""
   },
   "terminal": {
+    "actions": {
+      "run_command": "",
+      "suggest_command": "",
+      "copy_to_clipboard": "Kopiëren naar klembord",
+      "open_url": "",
+      "unavailable": ""
+    },
     "noLogs": "Nog geen logs. Voer een commando uit om loguitvoer te genereren.",
-    "demo-1": "Welkom in demomodus! 🧪",
-    "demo-2": "Dit is een alleen-lezen instantie van SoulFire",
-    "demo-3": "Bekijk alle menu's en functies voordat je beslist om SoulFire te installeren :D",
-    "demo-4": "Voel je vrij om lid te worden van onze Discord-server als je contact wilt opnemen: https://soulfiremc.com/discord"
+    "noLogsReadOnly": "",
+    "logsNoPermission": {
+      "title": "",
+      "description": ""
+    },
+    "logsDenied": "",
+    "botLogsNoPermission": {
+      "title": "",
+      "description": ""
+    },
+    "jumpToLatest": "",
+    "commandsNoPermission": {
+      "title": "",
+      "description": ""
+    },
+    "demo": {
+      "welcome": "",
+      "logs": "",
+      "commands": "",
+      "install": "",
+      "discord": ""
+    }
   },
-  "uiBreadcrumb": {
-    "more": "Meer"
-  },
+  "skipToContent": "",
   "uiDialog": {
     "close": "Sluiten"
   },
   "uiSheet": {
     "close": "Sluiten"
   },
+  "updateReady": {
+    "title": "",
+    "description": "",
+    "restart": "",
+    "later": ""
+  },
   "uiSidebar": {
-    "toggle": "Zijbalk wisselen"
+    "toggle": "",
+    "title": "",
+    "description": ""
   },
   "window": {
     "minimize": "Minimaliseren",
@@ -337,93 +468,224 @@
   },
   "castMenu": {
     "title": "Casten",
-    "disconnected": "Verbinding verbroken met {{device}}",
-    "alreadyConnected": "Al verbonden met {{device}}",
     "connectToast": {
       "loading": "Verbinding maken met {{device}}...",
       "success": "Verbonden met {{device}}",
-      "error": "Verbinding maken met {{device}} mislukt"
+      "error": ""
     },
-    "noDevices": "Geen apparaten gevonden",
     "broadcastToast": {
       "loading": "Bericht uitzenden...",
-      "success": "Bericht uitgezonden",
-      "error": "Uitzenden van bericht mislukt"
+      "success": "",
+      "error": ""
     }
   },
   "commandPalette": {
+    "title": "",
+    "trigger": "",
+    "triggerLabel": "",
+    "shortcutHint": "",
+    "description": "",
+    "placeholder": "",
+    "emptyTitle": "",
+    "emptyHint": "",
+    "emptyTitlePartial": "",
+    "emptyHintPartial": "",
+    "loading": "",
+    "loadError": "",
+    "retry": "Opnieuw proberen",
+    "index": {
+      "progress": "",
+      "server": "",
+      "serverFailed": "",
+      "failed_one": "",
+      "failed_other": "",
+      "failedWithServer_one": "",
+      "failedWithServer_other": ""
+    },
+    "copyProjectId": "",
+    "copyUrl": "",
+    "copied": "",
+    "refresh": "",
+    "clearRecents": "",
+    "actionError": "",
+    "serverOverview": "",
+    "serverContext": "",
+    "browseProject": "",
+    "allProjects": "",
+    "changeScope": "",
+    "searchAllProjects": "",
+    "pickProjectPlaceholder": "",
+    "browsingPlaceholder": "",
+    "projectUnavailable": "",
+    "matchedBy": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "Alles",
+      "projects": "",
+      "bots": "Bots",
+      "scripts": "Scripts",
+      "settings": "Instellingen",
+      "actions": "Acties"
+    },
+    "pin": "",
+    "unpin": "",
+    "pinLabel": "",
+    "unpinLabel": "",
+    "confirm": {
+      "description": "",
+      "confirmStart": "Bots starten",
+      "confirmStop": "",
+      "confirmRestart": "",
+      "cancel": "Annuleren",
+      "unavailable": "",
+      "start_one": "",
+      "start_other": "",
+      "stop_one": "",
+      "stop_other": "",
+      "restart_one": "",
+      "restart_other": ""
+    },
     "feedback": {
+      "start": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "stop": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "restart": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
       "activate": {
-        "loading": "Script inschakelen...",
-        "success": "Script ingeschakeld",
-        "error": "Het script kon niet worden ingeschakeld. Probeer het opnieuw."
+        "loading": "",
+        "success": "",
+        "error": ""
       },
       "deactivate": {
-        "loading": "Script uitschakelen...",
-        "success": "Script uitgeschakeld",
-        "error": "Het script kon niet worden uitgeschakeld. Probeer het opnieuw."
-      }
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "busy": "",
+      "demo": ""
     },
     "operations": {
-      "activateScript": "Script {{name}} inschakelen",
-      "deactivateScript": "Script {{name}} uitschakelen"
+      "startBot": "",
+      "stopBot": "",
+      "restartBot": "",
+      "activateScript": "",
+      "deactivateScript": "",
+      "startBots_one": "Start {{count}} bot",
+      "startBots_other": "Start {{count}} bots",
+      "stopBots_one": "Stop {{count}} bot",
+      "stopBots_other": "Stop {{count}} bots",
+      "retryBots_one": "",
+      "retryBots_other": ""
     },
     "status": {
-      "active": "Aan",
-      "paused": "Uit"
-    }
+      "connected": "Verbonden",
+      "starting": "Starten",
+      "retrying": "Opnieuw proberen",
+      "failed": "Mislukt",
+      "stopping": "Stoppen",
+      "stopped": "Gestopt",
+      "active": "",
+      "paused": ""
+    },
+    "theme": {
+      "light": "",
+      "dark": "",
+      "system": ""
+    },
+    "keys": {
+      "navigate": "",
+      "select": "",
+      "close": "Sluiten",
+      "back": "Terug"
+    },
+    "groups": {
+      "pinned": "",
+      "recent": "",
+      "navigation": "",
+      "currentProject": "",
+      "projects": "",
+      "settings": "Instellingen",
+      "bots": "Bots",
+      "scripts": "Scripts",
+      "admin": "",
+      "actions": "Acties",
+      "results": "",
+      "projectPages": ""
+    },
+    "missingPin": {
+      "label": "",
+      "description": ""
+    },
+    "moreResults_one": "",
+    "moreResults_other": "",
+    "pinLimit_one": "",
+    "pinLimit_other": ""
   },
   "instanceSidebar": {
     "readDocumentation": "Lees documentatie",
-    "backToDashboard": "Terug naar instanties",
+    "backToDashboard": "",
     "deleteToast": {
-      "loading": "Instantie verwijderen...",
-      "success": "Instantie verwijderd",
-      "error": "Instantie verwijderen mislukt"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "instancesGroup": "Instanties",
-    "createInstance": "Instantie aanmaken",
+    "instancesGroup": "",
+    "createInstance": "",
     "loadProfileToast": {
-      "loading": "Profiel laden...",
-      "success": "Profiel geladen",
-      "error": "Laden van profiel mislukt"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "loadProfile": "Laad profiel",
+    "loadProfile": "",
     "loadFromFile": "Laad uit bestand",
-    "profileSaved": "Profiel opgeslagen",
-    "saveProfile": "Profiel opslaan",
-    "deleteInstance": "Instantie verwijderen",
+    "profileSaved": "",
+    "profileSaveError": "",
+    "saveProfile": "",
+    "deleteInstance": "",
     "controlsGroup": "Bediening",
     "overview": "Overzicht",
     "terminal": "Terminal",
     "bots": "Bots",
-    "audit-log": "Auditlogboek",
+    "audit-log": "",
     "settingsGroup": "Instellingen",
     "extensionsGroup": "Extensies",
-    "botSettings": "Bot instellingen",
     "accountSettings": "Accounts",
-    "metaSettings": "Instellingen van instantie",
-    "proxySettings": "Proxies",
-    "aiSettings": "AI-instellingen",
-    "pathfindingSettings": "Padzoeken-instellingen",
+    "metaSettings": "",
+    "proxySettings": "Proxy's",
     "discoverPlugins": "Plug-ins",
-    "instanceScripts": "Scripts"
+    "togglePluginSettings": "",
+    "instanceScripts": "Scripts",
+    "configurationFileType": "",
+    "exportWarning": "",
+    "fleetStatusEmpty": "",
+    "fleetStatus_one": "",
+    "fleetStatus_other": ""
   },
   "userSidebar": {
     "readDocumentation": "Lees documentatie",
     "userGroup": "Gebruiker",
-    "instances": "Instanties",
+    "instances": "",
     "access": "Toegang",
-    "createInstance": "Instantie aanmaken",
+    "createInstance": "",
     "settings": "Instellingen",
     "adminGroup": "Beheerder",
     "adminOverview": "Overzicht",
     "adminLogs": "Logs",
     "adminTerminal": "Terminal",
     "users": "Gebruikers",
-    "adminScripts": "Scripts",
-    "serverSettings": "Serverinstellingen",
-    "devSettings": "Ontwikkelaar instellingen",
     "theme": {
       "title": "Thema",
       "system": "Systeem",
@@ -437,11 +699,12 @@
     "dataDir": "Data-map",
     "supportSoulFire": "Steun SoulFire",
     "about": "Over",
-    "logOut": "Uitloggen",
+    "logOut": "",
     "logOutToast": {
-      "loading": "Uitloggen...",
-      "success": "Uitgelogd",
-      "error": "Uitloggen mislukt"
+      "loading": "",
+      "success": "",
+      "error": "",
+      "stopError": ""
     },
     "exit": "Afsluiten",
     "stopImpersonating": "Imiteren stoppen",
@@ -459,52 +722,51 @@
     "extensions": "Extensies",
     "bots": "Bots"
   },
-  "noInstancesFound": "Geen instanties gevonden",
+  "noInstancesFound": "",
+  "noInstancesDescription": "",
+  "noInstancesNoPermission": "",
   "pageName": {
     "terminal": "Terminal",
     "logs": "Logs",
-    "audit-log": "Auditlogboek",
+    "audit-log": "",
     "bots": "Bots",
-    "botDetail": "Botgegevens",
-    "instances": "Instanties",
+    "botDetail": "",
+    "instances": "",
     "access": "Toegang",
     "settings": "Instellingen",
-    "proxySettings": "Proxies",
+    "proxySettings": "Proxy's",
     "overview": "Overzicht",
     "users": "Gebruikers",
     "accountSettings": "Accounts",
-    "metaSettings": "Instellingen van instantie",
+    "metaSettings": "",
     "discoverPlugins": "Plug-ins",
-    "adminScripts": "Scripts",
     "instanceScripts": "Scripts"
   },
   "access": {
     "webdav": {
-      "title": "WebDAV-toegang",
-      "description": "WebDAV biedt toegang tot instantiebestanden, scripts en andere bestanden.",
-      "publicAddress": "Openbaar WebDAV-adres",
-      "personalToken": "Persoonlijk WebDAV-token",
-      "securityWarning": "Houd je persoonlijke WebDAV-token geheim. Deze geeft toegang tot je bestanden. Gebruik het token als je WebDAV-wachtwoord. Je hebt geen gebruikersnaam nodig. Als je app er een vereist, vul dan een willekeurige waarde in, zoals 'soulfire'.",
-      "addressDescription": "Gebruik dit adres om toegang te krijgen tot je bestanden. Sommige clients vereisen dav:// of davs:// in plaats van http:// of https://."
+      "title": "",
+      "description": "",
+      "securityWarning": "",
+      "addressDescription": ""
     },
     "api": {
-      "title": "API-toegang",
-      "description": "Gebruik de SoulFire-API om instanties vanuit je eigen programma's te beheren.",
-      "publicAddress": "Openbaar API-adres",
-      "personalToken": "Persoonlijk API-token",
-      "securityWarning": "Houd je persoonlijke API-token geheim. Deze geeft toegang tot de API.",
-      "addressDescription": "Gebruik dit adres om toegang te krijgen tot de API."
+      "title": "",
+      "description": "",
+      "securityWarning": ""
     },
     "token": {
-      "generate": "Token genereren",
-      "placeholder": "Kies hieronder 'Token genereren'",
+      "generate": "",
+      "placeholder": "",
       "generating": "Token wordt gegenereerd...",
-      "success": "Token succesvol gegenereerd",
-      "error": "Token genereren mislukt",
-      "copy": "Token kopiëren"
+      "success": "",
+      "error": "",
+      "copy": "",
+      "label": "",
+      "noPermission": ""
     },
     "address": {
-      "copy": "Adres kopiëren"
+      "copy": "",
+      "label": "Adres"
     },
     "documentation": "Documentatie",
     "howToConnect": "Hoe verbinden"
@@ -512,45 +774,45 @@
   "uploadToMcLogs": "Uploaden naar mclo.gs",
   "mcLogsUpload": {
     "loading": "Uploaden naar mclo.gs...",
-    "success": "Geüpload naar mclo.gs! Bekijk het hier: {{url}}",
-    "error": "Uploaden naar mclo.gs mislukt"
+    "success": "",
+    "error": ""
   },
   "searchWithGoogle": "Zoeken met Google",
   "copyToClipboard": "Kopiëren naar klembord",
   "clipboardCopy": {
-    "loading": "Kopiëren naar klembord...",
     "success": "\"{{content}}\" gekopieerd naar klembord",
-    "error": "Kopiëren naar klembord mislukt"
+    "error": "",
+    "sensitiveSuccess": ""
   },
   "instanceName": {
     "required": "",
     "max": "",
     "singleLine": "",
     "saved": "",
-    "saveError": "De instantienaam kon niet worden bijgewerkt"
+    "saveError": ""
   },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
-      "description": "Je gebruikersavatar is gebaseerd op je account e-mailadres. Je kunt het avatar voor je e-mailadres wijzigen op",
-      "gravatar": "Gravatar"
+      "hint": ""
     },
     "username": {
       "uiName": "Gebruikersnaam",
-      "description": "Je gebruikersnaam wordt gebruikt om je te identificeren in de interface en in logboeken."
+      "description": ""
     },
     "email": {
       "uiName": "E-mailadres",
-      "description": "Je e-mailadres wordt gebruikt voor inloggen en meldingen."
+      "description": ""
     },
+    "autoSave": "",
+    "noPermission": "",
     "saved": "",
     "conflict": "",
-    "saveError": "{{field}} kon niet worden bijgewerkt"
+    "saveError": ""
   },
   "auditLog": {
-    "filterPlaceholder": "Filter auditlogs...",
+    "refresh": "Vernieuwen",
     "user": "Gebruiker",
-    "action": "Actie",
     "type": "Type",
     "timestamp": "Tijdstempel",
     "searchUsers": "Zoek gebruikers...",
@@ -558,99 +820,69 @@
     "executedCommand": "Uitgevoerd commando: {{data}}",
     "changedBotDesiredState": "Gewenste botstatus gewijzigd",
     "restartedBots": "Bots herstart",
+    "calledPluginRpc": "",
+    "types": {
+      "EXECUTE_COMMAND": "",
+      "BOT_DESIRED_STATE_CHANGE": "",
+      "BOT_RESTART": "",
+      "PLUGIN_RPC": ""
+    },
     "contextMenu": {
-      "copyUsername": "Gebruikersnaam kopiëren",
-      "copyCommand": "Kopieer commando"
+      "copyUsername": "",
+      "copyCommand": ""
+    },
+    "noPermission": {
+      "title": "",
+      "description": ""
     }
   },
   "toggleTheme": "Thema wisselen",
-  "pickADate": "Selecteer een datum",
   "scripts": {
-    "filterPlaceholder": "Scripts filteren...",
-    "baseScriptDialog": {
-      "form": {
-        "scriptName": {
-          "min": "Scriptnamen moeten minimaal 3 tekens bevatten",
-          "max": "Scriptnamen mogen maximaal 32 tekens bevatten",
-          "regex": "Gebruik kleine letters, cijfers en streepjes. De naam moet beginnen en eindigen met een letter of een cijfer.",
-          "label": "Naam",
-          "placeholder": "Mijn Script",
-          "description": "De naam van het script."
-        },
-        "elevatedPermissions": {
-          "label": "Verhoogde rechten",
-          "description": "Het script draait met verhoogde machtigingen. Alleen beheerders kunnen deze optie inschakelen."
-        }
-      }
-    },
-    "addScriptDialog": {
-      "title": "Een nieuw script toevoegen",
-      "description": "Scripts zijn kleine programma's die taken en andere acties op de SoulFire-server automatiseren.",
-      "form": {
-        "cancel": "Annuleren",
-        "add": "Toevoegen"
-      }
-    },
-    "updateScriptDialog": {
-      "title": "Script bijwerken",
-      "description": "Werk de informatie van het script bij.",
-      "form": {
-        "cancel": "Annuleren",
-        "update": "Bijwerken"
-      }
-    },
     "removeToast": {
       "loading": "Scripts worden verwijderd...",
-      "success": "Scripts verwijderd",
-      "error": "Verwijderen van scripts mislukt"
+      "success": "",
+      "error": ""
     },
     "addToast": {
       "loading": "Script toevoegen...",
-      "success": "Script toegevoegd",
-      "error": "Toevoegen van script mislukt"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "Script bijwerken...",
-      "success": "Script bijgewerkt",
-      "error": "Bijwerken van script mislukt"
+      "success": "",
+      "error": ""
     },
     "restartToast": {
       "loading": "Script wordt herstart...",
-      "success": "Script herstart",
-      "error": "Herstarten van script mislukt"
-    },
-    "table": {
-      "type": "Type",
-      "scriptName": "Naam",
-      "language": "Taal",
-      "elevatedPermissions": "Verhoogde rechten",
-      "createdAt": "Aangemaakt",
-      "actions": "Acties"
-    },
-    "globalScript": "Globaal",
-    "instanceScript": "Instantie"
+      "success": "",
+      "error": ""
+    }
   },
   "contextMenu": {
+    "actions": "Acties",
     "instance": {
-      "goToInstance": "Ga naar instantie",
-      "duplicateInstance": "Instatie dupliceren",
-      "copyInstanceId": "Instantie-ID kopiëren",
-      "copyInstanceName": "Instantienaam kopiëren",
-      "deleteInstance": "Instantie verwijderen"
+      "goToInstance": "",
+      "duplicateInstance": "",
+      "copyInstanceId": "",
+      "copyInstanceName": "",
+      "actions": "",
+      "deleteInstance": ""
     },
     "bot": {
-      "goToBot": "Ga naar bot",
-      "copyUsername": "Gebruikersnaam kopiëren",
-      "copyUuid": "Profiel-ID kopiëren",
-      "copyCoordinates": "Coördinaten kopiëren"
+      "goToBot": "",
+      "actions": "",
+      "copyUsername": "",
+      "copyUuid": "",
+      "copyCoordinates": ""
     },
     "plugin": {
-      "enable": "Inschakelen",
-      "disable": "Uitschakelen",
-      "openSettings": "Instellingen openen",
-      "copyPluginName": "Pluginnaam kopiëren",
-      "copyVersion": "Versie kopiëren",
-      "openWebsite": "Website openen"
+      "enable": "",
+      "disable": "",
+      "openSettings": "",
+      "copyPluginName": "",
+      "copyVersion": "",
+      "openWebsite": ""
     }
   },
   "integratedDiagnostics": {
@@ -659,7 +891,6 @@
     "openDirectory": "Open gegevensmap",
     "openDirectoryError": "Kan de gegevensmap niet openen",
     "elapsed": "{{count}}s verstreken",
-    "quiet": "Geen nieuwe uitvoer gedurende {{count}} seconden. Het opstarten kan nog bezig zijn. Maak een thread-dump om te zien wat Java doet.",
     "status": {
       "idle": "Niet gestart",
       "preparing": "Java en serverbestanden voorbereiden",
@@ -672,7 +903,7 @@
     "noOutput": "Wachten op procesuitvoer...",
     "noMatches": "Geen overeenkomende uitvoer.",
     "java": "Java-uitvoerbaar bestand",
-    "jar": "Server-JAR",
+    "jar": "",
     "data": "Data-map",
     "port": "RPC-poort",
     "exit": "Exitcode of signaal",
@@ -687,32 +918,159 @@
     "jcmdHelp": "Thread-dumps vereisen jcmd uit JDK 25. De meegeleverde Java-runtime bevat dit niet. Installeer een JDK 25 en kies jcmd (jcmd.exe op Windows) in de bin-map.",
     "openDump": "Thread-dump openen",
     "filter": "Filter procesuitvoer",
-    "truncated": "{{count}} oudere logregels zijn weggelaten. Volledige serverlogs blijven in de gegevensmap.",
-    "privacy": "Rapporten bevatten lokale paden en recente logs. Controleer rapporten en thread-dumps op persoonlijke informatie voordat je ze deelt. Er wordt niets automatisch geüpload."
+    "privacy": "Rapporten bevatten lokale paden en recente logs. Controleer rapporten en thread-dumps op persoonlijke informatie voordat je ze deelt. Er wordt niets automatisch geüpload.",
+    "quiet_one": "",
+    "quiet_other": "",
+    "truncated_one": "",
+    "truncated_other": ""
   },
   "instanceUnavailable": {
     "title": "",
-    "description": ""
+    "description": "",
+    "retry": ""
   },
   "botUnavailable": {
     "title": "",
     "description": ""
   },
+  "discover": {
+    "noPluginsTitle": "",
+    "noPluginsDescription": "",
+    "search": "",
+    "noMatches": "",
+    "filterLabel": "",
+    "scope": "",
+    "tasks": {
+      "all": "Alles",
+      "connect": "",
+      "survive": "",
+      "chat": "",
+      "diagnose": "",
+      "other": "Overig"
+    },
+    "enabledHeading": "",
+    "availableHeading": "Beschikbaar",
+    "movesToAvailable": "",
+    "movesToEnabled": ""
+  },
   "sdk": {
+    "title": "",
+    "description": "",
+    "docs": "",
+    "connectionTitle": "",
+    "connectionDescription": "",
+    "serverUrl": "",
+    "noUrl": "",
+    "copyUrl": "",
+    "token": "",
+    "copyToken": "",
+    "tokenHelp": "",
+    "tokenSetupHelp": "",
+    "impersonatingHelp": "",
+    "generateToken": "",
+    "generating": "Token wordt gegenereerd...",
+    "tokenPermission": "",
+    "tokenError": "",
+    "tokenRetry": "",
+    "demoBody": "",
+    "demoBadge": "",
+    "localBadge": "",
+    "remoteBadge": "",
+    "unavailableBadge": "",
+    "missingUrlHelp": "",
+    "localHelp": "",
+    "integratedHelp": "",
+    "targetTitle": "",
+    "copyInstanceId": "",
+    "openBots": "",
+    "openAccounts": "",
+    "exampleTitle": "",
+    "language": "",
+    "recipe": "",
+    "bot": "Bot",
     "botOnline": "Verbonden",
-    "botOffline": "Niet verbonden"
+    "botOffline": "",
+    "noBotsTitle": "",
+    "noBotsBody": "",
+    "stoppedTitle": "",
+    "stoppedBody": "",
+    "copyScript": "",
+    "copyAgentPrompt": "",
+    "previewAgentPrompt": "",
+    "agentPrompt": "",
+    "saveScript": "",
+    "runTitle": "",
+    "pythonRequirement": "",
+    "typescriptRequirement": "",
+    "shell": "",
+    "install": "",
+    "run": "",
+    "copyInstall": "",
+    "copyRun": "",
+    "replaceToken": "",
+    "version": "",
+    "recipes": {
+      "list-bots": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "read-state": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "send-chat": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      }
+    },
+    "helpTitle": "",
+    "help": {
+      "connection": {
+        "title": "",
+        "body": ""
+      },
+      "authentication": {
+        "title": "",
+        "body": ""
+      },
+      "compatibility": {
+        "title": "",
+        "body": ""
+      }
+    },
+    "reference": "",
+    "moreExamples": ""
   },
   "minecraftActions": {
-    "copyError": "Tekst kon niet worden gekopieerd. Gebruik HTTPS of sta toegang tot het klembord toe.",
-    "openError": "De link kon niet worden geopend.",
-    "popupBlocked": "Je browser heeft het nieuwe tabblad geblokkeerd.",
-    "openLink": "Link openen"
+    "copyError": "",
+    "openError": "",
+    "popupBlocked": "",
+    "openLink": ""
   },
   "instanceIcon": {
-    "label": "Pictogram",
-    "description": "Het pictogram van de instantie in de app."
+    "label": "",
+    "description": "",
+    "searchPlaceholder": "",
+    "empty": "",
+    "saveError": "",
+    "more_one": "",
+    "more_other": ""
   },
   "unknown": "Onbekend",
-  "minecraftHead": "Minecraft-hoofd",
-  "textFile": "Tekstbestand"
+  "minecraftHead": "",
+  "textFile": "",
+  "settingsPageName": {
+    "bot": "",
+    "account": "",
+    "proxy": "",
+    "ai": "",
+    "pathfinding": "",
+    "server": "",
+    "dev": ""
+  },
+  "instanceCount_one": "",
+  "instanceCount_other": ""
 }

@@ -1,67 +1,19 @@
 {
   "overview": {
-    "logsDescription": "जब आपको कंसोल विवरण की जाँच करनी हो, तो कच्चा इंस्टेंस आउटपुट यहाँ उपलब्ध है।",
-    "summary": {
-      "accounts": "खाते",
-      "proxies": "प्रॉक्सी",
-      "configured": "{{count}} कॉन्फ़िगर किए गए",
-      "configuredShort": "कॉन्फ़िगर किया गया",
-      "currentRate": "मौजूदा दर",
-      "imported": "आयातित"
-    },
-    "readiness": {
-      "title": "सेटअप",
-      "accounts": "खाते",
-      "accountsValue": "{{requested}} अनुरोधित बॉट्स के लिए {{count}} आयातित किए गए हैं।",
-      "proxies": "प्रॉक्सी",
-      "proxiesValue": "{{count}} कॉन्फ़िगर किए गए",
-      "plugins": "प्लगइन्स",
-      "pluginsValue": "{{count}} उपलब्ध"
-    },
-    "activity": {
-      "title": "गतिविधि",
-      "tick": "टिक",
-      "health": "स्वास्थ्य",
-      "world": "विश्व",
-      "worldValue": "{{chunks}} चंक्स, {{entities}} इकाइयाँ",
-      "connections": "कनेक्शन्स",
-      "connectionsValue": "+{{connections}} / -{{disconnections}}",
-      "noDataTitle": "मेट्रिक्स",
-      "noDataDescription": "अभी तक कोई रनटाइम मेट्रिक्स नहीं हैं।"
-    },
-    "metricsUnavailable": {
-      "title": "मेट्रिक्स",
-      "inactive": "लाइव मेट्रिक्स एकत्र करने के लिए एक बॉट शुरू करें।",
-      "noPermission": "आपको बॉट मेट्रिक्स देखने की अनुमति नहीं है।"
-    },
-    "status": {
-      "ready": "तैयार",
-      "attention": "ध्यान देने की आवश्यकता",
-      "configured": "कॉन्फ़िगर किया गया",
-      "optional": "वैकल्पिक",
-      "available": "उपलब्ध",
-      "none": "कोई नहीं"
-    },
-    "actions": {
-      "manage": "प्रबंधित करें",
-      "open": "खोलें"
-    },
-    "spotlight": {
-      "noBots": "अब तक कोई बॉट्स कॉन्फ़िगर नहीं किए गए हैं।",
-      "idle": "निष्क्रिय, निर्देशों की प्रतीक्षा कर रहा है।",
-      "level": "स्तर {{level}}"
-    },
+    "logsDescription": "",
     "liveFeed": {
       "title": "लाइव फीड",
-      "empty": "इंस्टेंस गतिविधि की प्रतीक्षा कर रहा है...",
+      "empty": "",
       "noPermission": "आपको लाइव फीड देखने की अनुमति नहीं है।",
       "lifecycle": {
         "connecting": "कनेक्ट हो रहा है",
         "connected": "कनेक्टेड",
         "spawned": "खेल में शामिल हुआ",
         "died": "मर गया",
+        "diedWithReason": "",
         "respawned": "पुनर्जीवित हुआ",
         "disconnected": "डिस्कनेक्टेड",
+        "disconnectedWithReason": "",
         "unknown": "अवस्था बदली"
       },
       "pause": "रोकें",
@@ -80,11 +32,12 @@
         "time": "समय",
         "bot": "बॉट",
         "message": "संदेश"
-      }
+      },
+      "botCount_one": "",
+      "botCount_other": ""
     },
     "bots": {
       "title": "बॉट्स",
-      "viewAll": "सभी {{total}} बॉट्स देखें",
       "viewAllShort": "सभी देखें",
       "detailsFor": "{{name}} के लिए बोट विवरण"
     },
@@ -92,21 +45,20 @@
       "title": "हाल की क्रियाएँ",
       "viewAll": "इतिहास देखें",
       "empty": "अभी तक कोई दर्ज की गई गतिविधि नहीं है।",
-      "noPermission": "आपको ऑडिट लॉग देखने की अनुमति नहीं है।",
       "types": {
         "executeCommand": "एक कमांड चलाया: {{data}}",
         "botDesiredStateChange": "बॉट की इच्छित स्थिति बदली गई",
         "botRestart": "बॉट्स को पुनः प्रारंभ किया गया",
+        "pluginRpc": "",
         "unknown": "एक क्रिया की गई"
       }
     },
     "plugins": {
       "title": "प्लगइन्स",
-      "empty": "अब तक कोई प्लगइन्स आँकड़े नहीं बता रहे हैं।",
-      "noPermission": "आपको प्लगइन आँकड़े देखने की अनुमति नहीं है।",
       "active": "सक्रिय",
-      "activeBots": "{{count}} सक्रिय बॉट्स",
-      "uptime": "{{time}} से चालू है"
+      "uptime": "{{time}} से चालू है",
+      "activeBots_one": "",
+      "activeBots_other": ""
     },
     "detailed": {
       "title": "विस्तृत मेट्रिक्स",
@@ -119,180 +71,244 @@
       "network": "नेटवर्क पता",
       "unix": "यूनिक्स सॉकेट"
     },
-    "getProxies": "प्रॉक्सी प्रदाता",
-    "addProxies": "प्रॉक्सी जोड़ें",
-    "filterPlaceholder": "प्रॉक्सी छाँटें...",
+    "getProxies": "",
+    "addProxies": "",
+    "settingsTitle": "",
     "listImportToast": {
-      "loading": "प्रॉक्सी आयात हो रही हैं...",
-      "success": "{{count}} प्रॉक्सी आयात हुईं",
-      "error": "प्रॉक्सी आयात करने में विफल रहे",
-      "noProxies": "आयात करने के लिए कोई प्रॉक्सी नहीं है"
+      "success_one": "",
+      "success_other": "",
+      "skipped_one": "",
+      "skipped_other": "",
+      "duplicates_one": "",
+      "duplicates_other": ""
     },
     "import": {
-      "proxyType": "प्रॉक्सी प्रकार",
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "importing": "प्रॉक्सी आयात हो रही हैं...",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_one": "",
+        "accepted_other": "",
+        "alreadyInProject_one": "",
+        "alreadyInProject_other": "",
+        "rejected_one": "",
+        "rejected_other": "",
+        "confirm_one": "",
+        "confirm_other": ""
+      },
+      "proxyType": "",
       "http": "HTTP",
       "socks4": "SOCKS4",
       "socks5": "SOCKS5",
       "uri": "URI",
       "dialog": {
         "title": "{{type}} प्रॉक्सी आयात करें",
-        "description": "अपनी प्रॉक्सियाँ यहाँ चिपकाएँ, प्रत्येक पंक्ति में एक"
+        "description": ""
       }
     },
     "removeToast": {
       "loading": "प्रॉक्सी हटाई जा रही हैं...",
-      "success": "{{count}} प्रॉक्सी हटाई गईं",
-      "error": "प्रॉक्सी हटाने में विफल रहे"
+      "error": "",
+      "success_one": "",
+      "success_other": ""
     },
     "checkToast": {
-      "loading": "प्रॉक्सी जाँची जा रही हैं... {{checked}}/{{total}} (सफल: {{success}} विफल: {{failed}})",
-      "success": "{{count}} टूटी हुई प्रॉक्सी हटाई गईं",
-      "error": "प्रॉक्सी जांचने में विफल रहे",
-      "successKept": "{{total}} में से {{failed}} प्रॉक्सी जाँच में विफल रहे। कोई प्रॉक्सी नहीं हटाया गया।"
+      "loading": "",
+      "error": "",
+      "success_one": "",
+      "success_other": "",
+      "successKept_one": "",
+      "successKept_other": ""
     },
     "checkDialog": {
-      "title": "प्रॉक्सी जांचें",
-      "description": "आप {{count}} प्रॉक्सी जाँचने वाले हैं।",
-      "confirm": "जांच शुरू करें",
-      "removeFailed": "विफल प्रॉक्सी हटाएँ",
-      "removeFailedHelp": "अस्थायी नेटवर्क समस्या से प्रॉक्सी विफल हो सकता है। सभी प्रॉक्सी रखने और केवल परिणाम देखने के लिए यह विकल्प हटाएँ।"
+      "title": "",
+      "confirm": "",
+      "removeFailed": "",
+      "removeFailedHelp": "",
+      "description_one": "",
+      "description_other": ""
     },
-    "invalidFormat": "अमान्य प्रॉक्सी प्रारूप",
     "table": {
       "type": "प्रकार",
       "address": "पता",
       "username": "उपयोगकर्ता नाम",
       "password": "पासवर्ड",
       "searchAddresses": "पते खोजें...",
-      "searchUsernames": "यूज़रनेम खोजें...",
-      "searchPasswords": "पासवर्ड खोजें..."
+      "searchUsernames": "यूज़रनेम खोजें..."
     },
     "removeSelectedTooltip": "चयनित प्रॉक्सी हटाएँ",
     "exportSelectedTooltip": "चयनित प्रॉक्सी निर्यात करें",
     "checkSelectedTooltip": "चयनित प्रॉक्सी जांचें",
     "contextMenu": {
-      "copyAddress": "पता कॉपी करें",
-      "copyUsername": "यूज़रनेम कॉपी करें",
-      "copyPassword": "पासवर्ड कॉपी करें",
-      "deleteProxy": "प्रॉक्सी हटाएँ"
+      "copyAddress": "",
+      "copyUsername": "",
+      "copyPassword": "",
+      "deleteProxy": ""
     },
     "postImportCheckDialog": {
       "title": "आयात किए गए प्रॉक्सी जांचें?",
-      "description": "आपने {{count}} प्रॉक्सी इंपोर्ट किए। अभी जाँचें?",
-      "confirm": "प्रॉक्सी जांचें",
-      "skip": "छोड़ें"
+      "confirm": "",
+      "skip": "छोड़ें",
+      "description_one": "",
+      "description_other": ""
     },
     "export": {
-      "format": "निर्यात प्रारूप",
-      "uri": "URI प्रारूप (सभी प्रकार)",
-      "http": "केवल HTTP (फ्लैट)",
-      "socks4": "केवल SOCKS4 (फ्लैट)",
-      "socks5": "केवल SOCKS5 (फ्लैट)",
+      "format": "",
+      "uri": "",
+      "http": "",
+      "socks4": "",
+      "socks5": "",
       "noProxies": "निर्यात करने के लिए कोई प्रॉक्सी नहीं है"
     },
     "removeDialog": {
-      "title_one": "{{count}} प्रॉक्सी हटाएँ?",
-      "title_other": "{{count}} प्रॉक्सी हटाएँ?",
-      "description": "इससे चुने गए प्रॉक्सी और उनके क्रेडेंशियल इस इंस्टेंस से हट जाते हैं। इसे पूर्ववत नहीं किया जा सकता।",
-      "confirm": "प्रॉक्सी हटाएँ"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     },
-    "showPassword": "पासवर्ड दिखाएँ",
-    "hidePassword": "पासवर्ड छिपाएँ"
+    "removeSingleDialog": {
+      "title": "",
+      "description": "",
+      "confirm": ""
+    },
+    "showPassword": "",
+    "hidePassword": ""
   },
   "account": {
-    "getAccounts": "खाता प्रदाता",
-    "addAccounts": "खाते जोड़ें",
-    "generateAccounts": "खाते जनरेट करें",
-    "filterPlaceholder": "खातों को छाँटें...",
+    "getAccounts": "",
+    "addAccounts": "",
+    "settingsTitle": "",
+    "generateAccounts": "",
     "listImportToast": {
-      "loading": "खाते आयात हो रहे हैं... {{checked}}/{{total}} (सफल: {{success}} विफल: {{failed}})",
-      "allFailed": "कोई भी खाता आयात करने में विफल रहे",
-      "someFailed": "{{count}} खाते आयात किए गए, {{failed}} खाते आयात करने में विफल रहे",
-      "noneFailed": "{{count}} खाते आयात हुए",
-      "error": "खाते आयात करने में विफल रहे",
-      "noAccounts": "आयात करने के लिए कोई खाता नहीं है"
+      "loading": "",
+      "allFailed": "",
+      "cancelled": "",
+      "error": "",
+      "copyCredentials": "",
+      "noAccounts": "",
+      "errorReason": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      },
+      "someFailed_one": "",
+      "someFailed_other": "",
+      "noneFailed_one": "",
+      "noneFailed_other": "",
+      "cancelledSaved_one": "",
+      "cancelledSaved_other": "",
+      "errorSaved_one": "",
+      "errorSaved_other": ""
     },
-    "unknownError": "अज्ञात त्रुटि",
     "types": {
-      "OFFLINE": "ऑफ़लाइन",
-      "MICROSOFT_JAVA_CREDENTIALS": "जावा (क्रेडेंशियल्स)",
-      "MICROSOFT_JAVA_DEVICE_CODE": "जावा (डिवाइस कोड)",
-      "MICROSOFT_JAVA_REFRESH_TOKEN": "जावा (रिफ्रेश टोकन)",
-      "MICROSOFT_JAVA_COOKIES": "जावा (कुकीज़)",
-      "MICROSOFT_JAVA_ACCESS_TOKEN": "जावा (एक्सेस टोकन)",
+      "OFFLINE": "",
+      "MICROSOFT_JAVA_CREDENTIALS": "",
+      "MICROSOFT_JAVA_DEVICE_CODE": "",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "",
+      "MICROSOFT_JAVA_COOKIES": "",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "",
       "THE_ALTENING": "जावा (TheAltening)",
-      "MICROSOFT_BEDROCK_CREDENTIALS": "बेडरॉक (क्रेडेंशियल्स)",
-      "MICROSOFT_BEDROCK_DEVICE_CODE": "बेडरॉक (डिवाइस कोड)"
+      "MICROSOFT_BEDROCK_CREDENTIALS": "",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": ""
     },
     "deviceCodeImportToast": {
       "loading": "खाता आयात हो रहा है...",
-      "success": "खाता आयात हुआ",
-      "error": "खाता आयात करने में विफल रहे"
+      "success": "",
+      "error": "",
+      "saving": "",
+      "saveError": "",
+      "retrySave": ""
     },
     "generate": {
-      "title": "ऑफ़लाइन खाते जनरेट करें",
+      "replaceAllDialog": {
+        "description": "",
+        "confirm": "",
+        "title_one": "",
+        "title_other": ""
+      },
+      "title": "",
       "description": "मनचाहे नाम प्रारूप के साथ ऑफ़लाइन जावा खाते जनरेट करें।",
-      "amount": "संख्या",
-      "nameFormat": "नाम प्रारूप",
-      "nameFormatHelp": "खाता संख्या के लिए %d का उपयोग करें। उदाहरण के लिए, Bot_%d नाम जैसे Bot_1 और Bot_2 बनाता है।",
-      "mode": "मौजूदा खाते",
-      "modeHelp": "मौजूदा खातों को संभालने का तरीका चुनें:\n\n• मौजूदा को नजरअंदाज करें: केवल नए नामों से खाते बनाएं। सभी मौजूदा खाते रखें।\n\n• मौजूदा को बदलें: अनुरोधित सभी खाते बनाएं। मेल खाते UUID वाले खातों को बदलें। अन्य सभी खाते रखें।\n\n• सभी को बदलें: सभी मौजूदा खाते हटा दें। फिर नए बनाए गए खाते जोड़ें।",
-      "modeIgnoreExisting": "मौजूदा को अनदेखा करें",
-      "modeReplaceExisting": "मौजूदा को बदलें",
-      "modeReplaceAll": "सभी को बदलें",
+      "amount": "",
+      "nameFormat": "",
+      "nameFormatHelp": "",
+      "mode": "",
+      "modeHelp": "",
+      "modeIgnoreExisting": "",
+      "modeReplaceExisting": "",
+      "modeReplaceAll": "",
       "submit": "जनरेट करें",
       "generating": "जनरेट किया जा रहा है...",
-      "progress": "खाते जनरेट हो रहे हैं... {{checked}}/{{total}} (सफल: {{success}} विफल: {{failed}})",
-      "success": "{{count}} खाते जनरेट किए गए",
-      "allFailed": "कोई भी खाता जनरेट करने में विफल रहे",
-      "allExist": "सभी उपयोगकर्ता नाम पहले से मौजूद हैं। उन्हें फिर से बनाने के लिए \"मौजूदा को बदलें\" चुनें।",
-      "error": "खाते जनरेट करने में विफल रहे",
-      "invalidAmount": "कृपया एक मान्य संख्या दर्ज करें (कम से कम 1)",
-      "missingPlaceholder": "नाम प्रारूप में %d प्लेसहोल्डर होना आवश्यक है"
+      "progress": "",
+      "allFailed": "",
+      "allExist": "",
+      "error": "",
+      "amountOutOfRange": "",
+      "missingNameFormat": "",
+      "success_one": "",
+      "success_other": "",
+      "preview_one": "",
+      "preview_other": ""
     },
     "import": {
       "javaEdition": "जावा संस्करण",
       "bedrockEdition": "बेडरॉक संस्करण",
       "offline": "ऑफ़लाइन",
-      "microsoftCredentials": "Microsoft क्रेडेंशियल्स",
-      "microsoftDeviceCode": "Microsoft डिवाइस कोड",
-      "microsoftRefreshToken": "Microsoft रिफ्रेश टोकन",
-      "microsoftCookies": "माइक्रोसॉफ्ट कुकीज़",
-      "microsoftAccessToken": "माइक्रोसॉफ्ट एक्सेस टोकन",
-      "theAltening": "TheAltening टोकन",
-      "altProviders": "वैकल्पिक प्रदाता",
+      "microsoftCredentials": "",
+      "microsoftDeviceCode": "",
+      "microsoftRefreshToken": "",
+      "microsoftCookies": "",
+      "microsoftAccessToken": "",
+      "theAltening": "",
+      "altProviders": "",
       "dialog": {
-        "title": "{{type}} खाते आयात करें",
-        "description": "अपने खाते यहाँ चिपकाएँ, प्रत्येक पंक्ति में एक"
+        "title": "{{type}} खाते आयात करें"
+      },
+      "demo": "",
+      "format": {
+        "offline": "",
+        "microsoftCredentials": "",
+        "refreshToken": "",
+        "cookies": "",
+        "accessToken": "",
+        "theAltening": ""
       }
     },
     "removeToast": {
       "loading": "खाते हटाए जा रहे हैं...",
-      "success": "{{count}} खाते हटाए गए",
-      "error": "खाते हटाने में विफल रहे"
+      "error": "",
+      "success_one": "",
+      "success_other": ""
     },
     "table": {
       "type": "प्रकार",
-      "profileId": "प्रोफ़ाइल ID",
+      "profileId": "",
       "lastKnownName": "उपयोगकर्ता नाम",
       "searchProfileIds": "प्रोफ़ाइल आईडी खोजें...",
-      "searchLastKnownNames": "आखिरी ज्ञात नाम खोजें...",
+      "searchLastKnownNames": "यूज़रनेम खोजें...",
       "actions": "क्रियाएँ"
     },
     "removeSelectedTooltip": "चयनित खाते हटाएँ",
     "contextMenu": {
-      "openConfig": "सेटिंग्स खोलें",
-      "openMetadata": "मेटाडाटा खोलें",
-      "copyProfileId": "प्रोफ़ाइल आईडी कॉपी करें",
-      "copyUsername": "यूज़रनेम कॉपी करें"
+      "openConfig": "",
+      "openMetadata": "",
+      "copyProfileId": "",
+      "copyUsername": ""
     },
     "config": {
       "title": "{{name}} को कॉन्फ़िगर करें",
-      "description": "इस खाते के लिए प्रति-बॉट सेटिंग्स कॉन्फ़िगर करें",
+      "description": "",
       "openButton": "खाता कॉन्फ़िगर करें",
-      "pageTitle": "{{name}} - {{page}} सेटिंग्स",
       "noSettings": "इस पेज के लिए कोई सेटिंग्स उपलब्ध नहीं हैं",
       "search": "खोज सेटिंग्स",
+      "pages": "",
       "overrides": "ओवरराइड्स",
       "allSettings": "सभी सेटिंग्स",
       "noOverrides": "इस बॉट के पास अभी कोई स्पष्ट ओवरराइड्स नहीं हैं।",
@@ -303,226 +319,196 @@
       "selectPage": "एक सेटिंग्स पेज चुनें",
       "noSearchResults": "इस खोज से कोई सेटिंग्स मेल नहीं खाती।",
       "matchesInheritedValue": "इनहेरिटेड मान से मेल खाता है",
-      "instanceValue": "इंस्टेंस मान",
+      "instanceValue": "",
       "defaultValue": "डिफ़ॉल्ट मान",
       "resetOverride": "ओवरराइड रीसेट करें",
       "value": {
-        "notSet": "सेट नहीं है",
-        "on": "चालू",
-        "off": "बंद",
-        "empty": "खाली",
+        "notSet": "",
+        "on": "",
+        "off": "",
+        "empty": "",
+        "range": "",
         "entries_one": "{{count}} प्रविष्टि",
-        "entries_other": "{{count}} प्रविष्टियाँ",
-        "range": "सीमा"
+        "entries_other": "{{count}} प्रविष्टियाँ"
       },
       "source": {
-        "bot": "बॉट का अपना मान",
-        "instance": "इंस्टेंस से लिया गया",
-        "default": "डिफ़ॉल्ट उपयोग में"
+        "bot": "",
+        "instance": "",
+        "default": ""
       }
     },
     "deviceCodeConfirmDialog": {
-      "title": "डिवाइस कोड प्रमाणीकरण",
+      "title": "",
       "description": "डिवाइस कोड फ़्लो शुरू करने से पहले विकल्प कॉन्फ़िगर करें।",
-      "start": "प्रमाणीकरण शुरू करें"
+      "start": ""
     },
     "deviceCodeDialog": {
-      "title": "डिवाइस कोड प्रमाणीकरण",
+      "title": "",
       "description": "लिंक करने के लिए अपने Microsoft खाते से साइन इन करें।",
-      "openInBrowser": "ब्राउज़र में खोलें",
+      "openInBrowser": "",
       "orManually": "या कोड मैन्युअली दर्ज करें",
       "codeLabel": "आपका कोड",
-      "urlLabel": "पर जाएं"
+      "urlLabel": "पर जाएं",
+      "copyCode": "",
+      "copyUrl": ""
     },
     "ravealts": {
-      "button": "Ravealts",
-      "title": "Ravealts के माध्यम से खाते खरीदें",
       "description": "अपने Ravealts API कुंजी का उपयोग करते हुए Minecraft खाते खरीदें।",
-      "apiKeyLabel": "एपीआई कुंजी",
       "apiKeyPlaceholder": "अपनी Ravealts एपीआई कुंजी दर्ज करें",
-      "validate": "सत्यापित करें",
-      "validating": "सत्यापन हो रहा है...",
-      "keyValid": "कुंजी सत्यापित हो गई",
-      "keyInvalid": "अमान्य एपीआई कुंजी",
-      "credits": "क्रेडिट्स: {{credits}}",
-      "stockTitle": "उपलब्ध स्टॉक",
       "noStock": "स्टॉक में कोई खाता नहीं है",
-      "accountType": "खाता प्रकार",
-      "amount": "संख्या (1-10)",
-      "purchase": "खरीदें और आयात करें",
-      "purchasing": "खरीदारी हो रही है...",
-      "purchaseSuccess": "{{count}} खाते खरीदे गए, आयात किया जा रहा है...",
-      "purchaseError": "खरीदारी विफल: {{message}}",
-      "networkError": "Ravealts API से कनेक्शन विफल हुआ",
-      "outOfStock": "चयनित प्रकार स्टॉक में नहीं है",
+      "accountType": "",
+      "networkError": "",
+      "outOfStock": "",
       "insufficientBalance": "पर्याप्त क्रेडिट्स नहीं हैं",
-      "rateLimited": "रेट लिमिटेड, बाद में पुनः प्रयास करें"
+      "rateLimited": ""
     },
     "metadata": {
-      "openButton": "मेटाडेटा संपादित करें",
+      "openButton": "",
       "title": "मेटाडेटा: {{name}}",
-      "description": "इस खाते के लिए स्थायी मेटाडेटा प्रविष्टियों का प्रबंधन करें। प्रत्येक प्रविष्टि में एक namespace, कुंजी, और JSON मान होता है।",
-      "namespacePlaceholder": "नेमस्पेस",
-      "keyPlaceholder": "कुंजी",
-      "valuePlaceholder": "मान (JSON)",
-      "noEntries": "कोई मेटाडेटा प्रविष्टियाँ नहीं हैं। ऊपर एक जोड़ें।",
-      "loadError": "मेटाडेटा लोड नहीं हो सका",
-      "loadErrorDescription": "",
-      "retryLoad": "पुनः प्रयास करें",
-      "addSuccess": "प्रविष्टि जोड़ी गई",
-      "addError": "प्रविष्टि जोड़ने में विफल",
-      "updateError": "प्रविष्टि अपडेट करने में विफल",
-      "deleteSuccess": "प्रविष्टि हटाई गई",
-      "deleteError": "प्रविष्टि हटाने में विफल",
-      "duplicateError": "इस नेमस्पेस और कुंजी के साथ एक प्रविष्टि पहले से मौजूद है",
-      "invalidJson": "अमान्य JSON मान",
-      "namespaceLabel": "नेमस्पेस",
-      "keyLabel": "कुंजी",
-      "valueLabel": "मान",
-      "addEntryLegend": "मेटाडेटा प्रविष्टि जोड़ें",
-      "addEntryButton": "प्रविष्टि जोड़ें",
-      "entryLegend": "मेटाडेटा प्रविष्टि",
-      "removeEntryButton": "हटाएँ"
+      "description": "इस खाते के लिए स्थायी मेटाडेटा प्रविष्टियों का प्रबंधन करें। प्रत्येक प्रविष्टि में एक namespace, कुंजी, और JSON मान होता है।"
     },
     "removeDialog": {
-      "title_one": "{{count}} खाता हटाएँ?",
-      "title_other": "{{count}} खाते हटाएँ?",
-      "description": "इससे चुने गए खाते, उनके सहेजे गए क्रेडेंशियल और उनके बॉट इस इंस्टेंस से हट जाते हैं। इसे पूर्ववत नहीं किया जा सकता।",
-      "confirm": "खाते हटाएँ"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     }
   },
   "instanceMetadata": {
-    "title": "इंस्टेंस मेटाडेटा",
-    "description": "इस इंस्टेंस के लिए स्थायी मेटाडेटा प्रविष्टियाँ प्रबंधित करें। प्रत्येक प्रविष्टि में एक नेमस्पेस, कुंजी, और JSON मान होता है।",
-    "namespacePlaceholder": "नेमस्पेस",
-    "keyPlaceholder": "कुंजी",
-    "valuePlaceholder": "मान (JSON)",
-    "noEntries": "कोई मेटाडेटा प्रविष्टियाँ नहीं हैं। ऊपर एक जोड़ें।",
-    "loadError": "मेटाडेटा लोड नहीं हो सका",
-    "addSuccess": "प्रविष्टि जोड़ी गई",
-    "addError": "प्रविष्टि जोड़ने में विफल",
-    "updateError": "प्रविष्टि अपडेट करने में विफल",
-    "deleteSuccess": "प्रविष्टि हटाई गई",
-    "deleteError": "प्रविष्टि हटाने में विफल",
-    "duplicateError": "इस नेमस्पेस और कुंजी के साथ एक प्रविष्टि पहले से मौजूद है",
-    "invalidJson": "अमान्य JSON मान",
-    "namespaceLabel": "नेमस्पेस",
-    "keyLabel": "कुंजी",
+    "title": "",
+    "description": ""
+  },
+  "metadataEditor": {
+    "namespacePlaceholder": "",
+    "keyPlaceholder": "",
+    "valuePlaceholder": "",
+    "valueRequired": "",
+    "noEntries": "",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "पुनः प्रयास करें",
+    "addSuccess": "",
+    "addError": "",
+    "updateError": "",
+    "deleteSuccess": "",
+    "deleteError": "",
+    "duplicateError": "",
+    "invalidJson": "",
+    "namespaceLabel": "",
+    "keyLabel": "",
     "valueLabel": "मान",
-    "addEntryLegend": "मेटाडेटा प्रविष्टि जोड़ें",
-    "addEntryButton": "प्रविष्टि जोड़ें",
-    "entryLegend": "मेटाडेटा प्रविष्टि",
+    "addEntryLegend": "",
+    "addEntryButton": "",
+    "entryLegend": "",
     "removeEntryButton": "हटाएँ"
   },
   "bots": {
     "searchPlaceholder": "बॉट्स खोजें...",
-    "onlineCount": "{{online}} कनेक्टेड / {{total}} कुल",
-    "noBots": "कोई बॉट कॉन्फ़िगर नहीं है। खाते जोड़ने के लिए खाता सेटिंग्स पृष्ठ पर जाएँ।",
+    "noBots": "",
     "noBotsFound": "आपकी खोज से कोई बॉट नहीं मिला।",
-    "loadingMore": "अधिक लोड हो रहा है...",
     "showingCount": "{{loaded}} में से {{total}} दिखा रहे हैं",
     "allLoaded": "सभी {{total}} बॉट्स लोड किए गए",
-    "online": "कनेक्टेड",
-    "offline": "डिस्कनेक्टेड",
-    "notJoined": "शामिल नहीं हुआ",
     "connectionPhase": {
       "connecting": "कनेक्ट हो रहा है",
-      "connected": "लॉग इन हो रहा है",
+      "connected": "",
       "spawned": "कनेक्टेड",
       "died": "मृत",
-      "disconnected": "डिस्कनेक्टेड",
+      "disconnected": "",
       "ping": "{{ms}} मि.से."
     },
-    "runtimeState": {
-      "starting": "प्रारंभ हो रहा है",
-      "running": "चल रहा है",
-      "retrying": "पुनः प्रयास किया जा रहा है",
-      "stopping": "रोकना जारी है",
-      "failed": "असफल",
-      "waiting": "प्रतीक्षा कर रहा है",
-      "stopped": "बंद हुआ"
-    },
-    "backToBots": "बॉट्स पर वापस जाएं",
+    "backToBots": "",
+    "demoControls": "",
+    "notConnected": "",
     "tabs": {
-      "overview": "बॉट व्यू",
+      "overview": "",
       "inventory": "इन्वेंटरी",
-      "controls": "नियंत्रण",
-      "terminal": "टर्मिनल"
+      "controls": "",
+      "terminal": "",
+      "label": ""
     },
-    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "प्रॉक्सी",
       "direct": "सीधा (कोई प्रॉक्सी नहीं)",
       "unavailable": "उपलब्ध नहीं है"
     },
     "positionPanel": {
-      "title": "स्थिति और घूर्णन",
-      "position": "स्थिति",
-      "rotation": "घूर्णन",
-      "offline": "बॉट डिस्कनेक्ट है। स्थिति डेटा केवल तब उपलब्ध होता है जब बॉट जुड़ा होता है।"
+      "title": "",
+      "x": "",
+      "y": "",
+      "z": "",
+      "pitch": "",
+      "yaw": "",
+      "coordinates": "",
+      "offline": ""
     },
     "chatPanel": {
-      "title": "चैट संदेश"
-    },
-    "commandPanel": {
-      "title": "बॉट कमांड्स",
-      "placeholder": "इस बॉट को कमांड भेजें..."
-    },
-    "povPanel": {
-      "title": "बॉट दृष्टिकोण",
-      "capture": "कैप्चर करें",
-      "refresh": "रीफ्रेश करें",
-      "auto": "ऑटो",
-      "startAutoRefresh": "ऑटो-रीफ्रेश प्रारंभ करें (1 सेकंड का अंतराल)",
-      "stopAutoRefresh": "ऑटो-रीफ्रेश रोकें",
-      "clickToCapture": "बॉट का दृष्टिकोण देखने के लिए कैप्चर पर क्लिक करें",
-      "offline": "बॉट ऑफलाइन है। दृष्टिकोण रेंडरिंग केवल तभी उपलब्ध है जब बॉट कनेक्टेड हो।"
+      "title": "",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": "",
+      "sendErrorReason": "",
+      "cancelled": "",
+      "sending": "",
+      "sent": ""
     },
     "statsPanel": {
       "health": "स्वास्थ्य",
+      "healthLabel": "",
+      "healthValue": "",
       "food": "खाद्य",
-      "saturation": "संतृप्ति",
+      "foodLabel": "",
+      "foodValue": "",
       "experience": "अनुभव",
-      "level": "स्तर",
-      "toNextLevel": "अगले स्तर तक",
-      "gameMode": "गेम मोड",
+      "levelShort": "",
       "survival": "सर्वाइवल",
       "creative": "क्रिएटिव",
       "adventure": "एडवेंचर",
       "spectator": "स्पेकटेटर",
-      "unknown": "अज्ञात",
-      "offline": "बॉट डिस्कनेक्ट है। आँकड़े केवल तभी उपलब्ध हैं जब बॉट कनेक्टेड हो।"
+      "unknown": "अज्ञात"
     },
     "inventoryPanel": {
       "title": "इन्वेंटरी",
       "actionRejected": "",
-      "hotbar": "हॉटबार",
-      "main": "मुख्य इन्वेंटरी",
-      "items": "आइटम",
+      "actionError": "",
+      "output": "",
+      "slotInfo": {
+        "slot": "",
+        "item": "",
+        "region": "",
+        "hotbar": ""
+      },
       "carrying": "वह ले जा रहा है",
-      "dropOne": "एक छोड़ें",
-      "dropAll": "सभी छोड़ें",
+      "dropOne": "",
+      "dropAll": "",
       "closeContainer": "बंद करें",
-      "clickHint": "बाएं क्लिक करें: उठाएँ/रखें | दाएं क्लिक करें: आधा/एक | शिफ्ट+क्लिक: तुरंत स्थानांतरित करें | मिडल क्लिक: हॉटबार स्लॉट चुनें",
-      "offline": "बॉट डिस्कनेक्ट है। इन्वेंटरी केवल तभी उपलब्ध है जब बॉट कनेक्टेड हो।",
+      "clickHint": "",
+      "offline": "",
+      "waiting": "",
+      "demo": "",
+      "heldSlot": "",
+      "holdSlot": "",
       "buttons": {
         "stonecutterRecipes": "रेसिपीज़",
         "enchantments": "जादू-टोने",
         "patterns": "पैटर्न",
         "trades": "व्यापार",
-        "beaconEffects": "बीकन इफेक्ट्स",
-        "crafterSlots": "स्लॉट नियंत्रण",
-        "lecternControls": "पुस्तक नियंत्रण",
+        "beaconEffects": "",
+        "crafterSlots": "",
+        "lecternControls": "",
         "actions": "क्रियाएँ",
-        "creativeTabs": "क्रिएटिव टैब"
+        "creativeTabs": ""
       },
       "textInput": {
-        "title": "पाठ इनपुट",
-        "anvilRename": "आइटम का नाम बदलें",
-        "creativeSearch": "आइटम खोजें"
+        "title": "",
+        "anvilRename": "",
+        "creativeSearch": ""
       },
       "bookPages": {
-        "title": "पुस्तक सामग्री",
+        "title": "",
         "emptyPage": "(खाली पृष्ठ)",
         "previousPage": "",
         "nextPage": "",
@@ -530,105 +516,202 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": "आइटम नष्ट करें",
-      "clickHints": {
-        "left": "बायाँ क्लिक: उठाएँ या रखें",
-        "right": "दायाँ क्लिक: आधा उठाएँ या एक रखें",
-        "shift": "Shift+क्लिक: तुरंत ले जाएँ",
-        "middle": "मध्य क्लिक: सक्रिय स्लॉट के रूप में चुनें"
-      }
+      "destroyItem": "",
+      "emptySlot": "",
+      "clickMode": {
+        "label": "",
+        "left": "",
+        "right": "",
+        "shift": "",
+        "middle": ""
+      },
+      "keyboardHint": "",
+      "stack_one": "",
+      "stack_other": "",
+      "itemCount_one": "",
+      "itemCount_other": ""
     },
     "visualPanel": {
-      "title": "दिशा और दुनिया",
-      "compass": "मुखि दिशा",
-      "lookDirection": "देखने का कोण",
+      "title": "",
+      "compass": "",
+      "lookDirection": "",
       "lookingUp": "ऊपर देख रहा है",
       "lookingDown": "नीचे देख रहा है",
       "lookingStraight": "सीधे देख रहा है",
-      "worldInfo": "दुनिया की जानकारी",
+      "directions": {
+        "n": "",
+        "ne": "",
+        "e": "",
+        "se": "",
+        "s": "",
+        "sw": "",
+        "w": "",
+        "nw": ""
+      },
+      "dimensions": {
+        "overworld": "",
+        "the_nether": "",
+        "the_end": ""
+      },
+      "worldInfo": "",
       "dimension": "आयाम",
-      "biome": "जैवमंडल",
-      "offline": "बॉट डिस्कनेक्ट है। दृश्य डेटा केवल तभी उपलब्ध है जब बॉट कनेक्टेड हो।"
+      "offline": ""
     },
     "actionsPanel": {
-      "title": "बॉट क्रियाएँ",
-      "leftClick": "बाएं क्लिक",
-      "rightClick": "दाएं क्लिक",
+      "title": "",
+      "leftClick": "",
+      "rightClick": "",
       "leftClickDescription": "इकाई पर हमला करें या ब्लॉक तोड़ें",
       "rightClickDescription": "आइटम का उपयोग करें या इंटरैक्ट करें",
-      "offline": "बॉट डिस्कनेक्ट है। क्रियाएँ केवल तभी उपलब्ध हैं जब बॉट कनेक्टेड हो।"
+      "clickError": "",
+      "offline": ""
     },
     "movementPanel": {
       "updateServer": "",
-      "title": "गतिविधि नियंत्रण",
+      "movementError": "",
+      "rotationError": "",
+      "title": "",
       "movement": "गतिविधि (WASD)",
-      "forward": "आगे बढ़ें (W)",
-      "backward": "पीछे जाएं (S)",
-      "left": "बाएँ स्ट्रेफ करें (A)",
-      "right": "दाएँ स्ट्रेफ करें (D)",
+      "forward": "",
+      "backward": "",
+      "left": "",
+      "right": "",
       "jump": "जंप करें",
       "sneak": "दबे रहें",
       "sprint": "स्प्रिंट करें",
       "stop": "बंद करें",
-      "rotation": "दृष्टि दिशा",
-      "lookUp": "ऊपर देखें",
-      "lookDown": "नीचे देखें",
-      "lookLeft": "बाएँ देखें",
-      "lookRight": "दाएँ देखें",
-      "offline": "बॉट डिस्कनेक्ट है। गतिविधि नियंत्रण केवल तभी उपलब्ध हैं जब बॉट कनेक्टेड हो।"
+      "rotation": "",
+      "lookUp": "",
+      "lookDown": "",
+      "lookLeft": "",
+      "lookRight": "",
+      "offline": "",
+      "modifiers": ""
     },
     "dialogPanel": {
-      "title": "सर्वर संवाद",
+      "title": "",
       "noDialog": "फिलहाल कोई सर्वर संवाद प्रदर्शित नहीं है।",
-      "dialogType": "प्रकार",
       "dialogId": "संवाद आईडी",
       "notice": "नोटिस",
       "confirmation": "पुष्टि",
-      "multiAction": "मल्टी एक्शन",
-      "serverLinks": "सर्वर लिंक",
-      "dialogList": "संवाद सूची",
+      "multiAction": "",
+      "serverLinks": "",
+      "dialogList": "",
       "unknownType": "अज्ञात",
+      "submitError": "",
       "dismiss": "निरस्त करें",
       "submit": "प्रस्तुत करें",
-      "offline": "बॉट डिस्कनेक्ट है। संवाद केवल तभी उपलब्ध हैं जब बॉट कनेक्टेड हो।"
+      "offline": ""
+    },
+    "filterLabel": "",
+    "filterAll": "सभी",
+    "noBotsInState": "",
+    "displayState": {
+      "connected": "कनेक्टेड",
+      "starting": "प्रारंभ हो रहा है",
+      "retrying": "पुनः प्रयास किया जा रहा है",
+      "failed": "असफल",
+      "stopping": "रोकना जारी है",
+      "stopped": "बंद हुआ"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
     },
     "pov": {
-      "title": "बॉट व्यू",
-      "touchControlling": "आप इस बॉट को नियंत्रित कर रहे हैं। रोकने के लिए \"Release control\" का उपयोग करें।",
-      "popupBlocked": "बॉट व्यू विंडो अलग करने के लिए पॉपअप की अनुमति दें।",
-      "windowTitle": "SoulFire बॉट व्यू",
-      "fullscreenUnavailable": "इस विंडो में फ़ुलस्क्रीन उपलब्ध नहीं है।",
-      "textInputLabel": "Minecraft टेक्स्ट इनपुट",
-      "videoLabel": "लाइव बॉट व्यू",
-      "touchMove": "चलें",
-      "audioError": "ऑडियो शुरू नहीं हो सका।",
-      "startError": "बॉट व्यू शुरू नहीं हो सका।",
-      "releaseHint": "कीबोर्ड और माउस छोड़ने के लिए {{shortcut}} दबाएँ।",
-      "captureHint": "व्यू पर क्लिक करें और कीबोर्ड व माउस कैप्चर की अनुमति दें।",
-      "audioWaiting": "बॉट व्यू के कनेक्ट होने की प्रतीक्षा है।",
-      "audioWatchFirst": "ऑडियो के लिए बॉट को देखें।",
-      "audioUpdateServer": "बॉट व्यू ऑडियो के लिए सर्वर अपडेट करें।",
-      "muteAudio": "ऑडियो म्यूट करें",
-      "unmuteAudio": "ऑडियो अनम्यूट करें",
-      "audioStarting": "ऑडियो शुरू हो रहा है...",
-      "mute": "म्यूट",
-      "unmute": "अनम्यूट",
-      "audio": "ऑडियो",
-      "audioUnavailable": "ऑडियो उपलब्ध नहीं है",
-      "volume": "बॉट व्यू वॉल्यूम",
-      "reconnect": "फिर से कनेक्ट करें",
-      "showWindow": "बॉट व्यू विंडो दिखाएँ",
-      "attachWindow": "बॉट व्यू विंडो वापस जोड़ें",
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "reconnecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": "",
+      "popupBlocked": "",
+      "windowTitle": "",
+      "fullscreenUnavailable": "",
+      "textInputLabel": "",
+      "videoLabel": "",
+      "touchMove": "",
+      "audioError": "",
+      "startError": "",
+      "releaseHint": "",
+      "captureHint": "",
+      "capturing": "",
+      "captureCooldown": "",
+      "captureTimeout": "",
+      "audioWaiting": "",
+      "audioWatchFirst": "",
+      "audioUpdateServer": "",
+      "muteAudio": "",
+      "unmuteAudio": "",
+      "audioStarting": "",
+      "mute": "म्यूट करें",
+      "unmute": "अनम्यूट करें",
+      "audio": "",
+      "audioUnavailable": "",
+      "volume": "",
+      "reconnect": "",
+      "showWindow": "",
+      "attachWindow": "",
       "touch": {
-        "jump": "कूदें",
-        "sneak": "दबे पाँव",
-        "attack": "हमला",
-        "use": "उपयोग करें",
+        "jump": "जंप करें",
+        "sneak": "दबे रहें",
+        "attack": "",
+        "use": "",
         "inventory": "इन्वेंटरी",
-        "keyboard": "कीबोर्ड",
-        "closeMenu": "मेनू बंद करें"
+        "keyboard": "",
+        "closeMenu": ""
       },
-      "needsServer": "बॉट व्यू के लिए कनेक्टेड SoulFire सर्वर चाहिए।"
+      "needsServer": "",
+      "connectTimeout": "",
+      "reconnectFailed": "",
+      "inputUpdateServer": "",
+      "inputUnavailable": "",
+      "decoderUnsupported": "",
+      "videoUnsupportedBrowser": "",
+      "audioUnsupportedBrowser": "",
+      "audioDecodeUnsupported": "",
+      "audioBlocked": "",
+      "audioInvalidFrame": "",
+      "streamMetrics": {
+        "title": "",
+        "waitingForVideo": "",
+        "unknown": "",
+        "fps": "",
+        "video": "",
+        "target": "",
+        "decoder": "",
+        "decoderWaitingForKey": "",
+        "keyframes": ""
+      },
+      "step": {
+        "online": "",
+        "queued": "",
+        "starting": "",
+        "joining": "",
+        "retrying": "",
+        "failed": "",
+        "stopping": "",
+        "stopped": ""
+      }
     }
   },
   "metrics": {
@@ -636,21 +719,8 @@
       "noData": "कोई डेटा नहीं"
     },
     "summary": {
-      "online": "कनेक्टेड",
-      "packetsPerSecond": "Pkt/s",
       "traffic": "ट्रैफिक",
-      "health": "स्वास्थ्य",
       "tick": "टिक"
-    },
-    "botsOnline": {
-      "title": "कनेक्टेड बॉट्स",
-      "online": "कनेक्टेड",
-      "total": "कुल"
-    },
-    "packets": {
-      "title": "पैकेट्स / सेकंड",
-      "sent": "भेजे गए/सेकंड",
-      "received": "प्राप्त/सेकंड"
     },
     "bandwidth": {
       "title": "बैंडविड्थ",
@@ -658,88 +728,76 @@
       "download": "डाउनलोड"
     },
     "tick": {
-      "title": "टिक अवधि",
+      "title": "",
       "avg": "औसत (मिलीसेकंड)",
       "max": "अधिकतम (मिलीसेकंड)"
     },
-    "healthFood": {
-      "title": "स्वास्थ्य / भोजन",
-      "health": "औसत स्वास्थ्य",
-      "food": "औसत भोजन"
-    },
-    "chunksEntities": {
-      "title": "चंक्स / इकाइयाँ",
-      "chunks": "चंक्स",
-      "entities": "इकाइयाँ"
-    },
-    "connections": {
-      "title": "कनेक्शन घटनाएँ",
-      "connections": "कनेक्शन्स",
-      "disconnections": "डिस्कनेक्शन"
-    },
-    "healthDistribution": {
-      "title": "स्वास्थ्य वितरण",
-      "bots": "बॉट्स"
-    },
     "dimensions": {
-      "title": "आयाम",
-      "bots": "बॉट्स"
+      "title": "आयाम"
     },
     "gameModes": {
-      "title": "गेम मोड्स",
-      "bots": "बॉट्स"
+      "title": ""
     },
     "positions": {
-      "title": "बॉट स्थान (XZ)",
+      "title": "",
       "bot": "बॉट"
     }
   },
   "scripts": {
-    "title": "विजुअल स्क्रिप्ट्स",
-    "description": "विजुअल नोड-आधारित संपादक का उपयोग करके ऑटोमेशन स्क्रिप्ट्स बनाएँ।",
-    "experimentalTitle": "प्रायोगिक सुविधा",
-    "experimentalWarning": "यह फीचर प्रयोगात्मक है। भविष्य के अपडेट मौजूदा स्क्रिप्ट को खराब कर सकते हैं। इसे सावधानीपूर्वक उपयोग करें।",
-    "createScript": "स्क्रिप्ट बनाएँ",
-    "createScriptTitle": "नई स्क्रिप्ट बनाएँ",
-    "createScriptDescription": "इस उदाहरण के लिए एक नई विजुअल स्क्रिप्ट बनाएँ। स्क्रिप्ट्स बॉट की क्रियाओं को स्वचालित कर सकती हैं और घटनाओं पर प्रतिक्रिया दे सकती हैं।",
-    "scriptName": "स्क्रिप्ट का नाम",
+    "title": "",
+    "description": "",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
+    "scriptName": "",
     "scriptNamePlaceholder": "स्क्रिप्ट का नाम दर्ज करें...",
     "scriptDescription": "विवरण",
     "scriptDescriptionPlaceholder": "बताएँ कि यह स्क्रिप्ट क्या करती है...",
     "create": "बनाएँ",
-    "createSuccess": "स्क्रिप्ट सफलतापूर्वक बनाई गई",
-    "createError": "स्क्रिप्ट बनाने में विफल",
-    "noScripts": "अभी तक कोई स्क्रिप्ट नहीं",
-    "noScriptsDescription": "विजुअल नोड-आधारित संपादक का उपयोग कर अपने पहले बॉट ऑटोमेशन के लिए स्क्रिप्ट बनाएँ।",
-    "createFirstScript": "स्क्रिप्ट बनाएँ",
-    "running": "चल रहा है",
-    "paused": "रुका हुआ है",
-    "nodes": "नोड्स",
+    "createSuccess": "",
+    "createError": "",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "running": "",
+    "paused": "",
     "noDescription": "कोई विवरण नहीं",
+    "edited": "",
+    "searchPlaceholder": "",
+    "filterLabel": "",
+    "filter": {
+      "all": "सभी",
+      "on": "",
+      "off": ""
+    },
+    "sort": {
+      "label": "",
+      "edited": "",
+      "name": "नाम"
+    },
+    "noMatches": "",
     "edit": "संपादित करें",
-    "pause": "रोकें",
-    "pauseSuccess": "स्क्रिप्ट रोक दी गई है",
-    "pauseError": "स्क्रिप्ट को रोकने में विफल रहा",
-    "resume": "फिर से शुरू करें",
-    "resumeSuccess": "स्क्रिप्ट फिर से शुरू की गई",
-    "resumeError": "स्क्रिप्ट को फिर से शुरू करने में विफल रहा",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "हटाएँ",
-    "deleteSuccess": "स्क्रिप्ट सफलतापूर्वक हटाई गई",
-    "deleteError": "स्क्रिप्ट हटाने में विफल",
-    "saveSuccess": "स्क्रिप्ट सफलतापूर्वक सेव की गई",
-    "saveError": "स्क्रिप्ट सेव करने में विफल",
-    "activateSuccess": "स्क्रिप्ट सक्रिय की गई",
-    "activateError": "स्क्रिप्ट को सक्रिय करने में विफल रहा",
-    "deactivateSuccess": "स्क्रिप्ट निष्क्रिय की गई",
-    "untitledScript": "शीर्षकहीन स्क्रिप्ट",
-    "saveFirstBeforeActivating": "सक्रिय करने से पहले पहले स्क्रिप्ट सहेजें",
-    "activating": "स्क्रिप्ट सक्रिय की जा रही है...",
-    "activated": "स्क्रिप्ट सक्रिय की गई",
+    "deleteSuccess": "",
+    "deleteError": "",
+    "saveSuccess": "",
+    "saveError": "",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
+    "untitledScript": "",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "स्क्रिप्ट पूर्ण",
-    "executionCompletedSuccess": "स्क्रिप्ट सफलतापूर्वक पूर्ण हुई",
-    "deactivated": "स्क्रिप्ट निष्क्रिय की गई",
-    "deactivatedByUser": "उपयोगकर्ता द्वारा स्क्रिप्ट निष्क्रिय की गई",
-    "executionFailed": "स्क्रिप्ट निष्पादन विफल हुआ",
+    "executionCompletedSuccess": "स्क्रिप्ट पूर्ण",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionError": "निष्पादन त्रुटि: {{error}}",
     "monitoringError": "",
     "monitoringDisconnected": "",
@@ -747,112 +805,135 @@
     "nodeCompleted": "नोड पूर्ण: {{nodeId}}",
     "nodeError": "नोड त्रुटि: {{error}}",
     "contextMenu": {
-      "edit": "स्क्रिप्ट संपादित करें",
-      "pause": "रोकें",
-      "resume": "फिर से शुरू करें",
-      "delete": "स्क्रिप्ट हटाएँ",
-      "copyScriptName": "स्क्रिप्ट नाम कॉपी करें",
-      "copyScriptId": "स्क्रिप्ट आईडी कॉपी करें"
+      "edit": "",
+      "pause": "",
+      "resume": "",
+      "delete": "",
+      "copyScriptName": "",
+      "copyScriptId": ""
     },
     "editor": {
       "toolbar": {
         "actions": "",
-        "backToScripts": "स्क्रिप्ट्स पर वापस जाएँ",
+        "backToScripts": "",
         "save": "सहेजें",
-        "saveTooltip": "स्क्रिप्ट सहेजें",
-        "resume": "फिर से शुरू करें",
-        "resumeTooltip": "स्क्रिप्ट निष्पादन फिर से प्रारंभ करें",
-        "pause": "रोकें",
-        "pauseTooltip": "स्क्रिप्ट निष्पादन रोकें",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "असुरक्षित",
         "unsavedChanges": "संक्षित बदलाव",
-        "clearCanvas": "कैनवास साफ़ करें",
-        "zoomIn": "ज़ूम इन",
-        "zoomOut": "ज़ूम आउट",
-        "fit": "फिट करें",
         "export": "स्क्रिप्ट निर्यात करें",
         "import": "स्क्रिप्ट आयात करें",
-        "exportSuccess": "स्क्रिप्ट सफलतापूर्वक निर्यात हुई",
-        "importSuccess": "स्क्रिप्ट सफलतापूर्वक आयात हुई",
-        "importError": "स्क्रिप्ट आयात करने में विफल"
+        "exportSuccess": "",
+        "importSuccess": "",
+        "importError": "",
+        "resumeBlocked": "",
+        "undo": "",
+        "redo": "",
+        "resumeSaveFirst": "",
+        "scriptName": ""
       },
       "palette": {
-        "title": "नोड पैलेट",
+        "title": "",
         "search": "नोड खोजें...",
-        "noResults": "आपकी खोज से कोई नोड मेल नहीं खाता",
-        "noResultsDescription": "कोई दूसरा शब्द आज़माएँ या मौजूदा फ़िल्टर साफ़ करें।"
+        "noResults": "",
+        "noResultsDescription": ""
       },
       "logs": {
-        "title": "निष्पादन लॉग्स",
+        "title": "",
         "clearTitle": "लॉग्स साफ़ करें",
-        "noLogs": "अभी तक कोई लॉग नहीं। निष्पादन लॉग्स देखने के लिए स्क्रिप्ट चलाएँ।",
+        "noLogs": "",
+        "levels": {
+          "debug": "",
+          "info": "",
+          "warn": "",
+          "error": "त्रुटि"
+        },
         "entries_one": "{{count}} प्रविष्टि",
         "entries_other": "{{count}} प्रविष्टियाँ"
       },
       "contextMenu": {
         "duplicate": "डुप्लिकेट करें",
         "rename": "नाम बदलें",
-        "disconnectAll": "सभी डिस्कनेक्ट करें",
+        "disconnectAll": "",
         "collapse": "संकुचित करें",
         "expand": "विस्तृत करें",
         "mute": "म्यूट करें",
         "unmute": "अनम्यूट करें",
-        "showPreview": "पूर्वावलोकन दिखाएँ",
-        "hidePreview": "पूर्वावलोकन छुपाएँ",
+        "showPreview": "",
+        "hidePreview": "",
+        "openGroup": "",
+        "ungroup": "",
         "delete": "हटाएँ"
+      },
+      "connection": {
+        "self": "",
+        "execution": "",
+        "type": ""
       },
       "node": {
         "expand": "नोड विस्तार करें",
         "collapse": "नोड संक्षिप्त करें",
-        "avgTime": "औसत निष्पादन समय: {{avg}} ms (पिछले {{count}} रन)",
-        "preview": "पूर्वावलोकन"
+        "avgTimeBadge": "",
+        "preview": "",
+        "muted": "",
+        "avgDuration_one": "",
+        "avgDuration_other": ""
       },
       "debug": {
         "copyValue": "वर्तमान मान कॉपी करें",
         "clearHistory": "इतिहास साफ़ करें",
-        "current": "वर्तमान ({{time}}):",
-        "noValue": "अभी तक कोई मान नहीं मिला"
+        "current": "",
+        "noValue": "",
+        "input": "",
+        "output": "",
+        "history_one": "",
+        "history_other": ""
       },
       "edge": {
         "direction": "एज दिशा"
       },
       "note": {
-        "placeholder": "नोट लिखें..."
+        "placeholder": "नोट लिखें...",
+        "contentLabel": ""
       },
       "complexity": {
         "title": "स्क्रिप्ट जटिलता स्कोर"
       },
       "group": {
         "returnToRoot": "रूट पर लौटें (Tab)",
-        "root": "रूट",
-        "exitHint": "बाहर निकलने के लिए <key>Tab</key> दबाएँ",
-        "editHint": "संपादित करने के लिए डबल-क्लिक करें",
-        "noInputs": "कोई इनपुट परिभाषित नहीं",
-        "noOutputs": "कोई आउटपुट परिभाषित नहीं"
+        "root": "",
+        "defaultLabel": "",
+        "exitHint": "",
+        "editHint": "",
+        "noInputs": "",
+        "noOutputs": ""
       },
       "quickAdd": {
         "menuLabel": "त्वरित नोड जोड़ने का मेनू",
         "searchPlaceholder": "नोड खोजें...",
-        "noResults": "कोई नोड नहीं मिला",
-        "noResultsDescription": "कोई दूसरा खोज शब्द आज़माएँ।",
-        "navigate": "नेविगेट करें",
-        "select": "चुनने के लिए Enter",
-        "close": "बंद करने के लिए Esc"
+        "noResults": "",
+        "noResultsDescription": "कोई अन्य खोज शब्द आज़माएँ।",
+        "navigate": "",
+        "select": "",
+        "close": ""
       },
       "diff": {
         "tooltip": "बदलाव देखें",
-        "title": "बिना सहेजे बदलाव",
-        "description": "पिछली बार सहेजने के बाद के बदलाव।",
-        "nodesAdded_one": "{{count}} नोड जोड़ा गया",
-        "nodesAdded_other": "{{count}} नोड्स जोड़े गए",
-        "nodesRemoved_one": "{{count}} नोड हटाया गया",
-        "nodesRemoved_other": "{{count}} नोड्स हटाए गए",
-        "nodesModified_one": "{{count}} नोड बदला गया",
-        "nodesModified_other": "{{count}} नोड्स बदले गए",
-        "edgesAdded_one": "{{count}} कनेक्शन जोड़ा गया",
-        "edgesAdded_other": "{{count}} कनेक्शन जोड़े गए",
-        "edgesRemoved_one": "{{count}} कनेक्शन हटाया गया",
-        "edgesRemoved_other": "{{count}} कनेक्शन हटाए गए"
+        "title": "संक्षित बदलाव",
+        "description": "",
+        "nodesAdded_one": "",
+        "nodesAdded_other": "",
+        "nodesRemoved_one": "",
+        "nodesRemoved_other": "",
+        "nodesModified_one": "",
+        "nodesModified_other": "",
+        "edgesAdded_one": "",
+        "edgesAdded_other": "",
+        "edgesRemoved_one": "",
+        "edgesRemoved_other": ""
       },
       "dryRun": {
         "saveFirst": "",
@@ -865,55 +946,695 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "ड्राई रन",
-        "title": "ड्राई रन स्क्रिप्ट",
-        "description": "चयनित ट्रिगर से स्क्रिप्ट चलाएं, मॉक इनपुट के साथ।",
-        "triggerNode": "ट्रिगर नोड",
+        "tooltip": "",
+        "title": "",
+        "description": "",
+        "triggerNode": "",
         "selectTrigger": "ट्रिगर चुनें...",
-        "triggerDescription": "मॉक इनपुट मानों के साथ निष्पादित करने के लिए ट्रिगर नोड चुनें।",
-        "mockInputs": "मॉक इनपुट्स",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "{{type}} मान",
-        "start": "ड्राई रन शुरू करें",
+        "start": "",
+        "button": "",
         "stats_one": "",
         "stats_other": ""
       },
       "quotas": {
-        "tooltip": "स्क्रिप्ट कोटा",
-        "title": "स्क्रिप्ट कोटा",
+        "tooltip": "",
+        "title": "",
         "description": "इस स्क्रिप्ट के लिए संसाधन सीमाएँ कॉन्फ़िगर करें। खाली फ़ील्ड सर्वर डिफ़ॉल्ट का उपयोग करती हैं।",
-        "maxExecutionCount": "अधिकतम निष्पादन गिनती",
+        "maxExecutionCount": "",
         "maxExecutionCountPlaceholder": "100000",
-        "maxExecutionCountDescription": "प्रति ट्रिगर इनवोकेशन अधिकतम नोड निष्पादन",
-        "maxExecutionTime": "अधिकतम निष्पादन समय (मिलीसेकंड)",
+        "maxExecutionCountDescription": "",
+        "maxExecutionTime": "",
         "maxExecutionTimePlaceholder": "30000",
-        "maxExecutionTimeDescription": "प्रति ट्रिगर निष्पादन अधिकतम वॉल-क्लॉक समय",
-        "maxConcurrentTriggers": "अधिकतम समवर्ती ट्रिगर",
+        "maxExecutionTimeDescription": "",
+        "maxConcurrentTriggers": "",
         "maxConcurrentTriggersPlaceholder": "1",
-        "maxConcurrentTriggersDescription": "अधिकतम समवर्ती ट्रिगर इनवोकेशन",
-        "maxStateStoreEntries": "अधिकतम स्टेट स्टोर प्रविष्टियाँ",
+        "maxConcurrentTriggersDescription": "",
+        "maxStateStoreEntries": "",
         "maxStateStoreEntriesPlaceholder": "असीमित",
-        "maxStateStoreEntriesDescription": "स्क्रिप्ट स्टेट स्टोर में अधिकतम प्रविष्टियाँ",
-        "disableTimeouts": "टाइमआउट अक्षम करें",
-        "disableTimeoutsDescription": "प्रति-नोड और डेटा एज टाइमआउट्स को अक्षम करता है",
-        "save": "कोटा सहेजें",
+        "maxStateStoreEntriesDescription": "",
+        "disableTimeouts": "",
+        "disableTimeoutsDescription": "",
+        "save": "",
         "invalidInteger": ""
       },
       "multiInput": {
-        "reorder": "{{label}} का क्रम बदलें",
-        "empty": "कोई आने वाला मान नहीं",
-        "title": "मल्टी-इनपुट: कई कनेक्शन स्वीकार करता है",
-        "connectTo": "{{label}} से मान जोड़ें"
+        "reorder": "",
+        "empty": "",
+        "title": "",
+        "connectTo": ""
+      },
+      "shortcuts": {
+        "title": "",
+        "description": "",
+        "mouse": {
+          "drag": "",
+          "rightClick": ""
+        },
+        "actions": {
+          "quickAdd": "",
+          "quickAddAtCursor": "",
+          "selectAll": "",
+          "deselectAll": "",
+          "selectLinked": "",
+          "selectUpstream": "",
+          "selectDownstream": "",
+          "selectSimilar": "",
+          "duplicate": "",
+          "copy": "",
+          "paste": "",
+          "delete": "",
+          "rename": "",
+          "mute": "",
+          "collapse": "",
+          "hideSockets": "",
+          "preview": "",
+          "group": "",
+          "ungroup": "",
+          "enterGroup": "",
+          "frame": "",
+          "align": "",
+          "distribute": "",
+          "cutLinks": "",
+          "reroute": "",
+          "undo": "",
+          "redo": ""
+        }
+      },
+      "unsavedDialog": {
+        "title": "",
+        "description": "",
+        "stay": "",
+        "leave": ""
+      },
+      "layoutNodes": {
+        "category": {
+          "name": "",
+          "description": ""
+        },
+        "reroute": {
+          "label": "",
+          "description": ""
+        },
+        "frame": {
+          "label": "",
+          "description": ""
+        },
+        "group": {
+          "label": "",
+          "description": ""
+        },
+        "groupInput": {
+          "label": "",
+          "description": ""
+        },
+        "groupOutput": {
+          "label": "",
+          "description": ""
+        },
+        "debug": {
+          "label": "",
+          "description": ""
+        },
+        "note": {
+          "label": "",
+          "description": ""
+        }
+      }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_one": "",
+      "errors_other": "",
+      "warnings_one": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
       }
     },
     "deleteDialog": {
-      "title": "स्क्रिप्ट हटाएँ?",
-      "description": "इससे \"{{name}}\" स्थायी रूप से हट जाता है। इसे पूर्ववत नहीं किया जा सकता।",
-      "descriptionUnnamed": "इससे स्क्रिप्ट स्थायी रूप से हट जाती है। इसे पूर्ववत नहीं किया जा सकता।"
+      "title": "",
+      "description": "",
+      "descriptionUnnamed": ""
     },
-    "executionStats": "निष्पादन आँकड़े: {{executed}}/{{max}} नोड्स चले"
+    "executionStats": "",
+    "nodes_one": "",
+    "nodes_other": ""
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "क्रिया",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "कनेक्ट करें",
+    "back": "वापस",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "सभी",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "कनेक्ट करें",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "कुल",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "कोई नहीं",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_one": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_one": "",
+      "limit_other": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "delivered_one": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "backupTitle": "",
+      "backupDescription": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "importing_one": "",
+      "importing_other": "",
+      "copyCredentials_one": "",
+      "copyCredentials_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_one": "",
+    "importAccounts_other": "",
+    "inStock_one": "",
+    "inStock_other": "",
+    "previewMore_one": "",
+    "previewMore_other": "",
+    "preview_one": "",
+    "preview_other": "",
+    "importProxies_one": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_one": "",
+      "noneRunning_other": "",
+      "allConnected_one": "",
+      "allConnected_other": "",
+      "partial_one": "",
+      "partial_other": "",
+      "connecting_one": "",
+      "connecting_other": ""
+    },
+    "state": {
+      "connected": "कनेक्टेड",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_one": "",
+      "failed_other": "",
+      "retrying_one": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "onlineAuth": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "blocked": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_one": "",
+    "restartGroup_other": "",
+    "restartRequested_one": "",
+    "restartRequested_other": "",
+    "namesMore_one": "",
+    "namesMore_other": "",
+    "connectingHint_one": "",
+    "connectingHint_other": ""
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "वैकल्पिक",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "सभी सेटिंग्स खोलें",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "खाते",
+      "reviewProxies": "प्रॉक्सी",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "addAccounts": "",
+      "error": "",
+      "noneStarted": "",
+      "action_one": "{{count}} बॉट शुरू करें",
+      "action_other": "{{count}} बॉट्स शुरू करें",
+      "countLimit_one": "",
+      "countLimit_other": "",
+      "countInvalid_one": "",
+      "countInvalid_other": ""
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

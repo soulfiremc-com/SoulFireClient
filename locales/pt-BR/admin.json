@@ -1,80 +1,71 @@
 {
   "overview": {
-    "welcome": "Bem-vindo de volta, {{name}} 🧙",
     "serverMetrics": {
-      "sectionTitle": "Métricas do Servidor",
+      "sectionTitle": "",
       "summary": {
         "cpu": "CPU",
-        "heapUsed": "Heap Usada",
+        "heapUsed": "",
         "threads": "Threads",
-        "botsOnline": "Bots conectados",
+        "botsOnline": "",
         "uptime": "Tempo de atividade"
       },
       "cpuUsage": {
-        "title": "Uso da CPU (%)"
+        "title": ""
       },
       "memoryUsage": {
-        "title": "Memória Heap (MB)"
+        "title": ""
       },
       "threadCount": {
-        "title": "Contagem de Threads"
+        "title": ""
       },
       "aggregateBots": {
-        "title": "Bots conectados (todas as instâncias)"
+        "title": ""
       },
       "legend": {
-        "process": "Processo",
+        "process": "",
         "system": "Sistema",
-        "used": "Em uso",
-        "committed": "Reservada",
-        "max": "Máx.",
+        "used": "",
+        "committed": "",
+        "max": "",
         "total": "Total",
-        "daemon": "Daemon",
+        "daemon": "",
         "online": "Conectado"
-      }
+      },
+      "collecting": ""
     },
-    "instancesChart": {
-      "title": "Total de instâncias neste servidor",
-      "instances": "Instâncias",
-      "label": {
-        "state": "Estado",
-        "active": "Ativo",
-        "stopped": "Interrompido",
-        "other": "Outro"
-      }
-    },
-    "usersChart": {
-      "title": "Total de usuários neste servidor",
+    "stats": {
       "users": "Usuários",
-      "label": {
-        "role": "Função",
-        "user": "Usuário",
-        "admin": "Administrador",
-        "other": "Outro"
-      }
+      "projects": "",
+      "admins_one": "",
+      "admins_other": "",
+      "active_one": "",
+      "active_other": ""
     }
   },
   "users": {
-    "filterPlaceholder": "Filtrar usuários...",
+    "noPermission": {
+      "title": "",
+      "description": ""
+    },
     "baseUserDialog": {
       "form": {
         "username": {
-          "min": "O nome de usuário deve ter pelo menos 3 caracteres",
-          "max": "Nomes de usuário devem ter no máximo 32 caracteres",
-          "regex": "Nomes de usuário devem ter letras minúsculas, começar com um caractere alfanumérico, seguido de caracteres alfanuméricos ou hifens e terminar com um caractere alfanumérico.",
+          "min": "",
+          "max": "",
+          "regex": "",
           "label": "Usuário",
           "placeholder": "Digite seu usuário",
-          "description": "Um nome de usuário exclusivo que identifica o usuário"
+          "description": ""
         },
         "email": {
           "label": "E-mail",
           "placeholder": "Digite o e-mail",
-          "description": "O endereço de e-mail do usuário utilizado para notificações e login"
+          "description": ""
         },
         "role": {
           "label": "Função",
           "placeholder": "Selecione um cargo",
-          "description": "O papel do usuário. Administradores podem gerenciar usuários e todas as instâncias. Usuários podem gerenciar apenas suas próprias instâncias.",
+          "description": "",
           "user": "Usuário",
           "admin": "Administrador"
         }
@@ -82,71 +73,80 @@
     },
     "addUserDialog": {
       "title": "Adicionar um novo usuário",
-      "description": "Adicione um novo usuário a este servidor",
+      "description": "",
       "form": {
         "cancel": "Cancelar",
-        "add": "Adicionar usuário"
+        "add": ""
       }
     },
     "updateUserDialog": {
-      "title": "Atualizar usuário",
-      "description": "Atualize as informações do usuário",
+      "title": "",
+      "description": "",
       "form": {
         "cancel": "Cancelar",
-        "update": "Atualizar usuário"
+        "update": ""
       }
     },
     "profileConflict": "",
     "addToast": {
       "loading": "Adicionando usuário...",
-      "success": "Usuário adicionado",
-      "error": "Falha ao adicionar usuário"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "Atualizando usuário...",
-      "success": "Usuário atualizado",
-      "error": "Falha ao atualizar usuário"
+      "success": "",
+      "error": ""
     },
     "removeToast": {
       "loading": "Removendo usuários...",
-      "success": "Usuários removidos",
-      "error": "Falha ao remover usuários"
+      "partial": "",
+      "success_one": "",
+      "success_other": "",
+      "error_one": "",
+      "error_other": ""
     },
     "invalidateToast": {
-      "loading": "Encerrando sessões dos usuários...",
-      "success": "Sessões dos usuários encerradas",
-      "error": "Falha ao encerrar sessões dos usuários"
+      "loading": "",
+      "partial": "",
+      "success_one": "",
+      "success_other": "",
+      "error_one": "",
+      "error_other": ""
+    },
+    "impersonateToast": {
+      "error": ""
     },
     "table": {
       "username": "Usuário",
       "email": "E-mail",
       "role": "Função",
       "createdAt": "Criado",
-      "minIssuedAt": "Sessões válidas desde",
+      "minIssuedAt": "",
       "actions": "Ações",
       "searchUsernames": "Pesquisar nomes de usuário...",
       "searchEmails": "Pesquisar e-mails...",
       "searchCreatedAts": "Pesquisar datas de criação...",
-      "searchMinIssuedAts": "Buscar datas de sessão..."
+      "searchMinIssuedAts": ""
     },
     "removeSelectedTooltip": "Remover usuários selecionados",
-    "logOutSelectedTooltip": "Desconectar usuários selecionados",
+    "logOutSelectedTooltip": "",
     "contextMenu": {
-      "editUser": "Editar usuário",
+      "editUser": "",
       "impersonate": "Personificar",
-      "copyUserId": "Copiar ID do usuário"
+      "copyUserId": ""
     },
     "removeDialog": {
-      "title_one": "Remover {{count}} usuário?",
-      "title_other": "Remover {{count}} usuários?",
-      "description": "Isso exclui permanentemente os usuários selecionados e o acesso deles. Não é possível desfazer.",
-      "confirm": "Remover usuários"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     },
     "invalidateDialog": {
-      "title_one": "Desconectar {{count}} usuário?",
-      "title_other": "Desconectar {{count}} usuários?",
-      "description": "Isso encerra todas as sessões e tokens dos usuários selecionados. Eles precisarão entrar novamente.",
-      "confirm": "Desconectar usuários"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     }
   }
 }

@@ -1,80 +1,75 @@
 {
   "overview": {
-    "welcome": "Ласкаво просимо назад, {{name}} 🧙",
     "serverMetrics": {
-      "sectionTitle": "Метрики сервера",
+      "sectionTitle": "",
       "summary": {
         "cpu": "ЦП",
-        "heapUsed": "Використана купа",
+        "heapUsed": "",
         "threads": "Потоки",
-        "botsOnline": "Підключені боти",
+        "botsOnline": "",
         "uptime": "Час роботи"
       },
       "cpuUsage": {
-        "title": "Використання CPU (%)"
+        "title": ""
       },
       "memoryUsage": {
-        "title": "Оперативна памʼять (MB)"
+        "title": ""
       },
       "threadCount": {
-        "title": "Кількість потоків"
+        "title": ""
       },
       "aggregateBots": {
-        "title": "Підключені боти (усі екземпляри)"
+        "title": ""
       },
       "legend": {
-        "process": "Процес",
+        "process": "",
         "system": "Система",
-        "used": "Зайнято",
-        "committed": "Виділено",
-        "max": "Макс.",
-        "total": "Усього",
-        "daemon": "Демони",
+        "used": "",
+        "committed": "",
+        "max": "",
+        "total": "Всього",
+        "daemon": "",
         "online": "Підключено"
-      }
+      },
+      "collecting": ""
     },
-    "instancesChart": {
-      "title": "Загальна кількість екземплярів на цьому сервері",
-      "instances": "Екземпляри",
-      "label": {
-        "state": "Стан",
-        "active": "Активний",
-        "stopped": "Зупинено",
-        "other": "Інший"
-      }
-    },
-    "usersChart": {
-      "title": "Загальна кількість користувачів на цьому сервері",
+    "stats": {
       "users": "Користувачі",
-      "label": {
-        "role": "Роль",
-        "user": "Користувач",
-        "admin": "Адмін",
-        "other": "Інший"
-      }
+      "projects": "",
+      "admins_one": "",
+      "admins_few": "",
+      "admins_many": "",
+      "admins_other": "",
+      "active_one": "",
+      "active_few": "",
+      "active_many": "",
+      "active_other": ""
     }
   },
   "users": {
-    "filterPlaceholder": "Фільтрувати користувачів...",
+    "noPermission": {
+      "title": "",
+      "description": ""
+    },
     "baseUserDialog": {
       "form": {
         "username": {
-          "min": "Імена користувачів повинні містити щонайменше 3 символи",
-          "max": "Імена користувачів повинні містити не більше 32 символів",
-          "regex": "Імена користувачів мають бути в нижньому регістрі, починатися з алфавітно-цифрового символу, далі можуть йти ще алфавітно-цифрові символи або дефіси, і закінчуватися алфавітно-цифровим символом.",
+          "min": "",
+          "max": "",
+          "regex": "",
           "label": "Ім'я користувача",
           "placeholder": "Введіть ім'я користувача",
-          "description": "Унікальне ім'я користувача, яке ідентифікує користувача"
+          "description": ""
         },
         "email": {
           "label": "Електронна пошта",
           "placeholder": "Введіть електронну пошту",
-          "description": "Електронна адреса користувача використовується для сповіщень та входу"
+          "description": ""
         },
         "role": {
           "label": "Роль",
           "placeholder": "Оберіть роль",
-          "description": "Роль користувача. Адміністратори можуть керувати користувачами й усіма екземплярами. Користувачі можуть керувати лише своїми екземплярами.",
+          "description": "",
           "user": "Користувач",
           "admin": "Адмін"
         }
@@ -82,75 +77,92 @@
     },
     "addUserDialog": {
       "title": "Додати нового користувача",
-      "description": "Додати нового користувача на цей сервер",
+      "description": "",
       "form": {
         "cancel": "Скасувати",
-        "add": "Додати користувача"
+        "add": ""
       }
     },
     "updateUserDialog": {
-      "title": "Оновити користувача",
-      "description": "Оновіть інформацію про користувача",
+      "title": "",
+      "description": "",
       "form": {
         "cancel": "Скасувати",
-        "update": "Оновити користувача"
+        "update": ""
       }
     },
     "profileConflict": "",
     "addToast": {
       "loading": "Додавання користувача...",
-      "success": "Користувача додано",
-      "error": "Не вдалося додати користувача"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "Оновлення даних користувача...",
-      "success": "Дані користувача оновлено",
-      "error": "Не вдалося оновити дані користувача"
+      "success": "",
+      "error": ""
     },
     "removeToast": {
       "loading": "Видалення користувачів...",
-      "success": "Користувачів видалено",
-      "error": "Не вдалося видалити користувачів"
+      "partial": "",
+      "success_one": "",
+      "success_few": "",
+      "success_many": "",
+      "success_other": "",
+      "error_one": "",
+      "error_few": "",
+      "error_many": "",
+      "error_other": ""
     },
     "invalidateToast": {
-      "loading": "Вихід користувачів...",
-      "success": "Користувачів виведено з системи",
-      "error": "Не вдалося вивести користувачів з системи"
+      "loading": "",
+      "partial": "",
+      "success_one": "",
+      "success_few": "",
+      "success_many": "",
+      "success_other": "",
+      "error_one": "",
+      "error_few": "",
+      "error_many": "",
+      "error_other": ""
+    },
+    "impersonateToast": {
+      "error": ""
     },
     "table": {
       "username": "Ім'я користувача",
       "email": "Електронна пошта",
       "role": "Роль",
       "createdAt": "Створено",
-      "minIssuedAt": "Сеанси дійсні з",
+      "minIssuedAt": "",
       "actions": "Дії",
       "searchUsernames": "Пошук імен користувачів...",
       "searchEmails": "Пошук електронних адрес...",
       "searchCreatedAts": "Пошук дати створення...",
-      "searchMinIssuedAts": "Пошук за датами сеансів..."
+      "searchMinIssuedAts": ""
     },
     "removeSelectedTooltip": "Видалити вибраних користувачів",
-    "logOutSelectedTooltip": "Вийти з облікових записів вибраних користувачів",
+    "logOutSelectedTooltip": "",
     "contextMenu": {
-      "editUser": "Редагувати користувача",
+      "editUser": "",
       "impersonate": "Увійти як користувач",
-      "copyUserId": "Скопіювати ідентифікатор користувача"
+      "copyUserId": ""
     },
     "removeDialog": {
-      "title_one": "Видалити {{count}} користувача?",
-      "title_few": "Видалити {{count}} користувачів?",
-      "title_many": "Видалити {{count}} користувачів?",
-      "title_other": "Видалити {{count}} користувача?",
-      "description": "Це назавжди видалить вибраних користувачів і їхній доступ. Скасувати це неможливо.",
-      "confirm": "Видалити користувачів"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_few": "",
+      "title_many": "",
+      "title_other": ""
     },
     "invalidateDialog": {
-      "title_one": "Завершити сеанси {{count}} користувача?",
-      "title_few": "Завершити сеанси {{count}} користувачів?",
-      "title_many": "Завершити сеанси {{count}} користувачів?",
-      "title_other": "Завершити сеанси {{count}} користувача?",
-      "description": "Це завершить усі сеанси й токени вибраних користувачів. Їм доведеться увійти знову.",
-      "confirm": "Завершити сеанси користувачів"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_few": "",
+      "title_many": "",
+      "title_other": ""
     }
   }
 }

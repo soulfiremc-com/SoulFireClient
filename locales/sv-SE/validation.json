@@ -1,39 +1,42 @@
 {
   "string": {
-    "undefined": "Ange ett värde.",
-    "null": "Ange ett värde.",
-    "number": "Ange ett värde.",
-    "boolean": "Ange ett värde.",
-    "array": "Ange ett värde.",
-    "object": "Ange ett värde.",
-    "nan": "Ange ett värde.",
-    "infinity": "Ange ett värde."
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "number": {
-    "undefined": "Ange ett tal.",
-    "null": "Ange ett tal.",
-    "string": "Ange ett tal.",
-    "boolean": "Ange ett tal.",
-    "array": "Ange ett tal.",
-    "object": "Ange ett tal.",
-    "nan": "Ange ett tal.",
-    "infinity": "Ange ett tal."
+    "undefined": "",
+    "null": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "object": {
-    "undefined": "Ange ett giltigt värde.",
-    "null": "Ange ett giltigt värde.",
-    "number": "Ange ett giltigt värde.",
-    "string": "Ange ett giltigt värde.",
-    "boolean": "Ange ett giltigt värde.",
-    "array": "Ange ett giltigt värde.",
-    "nan": "Ange ett giltigt värde.",
-    "infinity": "Ange ett giltigt värde."
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "nan": "",
+    "infinity": ""
   },
-  "email": "Ange en giltig e-postadress.",
-  "url": "Ange en giltig URL.",
-  "jwt": "Ange en giltig token.",
-  "emailTooLong": "Använd högst 255 tecken.",
-  "jarSource": "Välj den officiella servern eller en anpassad jar.",
-  "generationMode": "Välj hur befintliga konton ska hanteras.",
-  "userRole": "Välj en roll."
+  "email": "",
+  "url": "",
+  "jwt": "",
+  "emailTooLong": "",
+  "generationMode": "",
+  "userRole": "",
+  "serverUrl": "",
+  "pattern": "",
+  "minLength_one": "",
+  "minLength_other": ""
 }

@@ -1,4 +1,13 @@
 {
+  "connection": {
+    "checking": "",
+    "connection": "",
+    "authentication": "",
+    "permission": "",
+    "unexpected": "",
+    "rateLimited": "",
+    "emailUnexpected": ""
+  },
   "header": {
     "image": {
       "alt": "Logo de SoulFire"
@@ -7,103 +16,159 @@
   },
   "newUser": "Nouveau sur SoulFire ? Lisez le <a>guide de démarrage</a>.",
   "connect": {
-    "title": "Connexion à un serveur SoulFire",
-    "description": "Sélectionnez le type de serveur SoulFire auquel se connecter.",
+    "title": "",
+    "description": "",
     "integrated": {
-      "title": "Serveur intégré (local)",
-      "description": "Exécute un serveur SoulFire sur cet appareil. La configuration est automatique. Cette option nécessite l'application de bureau ou Android."
+      "title": "",
+      "description": "",
+      "webDescription": ""
     },
     "dedicated": {
-      "title": "Serveur dédié (distant)",
-      "description": "Se connecte à un serveur SoulFire distant en utilisant son adresse et son jeton."
+      "title": "",
+      "description": ""
     },
     "demo": {
-      "title": "Serveur de démonstration",
-      "description": "Fournit un serveur en lecture seule avec des données de démonstration. SoulFire ne sauvegarde pas les modifications."
+      "title": "",
+      "description": "",
+      "linkDescription": ""
+    },
+    "recommended": "",
+    "path": {
+      "label": "",
+      "app": "",
+      "server": "",
+      "minecraft": ""
+    },
+    "saved": {
+      "title": "",
+      "withAddress": ""
     }
   },
   "integrated": {
-    "preparing": "Préparation du démarrage du serveur intégré...",
     "toast": {
-      "loading": "Démarrage du serveur intégré...",
-      "success": "Serveur intégré démarré en {{time}}s",
-      "error": "Échec du démarrage du serveur intégré"
+      "loading": "",
+      "error": ""
     },
-    "retry": "Réessayer",
+    "retry": "",
     "reset": {
-      "button": "Réinitialiser les données",
+      "button": "",
       "loading": "Réinitialisation des données SoulFire...",
-      "success": "Les données SoulFire ont été réinitialisées avec succès. Essayez de recommencer.",
-      "error": "Échec de la réinitialisation des données SoulFire"
+      "success": "",
+      "error": "",
+      "confirmTitle": "",
+      "confirmDescription": "",
+      "keep": ""
     },
-    "description": "Le serveur intégré s'exécute sur votre ordinateur. Vous pouvez modifier les arguments de démarrage Java ci-dessous.",
+    "description": "",
     "form": {
       "jvmArgs": {
         "title": "Arguments de la JVM",
         "description": "Arguments de la machine virtuelle Java pour SoulFire. Ajoutez <bold>-Xmx4G</bold> pour utiliser 4 Go de RAM. Par défaut, 25 % de la RAM disponible sont utilisés.",
-        "placeholder": "Vos arguments JVM ici"
+        "placeholder": "Vos arguments JVM ici",
+        "reset": ""
       },
       "back": "Retour",
-      "start": "Démarrer",
+      "start": "",
       "jar": {
-        "title": "Jar du serveur",
-        "official": "Officiel",
-        "custom": "Personnalisé",
-        "officialTitle": "Serveur SoulFire officiel",
-        "customTitle": "Jar de serveur personnalisé",
-        "officialDescription": "Télécharge et vérifie la version de SoulFire correspondante.",
-        "customDescription": "Exécute un jar importé. SoulFire ne le vérifie pas et ne le met pas à jour.",
-        "import": "Importer un jar",
-        "importSuccess": "{{name}} importé",
-        "importError": "Impossible d'importer le jar SoulFire personnalisé",
-        "selectCustomFirst": "Importez et sélectionnez un jar personnalisé avant de démarrer.",
+        "title": "",
+        "officialTitle": "",
+        "customTitle": "",
+        "officialDescription": "",
+        "customDescription": "",
+        "import": "",
+        "remove": "",
+        "importSuccess": "",
+        "importError": "",
+        "selectCustomFirst": "",
         "dialog": {
-          "filter": "Archive Java",
-          "title": "Sélectionner le jar du serveur SoulFire"
-        }
-      }
-    },
-    "mobile": {
-      "description": "Pour exécuter le serveur intégré sur mobile, vous devez effectuer quelques étapes manuelles.",
-      "form": {
-        "termuxCommand": {
-          "title": "Commande Termux",
-          "description": "Installez l'<a>application Termux</a>. Exécutez cette commande dans Termux pour installer le serveur SoulFire. Exécutez <copy>generate-token api</copy> pour créer un jeton. Entrez ensuite le jeton ci-dessous."
+          "filter": "",
+          "title": ""
         },
-        "token": {
-          "title": "Token",
-          "description": "Jeton pour s'authentifier avec le serveur local.",
-          "placeholder": "Token secret"
-        },
-        "back": "Retour",
-        "connect": "Se connecter"
+        "removeError": "",
+        "loadError": ""
       }
     },
     "cancel": "Annuler le démarrage",
-    "cancelling": "Annulation du démarrage...",
+    "cancelling": "",
     "cancelError": "Impossible d'annuler le démarrage",
     "autoStart": {
       "title": "Démarrer automatiquement la prochaine fois.",
       "description": "Ignorer la sélection du serveur et utiliser ces paramètres au lancement de SoulFire."
-    }
+    },
+    "softwareRendering": {
+      "title": "",
+      "description": ""
+    },
+    "title": "",
+    "plan": {
+      "prepare": "",
+      "start": "",
+      "connect": ""
+    },
+    "advanced": {
+      "title": "",
+      "description": ""
+    },
+    "progress": {
+      "label": "",
+      "description": "",
+      "prepare": {
+        "title": "",
+        "description": ""
+      },
+      "start": {
+        "title": "",
+        "description": ""
+      },
+      "connect": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "details": "",
+    "changeSettings": "",
+    "useExisting": "",
+    "failure": {
+      "port-in-use": {
+        "title": "",
+        "description": ""
+      },
+      "out-of-memory": {
+        "title": "",
+        "description": ""
+      },
+      "java": {
+        "title": "",
+        "description": ""
+      },
+      "custom-jar": {
+        "title": "",
+        "description": ""
+      },
+      "download": {
+        "title": "",
+        "description": ""
+      },
+      "unknown": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "failedAttempts_one": "",
+    "failedAttempts_other": ""
   },
   "dedicated": {
-    "description": "Entrez l'adresse et le jeton du serveur SoulFire.",
-    "toast": {
-      "loading": "Connexion au serveur...",
-      "success": "Connecté au serveur",
-      "error": "Impossible de se connecter au serveur"
-    },
+    "description": "",
     "form": {
       "address": {
-        "title": "Adresse",
-        "description": "Adresse de votre serveur SoulFire.",
+        "title": "",
+        "description": "",
         "placeholder": "http://localhost:38765"
       },
       "token": {
         "title": "Token",
         "placeholder": "Token secret",
-        "description": "Token pour s'authentifier avec le serveur."
+        "description": ""
       },
       "email": {
         "title": "Email",
@@ -113,16 +178,16 @@
       "back": "Retour",
       "useToken": "Utiliser un token",
       "useEmail": "Utiliser un e-mail",
-      "login": "Se connecter"
+      "login": ""
     }
   },
   "emailCode": {
-    "description": "Si vous avez un compte, nous avons envoyé un code à <bold>{{email}}</bold>. Entrez-le ci-dessous.",
-    "toast": {
-      "loading": "Vérification du code...",
-      "success": "Connecté",
-      "error": "Code invalide"
-    },
+    "description": "",
+    "checking": "",
+    "invalid": "",
+    "expired": "",
+    "resend": "",
+    "resent": "",
     "back": "Retour"
   },
   "footer": {

@@ -1,67 +1,56 @@
 {
   "overview": {
-    "welcome": "Chào mừng trở lại, {{name}} 🧙",
     "serverMetrics": {
-      "sectionTitle": "Chỉ Số Máy Chủ",
+      "sectionTitle": "",
       "summary": {
         "cpu": "CPU",
-        "heapUsed": "Bộ Nhớ Heap Đã Sử Dụng",
+        "heapUsed": "",
         "threads": "Luồng",
-        "botsOnline": "Bot đã kết nối",
+        "botsOnline": "",
         "uptime": "Thời Gian Hoạt Động"
       },
       "cpuUsage": {
-        "title": "Sử dụng CPU (%)"
+        "title": ""
       },
       "memoryUsage": {
-        "title": "Bộ nhớ Heap (MB)"
+        "title": ""
       },
       "threadCount": {
-        "title": "Số lượng luồng"
+        "title": ""
       },
       "aggregateBots": {
-        "title": "Bot đã kết nối (mọi phiên bản)"
+        "title": ""
       },
       "legend": {
-        "process": "Tiến trình",
+        "process": "",
         "system": "Hệ thống",
-        "used": "Đã dùng",
-        "committed": "Đã cấp phát",
-        "max": "Tối đa",
-        "total": "Tổng",
-        "daemon": "Daemon",
+        "used": "",
+        "committed": "",
+        "max": "",
+        "total": "Tổng cộng",
+        "daemon": "",
         "online": "Đã kết nối"
-      }
+      },
+      "collecting": ""
     },
-    "instancesChart": {
-      "title": "Tổng số phiên bản trên máy chủ này",
-      "instances": "Các phiên bản",
-      "label": {
-        "state": "Trạng thái",
-        "active": "Đang hoạt động",
-        "stopped": "Đã dừng",
-        "other": "Khác"
-      }
-    },
-    "usersChart": {
-      "title": "",
+    "stats": {
       "users": "Người dùng",
-      "label": {
-        "role": "Vai trò",
-        "user": "Người dùng",
-        "admin": "Quản trị viên",
-        "other": "Khác"
-      }
+      "projects": "",
+      "admins_other": "",
+      "active_other": ""
     }
   },
   "users": {
-    "filterPlaceholder": "Lọc người dùng...",
+    "noPermission": {
+      "title": "",
+      "description": ""
+    },
     "baseUserDialog": {
       "form": {
         "username": {
-          "min": "Tên người dùng phải có ít nhất 3 ký tự",
-          "max": "Tên người dùng phải có nhiều nhất 32 ký tự",
-          "regex": "Tên người dùng phải viết thường, bắt đầu bằng ký tự chữ hoặc số, theo sau là các ký tự chữ, số hoặc dấu gạch ngang và kết thúc bằng ký tự chữ hoặc số.",
+          "min": "",
+          "max": "",
+          "regex": "",
           "label": "Tên đăng nhập",
           "placeholder": "Nhập tên người dùng",
           "description": ""
@@ -69,12 +58,12 @@
         "email": {
           "label": "Email",
           "placeholder": "Nhập email",
-          "description": "Địa chỉ email của người dùng dùng để nhận thông báo và đăng nhập"
+          "description": ""
         },
         "role": {
           "label": "Vai trò",
           "placeholder": "Chọn vai trò",
-          "description": "Vai trò của người dùng. Quản trị viên có thể quản lý người dùng và tất cả các phiên bản. Người dùng chỉ được phép quản lý phiên bản của riêng mình.",
+          "description": "",
           "user": "Người dùng",
           "admin": "Quản trị viên"
         }
@@ -82,69 +71,74 @@
     },
     "addUserDialog": {
       "title": "Thêm người dùng mới",
-      "description": "Thêm người dùng mới vào máy chủ này",
+      "description": "",
       "form": {
         "cancel": "Hủy",
-        "add": "Thêm người dùng"
+        "add": ""
       }
     },
     "updateUserDialog": {
-      "title": "Cập nhật người dùng",
-      "description": "Cập nhật thông tin người dùng",
+      "title": "",
+      "description": "",
       "form": {
         "cancel": "Hủy",
-        "update": "Cập nhật người dùng"
+        "update": ""
       }
     },
     "profileConflict": "",
     "addToast": {
       "loading": "Đang thêm người dùng...",
-      "success": "Đã thêm người dùng",
-      "error": "Thêm người dùng thất bại"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "Đang cập nhật người dùng...",
-      "success": "Đã cập nhật người dùng",
-      "error": "Cập nhật người dùng thất bại"
+      "success": "",
+      "error": ""
     },
     "removeToast": {
       "loading": "Đang xóa người dùng...",
-      "success": "Đã xóa người dùng",
-      "error": "Xóa người dùng thất bại"
+      "partial": "",
+      "success_other": "",
+      "error_other": ""
     },
     "invalidateToast": {
-      "loading": "Đang đăng xuất người dùng...",
-      "success": "Đã đăng xuất người dùng",
-      "error": "Đăng xuất người dùng thất bại"
+      "loading": "",
+      "partial": "",
+      "success_other": "",
+      "error_other": ""
+    },
+    "impersonateToast": {
+      "error": ""
     },
     "table": {
       "username": "Tên đăng nhập",
       "email": "Email",
       "role": "Vai trò",
       "createdAt": "Đã tạo",
-      "minIssuedAt": "Phiên có hiệu lực từ",
+      "minIssuedAt": "",
       "actions": "Hành động",
       "searchUsernames": "Tìm kiếm tên người dùng...",
       "searchEmails": "Tìm kiếm email...",
       "searchCreatedAts": "Tìm ngày tạo...",
-      "searchMinIssuedAts": "Tìm ngày của phiên..."
+      "searchMinIssuedAts": ""
     },
     "removeSelectedTooltip": "Xóa người dùng đã chọn",
-    "logOutSelectedTooltip": "Đăng xuất người dùng đã chọn",
+    "logOutSelectedTooltip": "",
     "contextMenu": {
-      "editUser": "Chỉnh sửa người dùng",
+      "editUser": "",
       "impersonate": "Giả lập người dùng",
-      "copyUserId": "Sao chép ID người dùng"
+      "copyUserId": ""
     },
     "removeDialog": {
-      "title_other": "Xóa {{count}} người dùng?",
-      "description": "Thao tác này xóa vĩnh viễn những người dùng đã chọn và quyền truy cập của họ. Bạn không thể hoàn tác.",
-      "confirm": "Xóa người dùng"
+      "description": "",
+      "confirm": "",
+      "title_other": ""
     },
     "invalidateDialog": {
-      "title_other": "Đăng xuất {{count}} người dùng?",
-      "description": "Thao tác này kết thúc mọi phiên và token của những người dùng đã chọn. Họ phải đăng nhập lại.",
-      "confirm": "Đăng xuất người dùng"
+      "description": "",
+      "confirm": "",
+      "title_other": ""
     }
   }
 }

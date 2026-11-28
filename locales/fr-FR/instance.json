@@ -1,67 +1,19 @@
 {
   "overview": {
-    "logsDescription": "La sortie brute de l'instance est disponible ici si vous avez besoin d'inspecter les détails de la console.",
-    "summary": {
-      "accounts": "Comptes",
-      "proxies": "Proxys",
-      "configured": "{{count}} configuré",
-      "configuredShort": "Configuré",
-      "currentRate": "Taux actuel",
-      "imported": "Importé"
-    },
-    "readiness": {
-      "title": "Configuration",
-      "accounts": "Comptes",
-      "accountsValue": "{{count}} importés pour {{requested}} bots demandés",
-      "proxies": "Proxys",
-      "proxiesValue": "{{count}} configuré",
-      "plugins": "Plugins",
-      "pluginsValue": "{{count}} disponibles"
-    },
-    "activity": {
-      "title": "Activité",
-      "tick": "Tick",
-      "health": "Santé",
-      "world": "Monde",
-      "worldValue": "{{chunks}} chunks, {{entities}} entités",
-      "connections": "Connexions",
-      "connectionsValue": "+{{connections}} / -{{disconnections}}",
-      "noDataTitle": "Métriques",
-      "noDataDescription": "Aucune métrique d'exécution pour l'instant."
-    },
-    "metricsUnavailable": {
-      "title": "Métriques",
-      "inactive": "Démarrez un bot pour collecter des métriques en temps réel.",
-      "noPermission": "Vous n'avez pas la permission de voir les métriques des bots."
-    },
-    "status": {
-      "ready": "Prêt",
-      "attention": "Nécessite une attention",
-      "configured": "Configuré",
-      "optional": "Optionnel",
-      "available": "Disponible",
-      "none": "Aucun"
-    },
-    "actions": {
-      "manage": "Gérer",
-      "open": "Ouvrir"
-    },
-    "spotlight": {
-      "noBots": "Aucun bot configuré pour le moment.",
-      "idle": "Inactif, en attente d'instructions.",
-      "level": "Niv. {{level}}"
-    },
+    "logsDescription": "",
     "liveFeed": {
       "title": "Flux en direct",
-      "empty": "En attente d'activité d'instance...",
+      "empty": "",
       "noPermission": "Vous n'avez pas la permission de voir le flux en direct.",
       "lifecycle": {
         "connecting": "se connecte",
         "connected": "connecté",
         "spawned": "a rejoint la partie",
         "died": "est mort",
+        "diedWithReason": "",
         "respawned": "a réapparu",
         "disconnected": "déconnecté",
+        "disconnectedWithReason": "",
         "unknown": "a changé d'état"
       },
       "pause": "Pauser",
@@ -80,11 +32,12 @@
         "time": "Heure",
         "bot": "Bot",
         "message": "Message"
-      }
+      },
+      "botCount_one": "",
+      "botCount_other": ""
     },
     "bots": {
       "title": "Bots",
-      "viewAll": "Voir tous les {{total}} bots",
       "viewAllShort": "Voir tout",
       "detailsFor": "Détails du bot pour {{name}}"
     },
@@ -92,21 +45,20 @@
       "title": "Actions récentes",
       "viewAll": "Voir l'historique",
       "empty": "Aucune activité enregistrée pour l'instant.",
-      "noPermission": "Vous n'avez pas la permission de voir le journal d'audit.",
       "types": {
         "executeCommand": "a exécuté une commande : {{data}}",
         "botDesiredStateChange": "a changé l’état souhaité du bot",
         "botRestart": "bots redémarrés",
+        "pluginRpc": "",
         "unknown": "a effectué une action"
       }
     },
     "plugins": {
       "title": "Plugins",
-      "empty": "Aucun plugin ne rapporte encore de statistiques.",
-      "noPermission": "Vous n'avez pas la permission de voir les statistiques du plugin.",
       "active": "Actif",
-      "activeBots": "{{count}} bot(s) actif(s)",
-      "uptime": "en ligne depuis {{time}}"
+      "uptime": "en ligne depuis {{time}}",
+      "activeBots_one": "",
+      "activeBots_other": ""
     },
     "detailed": {
       "title": "Métriques détaillées",
@@ -119,180 +71,244 @@
       "network": "Adresse réseau",
       "unix": "Socket Unix"
     },
-    "getProxies": "Fournisseurs de proxies",
-    "addProxies": "Ajouter des proxies",
-    "filterPlaceholder": "Filtrer les proxies...",
+    "getProxies": "",
+    "addProxies": "",
+    "settingsTitle": "",
     "listImportToast": {
-      "loading": "Importation des proxys...",
-      "success": "{{count}} proxys importés",
-      "error": "Impossible d'importer les proxys",
-      "noProxies": "Aucun proxy à importer"
+      "success_one": "",
+      "success_other": "",
+      "skipped_one": "",
+      "skipped_other": "",
+      "duplicates_one": "",
+      "duplicates_other": ""
     },
     "import": {
-      "proxyType": "Type de proxy",
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "importing": "Importation des proxys...",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_one": "",
+        "accepted_other": "",
+        "alreadyInProject_one": "",
+        "alreadyInProject_other": "",
+        "rejected_one": "",
+        "rejected_other": "",
+        "confirm_one": "",
+        "confirm_other": ""
+      },
+      "proxyType": "",
       "http": "HTTP",
       "socks4": "SOCKS4",
       "socks5": "SOCKS5",
       "uri": "URI",
       "dialog": {
         "title": "Importer des proxies {{type}}",
-        "description": "Collez vos proxys ici, un par ligne"
+        "description": ""
       }
     },
     "removeToast": {
       "loading": "Suppression des proxys...",
-      "success": "{{count}} proxys supprimés",
-      "error": "Impossible de supprimer les proxys"
+      "error": "",
+      "success_one": "",
+      "success_other": ""
     },
     "checkToast": {
-      "loading": "Vérification des proxies... {{checked}}/{{total}} (échec : {{success}} : {{failed}})",
-      "success": "{{count}} proxys corrompus supprimés",
-      "error": "Impossible de vérifier les proxys",
-      "successKept": "{{failed}} proxies sur {{total}} ont échoué à la vérification. Aucun proxy n'a été supprimé."
+      "loading": "",
+      "error": "",
+      "success_one": "",
+      "success_other": "",
+      "successKept_one": "",
+      "successKept_other": ""
     },
     "checkDialog": {
-      "title": "Vérifier les proxys",
-      "description": "Vous allez vérifier {{count}} proxies.",
-      "confirm": "Démarrer la vérification",
-      "removeFailed": "Supprimer les proxies en échec",
-      "removeFailedHelp": "Un proxy peut échouer à cause d'un problème réseau temporaire. Décochez cette option pour garder tous les proxies et voir seulement le résultat."
+      "title": "",
+      "confirm": "",
+      "removeFailed": "",
+      "removeFailedHelp": "",
+      "description_one": "",
+      "description_other": ""
     },
-    "invalidFormat": "Format de proxy invalide",
     "table": {
       "type": "Type",
       "address": "Adresse",
       "username": "Nom d´utilisateur",
       "password": "Mot de passe",
       "searchAddresses": "Rechercher des adresses...",
-      "searchUsernames": "Rechercher des noms d'utilisateur...",
-      "searchPasswords": "Rechercher des mots de passe..."
+      "searchUsernames": "Rechercher des noms d'utilisateur..."
     },
     "removeSelectedTooltip": "Supprimer les proxys sélectionnés",
     "exportSelectedTooltip": "Exporter les proxys sélectionnés",
     "checkSelectedTooltip": "Vérifier les proxys sélectionnés",
     "contextMenu": {
-      "copyAddress": "Copier l'adresse",
-      "copyUsername": "Copier le nom d'utilisateur",
-      "copyPassword": "Copier le mot de passe",
-      "deleteProxy": "Supprimer le proxy"
+      "copyAddress": "",
+      "copyUsername": "",
+      "copyPassword": "",
+      "deleteProxy": ""
     },
     "postImportCheckDialog": {
       "title": "Vérifier les proxies importés ?,",
-      "description": "Vous avez importé {{count}} proxies. Les vérifier maintenant ?",
-      "confirm": "Vérifier les proxys",
-      "skip": "Ignorer"
+      "confirm": "",
+      "skip": "Ignorer",
+      "description_one": "",
+      "description_other": ""
     },
     "export": {
-      "format": "Format d'exportation",
-      "uri": "Format URI (tous types)",
-      "http": "HTTP uniquement (plat)",
-      "socks4": "SOCKS4 uniquement (plat)",
-      "socks5": "SOCKS5 uniquement (plat)",
+      "format": "",
+      "uri": "",
+      "http": "",
+      "socks4": "",
+      "socks5": "",
       "noProxies": "Aucun proxy à exporter"
     },
     "removeDialog": {
-      "title_one": "Supprimer {{count}} proxy ?",
-      "title_other": "Supprimer {{count}} proxies ?",
-      "description": "Cela supprime de cette instance les proxies sélectionnés et leurs identifiants. Cette action est irréversible.",
-      "confirm": "Supprimer les proxies"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     },
-    "showPassword": "Afficher le mot de passe",
-    "hidePassword": "Masquer le mot de passe"
+    "removeSingleDialog": {
+      "title": "",
+      "description": "",
+      "confirm": ""
+    },
+    "showPassword": "",
+    "hidePassword": ""
   },
   "account": {
-    "getAccounts": "Fournisseurs de comptes",
-    "addAccounts": "Ajouter des comptes",
-    "generateAccounts": "Générer des comptes",
-    "filterPlaceholder": "Filtrer les comptes...",
+    "getAccounts": "",
+    "addAccounts": "",
+    "settingsTitle": "",
+    "generateAccounts": "",
     "listImportToast": {
-      "loading": "Importation des comptes... {{checked}}/{{total}} (Réussi : {{success}} Échoué : {{failed}})",
-      "allFailed": "Impossible d'importer les comptes",
-      "someFailed": "Comptes {{count}} importés, impossible d'importer les comptes {{failed}}",
-      "noneFailed": "Comptes {{count}} importés",
-      "error": "Échec de l'importation des comptes",
-      "noAccounts": "Aucun compte à importer"
+      "loading": "",
+      "allFailed": "",
+      "cancelled": "",
+      "error": "",
+      "copyCredentials": "",
+      "noAccounts": "",
+      "errorReason": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      },
+      "someFailed_one": "",
+      "someFailed_other": "",
+      "noneFailed_one": "",
+      "noneFailed_other": "",
+      "cancelledSaved_one": "",
+      "cancelledSaved_other": "",
+      "errorSaved_one": "",
+      "errorSaved_other": ""
     },
-    "unknownError": "Erreur inconnue",
     "types": {
-      "OFFLINE": "Hors-ligne",
-      "MICROSOFT_JAVA_CREDENTIALS": "Java (Identifiants)",
-      "MICROSOFT_JAVA_DEVICE_CODE": "Java (Code appareil)",
-      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Jeton de rafraîchissement)",
-      "MICROSOFT_JAVA_COOKIES": "Java (cookies)",
-      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (Jeton d'accès)",
+      "OFFLINE": "",
+      "MICROSOFT_JAVA_CREDENTIALS": "",
+      "MICROSOFT_JAVA_DEVICE_CODE": "",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "",
+      "MICROSOFT_JAVA_COOKIES": "",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "",
       "THE_ALTENING": "Java (TheAltening)",
-      "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock (Identifiants)",
-      "MICROSOFT_BEDROCK_DEVICE_CODE": "Bedrock (Code appareil)"
+      "MICROSOFT_BEDROCK_CREDENTIALS": "",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": ""
     },
     "deviceCodeImportToast": {
       "loading": "Importation du compte...",
-      "success": "Compte importé",
-      "error": "Impossible d'importer le compte"
+      "success": "",
+      "error": "",
+      "saving": "",
+      "saveError": "",
+      "retrySave": ""
     },
     "generate": {
-      "title": "Générer des comptes hors ligne",
+      "replaceAllDialog": {
+        "description": "",
+        "confirm": "",
+        "title_one": "",
+        "title_other": ""
+      },
+      "title": "",
       "description": "Générez des comptes Java hors ligne avec un format de nom personnalisé.",
-      "amount": "Quantité",
-      "nameFormat": "Format du nom",
-      "nameFormatHelp": "Utilisez %d pour le numéro de compte. Par exemple, Bot_%d crée des noms comme Bot_1 et Bot_2.",
-      "mode": "Comptes existants",
-      "modeHelp": "Choisissez comment gérer les comptes existants :\n\n• Ignorer les existants : Génère uniquement les comptes avec de nouveaux noms. Tous les comptes existants sont conservés.\n\n• Remplacer les existants : Génère tous les comptes demandés. Remplace ceux dont l'UUID correspond. Tous les autres comptes sont conservés.\n\n• Tout remplacer : Supprime tous les comptes existants. Puis ajoute les comptes générés.",
-      "modeIgnoreExisting": "Ignorer les existants",
-      "modeReplaceExisting": "Remplacer les existants",
-      "modeReplaceAll": "Remplacer tout",
+      "amount": "",
+      "nameFormat": "",
+      "nameFormatHelp": "",
+      "mode": "",
+      "modeHelp": "",
+      "modeIgnoreExisting": "",
+      "modeReplaceExisting": "",
+      "modeReplaceAll": "",
       "submit": "Générer",
       "generating": "Génération...",
-      "progress": "Génération des comptes... {{checked}}/{{total}} (Réussite : {{success}} Échec : {{failed}})",
-      "success": "{{count}} comptes générés",
-      "allFailed": "Impossible de générer des comptes",
-      "allExist": "Tous les noms d'utilisateur existent déjà. Choisissez « Remplacer les existants » pour les générer à nouveau.",
-      "error": "Échec de la génération des comptes",
-      "invalidAmount": "Veuillez saisir une quantité valide (au moins 1)",
-      "missingPlaceholder": "Le format du nom doit contenir le variable %d"
+      "progress": "",
+      "allFailed": "",
+      "allExist": "",
+      "error": "",
+      "amountOutOfRange": "",
+      "missingNameFormat": "",
+      "success_one": "",
+      "success_other": "",
+      "preview_one": "",
+      "preview_other": ""
     },
     "import": {
       "javaEdition": "Java Edition",
       "bedrockEdition": "Bedrock Edition",
       "offline": "Hors-ligne",
-      "microsoftCredentials": "Identifiants Microsoft",
-      "microsoftDeviceCode": "Code de l'appareil Microsoft",
-      "microsoftRefreshToken": "Token d'actualisation Microsoft",
-      "microsoftCookies": "Cookies Microsoft",
-      "microsoftAccessToken": "Jeton d'accès Microsoft",
-      "theAltening": "Jeton TheAltening",
-      "altProviders": "Fournisseurs alternatifs",
+      "microsoftCredentials": "",
+      "microsoftDeviceCode": "",
+      "microsoftRefreshToken": "",
+      "microsoftCookies": "",
+      "microsoftAccessToken": "",
+      "theAltening": "",
+      "altProviders": "",
       "dialog": {
-        "title": "Importation des comptes {{type}}",
-        "description": "Collez vos comptes ici, un par ligne"
+        "title": "Importation des comptes {{type}}"
+      },
+      "demo": "",
+      "format": {
+        "offline": "",
+        "microsoftCredentials": "",
+        "refreshToken": "",
+        "cookies": "",
+        "accessToken": "",
+        "theAltening": ""
       }
     },
     "removeToast": {
       "loading": "Suppression des comptes...",
-      "success": "{{count}} comptes supprimés",
-      "error": "Échec de la suppression des comptes"
+      "error": "",
+      "success_one": "",
+      "success_other": ""
     },
     "table": {
       "type": "Type",
-      "profileId": "ID de profil",
+      "profileId": "",
       "lastKnownName": "Nom d´utilisateur",
       "searchProfileIds": "Rechercher des identifiants de profil...",
-      "searchLastKnownNames": "Rechercher les derniers noms connus...",
+      "searchLastKnownNames": "Rechercher des noms d'utilisateur...",
       "actions": "Actions"
     },
     "removeSelectedTooltip": "Supprimer les comptes sélectionnés",
     "contextMenu": {
-      "openConfig": "Ouvrir les paramètres",
-      "openMetadata": "Ouvrir les métadonnées",
-      "copyProfileId": "Copier l'ID du profil",
-      "copyUsername": "Copier le nom d'utilisateur"
+      "openConfig": "",
+      "openMetadata": "",
+      "copyProfileId": "",
+      "copyUsername": ""
     },
     "config": {
       "title": "Configurer {{name}}",
-      "description": "Configurer les paramètres par bot pour ce compte",
+      "description": "",
       "openButton": "Configurer le compte",
-      "pageTitle": "Paramètres {{name}} - {{page}}",
       "noSettings": "Aucun paramètre disponible pour cette page",
       "search": "Paramètres de recherche",
+      "pages": "",
       "overrides": "Remplacements",
       "allSettings": "Tous les paramètres",
       "noOverrides": "Ce bot n'a pas encore de remplacements explicites.",
@@ -303,226 +319,196 @@
       "selectPage": "Sélectionnez une page de paramètres",
       "noSearchResults": "Aucun paramètre ne correspond à cette recherche.",
       "matchesInheritedValue": "Correspond à la valeur héritée",
-      "instanceValue": "Valeur de l\\'instance",
+      "instanceValue": "",
       "defaultValue": "Valeur par défaut",
       "resetOverride": "Réinitialiser l\\'écrasement",
       "value": {
-        "notSet": "Non défini",
-        "on": "Activé",
-        "off": "Désactivé",
-        "empty": "Vide",
+        "notSet": "",
+        "on": "",
+        "off": "",
+        "empty": "",
+        "range": "",
         "entries_one": "{{count}} entrée",
-        "entries_other": "{{count}} entrées",
-        "range": "Plage"
+        "entries_other": "{{count}} entrées"
       },
       "source": {
-        "bot": "Valeur propre au bot",
-        "instance": "Hérité de l'instance",
-        "default": "Valeur par défaut"
+        "bot": "",
+        "instance": "",
+        "default": ""
       }
     },
     "deviceCodeConfirmDialog": {
-      "title": "Authentification avec le code de l'appareil",
+      "title": "",
       "description": "Configurez les options avant de démarrer le flux de code de l'appareil.",
-      "start": "Commencer l'authentification"
+      "start": ""
     },
     "deviceCodeDialog": {
-      "title": "Authentification avec le code de l'appareil",
+      "title": "",
       "description": "Connectez-vous avec votre compte Microsoft pour le lier.",
-      "openInBrowser": "Ouvrir dans le navigateur",
+      "openInBrowser": "",
       "orManually": "Ou saisir le code manuellement",
       "codeLabel": "Votre code",
-      "urlLabel": "Aller sur"
+      "urlLabel": "Aller sur",
+      "copyCode": "",
+      "copyUrl": ""
     },
     "ravealts": {
-      "button": "Ravealts",
-      "title": "Acheter des comptes via Ravealts",
       "description": "Achetez des comptes Minecraft en utilisant votre clé API Ravealts.",
-      "apiKeyLabel": "Clé API",
       "apiKeyPlaceholder": "Entrez votre clé API Ravealts",
-      "validate": "Valider",
-      "validating": "Validation en cours\u000026hellip;",
-      "keyValid": "Clé validée",
-      "keyInvalid": "Clé API invalide",
-      "credits": "Cr\u0000e9dits\u0000a0: {{credits}}",
-      "stockTitle": "Stock disponible",
       "noStock": "Aucun compte en stock",
-      "accountType": "Type de compte",
-      "amount": "Quantit\u0000e9 (1-10)",
-      "purchase": "Acheter & importer",
-      "purchasing": "Achat en cours\u000026hellip;",
-      "purchaseSuccess": "{{count}} compte(s) achet\u0000e9(s), importation en cours\u0000a0\u0000e2\u000080\u000086",
-      "purchaseError": "Achat \u0000e9chou\u0000e9\u0000a0: {{message}}",
-      "networkError": "Échec de la connexion à l’API Ravealts",
-      "outOfStock": "Le type s\u0000e9lectionn\u0000e9 est en rupture de stock",
+      "accountType": "",
+      "networkError": "",
+      "outOfStock": "",
       "insufficientBalance": "Cr\u0000e9dits insuffisants",
-      "rateLimited": "Trop de demandes, veuillez r\u0000e9essayer plus tard"
+      "rateLimited": ""
     },
     "metadata": {
-      "openButton": "Éditer les métadonnées",
+      "openButton": "",
       "title": "Métadonnées\u00000: {{name}}",
-      "description": "Gérez les entrées de métadonnées persistantes pour ce compte. Chaque entrée possède un espace de noms, une clé et une valeur JSON.",
-      "namespacePlaceholder": "Espace de noms",
-      "keyPlaceholder": "Clé",
-      "valuePlaceholder": "Valeur (JSON)",
-      "noEntries": "Aucune entrée de métadonnée. Ajoutez-en une ci-dessus.",
-      "loadError": "Impossible de charger les métadonnées",
-      "loadErrorDescription": "",
-      "retryLoad": "Réessayer",
-      "addSuccess": "Entrée ajoutée",
-      "addError": "Impossible d'ajouter l'entrée",
-      "updateError": "Impossible de mettre à jour l'entrée",
-      "deleteSuccess": "Entrée supprimée",
-      "deleteError": "Échec de la suppression de l'entrée",
-      "duplicateError": "Une entrée avec cet espace de noms et cette clé existe déjà",
-      "invalidJson": "Valeur JSON invalide",
-      "namespaceLabel": "Espace de noms",
-      "keyLabel": "Clé",
-      "valueLabel": "Valeur",
-      "addEntryLegend": "Ajouter une entrée de métadonnées",
-      "addEntryButton": "Ajouter une entrée",
-      "entryLegend": "Entrée de métadonnées",
-      "removeEntryButton": "Supprimer"
+      "description": "Gérez les entrées de métadonnées persistantes pour ce compte. Chaque entrée possède un espace de noms, une clé et une valeur JSON."
     },
     "removeDialog": {
-      "title_one": "Supprimer {{count}} compte ?",
-      "title_other": "Supprimer {{count}} comptes ?",
-      "description": "Cela supprime de cette instance les comptes sélectionnés, leurs identifiants enregistrés et leurs bots. Cette action est irréversible.",
-      "confirm": "Supprimer les comptes"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     }
   },
   "instanceMetadata": {
-    "title": "Métadonnées de l'instance",
-    "description": "Gérer les entrées de métadonnées persistantes pour cette instance. Chaque entrée possède un espace de noms, une clé et une valeur JSON.",
-    "namespacePlaceholder": "Espace de noms",
-    "keyPlaceholder": "Clé",
-    "valuePlaceholder": "Valeur (JSON)",
-    "noEntries": "Aucune entrée de métadonnée. Ajoutez-en une ci-dessus.",
-    "loadError": "Impossible de charger les métadonnées",
-    "addSuccess": "Entrée ajoutée",
-    "addError": "Impossible d'ajouter l'entrée",
-    "updateError": "Impossible de mettre à jour l'entrée",
-    "deleteSuccess": "Entrée supprimée",
-    "deleteError": "Échec de la suppression de l'entrée",
-    "duplicateError": "Une entrée avec cet espace de noms et cette clé existe déjà",
-    "invalidJson": "Valeur JSON invalide",
-    "namespaceLabel": "Espace de noms",
-    "keyLabel": "Clé",
+    "title": "",
+    "description": ""
+  },
+  "metadataEditor": {
+    "namespacePlaceholder": "",
+    "keyPlaceholder": "",
+    "valuePlaceholder": "",
+    "valueRequired": "",
+    "noEntries": "",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Réessayer",
+    "addSuccess": "",
+    "addError": "",
+    "updateError": "",
+    "deleteSuccess": "",
+    "deleteError": "",
+    "duplicateError": "",
+    "invalidJson": "",
+    "namespaceLabel": "",
+    "keyLabel": "",
     "valueLabel": "Valeur",
-    "addEntryLegend": "Ajouter une entrée de métadonnées",
-    "addEntryButton": "Ajouter une entrée",
-    "entryLegend": "Entrée de métadonnées",
-    "removeEntryButton": "Supprimer"
+    "addEntryLegend": "",
+    "addEntryButton": "",
+    "entryLegend": "",
+    "removeEntryButton": "Retirer"
   },
   "bots": {
     "searchPlaceholder": "Rechercher des bots...",
-    "onlineCount": "{{online}} connectés / {{total}} au total",
-    "noBots": "Aucun bot configuré. Ajoutez des comptes depuis la page Paramètres du compte.",
+    "noBots": "",
     "noBotsFound": "Aucun bot ne correspond à votre recherche.",
-    "loadingMore": "Chargement de plus...",
     "showingCount": "Affichage de {{loaded}} sur {{total}}",
     "allLoaded": "Tous les {{total}} bots sont chargés",
-    "online": "Connecté",
-    "offline": "Déconnecté",
-    "notJoined": "Non rejoint",
     "connectionPhase": {
       "connecting": "Connexion",
-      "connected": "Connexion en cours",
+      "connected": "",
       "spawned": "Connecté",
       "died": "Mort",
-      "disconnected": "Déconnecté",
+      "disconnected": "",
       "ping": "{{ms}} ms"
     },
-    "runtimeState": {
-      "starting": "Démarrage",
-      "running": "En cours d'exécution",
-      "retrying": "Nouvelle tentative",
-      "stopping": "Arrêt en cours",
-      "failed": "Échec",
-      "waiting": "En attente",
-      "stopped": "Arrêté"
-    },
-    "backToBots": "Retour aux Bots",
+    "backToBots": "",
+    "demoControls": "",
+    "notConnected": "",
     "tabs": {
-      "overview": "Vue du bot",
+      "overview": "",
       "inventory": "Inventaire",
-      "controls": "Contrôles",
-      "terminal": "Terminal"
+      "controls": "",
+      "terminal": "",
+      "label": ""
     },
-    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "Proxy",
       "direct": "Direct (pas de proxy)",
       "unavailable": "Indisponible"
     },
     "positionPanel": {
-      "title": "Position and rotation",
-      "position": "Position",
-      "rotation": "Rotation",
-      "offline": "Le bot est déconnecté. Les données de position ne sont disponibles que lorsque le bot est connecté."
+      "title": "",
+      "x": "",
+      "y": "",
+      "z": "",
+      "pitch": "",
+      "yaw": "",
+      "coordinates": "",
+      "offline": ""
     },
     "chatPanel": {
-      "title": "Messages du chat"
-    },
-    "commandPanel": {
-      "title": "Commandes du bot",
-      "placeholder": "Envoyer une commande à ce bot..."
-    },
-    "povPanel": {
-      "title": "POV du bot",
-      "capture": "Capturer",
-      "refresh": "Rafraîchir",
-      "auto": "Auto",
-      "startAutoRefresh": "Démarrer l\\'actualisation automatique (intervalle de 1 seconde)",
-      "stopAutoRefresh": "Arrêter l\\'actualisation automatique",
-      "clickToCapture": "Cliquez sur Capturer pour afficher le point de vue du bot",
-      "offline": "Le bot est hors ligne. Le rendu du point de vue n'est disponible que lorsque le bot est connecté."
+      "title": "",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": "",
+      "sendErrorReason": "",
+      "cancelled": "",
+      "sending": "",
+      "sent": ""
     },
     "statsPanel": {
       "health": "Santé",
+      "healthLabel": "",
+      "healthValue": "",
       "food": "Nourriture",
-      "saturation": "Saturation",
+      "foodLabel": "",
+      "foodValue": "",
       "experience": "Expérience",
-      "level": "Niveau",
-      "toNextLevel": "jusqu'au prochain niveau",
-      "gameMode": "Mode de jeu",
+      "levelShort": "",
       "survival": "Survie",
       "creative": "Créatif",
       "adventure": "Aventure",
       "spectator": "Spectateur",
-      "unknown": "Inconnu",
-      "offline": "Le bot est déconnecté. Les statistiques ne sont disponibles que lorsque le bot est connecté."
+      "unknown": "Inconnu"
     },
     "inventoryPanel": {
       "title": "Inventaire",
       "actionRejected": "",
-      "hotbar": "Barre rapide",
-      "main": "Inventaire principal",
-      "items": "objets",
+      "actionError": "",
+      "output": "",
+      "slotInfo": {
+        "slot": "",
+        "item": "",
+        "region": "",
+        "hotbar": ""
+      },
       "carrying": "En main",
-      "dropOne": "Lâcher un",
-      "dropAll": "Tout déposer",
+      "dropOne": "",
+      "dropAll": "",
       "closeContainer": "Fermer",
-      "clickHint": "Clic gauche : prendre/placer | Clic droit : moitié/un | Shift+clic : déplacement rapide | Clic molette : sélectionner une case de la barre rapide",
-      "offline": "Le bot est déconnecté. L'inventaire n'est disponible que lorsque le bot est connecté.",
+      "clickHint": "",
+      "offline": "",
+      "waiting": "",
+      "demo": "",
+      "heldSlot": "",
+      "holdSlot": "",
       "buttons": {
         "stonecutterRecipes": "Recettes",
         "enchantments": "Enchantements",
         "patterns": "Motifs",
         "trades": "Échanges",
-        "beaconEffects": "Effets de balise",
-        "crafterSlots": "Contrôles des emplacements",
-        "lecternControls": "Contrôles du livre",
+        "beaconEffects": "",
+        "crafterSlots": "",
+        "lecternControls": "",
         "actions": "Actions",
-        "creativeTabs": "Onglets du mode créatif"
+        "creativeTabs": ""
       },
       "textInput": {
-        "title": "Saisie de texte",
-        "anvilRename": "Renommer l\\'objet",
-        "creativeSearch": "Rechercher des objets"
+        "title": "",
+        "anvilRename": "",
+        "creativeSearch": ""
       },
       "bookPages": {
-        "title": "Contenu du livre",
+        "title": "",
         "emptyPage": "(Page vide)",
         "previousPage": "",
         "nextPage": "",
@@ -530,105 +516,202 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": "Détruire l'objet",
-      "clickHints": {
-        "left": "Clic gauche : prendre ou poser",
-        "right": "Clic droit : prendre la moitié ou poser un objet",
-        "shift": "Maj+clic : déplacement rapide",
-        "middle": "Clic molette : sélectionner comme emplacement actif"
-      }
+      "destroyItem": "",
+      "emptySlot": "",
+      "clickMode": {
+        "label": "",
+        "left": "",
+        "right": "",
+        "shift": "",
+        "middle": ""
+      },
+      "keyboardHint": "",
+      "stack_one": "",
+      "stack_other": "",
+      "itemCount_one": "",
+      "itemCount_other": ""
     },
     "visualPanel": {
-      "title": "Direction et monde",
-      "compass": "Direction regardée",
-      "lookDirection": "Angle de vision",
+      "title": "",
+      "compass": "",
+      "lookDirection": "",
       "lookingUp": "Regarde vers le haut",
       "lookingDown": "Regarde vers le bas",
       "lookingStraight": "Regarde droit devant",
-      "worldInfo": "Infos du monde",
+      "directions": {
+        "n": "",
+        "ne": "",
+        "e": "",
+        "se": "",
+        "s": "",
+        "sw": "",
+        "w": "",
+        "nw": ""
+      },
+      "dimensions": {
+        "overworld": "",
+        "the_nether": "",
+        "the_end": ""
+      },
+      "worldInfo": "",
       "dimension": "Dimension",
-      "biome": "Biome",
-      "offline": "Le bot est déconnecté. Les données visuelles ne sont disponibles que lorsque le bot est connecté."
+      "offline": ""
     },
     "actionsPanel": {
-      "title": "Actions du bot",
-      "leftClick": "Clic gauche",
-      "rightClick": "Clic droit",
+      "title": "",
+      "leftClick": "",
+      "rightClick": "",
       "leftClickDescription": "Attaquer une entité ou casser un bloc",
       "rightClickDescription": "Utiliser un objet ou interagir",
-      "offline": "Le bot est déconnecté. Les actions sont disponibles uniquement lorsque le bot est connecté."
+      "clickError": "",
+      "offline": ""
     },
     "movementPanel": {
       "updateServer": "",
-      "title": "Contrôle du mouvement",
+      "movementError": "",
+      "rotationError": "",
+      "title": "",
       "movement": "Déplacement (WASD)",
-      "forward": "Avancer (W)",
-      "backward": "Reculer (S)",
-      "left": "Aller à gauche (A)",
-      "right": "Aller à droite (D)",
+      "forward": "",
+      "backward": "",
+      "left": "",
+      "right": "",
       "jump": "Sauter",
       "sneak": "Se faufiler",
       "sprint": "Sprinter",
       "stop": "Arrêter",
-      "rotation": "Direction du regard",
-      "lookUp": "Regarder en haut",
-      "lookDown": "Regarder en bas",
-      "lookLeft": "Regarder à gauche",
-      "lookRight": "Regarder à droite",
-      "offline": "Le bot est déconnecté. Les contrôles de mouvement sont disponibles uniquement lorsque le bot est connecté."
+      "rotation": "",
+      "lookUp": "",
+      "lookDown": "",
+      "lookLeft": "",
+      "lookRight": "",
+      "offline": "",
+      "modifiers": ""
     },
     "dialogPanel": {
-      "title": "Dialogue du serveur",
+      "title": "",
       "noDialog": "Aucun dialogue serveur n\\'est actuellement affiché.",
-      "dialogType": "Type",
       "dialogId": "ID du dialogue",
       "notice": "Avis",
       "confirmation": "Confirmation",
-      "multiAction": "Action multiple",
-      "serverLinks": "Liens du serveur",
-      "dialogList": "Liste des dialogues",
+      "multiAction": "",
+      "serverLinks": "",
+      "dialogList": "",
       "unknownType": "Inconnu",
+      "submitError": "",
       "dismiss": "Fermer",
       "submit": "Soumettre",
-      "offline": "Le bot est déconnecté. Les dialogues sont disponibles uniquement lorsque le bot est connecté."
+      "offline": ""
+    },
+    "filterLabel": "",
+    "filterAll": "Tout",
+    "noBotsInState": "",
+    "displayState": {
+      "connected": "Connecté",
+      "starting": "Démarrage",
+      "retrying": "Nouvelle tentative",
+      "failed": "Échec",
+      "stopping": "Arrêt en cours",
+      "stopped": "Arrêté"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
     },
     "pov": {
-      "title": "Vue du bot",
-      "touchControlling": "Vous contrôlez ce bot. Utilisez « Release control » pour arrêter.",
-      "popupBlocked": "Autorisez les pop-ups pour détacher la fenêtre de la vue du bot.",
-      "windowTitle": "Vue du bot SoulFire",
-      "fullscreenUnavailable": "Le plein écran est indisponible dans cette fenêtre.",
-      "textInputLabel": "Saisie de texte Minecraft",
-      "videoLabel": "Vue du bot en direct",
-      "touchMove": "Déplacer",
-      "audioError": "Impossible de démarrer l'audio.",
-      "startError": "Impossible de démarrer la vue du bot.",
-      "releaseHint": "Appuyez sur {{shortcut}} pour libérer votre clavier et votre souris.",
-      "captureHint": "Cliquez sur la vue et autorisez la capture du clavier et de la souris.",
-      "audioWaiting": "En attente de la connexion de la vue du bot.",
-      "audioWatchFirst": "Regardez le bot pour utiliser l'audio.",
-      "audioUpdateServer": "Mettez le serveur à jour pour utiliser l'audio de la vue du bot.",
-      "muteAudio": "Couper l'audio",
-      "unmuteAudio": "Rétablir l'audio",
-      "audioStarting": "Démarrage de l'audio...",
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "reconnecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": "",
+      "popupBlocked": "",
+      "windowTitle": "",
+      "fullscreenUnavailable": "",
+      "textInputLabel": "",
+      "videoLabel": "",
+      "touchMove": "",
+      "audioError": "",
+      "startError": "",
+      "releaseHint": "",
+      "captureHint": "",
+      "capturing": "",
+      "captureCooldown": "",
+      "captureTimeout": "",
+      "audioWaiting": "",
+      "audioWatchFirst": "",
+      "audioUpdateServer": "",
+      "muteAudio": "",
+      "unmuteAudio": "",
+      "audioStarting": "",
       "mute": "Couper le son",
       "unmute": "Rétablir le son",
-      "audio": "Audio",
-      "audioUnavailable": "Audio indisponible",
-      "volume": "Volume de la vue du bot",
-      "reconnect": "Reconnecter",
-      "showWindow": "Afficher la fenêtre de la vue du bot",
-      "attachWindow": "Rattacher la fenêtre de la vue du bot",
+      "audio": "",
+      "audioUnavailable": "",
+      "volume": "",
+      "reconnect": "",
+      "showWindow": "",
+      "attachWindow": "",
       "touch": {
         "jump": "Sauter",
-        "sneak": "S'accroupir",
-        "attack": "Attaquer",
-        "use": "Utiliser",
+        "sneak": "Se faufiler",
+        "attack": "",
+        "use": "",
         "inventory": "Inventaire",
-        "keyboard": "Clavier",
-        "closeMenu": "Fermer le menu"
+        "keyboard": "",
+        "closeMenu": ""
       },
-      "needsServer": "La vue du bot nécessite un serveur SoulFire connecté."
+      "needsServer": "",
+      "connectTimeout": "",
+      "reconnectFailed": "",
+      "inputUpdateServer": "",
+      "inputUnavailable": "",
+      "decoderUnsupported": "",
+      "videoUnsupportedBrowser": "",
+      "audioUnsupportedBrowser": "",
+      "audioDecodeUnsupported": "",
+      "audioBlocked": "",
+      "audioInvalidFrame": "",
+      "streamMetrics": {
+        "title": "",
+        "waitingForVideo": "",
+        "unknown": "",
+        "fps": "",
+        "video": "",
+        "target": "",
+        "decoder": "",
+        "decoderWaitingForKey": "",
+        "keyframes": ""
+      },
+      "step": {
+        "online": "",
+        "queued": "",
+        "starting": "",
+        "joining": "",
+        "retrying": "",
+        "failed": "",
+        "stopping": "",
+        "stopped": ""
+      }
     }
   },
   "metrics": {
@@ -636,21 +719,8 @@
       "noData": "Aucune donnée"
     },
     "summary": {
-      "online": "Connecté",
-      "packetsPerSecond": "Paq/s",
       "traffic": "Trafic",
-      "health": "Santé",
       "tick": "Tick"
-    },
-    "botsOnline": {
-      "title": "Bots connectés",
-      "online": "Connecté",
-      "total": "Total"
-    },
-    "packets": {
-      "title": "Paquets / seconde",
-      "sent": "Envoyé/s",
-      "received": "Reçu/s"
     },
     "bandwidth": {
       "title": "Bande passante",
@@ -658,88 +728,76 @@
       "download": "Téléchargement"
     },
     "tick": {
-      "title": "Durée du tick",
+      "title": "",
       "avg": "Moy (ms)",
       "max": "Max (ms)"
     },
-    "healthFood": {
-      "title": "Santé / Nourriture",
-      "health": "Santé moyenne",
-      "food": "Nourriture moyenne"
-    },
-    "chunksEntities": {
-      "title": "Chunks / Entités",
-      "chunks": "Chunks",
-      "entities": "Entités"
-    },
-    "connections": {
-      "title": "Événements de connexion",
-      "connections": "Connexions",
-      "disconnections": "Déconnexions"
-    },
-    "healthDistribution": {
-      "title": "Distribution de la santé",
-      "bots": "Bots"
-    },
     "dimensions": {
-      "title": "Dimensions",
-      "bots": "Bots"
+      "title": "Dimensions"
     },
     "gameModes": {
-      "title": "Modes de jeu",
-      "bots": "Bots"
+      "title": ""
     },
     "positions": {
-      "title": "Positions du bot (XZ)",
+      "title": "",
       "bot": "Bot"
     }
   },
   "scripts": {
-    "title": "Scripts visuels",
-    "description": "Créez des scripts d'automatisation à l'aide d'un éditeur visuel basé sur des nœuds.",
-    "experimentalTitle": "Fonctionnalité expérimentale",
-    "experimentalWarning": "Cette fonctionnalité est expérimentale. De futures mises à jour peuvent casser des scripts existants. À utiliser avec précaution.",
-    "createScript": "Créer un script",
-    "createScriptTitle": "Créer un nouveau script",
-    "createScriptDescription": "Créez un nouveau script visuel pour cette instance. Les scripts peuvent automatiser les actions du bot et réagir aux événements.",
-    "scriptName": "Nom du script",
+    "title": "",
+    "description": "",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
+    "scriptName": "",
     "scriptNamePlaceholder": "Entrez le nom du script...",
     "scriptDescription": "Description",
     "scriptDescriptionPlaceholder": "Décrivez ce que fait ce script...",
     "create": "Créer",
-    "createSuccess": "Script créé avec succès",
-    "createError": "Échec de la création du script",
-    "noScripts": "Aucun script pour le moment",
-    "noScriptsDescription": "Créez votre premier script pour automatiser les actions du bot à l'aide de l'éditeur visuel basé sur des nœuds.",
-    "createFirstScript": "Créer un script",
-    "running": "En cours d'exécution",
-    "paused": "Suspendu",
-    "nodes": "nœuds",
+    "createSuccess": "",
+    "createError": "",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "running": "",
+    "paused": "",
     "noDescription": "Aucune description",
+    "edited": "",
+    "searchPlaceholder": "",
+    "filterLabel": "",
+    "filter": {
+      "all": "Tout",
+      "on": "",
+      "off": ""
+    },
+    "sort": {
+      "label": "",
+      "edited": "",
+      "name": "Nom"
+    },
+    "noMatches": "",
     "edit": "Éditer",
-    "pause": "Pauser",
-    "pauseSuccess": "Script en pause",
-    "pauseError": "Échec de la mise en pause du script",
-    "resume": "Reprendre",
-    "resumeSuccess": "Script repris",
-    "resumeError": "Échec de la reprise du script",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "Supprimer",
-    "deleteSuccess": "Script supprimé avec succès",
-    "deleteError": "Échec de la suppression du script",
-    "saveSuccess": "Script enregistré avec succès",
-    "saveError": "Échec de l'enregistrement du script",
-    "activateSuccess": "Script activé",
-    "activateError": "Échec de l'activation du script",
-    "deactivateSuccess": "Script désactivé",
-    "untitledScript": "Script sans titre",
-    "saveFirstBeforeActivating": "Enregistrez d'abord le script avant de l'activer",
-    "activating": "Activation du script...",
-    "activated": "Script activé",
+    "deleteSuccess": "",
+    "deleteError": "",
+    "saveSuccess": "",
+    "saveError": "",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
+    "untitledScript": "",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "Script terminé",
-    "executionCompletedSuccess": "Script terminé avec succès",
-    "deactivated": "Script désactivé",
-    "deactivatedByUser": "Script désactivé par l'utilisateur",
-    "executionFailed": "Échec de l'exécution du script",
+    "executionCompletedSuccess": "Script terminé",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionError": "Erreur d'exécution\u0000a0: {{error}}",
     "monitoringError": "",
     "monitoringDisconnected": "",
@@ -747,112 +805,135 @@
     "nodeCompleted": "Nœud terminé\u0000a0: {{nodeId}}",
     "nodeError": "Erreur du nœud\u0000a0: {{error}}",
     "contextMenu": {
-      "edit": "Éditer le script",
-      "pause": "Pauser",
-      "resume": "Reprendre",
-      "delete": "Supprimer le script",
-      "copyScriptName": "Copier le nom du script",
-      "copyScriptId": "Copier l'ID du script"
+      "edit": "",
+      "pause": "",
+      "resume": "",
+      "delete": "",
+      "copyScriptName": "",
+      "copyScriptId": ""
     },
     "editor": {
       "toolbar": {
         "actions": "",
-        "backToScripts": "Retour aux scripts",
+        "backToScripts": "",
         "save": "Enregistrer",
-        "saveTooltip": "Enregistrer le script",
-        "resume": "Reprendre",
-        "resumeTooltip": "Reprendre l'exécution du script",
-        "pause": "Pauser",
-        "pauseTooltip": "Mettre en pause l'exécution du script",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "Non enregistré",
         "unsavedChanges": "Modifications non enregistrées",
-        "clearCanvas": "Effacer le canevas",
-        "zoomIn": "Agrandir",
-        "zoomOut": "Rétrécir",
-        "fit": "Adapter",
         "export": "Exporter le script",
         "import": "Importer le script",
-        "exportSuccess": "Script exporté avec succès",
-        "importSuccess": "Script importé avec succès",
-        "importError": "Échec de l'importation du script"
+        "exportSuccess": "",
+        "importSuccess": "",
+        "importError": "",
+        "resumeBlocked": "",
+        "undo": "",
+        "redo": "",
+        "resumeSaveFirst": "",
+        "scriptName": ""
       },
       "palette": {
-        "title": "Palette de nœuds",
+        "title": "",
         "search": "Rechercher des nœuds...",
-        "noResults": "Aucun nœud ne correspond à votre recherche",
-        "noResultsDescription": "Essayez un autre terme ou effacez le filtre actuel."
+        "noResults": "",
+        "noResultsDescription": ""
       },
       "logs": {
-        "title": "Journaux d'exécution",
+        "title": "",
         "clearTitle": "Effacer les journaux",
-        "noLogs": "Pas encore de journaux. Exécutez le script pour voir les journaux d'exécution.",
+        "noLogs": "",
+        "levels": {
+          "debug": "",
+          "info": "",
+          "warn": "",
+          "error": "Erreur"
+        },
         "entries_one": "{{count}} entrée",
         "entries_other": "{{count}} entrées"
       },
       "contextMenu": {
         "duplicate": "Dupliquer",
         "rename": "Renommer",
-        "disconnectAll": "Tout déconnecter",
+        "disconnectAll": "",
         "collapse": "Réduire",
         "expand": "Développer",
         "mute": "Couper le son",
         "unmute": "Rétablir le son",
-        "showPreview": "Afficher l'aperçu",
-        "hidePreview": "Masquer l'aperçu",
+        "showPreview": "",
+        "hidePreview": "",
+        "openGroup": "",
+        "ungroup": "",
         "delete": "Supprimer"
+      },
+      "connection": {
+        "self": "",
+        "execution": "",
+        "type": ""
       },
       "node": {
         "expand": "Développer le nœud",
         "collapse": "Réduire le nœud",
-        "avgTime": "Temps d'exécution moyen : {{avg}} ms ({{count}} dernières exécutions)",
-        "preview": "Aperçu"
+        "avgTimeBadge": "",
+        "preview": "",
+        "muted": "",
+        "avgDuration_one": "",
+        "avgDuration_other": ""
       },
       "debug": {
         "copyValue": "Copier la valeur actuelle",
         "clearHistory": "Effacer l'historique",
-        "current": "Actuel ({{time}}) :",
-        "noValue": "Aucune valeur reçue pour l'instant"
+        "current": "",
+        "noValue": "",
+        "input": "",
+        "output": "",
+        "history_one": "",
+        "history_other": ""
       },
       "edge": {
         "direction": "Direction de l'arête"
       },
       "note": {
-        "placeholder": "Écrire une note..."
+        "placeholder": "Écrire une note...",
+        "contentLabel": ""
       },
       "complexity": {
         "title": "Score de complexité du script"
       },
       "group": {
         "returnToRoot": "Revenir à la racine (Tab)",
-        "root": "Racine",
-        "exitHint": "Appuyez sur <key>Tab</key> pour quitter",
-        "editHint": "Double-cliquez pour modifier",
-        "noInputs": "Aucune entrée définie",
-        "noOutputs": "Aucune sortie définie"
+        "root": "",
+        "defaultLabel": "",
+        "exitHint": "",
+        "editHint": "",
+        "noInputs": "",
+        "noOutputs": ""
       },
       "quickAdd": {
         "menuLabel": "Menu d'ajout rapide de nœud",
         "searchPlaceholder": "Rechercher des nœuds...",
-        "noResults": "Aucun nœud trouvé",
+        "noResults": "",
         "noResultsDescription": "Essayez un autre terme de recherche.",
-        "navigate": "Naviguer",
-        "select": "Entrée pour sélectionner",
-        "close": "Échap pour fermer"
+        "navigate": "",
+        "select": "",
+        "close": ""
       },
       "diff": {
         "tooltip": "Revoir les modifications",
         "title": "Modifications non enregistrées",
-        "description": "Modifications depuis le dernier enregistrement.",
-        "nodesAdded_one": "{{count}} nœud ajouté",
-        "nodesAdded_other": "{{count}} nœuds ajoutés",
-        "nodesRemoved_one": "{{count}} nœud supprimé",
-        "nodesRemoved_other": "{{count}} nœuds supprimés",
-        "nodesModified_one": "{{count}} nœud modifié",
-        "nodesModified_other": "{{count}} nœuds modifiés",
-        "edgesAdded_one": "{{count}} lien ajouté",
-        "edgesAdded_other": "{{count}} liens ajoutés",
-        "edgesRemoved_one": "{{count}} lien supprimé",
-        "edgesRemoved_other": "{{count}} liens supprimés"
+        "description": "",
+        "nodesAdded_one": "",
+        "nodesAdded_other": "",
+        "nodesRemoved_one": "",
+        "nodesRemoved_other": "",
+        "nodesModified_one": "",
+        "nodesModified_other": "",
+        "edgesAdded_one": "",
+        "edgesAdded_other": "",
+        "edgesRemoved_one": "",
+        "edgesRemoved_other": ""
       },
       "dryRun": {
         "saveFirst": "",
@@ -865,55 +946,695 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "Exécution à sec",
-        "title": "Script d'exécution à sec",
-        "description": "Exécutez un script à partir d'un déclencheur sélectionné avec des entrées simulées.",
-        "triggerNode": "Nœud de déclenchement",
+        "tooltip": "",
+        "title": "",
+        "description": "",
+        "triggerNode": "",
         "selectTrigger": "Sélectionnez un déclencheur...",
-        "triggerDescription": "Sélectionnez le nœud de déclenchement à exécuter avec les valeurs d'entrée simulées.",
-        "mockInputs": "Entrées simulées",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "valeur {{type}}",
-        "start": "Démarrer l'exécution à sec",
+        "start": "",
+        "button": "",
         "stats_one": "",
         "stats_other": ""
       },
       "quotas": {
-        "tooltip": "Quotas du script",
-        "title": "Quotas du script",
+        "tooltip": "",
+        "title": "",
         "description": "Configurez les limites de ressources pour ce script. Les champs vides utilisent les valeurs par défaut du serveur.",
-        "maxExecutionCount": "Nombre maximal d'exécutions",
+        "maxExecutionCount": "",
         "maxExecutionCountPlaceholder": "100000",
-        "maxExecutionCountDescription": "Nombre maximal d'exécutions de nœuds par déclencheur",
-        "maxExecutionTime": "Temps d'exécution maximal (ms)",
+        "maxExecutionCountDescription": "",
+        "maxExecutionTime": "",
         "maxExecutionTimePlaceholder": "30000",
-        "maxExecutionTimeDescription": "Temps maximal en temps réel par exécution de déclencheur",
-        "maxConcurrentTriggers": "Déclencheurs simultanés max",
+        "maxExecutionTimeDescription": "",
+        "maxConcurrentTriggers": "",
         "maxConcurrentTriggersPlaceholder": "1",
-        "maxConcurrentTriggersDescription": "Nombre maximal de déclenchements simultanés",
-        "maxStateStoreEntries": "Nombre maximal d'entrées dans le magasin d'état",
+        "maxConcurrentTriggersDescription": "",
+        "maxStateStoreEntries": "",
         "maxStateStoreEntriesPlaceholder": "Illimité",
-        "maxStateStoreEntriesDescription": "Nombre maximal d'entrées dans le magasin d'état du script",
-        "disableTimeouts": "Désactiver les délais d'attente",
-        "disableTimeoutsDescription": "Désactive les délais d'attente par nœud et sur les arêtes de données",
-        "save": "Enregistrer les quotas",
+        "maxStateStoreEntriesDescription": "",
+        "disableTimeouts": "",
+        "disableTimeoutsDescription": "",
+        "save": "",
         "invalidInteger": ""
       },
       "multiInput": {
-        "reorder": "Réorganiser {{label}}",
-        "empty": "Aucune valeur entrante",
-        "title": "Entrée multiple : accepte plusieurs connexions",
-        "connectTo": "Connectez des valeurs à {{label}}"
+        "reorder": "",
+        "empty": "",
+        "title": "",
+        "connectTo": ""
+      },
+      "shortcuts": {
+        "title": "",
+        "description": "",
+        "mouse": {
+          "drag": "",
+          "rightClick": ""
+        },
+        "actions": {
+          "quickAdd": "",
+          "quickAddAtCursor": "",
+          "selectAll": "",
+          "deselectAll": "",
+          "selectLinked": "",
+          "selectUpstream": "",
+          "selectDownstream": "",
+          "selectSimilar": "",
+          "duplicate": "",
+          "copy": "",
+          "paste": "",
+          "delete": "",
+          "rename": "",
+          "mute": "",
+          "collapse": "",
+          "hideSockets": "",
+          "preview": "",
+          "group": "",
+          "ungroup": "",
+          "enterGroup": "",
+          "frame": "",
+          "align": "",
+          "distribute": "",
+          "cutLinks": "",
+          "reroute": "",
+          "undo": "",
+          "redo": ""
+        }
+      },
+      "unsavedDialog": {
+        "title": "",
+        "description": "",
+        "stay": "",
+        "leave": ""
+      },
+      "layoutNodes": {
+        "category": {
+          "name": "",
+          "description": ""
+        },
+        "reroute": {
+          "label": "",
+          "description": ""
+        },
+        "frame": {
+          "label": "",
+          "description": ""
+        },
+        "group": {
+          "label": "",
+          "description": ""
+        },
+        "groupInput": {
+          "label": "",
+          "description": ""
+        },
+        "groupOutput": {
+          "label": "",
+          "description": ""
+        },
+        "debug": {
+          "label": "",
+          "description": ""
+        },
+        "note": {
+          "label": "",
+          "description": ""
+        }
+      }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_one": "",
+      "errors_other": "",
+      "warnings_one": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
       }
     },
     "deleteDialog": {
-      "title": "Supprimer le script ?",
-      "description": "Cela supprime définitivement « {{name}} ». Cette action est irréversible.",
-      "descriptionUnnamed": "Cela supprime définitivement le script. Cette action est irréversible."
+      "title": "",
+      "description": "",
+      "descriptionUnnamed": ""
     },
-    "executionStats": "Statistiques d'exécution : {{executed}}/{{max}} nœuds exécutés"
+    "executionStats": "",
+    "nodes_one": "",
+    "nodes_other": ""
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "Action",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "Se connecter",
+    "back": "Retour",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "Tout",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "Se connecter",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "Total",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "Aucun",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_one": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_one": "",
+      "limit_other": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "delivered_one": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "backupTitle": "",
+      "backupDescription": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "importing_one": "",
+      "importing_other": "",
+      "copyCredentials_one": "",
+      "copyCredentials_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_one": "",
+    "importAccounts_other": "",
+    "inStock_one": "",
+    "inStock_other": "",
+    "previewMore_one": "",
+    "previewMore_other": "",
+    "preview_one": "",
+    "preview_other": "",
+    "importProxies_one": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_one": "",
+      "noneRunning_other": "",
+      "allConnected_one": "",
+      "allConnected_other": "",
+      "partial_one": "",
+      "partial_other": "",
+      "connecting_one": "",
+      "connecting_other": ""
+    },
+    "state": {
+      "connected": "connecté",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_one": "",
+      "failed_other": "",
+      "retrying_one": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "onlineAuth": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "blocked": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_one": "Redémarrer {{count}} bot",
+    "restartGroup_other": "Redémarrer {{count}} bots",
+    "restartRequested_one": "",
+    "restartRequested_other": "",
+    "namesMore_one": "",
+    "namesMore_other": "",
+    "connectingHint_one": "",
+    "connectingHint_other": ""
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "Optionnel",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "Ouvrir tous les paramètres",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "Comptes",
+      "reviewProxies": "Proxys",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "addAccounts": "",
+      "error": "",
+      "noneStarted": "",
+      "action_one": "Démarrer {{count}} bot",
+      "action_other": "Démarrer {{count}} bots",
+      "countLimit_one": "",
+      "countLimit_other": "",
+      "countInvalid_one": "",
+      "countInvalid_other": ""
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }
