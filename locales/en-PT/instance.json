@@ -1,67 +1,19 @@
 {
   "overview": {
-    "logsDescription": "Ye can spy the raw instance booty here when ye be needin' to inspect the console secrets, arrr!",
-    "summary": {
-      "accounts": "Crew Accounts",
-      "proxies": "Proxy Ships",
-      "configured": "{{count}} rigged for sailin'",
-      "configuredShort": "Rigged",
-      "currentRate": "Flow o' doubloons",
-      "imported": "Plundered"
-    },
-    "readiness": {
-      "title": "Chart the Course",
-      "accounts": "Crew Accounts",
-      "accountsValue": "{{count}} smuggled in fer {{requested}} bots ye asked fer, arrr!",
-      "proxies": "Proxy Ships",
-      "proxiesValue": "{{count}} rigged for sailin'",
-      "plugins": "Pirate Add-ons",
-      "pluginsValue": "{{count}} be at the ready, matey!"
-    },
-    "activity": {
-      "title": "Cap'n's Log",
-      "tick": "Tick o' the Clock",
-      "health": "Vigor",
-      "world": "Seas",
-      "worldValue": "{{chunks}} shipwrecks, {{entities}} beasties",
-      "connections": "Gangplank Crossin's",
-      "connectionsValue": "+{{connections}} scallywags joined / -{{disconnections}} thrown overboard",
-      "noDataTitle": "The Treasure Map",
-      "noDataDescription": "No booty marked on the map yet, ye scalawag."
-    },
-    "metricsUnavailable": {
-      "title": "The Treasure Map",
-      "inactive": "Hoist the anchor and set sail with a bot to plunder live metrics, matey!",
-      "noPermission": "Ye ain't got the rank to gaze at bot treasure logs."
-    },
-    "status": {
-      "ready": "Aye, ready as a sea dog!",
-      "attention": "Needs a lookout in the crow's nest!",
-      "configured": "Rigged",
-      "optional": "Fer those that fancy extra trinkets",
-      "available": "On deck!",
-      "none": "Nay"
-    },
-    "actions": {
-      "manage": "Commandeer",
-      "open": "Hoist Open!"
-    },
-    "spotlight": {
-      "noBots": "No bots on deck, matey.",
-      "idle": "Swingin' in a hammock, waitin' for orders.",
-      "level": "Scallywag Lvl {{level}}"
-    },
+    "logsDescription": "",
     "liveFeed": {
       "title": "Spyglass Feed",
-      "empty": "Awaitin' signs of life from yer instance...",
+      "empty": "",
       "noPermission": "The first mate says ye can't spy the live feed.",
       "lifecycle": {
         "connecting": "be battlin' the sea monster to connect",
         "connected": "boarded the vessel",
         "spawned": "joined the crew",
         "died": "went to Davy Jones' locker",
+        "diedWithReason": "",
         "respawned": "washed ashore again",
         "disconnected": "left the ship",
+        "disconnectedWithReason": "",
         "unknown": "shifted course"
       },
       "pause": "Drop anchor",
@@ -80,11 +32,12 @@
         "time": "Hourglass",
         "bot": "Bot Buccaneer",
         "message": "Message in a bottle"
-      }
+      },
+      "botCount_one": "",
+      "botCount_other": ""
     },
     "bots": {
       "title": "Crew",
-      "viewAll": "Gaze at all {{total}} bots in the fleet",
       "viewAllShort": "Show all hands",
       "detailsFor": "Details o' the bot fer {{name}}, aye"
     },
@@ -92,21 +45,20 @@
       "title": "Recent deeds & mischief",
       "viewAll": "View the ol' logs, matey",
       "empty": "No tales in the log yet, matey.",
-      "noPermission": "Ye lack permission to read the pirate's ledger.",
       "types": {
         "executeCommand": "spoke an order: {{data}}",
         "botDesiredStateChange": "changed th' bot's wantin' state, arrr",
         "botRestart": "lashed the bots to th' mainmast and restarted 'em, aye!",
+        "pluginRpc": "",
         "unknown": "pulled a fast one"
       }
     },
     "plugins": {
       "title": "Pirate Add-ons",
-      "empty": "No plugins have sent a parrot squawk yet.",
-      "noPermission": "Ye ain't permitted to eye plugin squawks.",
       "active": "Active n' sailin'",
-      "activeBots": "{{count}} bots swabbin' the decks",
-      "uptime": "sailing for {{time}}"
+      "uptime": "sailing for {{time}}",
+      "activeBots_one": "",
+      "activeBots_other": ""
     },
     "detailed": {
       "title": "Finer Booty Details",
@@ -119,180 +71,244 @@
       "network": "Netwurk address, me heartie",
       "unix": "Unix socket, yarrr"
     },
-    "getProxies": "Proxy suppliers",
-    "addProxies": "Add more proxies t' yer crew!",
-    "filterPlaceholder": "Arr, filter them scallywag proxies...",
+    "getProxies": "",
+    "addProxies": "",
+    "settingsTitle": "",
     "listImportToast": {
-      "loading": "Importin' yer proxies...",
-      "success": "{{count}} proxies hauled aboard, aye!",
-      "error": "Failed t'be importin' yer proxies!",
-      "noProxies": "No proxies t'be importin', matey."
+      "success_one": "",
+      "success_other": "",
+      "skipped_one": "",
+      "skipped_other": "",
+      "duplicates_one": "",
+      "duplicates_other": ""
     },
     "import": {
-      "proxyType": "Type o' Proxy",
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "importing": "Importin' yer proxies...",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_one": "",
+        "accepted_other": "",
+        "alreadyInProject_one": "",
+        "alreadyInProject_other": "",
+        "rejected_one": "",
+        "rejected_other": "",
+        "confirm_one": "",
+        "confirm_other": ""
+      },
+      "proxyType": "",
       "http": "HTTP (Harbor Tunnelin' Pirate)",
       "socks4": "SOCKS4 (Sea O' Connections, Kind 4)",
       "socks5": "SOCKS5 (Sea O' Connections, Kind 5)",
       "uri": "URI (Uncharted Route Indicator)",
       "dialog": {
         "title": "Bring in {{type}} proxies, arr!",
-        "description": "Paste yer proxies here, one per scrap o' parchment"
+        "description": ""
       }
     },
     "removeToast": {
       "loading": "Be removin' proxies, stand fast!",
-      "success": "Sent {{count}} proxies t' Davy Jones' locker!",
-      "error": "Failed t'remove them proxies, ye scurvy dog!"
+      "error": "",
+      "success_one": "",
+      "success_other": ""
     },
     "checkToast": {
-      "loading": "Checkin' proxies... {{checked}}/{{total}} (Aye: {{success}} Nay: {{failed}})",
-      "success": "Ye tossed {{count}} broke proxies overboard!",
-      "error": "Couldn't check them proxies, mate!",
-      "successKept": "{{failed}} o' {{total}} proxies failed the check. No proxies went overboard."
+      "loading": "",
+      "error": "",
+      "success_one": "",
+      "success_other": "",
+      "successKept_one": "",
+      "successKept_other": ""
     },
     "checkDialog": {
-      "title": "Check Proxies, hoist the lantern!",
-      "description": "Ye be about to check {{count}} proxies.",
-      "confirm": "Hoist the check!",
-      "removeFailed": "Toss the proxies that fail",
-      "removeFailedHelp": "A proxy can fail from a passin' squall on the network. Clear this option to keep every proxy an' only see the result."
+      "title": "",
+      "confirm": "",
+      "removeFailed": "",
+      "removeFailedHelp": "",
+      "description_one": "",
+      "description_other": ""
     },
-    "invalidFormat": "That be an invalid proxy format, yarrr!",
     "table": {
       "type": "Cargo Type",
       "address": "Port",
       "username": "Name o' the Mate",
       "password": "Secret Code",
       "searchAddresses": "Search fer addresses...",
-      "searchUsernames": "Seek crew names...",
-      "searchPasswords": "Hunt fer passwords..."
+      "searchUsernames": "Seek crew names..."
     },
     "removeSelectedTooltip": "Toss chosen proxies t' the deep!",
     "exportSelectedTooltip": "Export chosen proxies t' treasure map!",
     "checkSelectedTooltip": "Check chosen proxies, matey!",
     "contextMenu": {
-      "copyAddress": "Copy Port",
-      "copyUsername": "Snatch Pirate Name",
-      "copyPassword": "Copy Secret Passphrase",
-      "deleteProxy": "Delete Proxy, make 'em walk the plank!"
+      "copyAddress": "",
+      "copyUsername": "",
+      "copyPassword": "",
+      "deleteProxy": ""
     },
     "postImportCheckDialog": {
       "title": "Be wantin' to check the imported proxies, matey?",
-      "description": "Ye hauled in {{count}} proxies. Check 'em now?",
-      "confirm": "Check Proxies, hoist the lantern!",
-      "skip": "Skip, avast!"
+      "confirm": "",
+      "skip": "Skip, avast!",
+      "description_one": "",
+      "description_other": ""
     },
     "export": {
-      "format": "Export Cargo Format",
-      "uri": "Map Format (all types)",
-      "http": "Just HTTP (flat deck)",
-      "socks4": "Just SOCKS4 (flat deck)",
-      "socks5": "Just SOCKS5 (flat deck)",
+      "format": "",
+      "uri": "",
+      "http": "",
+      "socks4": "",
+      "socks5": "",
       "noProxies": "No proxies t'be exportin', mate!"
     },
     "removeDialog": {
-      "title_one": "Toss {{count}} proxy overboard?",
-      "title_other": "Toss {{count}} proxies overboard?",
-      "description": "This tosses the chosen proxies an' their secrets off this fleet. Ye cannot undo this.",
-      "confirm": "Toss proxies overboard"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     },
-    "showPassword": "Show the secret word",
-    "hidePassword": "Hide the secret word"
+    "removeSingleDialog": {
+      "title": "",
+      "description": "",
+      "confirm": ""
+    },
+    "showPassword": "",
+    "hidePassword": ""
   },
   "account": {
-    "getAccounts": "Scallywag suppliers",
-    "addAccounts": "Add Accounts, add scalawags!",
-    "generateAccounts": "Be makin' new accounts!",
-    "filterPlaceholder": "Filter accounts, ye swab...",
+    "getAccounts": "",
+    "addAccounts": "",
+    "settingsTitle": "",
+    "generateAccounts": "",
     "listImportToast": {
-      "loading": "Importin' accounts... {{checked}}/{{total}} (Success: {{success}} Failed: {{failed}})",
-      "allFailed": "Arr, failed t'be importin' any accounts!",
-      "someFailed": "Imported {{count}} accounts, but {{failed}} be refusin' t'board, matey!",
-      "noneFailed": "{{count}} accounts plundered aboard!",
-      "error": "Arr, failed t'be importin' accounts, ye landlubber!",
-      "noAccounts": "No accounts t'be importin', ye barnacle."
+      "loading": "",
+      "allFailed": "",
+      "cancelled": "",
+      "error": "",
+      "copyCredentials": "",
+      "noAccounts": "",
+      "errorReason": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      },
+      "someFailed_one": "",
+      "someFailed_other": "",
+      "noneFailed_one": "",
+      "noneFailed_other": "",
+      "cancelledSaved_one": "",
+      "cancelledSaved_other": "",
+      "errorSaved_one": "",
+      "errorSaved_other": ""
     },
-    "unknownError": "A blimey unknown error!",
     "types": {
-      "OFFLINE": "Off th' grid",
-      "MICROSOFT_JAVA_CREDENTIALS": "Java (Booty Papers)",
-      "MICROSOFT_JAVA_DEVICE_CODE": "Java (Spyglass Mark)",
-      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Rum Token)",
-      "MICROSOFT_JAVA_COOKIES": "Java (Biscuit Crumbs)",
-      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (Plank Pass)",
+      "OFFLINE": "",
+      "MICROSOFT_JAVA_CREDENTIALS": "",
+      "MICROSOFT_JAVA_DEVICE_CODE": "",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "",
+      "MICROSOFT_JAVA_COOKIES": "",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "",
       "THE_ALTENING": "Java (TheAltening)",
-      "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock (Booty Papers)",
-      "MICROSOFT_BEDROCK_DEVICE_CODE": "Bedrock (Spyglass Mark)"
+      "MICROSOFT_BEDROCK_CREDENTIALS": "",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": ""
     },
     "deviceCodeImportToast": {
       "loading": "Importin' account... ready yer ship!",
-      "success": "Account taken from the deep!",
-      "error": "Couldn't drag the account aboard, matey!"
+      "success": "",
+      "error": "",
+      "saving": "",
+      "saveError": "",
+      "retrySave": ""
     },
     "generate": {
-      "title": "Be manufacturin' Offline Accounts",
+      "replaceAllDialog": {
+        "description": "",
+        "confirm": "",
+        "title_one": "",
+        "title_other": ""
+      },
+      "title": "",
       "description": "Spawn offline Java accounts with a secret name code, arrr.",
-      "amount": "Booty Amount",
-      "nameFormat": "Name Chart",
-      "nameFormatHelp": "Hoist %d fer the account number. For example, Bot_%d gives ye names like Bot_1 an' Bot_2, arr!",
-      "mode": "Stowed Accounts",
-      "modeHelp": "Choose how ye handle accounts already in yer hold:\n\n• Ignore 'Em: Only generate accounts with shiny new names. Keep all accounts ye already got.\n\n• Replace Some: Generate the number o' accounts ye want. Replace those with matchin' UUIDs. All other accounts stay put.\n\n• Replace All: Cast away all o' yer old accounts! Then add the freshly generated ones to yer crew.",
-      "modeIgnoreExisting": "Ignore Existin', leave 'em be!",
-      "modeReplaceExisting": "Replace Existin', swap 'em!",
-      "modeReplaceAll": "Replace the Lot!",
+      "amount": "",
+      "nameFormat": "",
+      "nameFormatHelp": "",
+      "mode": "",
+      "modeHelp": "",
+      "modeIgnoreExisting": "",
+      "modeReplaceExisting": "",
+      "modeReplaceAll": "",
       "submit": "Forge it!",
       "generating": "Forgin'...",
-      "progress": "Forgin' accounts... {{checked}}/{{total}} (Aye: {{success}} Nay: {{failed}})",
-      "success": "Forged {{count}} new accounts, aye!",
-      "allFailed": "Couldn't make a single account, arrr!",
-      "allExist": "All names be taken already. Choose \"Replace Existin', swap 'em!\" to forge 'em again.",
-      "error": "Account forgin' went belly-up!",
-      "invalidAmount": "Give us a proper amount (at least 1 piece o' eight)",
-      "missingPlaceholder": "Name chart must fly the %d flag, matey!"
+      "progress": "",
+      "allFailed": "",
+      "allExist": "",
+      "error": "",
+      "amountOutOfRange": "",
+      "missingNameFormat": "",
+      "success_one": "",
+      "success_other": "",
+      "preview_one": "",
+      "preview_other": ""
     },
     "import": {
       "javaEdition": "Java Edition",
       "bedrockEdition": "Bedrock Edition",
       "offline": "Off th' grid",
-      "microsoftCredentials": "Microsoft Treasure Map",
-      "microsoftDeviceCode": "Microsoft device code",
-      "microsoftRefreshToken": "Microsoft Rum Token (Refresh)",
-      "microsoftCookies": "Microsoft Biscuits",
-      "microsoftAccessToken": "Microsoft Booty Access Token",
-      "theAltening": "TheAltenin' Doubloon Token",
-      "altProviders": "Alt Providers o' th' Seas",
+      "microsoftCredentials": "",
+      "microsoftDeviceCode": "",
+      "microsoftRefreshToken": "",
+      "microsoftCookies": "",
+      "microsoftAccessToken": "",
+      "theAltening": "",
+      "altProviders": "",
       "dialog": {
-        "title": "Bring in {{type}} accounts, hoist the sails!",
-        "description": "Paste yer accounts here, one per line o' rope"
+        "title": "Bring in {{type}} accounts, hoist the sails!"
+      },
+      "demo": "",
+      "format": {
+        "offline": "",
+        "microsoftCredentials": "",
+        "refreshToken": "",
+        "cookies": "",
+        "accessToken": "",
+        "theAltening": ""
       }
     },
     "removeToast": {
       "loading": "Removing accounts... tossin' overboard!",
-      "success": "Tossed {{count}} accounts to the briny deep!",
-      "error": "Couldn't toss them accounts, shiver me timbers!"
+      "error": "",
+      "success_one": "",
+      "success_other": ""
     },
     "table": {
       "type": "Cargo Type",
-      "profileId": "Sailor ID",
+      "profileId": "",
       "lastKnownName": "Name o' the Mate",
       "searchProfileIds": "Search pirate IDs...",
-      "searchLastKnownNames": "Seek out last known names...",
+      "searchLastKnownNames": "Seek crew names...",
       "actions": "Duties"
     },
     "removeSelectedTooltip": "Throw chosen accounts overboard!",
     "contextMenu": {
-      "openConfig": "Open the chart room",
-      "openMetadata": "Unleash Metadata!",
-      "copyProfileId": "Copy Pirate ID",
-      "copyUsername": "Snatch Pirate Name"
+      "openConfig": "",
+      "openMetadata": "",
+      "copyProfileId": "",
+      "copyUsername": ""
     },
     "config": {
       "title": "Rig {{name}} fer sailin'",
-      "description": "Set per-bot gear fer this account",
+      "description": "",
       "openButton": "Rig up the account",
-      "pageTitle": "{{name}} - {{page}} Ship's Settings",
       "noSettings": "No ship's settings fer this page, matey",
       "search": "Search fer settin's",
+      "pages": "",
       "overrides": "Overrides, arrr",
       "allSettings": "All me settin's",
       "noOverrides": "This here bot be lackin' any explicit orders yet, matey.",
@@ -303,226 +319,196 @@
       "selectPage": "Pick a settings page, ye scallywag",
       "noSearchResults": "Nay settings be matchin' this here search.",
       "matchesInheritedValue": "Aye, this matches yer inherited booty",
-      "instanceValue": "This be the instance value, arrr!",
+      "instanceValue": "",
       "defaultValue": "This be the default booty, savvy?",
       "resetOverride": "Scuttle the override and set sail anew!",
       "value": {
-        "notSet": "Not set",
-        "on": "Lit",
-        "off": "Doused",
-        "empty": "Empty",
-        "entries_one": "{{count}} entry",
-        "entries_other": "{{count}} entries",
-        "range": "Range"
+        "notSet": "",
+        "on": "",
+        "off": "",
+        "empty": "",
+        "range": "",
+        "entries_one": "{{count}} parchment",
+        "entries_other": "{{count}} parchments"
       },
       "source": {
-        "bot": "Bot's own orders",
-        "instance": "Handed down from the fleet",
-        "default": "Usin' the default"
+        "bot": "",
+        "instance": "",
+        "default": ""
       }
     },
     "deviceCodeConfirmDialog": {
-      "title": "Device code sign-in",
+      "title": "",
       "description": "Set yer options afore ye begin the device code flow, matey!",
-      "start": "Hoist Authentication!"
+      "start": ""
     },
     "deviceCodeDialog": {
-      "title": "Device code sign-in",
+      "title": "",
       "description": "Hoist yer sails 'n sign in with yer Microsoft account to be hookin' it up.",
-      "openInBrowser": "Set Course in Browser",
+      "openInBrowser": "",
       "orManually": "Or enter the code by hand, matey",
       "codeLabel": "Yer code",
-      "urlLabel": "Sail to"
+      "urlLabel": "Sail to",
+      "copyCode": "",
+      "copyUrl": ""
     },
     "ravealts": {
-      "button": "Ravealts",
-      "title": "Be buyin' Accounts through Ravealts, matey!",
       "description": "Buy Minecraft accounts usin' yer Ravealts API key, arr!",
-      "apiKeyLabel": "API Key, matey!",
       "apiKeyPlaceholder": "Enter ye Ravealts API key, arrr!",
-      "validate": "Validate, hoist the colors!",
-      "validating": "Checkin' fer truth...",
-      "keyValid": "Key be true, aye!",
-      "keyInvalid": "That API key be as false as a three dollar doubloon!",
-      "credits": "Booty: {{credits}}",
-      "stockTitle": "Spoils in the Hold",
       "noStock": "No accounts in the booty chest, matey!",
-      "accountType": "Type o' Account, ye scallywag!",
-      "amount": "Bounty Size (1-10)",
-      "purchase": "Buy & Plunder!",
-      "purchasing": "Buyin'... we be raisin' anchor!",
-      "purchaseSuccess": "Snagged {{count}} account(s), haulin' 'em aboard...",
-      "purchaseError": "Purchase sunk: {{message}}",
-      "networkError": "Be cursed! The connection to the Ravealts API has failed, arr!",
-      "outOfStock": "That type's dry, fresh out o' stock!",
+      "accountType": "",
+      "networkError": "",
+      "outOfStock": "",
       "insufficientBalance": "Not enough doubloons in yer hold!",
-      "rateLimited": "Too much traffic, try again after the storm passes!"
+      "rateLimited": ""
     },
     "metadata": {
-      "openButton": "Tweak Metadata",
+      "openButton": "",
       "title": "Metadata: {{name}}",
-      "description": "Manage yer metadata booty fer this account. Each trinket needs a namespace, key, and JSON value.",
-      "namespacePlaceholder": "Namespace o' the Seven Seas",
-      "keyPlaceholder": "Key to the chest",
-      "valuePlaceholder": "Booty Value (JSON)",
-      "noEntries": "No metadata trinkets. Add one up top!",
-      "loadError": "Couldn't haul up the metadata",
-      "loadErrorDescription": "",
-      "retryLoad": "Try again, matey!",
-      "addSuccess": "Entry stashed!",
-      "addError": "Failed to stash the loot!",
-      "updateError": "Couldn't update that trinket, arrr!",
-      "deleteSuccess": "Trinket tossed overboard!",
-      "deleteError": "Couldn't toss that trinket, mate.",
-      "duplicateError": "A trinket with that seaspace and key be 'ere already, arrr!",
-      "invalidJson": "That JSON be cursed!",
-      "namespaceLabel": "Namespace o' the Seven Seas",
-      "keyLabel": "Key to the chest",
-      "valueLabel": "Value",
-      "addEntryLegend": "Add metadata trinket",
-      "addEntryButton": "Add entry",
-      "entryLegend": "Metadata trinket",
-      "removeEntryButton": "Toss overboard"
+      "description": "Manage yer metadata booty fer this account. Each trinket needs a namespace, key, and JSON value."
     },
     "removeDialog": {
-      "title_one": "Toss {{count}} scallywag overboard?",
-      "title_other": "Toss {{count}} scallywags overboard?",
-      "description": "This tosses the chosen scallywags, their saved secrets, an' their bots off this fleet. Ye cannot undo this.",
-      "confirm": "Toss scallywags overboard"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     }
   },
   "instanceMetadata": {
-    "title": "Instance Metadata, arrr!",
-    "description": "Manage persistent metadata entries fer this here instance. Each booty piece be havin' a namespace, key, and JSON value, matey!",
-    "namespacePlaceholder": "Namespace o' the Seven Seas",
-    "keyPlaceholder": "Key to the chest",
-    "valuePlaceholder": "Booty Value (JSON)",
-    "noEntries": "No metadata trinkets. Add one up top!",
-    "loadError": "Couldn't haul up the metadata",
-    "addSuccess": "Entry stashed!",
-    "addError": "Failed to stash the loot!",
-    "updateError": "Couldn't update that trinket, arrr!",
-    "deleteSuccess": "Trinket tossed overboard!",
-    "deleteError": "Couldn't toss that trinket, mate.",
-    "duplicateError": "A trinket with that seaspace and key be 'ere already, arrr!",
-    "invalidJson": "That JSON be cursed!",
-    "namespaceLabel": "Namespace o' the Seven Seas",
-    "keyLabel": "Key to the chest",
-    "valueLabel": "Value",
-    "addEntryLegend": "Add metadata trinket",
-    "addEntryButton": "Add entry",
-    "entryLegend": "Metadata trinket",
-    "removeEntryButton": "Toss overboard"
+    "title": "",
+    "description": ""
+  },
+  "metadataEditor": {
+    "namespacePlaceholder": "",
+    "keyPlaceholder": "",
+    "valuePlaceholder": "",
+    "valueRequired": "",
+    "noEntries": "",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Try again, matey!",
+    "addSuccess": "",
+    "addError": "",
+    "updateError": "",
+    "deleteSuccess": "",
+    "deleteError": "",
+    "duplicateError": "",
+    "invalidJson": "",
+    "namespaceLabel": "",
+    "keyLabel": "",
+    "valueLabel": "Worth",
+    "addEntryLegend": "",
+    "addEntryButton": "",
+    "entryLegend": "",
+    "removeEntryButton": "Scuttle"
   },
   "bots": {
     "searchPlaceholder": "Search bots, arrr...",
-    "onlineCount": "{{online}} aboard / {{total}} total",
-    "noBots": "No bots are manning the decks. Add accounts in Account Settings, ye lazy barnacle.",
+    "noBots": "",
     "noBotsFound": "No sea dogs match yer search.",
-    "loadingMore": "Loadin' more, batten the hatches...",
     "showingCount": "Showin' {{loaded}} of {{total}}, arrr!",
     "allLoaded": "All {{total}} bots be looted and loaded!",
-    "online": "Aboard",
-    "offline": "Overboard",
-    "notJoined": "Yet t' board",
     "connectionPhase": {
       "connecting": "Tie down the lines",
-      "connected": "Comin' aboard",
-      "spawned": "Aboard",
+      "connected": "",
+      "spawned": "Tied to the mast",
       "died": "Off the plank!",
-      "disconnected": "Overboard",
+      "disconnected": "",
       "ping": "{{ms}} ms o' wind in the sails"
     },
-    "runtimeState": {
-      "starting": "Hoistin' the sails",
-      "running": "Aye! Sailin'",
-      "retrying": "Tryin' again, ye scallywag!",
-      "stopping": "Droppin' anchor",
-      "failed": "Scuppered, matey!",
-      "waiting": "Bidin' yer time, aye!",
-      "stopped": "Ship at rest"
-    },
-    "backToBots": "Back t' th' Bots!",
+    "backToBots": "",
+    "demoControls": "",
+    "notConnected": "",
     "tabs": {
-      "overview": "Spyglass",
+      "overview": "",
       "inventory": "Cargo Hold",
-      "controls": "Controls o’ the ship",
-      "terminal": "Deck o' Terminals"
+      "controls": "",
+      "terminal": "",
+      "label": ""
     },
-    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "Proxy Matey",
       "direct": "Sailin' Straight (no proxy)",
       "unavailable": "Not be available, arr!"
     },
     "positionPanel": {
-      "title": "Placement & Spin o' th' Ship",
-      "position": "Location",
-      "rotation": "Yaw",
-      "offline": "The bot be overboard. Position be seen only with bot aboard."
+      "title": "",
+      "x": "",
+      "y": "",
+      "z": "",
+      "pitch": "",
+      "yaw": "",
+      "coordinates": "",
+      "offline": ""
     },
     "chatPanel": {
-      "title": "Scribblin's from Chat"
-    },
-    "commandPanel": {
-      "title": "Parrot Commands",
-      "placeholder": "Send order t' this sea dog..."
-    },
-    "povPanel": {
-      "title": "Bot's Stare",
-      "capture": "Capture a view!",
-      "refresh": "Refill the lookin' glass!",
-      "auto": "Auto, let 'er fly!",
-      "startAutoRefresh": "Begin auto-refilling the spyglass (1 tick a second)",
-      "stopAutoRefresh": "Cease auto-refillin', matey!",
-      "clickToCapture": "Click Capture to glimpse the bot's spyglass view, arrr",
-      "offline": "Bot's off the seas. Can't see nothin' till she be aboard."
+      "title": "",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": "",
+      "sendErrorReason": "",
+      "cancelled": "",
+      "sending": "",
+      "sent": ""
     },
     "statsPanel": {
       "health": "Vigor",
+      "healthLabel": "",
+      "healthValue": "",
       "food": "Grogs",
-      "saturation": "Fatness Level",
+      "foodLabel": "",
+      "foodValue": "",
       "experience": "Learnin'",
-      "level": "Level o'the sea dog",
-      "toNextLevel": "t' next sea level",
-      "gameMode": "Game Mode o' the Seas",
+      "levelShort": "",
       "survival": "Survival o' the Cursed Seas",
       "creative": "Creative Plunderin'",
       "adventure": "Adventure n' Treasure Huntin'",
       "spectator": "Spectator, ghostin' on deck",
-      "unknown": "Mystery, uncharted waters",
-      "offline": "The bot be overboard. Charts be blacked out."
+      "unknown": "Mystery, uncharted waters"
     },
     "inventoryPanel": {
       "title": "Cargo Hold",
       "actionRejected": "",
-      "hotbar": "Armory",
-      "main": "Main Cargo",
-      "items": "bits o' loot",
+      "actionError": "",
+      "output": "",
+      "slotInfo": {
+        "slot": "",
+        "item": "",
+        "region": "",
+        "hotbar": ""
+      },
       "carrying": "Carryin'",
-      "dropOne": "Drop One (in the drink)",
-      "dropAll": "Drop the Lot!",
+      "dropOne": "",
+      "dropAll": "",
       "closeContainer": "Batten down!",
-      "clickHint": "Left-click: pillage/drop | Right-click: half/one | Shift+click: quick snatch | Middle-click: grab hotbar slot",
-      "offline": "The bot be overboard. Cargo's hidden.",
+      "clickHint": "",
+      "offline": "",
+      "waiting": "",
+      "demo": "",
+      "heldSlot": "",
+      "holdSlot": "",
       "buttons": {
         "stonecutterRecipes": "Recipes o' Stonecuttin'",
         "enchantments": "Enchantment Charms",
         "patterns": "Flag Patterns",
         "trades": "Swaps with Merchants",
-        "beaconEffects": "Beacon Buffs",
-        "crafterSlots": "Slot Commands",
-        "lecternControls": "Book o' Orders",
+        "beaconEffects": "",
+        "crafterSlots": "",
+        "lecternControls": "",
         "actions": "Duties",
-        "creativeTabs": "Creative tabs"
+        "creativeTabs": ""
       },
       "textInput": {
-        "title": "Text Parley",
-        "anvilRename": "Rename Yer Loot",
-        "creativeSearch": "Search the loot"
+        "title": "",
+        "anvilRename": "",
+        "creativeSearch": ""
       },
       "bookPages": {
-        "title": "Book Scribblin's",
+        "title": "",
         "emptyPage": "(Blank page, matey)",
         "previousPage": "",
         "nextPage": "",
@@ -530,105 +516,202 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": "Destroy the loot",
-      "clickHints": {
-        "left": "Left click: grab or stow",
-        "right": "Right click: grab half or stow one",
-        "shift": "Shift+click: quick haul",
-        "middle": "Middle click: pick as active slot"
-      }
+      "destroyItem": "",
+      "emptySlot": "",
+      "clickMode": {
+        "label": "",
+        "left": "",
+        "right": "",
+        "shift": "",
+        "middle": ""
+      },
+      "keyboardHint": "",
+      "stack_one": "",
+      "stack_other": "",
+      "itemCount_one": "",
+      "itemCount_other": ""
     },
     "visualPanel": {
-      "title": "Heading an' world",
-      "compass": "Pointin' Compass",
-      "lookDirection": "Look Angle o' th' Spyglass",
+      "title": "",
+      "compass": "",
+      "lookDirection": "",
       "lookingUp": "Stargazin', lookin' up!",
       "lookingDown": "Peerin' at the bilge!",
       "lookingStraight": "Lookin' dead ahead!",
-      "worldInfo": "World Chart",
+      "directions": {
+        "n": "",
+        "ne": "",
+        "e": "",
+        "se": "",
+        "s": "",
+        "sw": "",
+        "w": "",
+        "nw": ""
+      },
+      "dimensions": {
+        "overworld": "",
+        "the_nether": "",
+        "the_end": ""
+      },
+      "worldInfo": "",
       "dimension": "World Aft",
-      "biome": "Seascape",
-      "offline": "The bot be overboard. Nothin' visual yet."
+      "offline": ""
     },
     "actionsPanel": {
-      "title": "Parrot Maneuvers",
-      "leftClick": "Left Flank",
-      "rightClick": "Right Flank",
+      "title": "",
+      "leftClick": "",
+      "rightClick": "",
       "leftClickDescription": "Attack beastie or smash crate",
       "rightClickDescription": "Use booty or parley",
-      "offline": "The bot be overboard. Actions be cut off till it returns."
+      "clickError": "",
+      "offline": ""
     },
     "movementPanel": {
       "updateServer": "",
-      "title": "Movement O' the Ship",
+      "movementError": "",
+      "rotationError": "",
+      "title": "",
       "movement": "Ship Movements (WASD)",
-      "forward": "Surge Ahead (W)",
-      "backward": "Drift Astern (S)",
-      "left": "Lurch Port (A)",
-      "right": "Lurch Starboard (D)",
+      "forward": "",
+      "backward": "",
+      "left": "",
+      "right": "",
       "jump": "Leap Like A Dolphin",
       "sneak": "Sneakin' Quiet As A Cat",
       "sprint": "Sprintin' Full Sails!",
       "stop": "Abandon voyage",
-      "rotation": "Lookout Direction!",
-      "lookUp": "Set Eyes Aloft",
-      "lookDown": "Eyes to the Deck",
-      "lookLeft": "Eyes to Port",
-      "lookRight": "Eyes to Starboard",
-      "offline": "The bot be overboard. Movement's locked!"
+      "rotation": "",
+      "lookUp": "",
+      "lookDown": "",
+      "lookLeft": "",
+      "lookRight": "",
+      "offline": "",
+      "modifiers": ""
     },
     "dialogPanel": {
-      "title": "Ship's Banter Box",
+      "title": "",
       "noDialog": "No ship's banter t'hear yet, mate.",
-      "dialogType": "Cargo Type",
       "dialogId": "Banter Code",
       "notice": "Notice, arrr!",
       "confirmation": "Affirm this, matey!",
-      "multiAction": "Multi Action ruckus!",
-      "serverLinks": "Links o' the Ship",
-      "dialogList": "Banter Roll",
+      "multiAction": "",
+      "serverLinks": "",
+      "dialogList": "",
       "unknownType": "Mystery, uncharted waters",
+      "submitError": "",
       "dismiss": "Clear Out!",
       "submit": "Set Sail!",
-      "offline": "The bot be overboard. Banter's gone silent."
+      "offline": ""
+    },
+    "filterLabel": "",
+    "filterAll": "All hands",
+    "noBotsInState": "",
+    "displayState": {
+      "connected": "Tied to the mast",
+      "starting": "Hoistin' the sails",
+      "retrying": "Tryin' again, ye scallywag!",
+      "failed": "Scuppered, matey!",
+      "stopping": "Droppin' anchor",
+      "stopped": "Ship at rest"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
     },
     "pov": {
-      "title": "Spyglass",
-      "touchControlling": "Ye command this bot. Use \"Release control\" to stop.",
-      "popupBlocked": "Allow popups to cut the spyglass window loose.",
-      "windowTitle": "SoulFire spyglass",
-      "fullscreenUnavailable": "Fullscreen be unavailable in this window.",
-      "textInputLabel": "Minecraft text input",
-      "videoLabel": "Live spyglass",
-      "touchMove": "Move",
-      "audioError": "Couldn't start the sound, arr.",
-      "startError": "Couldn't raise the spyglass.",
-      "releaseHint": "Press {{shortcut}} to free yer keyboard an' mouse.",
-      "captureHint": "Click the spyglass an' allow keyboard an' mouse capture.",
-      "audioWaiting": "Waitin' fer the spyglass to connect.",
-      "audioWatchFirst": "Watch the bot to hear the sound.",
-      "audioUpdateServer": "Update the server to hear through the spyglass.",
-      "muteAudio": "Hush the sound",
-      "unmuteAudio": "Unhush the sound",
-      "audioStarting": "Startin' the sound...",
-      "mute": "Hush",
-      "unmute": "Unhush",
-      "audio": "Sound",
-      "audioUnavailable": "No sound to be had",
-      "volume": "Spyglass loudness",
-      "reconnect": "Reconnect",
-      "showWindow": "Show the spyglass window",
-      "attachWindow": "Lash the spyglass window back",
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "reconnecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": "",
+      "popupBlocked": "",
+      "windowTitle": "",
+      "fullscreenUnavailable": "",
+      "textInputLabel": "",
+      "videoLabel": "",
+      "touchMove": "",
+      "audioError": "",
+      "startError": "",
+      "releaseHint": "",
+      "captureHint": "",
+      "capturing": "",
+      "captureCooldown": "",
+      "captureTimeout": "",
+      "audioWaiting": "",
+      "audioWatchFirst": "",
+      "audioUpdateServer": "",
+      "muteAudio": "",
+      "unmuteAudio": "",
+      "audioStarting": "",
+      "mute": "Plug yer ears (Mute)!",
+      "unmute": "Let 'er roar (Unmute)!",
+      "audio": "",
+      "audioUnavailable": "",
+      "volume": "",
+      "reconnect": "",
+      "showWindow": "",
+      "attachWindow": "",
       "touch": {
-        "jump": "Jump",
-        "sneak": "Sneak",
-        "attack": "Attack",
-        "use": "Use",
-        "inventory": "Cargo hold",
-        "keyboard": "Keyboard",
-        "closeMenu": "Close menu"
+        "jump": "Leap Like A Dolphin",
+        "sneak": "Sneakin' Quiet As A Cat",
+        "attack": "",
+        "use": "",
+        "inventory": "Cargo Hold",
+        "keyboard": "",
+        "closeMenu": ""
       },
-      "needsServer": "The spyglass needs a connected SoulFire server."
+      "needsServer": "",
+      "connectTimeout": "",
+      "reconnectFailed": "",
+      "inputUpdateServer": "",
+      "inputUnavailable": "",
+      "decoderUnsupported": "",
+      "videoUnsupportedBrowser": "",
+      "audioUnsupportedBrowser": "",
+      "audioDecodeUnsupported": "",
+      "audioBlocked": "",
+      "audioInvalidFrame": "",
+      "streamMetrics": {
+        "title": "",
+        "waitingForVideo": "",
+        "unknown": "",
+        "fps": "",
+        "video": "",
+        "target": "",
+        "decoder": "",
+        "decoderWaitingForKey": "",
+        "keyframes": ""
+      },
+      "step": {
+        "online": "",
+        "queued": "",
+        "starting": "",
+        "joining": "",
+        "retrying": "",
+        "failed": "",
+        "stopping": "",
+        "stopped": ""
+      }
     }
   },
   "metrics": {
@@ -636,21 +719,8 @@
       "noData": "Nothin' in the hold"
     },
     "summary": {
-      "online": "Aboard",
-      "packetsPerSecond": "Pkt/s (Packets fer second, ya landlubber!)",
       "traffic": "Ship's Traffic",
-      "health": "Vigor",
       "tick": "Tick o' the Clock"
-    },
-    "botsOnline": {
-      "title": "Crew aboard",
-      "online": "Aboard",
-      "total": "All Hands On Deck"
-    },
-    "packets": {
-      "title": "Packets per second",
-      "sent": "Sent per tick",
-      "received": "Received fer each tick"
     },
     "bandwidth": {
       "title": "Bandwidth o' the Seas",
@@ -658,88 +728,76 @@
       "download": "Plunderin' Downloads"
     },
     "tick": {
-      "title": "Tick Time Span",
+      "title": "",
       "avg": "Average (ms)",
       "max": "Maximum (ms)"
     },
-    "healthFood": {
-      "title": "Health & Vittles",
-      "health": "Average Health o' the Crew",
-      "food": "Average Vittles"
-    },
-    "chunksEntities": {
-      "title": "Chunks & Swabbies",
-      "chunks": "Treasure Chunks",
-      "entities": "Swabbies"
-    },
-    "connections": {
-      "title": "Mast Climbing Events",
-      "connections": "Gangplank Crossin's",
-      "disconnections": "Thrown Overboard"
-    },
-    "healthDistribution": {
-      "title": "Health Spread o' the Crew",
-      "bots": "Crew"
-    },
     "dimensions": {
-      "title": "Dimensions o' the High Seas",
-      "bots": "Crew"
+      "title": "Dimensions o' the High Seas"
     },
     "gameModes": {
-      "title": "Game Callin's",
-      "bots": "Crew"
+      "title": ""
     },
     "positions": {
-      "title": "Bot Coordinates (East/West)",
+      "title": "",
       "bot": "Bot Buccaneer"
     }
   },
   "scripts": {
-    "title": "Visual Spell Scrolls",
-    "description": "Make yer automation with magic node-maps, ye scallywag!",
-    "experimentalTitle": "Experimental Trinket",
-    "experimentalWarning": "This feature be experimental, matey. Future updates might scuttle yer existin' scripts. Use with extra caution, savvy?",
-    "createScript": "Draft Spell",
-    "createScriptTitle": "Draft a New Spell",
-    "createScriptDescription": "Craft a new visual spell script fer this voyage. Spells can automate yer actions and answer to the sea.",
-    "scriptName": "Spell's Name",
+    "title": "",
+    "description": "",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
+    "scriptName": "",
     "scriptNamePlaceholder": "Name yer spell, ye rapscallion...",
     "scriptDescription": "Description o' yer spell",
     "scriptDescriptionPlaceholder": "Say what this spell conjures up...",
     "create": "Set sail!",
-    "createSuccess": "Spell conjured, arrr!",
-    "createError": "Spell fizzled, it failed!",
-    "noScripts": "No Spells Yet, matey",
-    "noScriptsDescription": "Craft yer very first spell t'charm yer bots with the magic of nodes!",
-    "createFirstScript": "Draft Spell",
-    "running": "Aye! Sailin'",
-    "paused": "Ship be idle",
-    "nodes": "nodes o' power",
+    "createSuccess": "",
+    "createError": "",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "running": "",
+    "paused": "",
     "noDescription": "No tale",
+    "edited": "",
+    "searchPlaceholder": "",
+    "filterLabel": "",
+    "filter": {
+      "all": "All hands",
+      "on": "",
+      "off": ""
+    },
+    "sort": {
+      "label": "",
+      "edited": "",
+      "name": "Moniker"
+    },
+    "noMatches": "",
     "edit": "Fix it up!",
-    "pause": "Drop anchor",
-    "pauseSuccess": "Spell put on pause!",
-    "pauseError": "Couldn't slow yer spell, mate!",
-    "resume": "Sail onward",
-    "resumeSuccess": "Spell journey resumed!",
-    "resumeError": "Couldn't set spell sailin' again!",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "Scuttle it!",
-    "deleteSuccess": "Spell sent t'Davy Jones!",
-    "deleteError": "Fumbled the spell scuttlin', arrr!",
-    "saveSuccess": "Spell bottle saved!",
-    "saveError": "Couldn' save yer spell!",
-    "activateSuccess": "Spell be activated!",
-    "activateError": "Can't launch tha' spell, matey!",
-    "deactivateSuccess": "Spell powered down!",
-    "untitledScript": "Unnamed Spell",
-    "saveFirstBeforeActivating": "Save the spell first ‘fore pumpin’ her full o’ magic!",
-    "activating": "Spell's being fired up...",
-    "activated": "Spell be activated!",
+    "deleteSuccess": "",
+    "deleteError": "",
+    "saveSuccess": "",
+    "saveError": "",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
+    "untitledScript": "",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "Spell be finished, celebrate!",
-    "executionCompletedSuccess": "Spell finished without hitch, yarr!",
-    "deactivated": "Spell powered down!",
-    "deactivatedByUser": "Spell sunk by yer own hand!",
-    "executionFailed": "Spell failed t'run!",
+    "executionCompletedSuccess": "Spell be finished, celebrate!",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionError": "Execution mishap: {{error}}",
     "monitoringError": "",
     "monitoringDisconnected": "",
@@ -747,112 +805,135 @@
     "nodeCompleted": "Node tied off: {{nodeId}}",
     "nodeError": "Node got cursed: {{error}}",
     "contextMenu": {
-      "edit": "Edit Spell",
-      "pause": "Drop anchor",
-      "resume": "Sail onward",
-      "delete": "Delete Spell",
-      "copyScriptName": "Copy Spell's Name!",
-      "copyScriptId": "Copy Spell ID!"
+      "edit": "",
+      "pause": "",
+      "resume": "",
+      "delete": "",
+      "copyScriptName": "",
+      "copyScriptId": ""
     },
     "editor": {
       "toolbar": {
         "actions": "",
-        "backToScripts": "Back t' Spells!",
+        "backToScripts": "",
         "save": "Tuck it away",
-        "saveTooltip": "Be savin' yer script, matey!",
-        "resume": "Sail onward",
-        "resumeTooltip": "Set spell adrift once again",
-        "pause": "Drop anchor",
-        "pauseTooltip": "Pause yer spell, drop anchor!",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "Unbottled",
         "unsavedChanges": "Changes not stowed!",
-        "clearCanvas": "Scrub the canvas clean!",
-        "zoomIn": "Zoom in close with yer glass",
-        "zoomOut": "Zoom out, see th' broad seas",
-        "fit": "Fit to the bottle!",
         "export": "Send spell overboard!",
         "import": "Drag spell from the depths!",
-        "exportSuccess": "Spell sent across the seas, aye!",
-        "importSuccess": "Spell brought aboard with no trouble!",
-        "importError": "Failed to fetch the spell, arrr!"
+        "exportSuccess": "",
+        "importSuccess": "",
+        "importError": "",
+        "resumeBlocked": "",
+        "undo": "",
+        "redo": "",
+        "resumeSaveFirst": "",
+        "scriptName": ""
       },
       "palette": {
-        "title": "Chest o' Nodes!",
+        "title": "",
         "search": "Scour for nodes...",
-        "noResults": "No nodes match yer search",
-        "noResultsDescription": "Try another word or swab the current filter."
+        "noResults": "",
+        "noResultsDescription": ""
       },
       "logs": {
-        "title": "Logs o' Sorcery",
+        "title": "",
         "clearTitle": "Empty the log barrel",
-        "noLogs": "No logs yet. Run the spell and see the parchments pile up.",
+        "noLogs": "",
+        "levels": {
+          "debug": "",
+          "info": "",
+          "warn": "",
+          "error": "Blunder!"
+        },
         "entries_one": "{{count}} parchment",
         "entries_other": "{{count}} parchments"
       },
       "contextMenu": {
         "duplicate": "Clone this, arrr!",
         "rename": "Be givin' a new name, ye scallywag!",
-        "disconnectAll": "Sever all ropes!",
+        "disconnectAll": "",
         "collapse": "Collapse the hull!",
         "expand": "Raise 'er up (Expand)!",
         "mute": "Plug yer ears (Mute)!",
         "unmute": "Let 'er roar (Unmute)!",
-        "showPreview": "Unfurl Preview!",
-        "hidePreview": "Hide away the Preview!",
+        "showPreview": "",
+        "hidePreview": "",
+        "openGroup": "",
+        "ungroup": "",
         "delete": "Scuttle it!"
+      },
+      "connection": {
+        "self": "",
+        "execution": "",
+        "type": ""
       },
       "node": {
         "expand": "Expand the branch, like openin' a treasure map",
         "collapse": "Collapse this branch, fold the sails!",
-        "avgTime": "Average run time: {{avg}} ms (last {{count}} voyages)",
-        "preview": "Peek"
+        "avgTimeBadge": "",
+        "preview": "",
+        "muted": "",
+        "avgDuration_one": "",
+        "avgDuration_other": ""
       },
       "debug": {
         "copyValue": "Copy the current booty value",
         "clearHistory": "Wipe the tale o' history",
-        "current": "Current ({{time}}):",
-        "noValue": "No value has washed ashore yet"
+        "current": "",
+        "noValue": "",
+        "input": "",
+        "output": "",
+        "history_one": "",
+        "history_other": ""
       },
       "edge": {
         "direction": "Compass direction o' the edge"
       },
       "note": {
-        "placeholder": "Scrawl yer note here..."
+        "placeholder": "Scrawl yer note here...",
+        "contentLabel": ""
       },
       "complexity": {
         "title": "Scribblin' Script Complexity Score"
       },
       "group": {
         "returnToRoot": "Return to the root, like findin' yer way back to port (Tab)",
-        "root": "Root",
-        "exitHint": "Press <key>Tab</key> to leave",
-        "editHint": "Double-click to edit",
-        "noInputs": "No inputs charted",
-        "noOutputs": "No outputs charted"
+        "root": "",
+        "defaultLabel": "",
+        "exitHint": "",
+        "editHint": "",
+        "noInputs": "",
+        "noOutputs": ""
       },
       "quickAdd": {
         "menuLabel": "Quick plunderin' node menu",
         "searchPlaceholder": "Scour for nodes...",
-        "noResults": "No nodes found",
-        "noResultsDescription": "Try another search word.",
-        "navigate": "Navigate",
-        "select": "Enter to pick",
-        "close": "Esc to close"
+        "noResults": "",
+        "noResultsDescription": "Try ye a different search term, savvy?",
+        "navigate": "",
+        "select": "",
+        "close": ""
       },
       "diff": {
         "tooltip": "Inspect the changes, matey",
-        "title": "Unsaved changes",
-        "description": "Changes since the last save.",
-        "nodesAdded_one": "{{count}} node added",
-        "nodesAdded_other": "{{count}} nodes added",
-        "nodesRemoved_one": "{{count}} node removed",
-        "nodesRemoved_other": "{{count}} nodes removed",
-        "nodesModified_one": "{{count}} node changed",
-        "nodesModified_other": "{{count}} nodes changed",
-        "edgesAdded_one": "{{count}} rope added",
-        "edgesAdded_other": "{{count}} ropes added",
-        "edgesRemoved_one": "{{count}} rope cut",
-        "edgesRemoved_other": "{{count}} ropes cut"
+        "title": "Changes not stowed!",
+        "description": "",
+        "nodesAdded_one": "",
+        "nodesAdded_other": "",
+        "nodesRemoved_one": "",
+        "nodesRemoved_other": "",
+        "nodesModified_one": "",
+        "nodesModified_other": "",
+        "edgesAdded_one": "",
+        "edgesAdded_other": "",
+        "edgesRemoved_one": "",
+        "edgesRemoved_other": ""
       },
       "dryRun": {
         "saveFirst": "",
@@ -865,55 +946,695 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "Dry Run (No cannonballs fired)",
-        "title": "Dry Run o' the Script",
-        "description": "Sail a script from yer chosen trigger with pretend cargo.",
-        "triggerNode": "Fire Trigger Node",
+        "tooltip": "",
+        "title": "",
+        "description": "",
+        "triggerNode": "",
         "selectTrigger": "Choose ye a trigger...",
-        "triggerDescription": "Pick the trigger node to set sail with pretend loot.",
-        "mockInputs": "Mock Inputs, arrr!",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "{{type}} booty value",
-        "start": "Hoist the Dry Run!",
+        "start": "",
+        "button": "",
         "stats_one": "",
         "stats_other": ""
       },
       "quotas": {
-        "tooltip": "Script Rations",
-        "title": "Script Rations",
+        "tooltip": "",
+        "title": "",
         "description": "Set yer resource limits for this parchment. Empty chest means ship defaults.",
-        "maxExecutionCount": "Maximum Voyages Count",
+        "maxExecutionCount": "",
         "maxExecutionCountPlaceholder": "100000",
-        "maxExecutionCountDescription": "Maximum ship node runs per trigger fire",
-        "maxExecutionTime": "Max Voyage Time (ms)",
+        "maxExecutionCountDescription": "",
+        "maxExecutionTime": "",
         "maxExecutionTimePlaceholder": "30000",
-        "maxExecutionTimeDescription": "Greatest hourglass time per trigger fired",
-        "maxConcurrentTriggers": "Maximum Triggers at Once",
+        "maxExecutionTimeDescription": "",
+        "maxConcurrentTriggers": "",
         "maxConcurrentTriggersPlaceholder": "1",
-        "maxConcurrentTriggersDescription": "Most simultaneous trigger blazes",
-        "maxStateStoreEntries": "Max Entries in Ship Log",
+        "maxConcurrentTriggersDescription": "",
+        "maxStateStoreEntries": "",
         "maxStateStoreEntriesPlaceholder": "No limits in Davy Jones' locker",
-        "maxStateStoreEntriesDescription": "Maximum notches in the ship's state log",
-        "disableTimeouts": "Cut Timeouts loose",
-        "disableTimeoutsDescription": "Disables single-node and data line timeouts, arrr!",
-        "save": "Save the rations, secure the cargo!",
+        "maxStateStoreEntriesDescription": "",
+        "disableTimeouts": "",
+        "disableTimeoutsDescription": "",
+        "save": "",
         "invalidInteger": ""
       },
       "multiInput": {
-        "reorder": "Reorder {{label}}",
-        "empty": "No incomin' values",
-        "title": "Multi-input: takes many ropes",
-        "connectTo": "Tie values to {{label}}"
+        "reorder": "",
+        "empty": "",
+        "title": "",
+        "connectTo": ""
+      },
+      "shortcuts": {
+        "title": "",
+        "description": "",
+        "mouse": {
+          "drag": "",
+          "rightClick": ""
+        },
+        "actions": {
+          "quickAdd": "",
+          "quickAddAtCursor": "",
+          "selectAll": "",
+          "deselectAll": "",
+          "selectLinked": "",
+          "selectUpstream": "",
+          "selectDownstream": "",
+          "selectSimilar": "",
+          "duplicate": "",
+          "copy": "",
+          "paste": "",
+          "delete": "",
+          "rename": "",
+          "mute": "",
+          "collapse": "",
+          "hideSockets": "",
+          "preview": "",
+          "group": "",
+          "ungroup": "",
+          "enterGroup": "",
+          "frame": "",
+          "align": "",
+          "distribute": "",
+          "cutLinks": "",
+          "reroute": "",
+          "undo": "",
+          "redo": ""
+        }
+      },
+      "unsavedDialog": {
+        "title": "",
+        "description": "",
+        "stay": "",
+        "leave": ""
+      },
+      "layoutNodes": {
+        "category": {
+          "name": "",
+          "description": ""
+        },
+        "reroute": {
+          "label": "",
+          "description": ""
+        },
+        "frame": {
+          "label": "",
+          "description": ""
+        },
+        "group": {
+          "label": "",
+          "description": ""
+        },
+        "groupInput": {
+          "label": "",
+          "description": ""
+        },
+        "groupOutput": {
+          "label": "",
+          "description": ""
+        },
+        "debug": {
+          "label": "",
+          "description": ""
+        },
+        "note": {
+          "label": "",
+          "description": ""
+        }
+      }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_one": "",
+      "errors_other": "",
+      "warnings_one": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
       }
     },
     "deleteDialog": {
-      "title": "Scuttle the spell?",
-      "description": "This sends \"{{name}}\" to Davy Jones fer good. Ye cannot undo this.",
-      "descriptionUnnamed": "This sends the spell to Davy Jones fer good. Ye cannot undo this."
+      "title": "",
+      "description": "",
+      "descriptionUnnamed": ""
     },
-    "executionStats": "Voyage stats: {{executed}}/{{max}} nodes run"
+    "executionStats": "",
+    "nodes_one": "",
+    "nodes_other": ""
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "Pirate Deed",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "Set sail!",
+    "back": "Avast",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "All hands",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "Set sail!",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "All Hands On Deck",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "Nay",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_one": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_one": "",
+      "limit_other": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "delivered_one": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "backupTitle": "",
+      "backupDescription": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "importing_one": "",
+      "importing_other": "",
+      "copyCredentials_one": "",
+      "copyCredentials_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_one": "",
+    "importAccounts_other": "",
+    "inStock_one": "",
+    "inStock_other": "",
+    "previewMore_one": "",
+    "previewMore_other": "",
+    "preview_one": "",
+    "preview_other": "",
+    "importProxies_one": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_one": "",
+      "noneRunning_other": "",
+      "allConnected_one": "",
+      "allConnected_other": "",
+      "partial_one": "",
+      "partial_other": "",
+      "connecting_one": "",
+      "connecting_other": ""
+    },
+    "state": {
+      "connected": "boarded the vessel",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_one": "",
+      "failed_other": "",
+      "retrying_one": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "onlineAuth": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "blocked": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_one": "",
+    "restartGroup_other": "",
+    "restartRequested_one": "",
+    "restartRequested_other": "",
+    "namesMore_one": "",
+    "namesMore_other": "",
+    "connectingHint_one": "",
+    "connectingHint_other": ""
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "Fer those that fancy extra trinkets",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "Hoist all sails to settings, matey!",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "Crew Accounts",
+      "reviewProxies": "Proxy Ships",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "addAccounts": "",
+      "error": "",
+      "noneStarted": "",
+      "action_one": "Hoist {{count}} bot",
+      "action_other": "Hoist {{count}} bots",
+      "countLimit_one": "",
+      "countLimit_other": "",
+      "countInvalid_one": "",
+      "countInvalid_other": ""
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

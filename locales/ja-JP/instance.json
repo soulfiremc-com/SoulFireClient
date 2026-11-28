@@ -1,67 +1,19 @@
 {
   "overview": {
-    "logsDescription": "コンソールの詳細を確認する必要がある場合、ここで生のインスタンス出力を参照できます。",
-    "summary": {
-      "accounts": "アカウント",
-      "proxies": "プロキシ",
-      "configured": "{{count}} 件が設定済み",
-      "configuredShort": "設定済み",
-      "currentRate": "現在のレート",
-      "imported": "インポート済み"
-    },
-    "readiness": {
-      "title": "セットアップ",
-      "accounts": "アカウント",
-      "accountsValue": "{{requested}}体のボットに対して{{count}}件をインポートしました。",
-      "proxies": "プロキシ",
-      "proxiesValue": "{{count}} 件が設定済み",
-      "plugins": "プラグイン",
-      "pluginsValue": "{{count}}個利用可能"
-    },
-    "activity": {
-      "title": "アクティビティ",
-      "tick": "ティック",
-      "health": "体力",
-      "world": "ワールド",
-      "worldValue": "{{chunks}}チャンク、{{entities}}エンティティ",
-      "connections": "接続数",
-      "connectionsValue": "+{{connections}} ／ -{{disconnections}}",
-      "noDataTitle": "メトリクス",
-      "noDataDescription": "まだランタイムメトリクスがありません。"
-    },
-    "metricsUnavailable": {
-      "title": "メトリクス",
-      "inactive": "ライブメトリクスを収集するためにボットを起動してください。",
-      "noPermission": "ボットのメトリクスを表示する権限がありません。"
-    },
-    "status": {
-      "ready": "準備完了",
-      "attention": "注意が必要",
-      "configured": "設定済み",
-      "optional": "オプション",
-      "available": "利用可能",
-      "none": "なし"
-    },
-    "actions": {
-      "manage": "管理",
-      "open": "開く"
-    },
-    "spotlight": {
-      "noBots": "まだボットが設定されていません。",
-      "idle": "アイドル中。指示を待っています。",
-      "level": "レベル{{level}}"
-    },
+    "logsDescription": "",
     "liveFeed": {
       "title": "ライブフィード",
-      "empty": "インスタンスのアクティビティを待っています...",
+      "empty": "",
       "noPermission": "ライブフィードを表示する権限がありません。",
       "lifecycle": {
         "connecting": "接続中",
         "connected": "接続済み",
         "spawned": "ゲームに参加しました",
         "died": "死亡しました",
+        "diedWithReason": "",
         "respawned": "リスポーンしました",
         "disconnected": "切断されました",
+        "disconnectedWithReason": "",
         "unknown": "状態が変更されました"
       },
       "pause": "一時停止",
@@ -80,11 +32,11 @@
         "time": "時間",
         "bot": "ボット",
         "message": "メッセージ"
-      }
+      },
+      "botCount_other": ""
     },
     "bots": {
       "title": "ボットたち/ボット一覧（context: サイドバー、複数のボット管理）",
-      "viewAll": "全{{total}}体のボットを表示",
       "viewAllShort": "すべて表示",
       "detailsFor": "{{name}} のボット詳細"
     },
@@ -92,21 +44,19 @@
       "title": "最近の操作",
       "viewAll": "履歴を表示",
       "empty": "記録されたアクティビティはまだありません。",
-      "noPermission": "監査ログを表示する権限がありません。",
       "types": {
         "executeCommand": "コマンドを実行しました: {{data}}",
         "botDesiredStateChange": "ボットの望ましい状態が変更されました",
         "botRestart": "ボットが再起動されました",
+        "pluginRpc": "",
         "unknown": "アクションを実行しました"
       }
     },
     "plugins": {
       "title": "プラグイン",
-      "empty": "まだ統計を報告しているプラグインはありません。",
-      "noPermission": "プラグインの統計情報を表示する権限がありません。",
       "active": "稼働中",
-      "activeBots": "{{count}}体のボットが稼働中",
-      "uptime": "稼働時間: {{time}}"
+      "uptime": "稼働時間: {{time}}",
+      "activeBots_other": ""
     },
     "detailed": {
       "title": "詳細メトリクス",
@@ -119,179 +69,223 @@
       "network": "ネットワークアドレス",
       "unix": "Unixソケット"
     },
-    "getProxies": "プロキシプロバイダー",
-    "addProxies": "プロキシを追加",
-    "filterPlaceholder": "プロキシをフィルター...",
+    "getProxies": "",
+    "addProxies": "",
+    "settingsTitle": "",
     "listImportToast": {
-      "loading": "プロキシをインポート中...",
-      "success": "{{count}}件のプロキシをインポートしました",
-      "error": "プロキシのインポートに失敗しました。",
-      "noProxies": "インポートするプロキシがありません。"
+      "success_other": "",
+      "skipped_other": "",
+      "duplicates_other": ""
     },
     "import": {
-      "proxyType": "プロキシタイプ",
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "importing": "プロキシをインポート中...",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_other": "",
+        "alreadyInProject_other": "",
+        "rejected_other": "",
+        "confirm_other": ""
+      },
+      "proxyType": "",
       "http": "HTTP",
       "socks4": "SOCKS4",
       "socks5": "SOCKS5",
       "uri": "URI",
       "dialog": {
         "title": "{{type}}プロキシをインポート",
-        "description": "ここにプロキシを1行ごとに貼り付けてください。"
+        "description": ""
       }
     },
     "removeToast": {
       "loading": "プロキシを削除中...",
-      "success": "{{count}}件のプロキシを削除しました",
-      "error": "プロキシの削除に失敗しました。"
+      "error": "",
+      "success_other": ""
     },
     "checkToast": {
-      "loading": "プロキシをチェック中... {{checked}}/{{total}}（成功：{{success}} 失敗：{{failed}}）",
-      "success": "{{count}}件の壊れたプロキシを削除しました",
-      "error": "プロキシのチェックに失敗しました。",
-      "successKept": "{{total}} 件中 {{failed}} 件のプロキシがチェックに失敗しました。プロキシは削除されていません。"
+      "loading": "",
+      "error": "",
+      "success_other": "",
+      "successKept_other": ""
     },
     "checkDialog": {
-      "title": "プロキシの確認",
-      "description": "{{count}} 件のプロキシをチェックします。",
-      "confirm": "確認を開始",
-      "removeFailed": "失敗したプロキシを削除する",
-      "removeFailedHelp": "プロキシは一時的なネットワークの問題で失敗することがあります。すべてのプロキシを残して結果だけを確認するには、このオプションをオフにしてください。"
+      "title": "",
+      "confirm": "",
+      "removeFailed": "",
+      "removeFailedHelp": "",
+      "description_other": ""
     },
-    "invalidFormat": "無効なプロキシ形式です。",
     "table": {
       "type": "種類",
       "address": "アドレス",
       "username": "ユーザー名",
       "password": "パスワード",
       "searchAddresses": "アドレスを検索...",
-      "searchUsernames": "ユーザー名で検索...",
-      "searchPasswords": "パスワードを検索..."
+      "searchUsernames": "ユーザー名で検索..."
     },
     "removeSelectedTooltip": "選択したプロキシを削除",
     "exportSelectedTooltip": "選択したプロキシをエクスポートする",
     "checkSelectedTooltip": "選択したプロキシをチェック",
     "contextMenu": {
-      "copyAddress": "アドレスをコピー",
-      "copyUsername": "ユーザー名をコピー",
-      "copyPassword": "パスワードをコピーする",
-      "deleteProxy": "プロキシを削除する"
+      "copyAddress": "",
+      "copyUsername": "",
+      "copyPassword": "",
+      "deleteProxy": ""
     },
     "postImportCheckDialog": {
       "title": "インポートしたプロキシをチェックしますか？​​",
-      "description": "{{count}} 件のプロキシをインポートしました。今すぐチェックしますか？",
-      "confirm": "プロキシの確認",
-      "skip": "スキップ"
+      "confirm": "",
+      "skip": "スキップ",
+      "description_other": ""
     },
     "export": {
-      "format": "エクスポート形式",
-      "uri": "URI形式（すべてのタイプ）",
-      "http": "HTTP専用（フラット）",
-      "socks4": "SOCKS4専用（フラット）",
-      "socks5": "SOCKS5専用（フラット）",
+      "format": "",
+      "uri": "",
+      "http": "",
+      "socks4": "",
+      "socks5": "",
       "noProxies": "エクスポートするプロキシがありません"
     },
     "removeDialog": {
-      "title_other": "{{count}} 件のプロキシを削除しますか？",
-      "description": "選択したプロキシとその認証情報をこのインスタンスから削除します。この操作は元に戻せません。",
-      "confirm": "プロキシを削除"
+      "description": "",
+      "confirm": "",
+      "title_other": ""
     },
-    "showPassword": "パスワードを表示",
-    "hidePassword": "パスワードを隠す"
+    "removeSingleDialog": {
+      "title": "",
+      "description": "",
+      "confirm": ""
+    },
+    "showPassword": "",
+    "hidePassword": ""
   },
   "account": {
-    "getAccounts": "アカウントプロバイダー",
-    "addAccounts": "アカウントを追加",
-    "generateAccounts": "アカウントを生成",
-    "filterPlaceholder": "アカウントをフィルター...",
+    "getAccounts": "",
+    "addAccounts": "",
+    "settingsTitle": "",
+    "generateAccounts": "",
     "listImportToast": {
-      "loading": "アカウントをインポート中... {{checked}}/{{total}}（成功：{{success}} 失敗：{{failed}}）",
-      "allFailed": "アカウントのインポートにすべて失敗しました。",
-      "someFailed": "{{count}}件のアカウントをインポートし、{{failed}}件のアカウントのインポートに失敗しました。",
-      "noneFailed": "{{count}}件のアカウントをインポートしました",
-      "error": "アカウントのインポートに失敗しました。",
-      "noAccounts": "インポートするアカウントがありません。"
+      "loading": "",
+      "allFailed": "",
+      "cancelled": "",
+      "error": "",
+      "copyCredentials": "",
+      "noAccounts": "",
+      "errorReason": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      },
+      "someFailed_other": "",
+      "noneFailed_other": "",
+      "cancelledSaved_other": "",
+      "errorSaved_other": ""
     },
-    "unknownError": "不明なエラー",
     "types": {
-      "OFFLINE": "オフライン",
-      "MICROSOFT_JAVA_CREDENTIALS": "Java（認証情報）",
-      "MICROSOFT_JAVA_DEVICE_CODE": "Java（デバイスコード）",
-      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java（リフレッシュトークン）",
-      "MICROSOFT_JAVA_COOKIES": "Java（クッキー）",
-      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java（アクセストークン）",
+      "OFFLINE": "",
+      "MICROSOFT_JAVA_CREDENTIALS": "",
+      "MICROSOFT_JAVA_DEVICE_CODE": "",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "",
+      "MICROSOFT_JAVA_COOKIES": "",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "",
       "THE_ALTENING": "Java（TheAltening）",
-      "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock（認証情報）",
-      "MICROSOFT_BEDROCK_DEVICE_CODE": "Bedrock（デバイスコード）"
+      "MICROSOFT_BEDROCK_CREDENTIALS": "",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": ""
     },
     "deviceCodeImportToast": {
       "loading": "アカウントをインポート中...",
-      "success": "アカウントをインポートしました",
-      "error": "アカウントのインポートに失敗しました。"
+      "success": "",
+      "error": "",
+      "saving": "",
+      "saveError": "",
+      "retrySave": ""
     },
     "generate": {
-      "title": "オフラインアカウントを生成",
+      "replaceAllDialog": {
+        "description": "",
+        "confirm": "",
+        "title_other": ""
+      },
+      "title": "",
       "description": "カスタム名フォーマットでオフラインJavaアカウントを生成します。",
-      "amount": "件数",
-      "nameFormat": "名前フォーマット",
-      "nameFormatHelp": "アカウント番号には %d を使用してください。例えば、Bot_%d と入力すると Bot_1 や Bot_2 のような名前が作成されます。",
-      "mode": "既存のアカウント",
-      "modeHelp": "既存アカウントの処理方法を選択してください：\n\n・既存を無視：新しい名前のアカウントのみ生成します。既存アカウントはすべて保持します。\n\n・既存を置換：リクエスト数分すべて生成します。一致するUUIDのアカウントを置き換えます。他は保持します。\n\n・全て置換：すべての既存アカウントを削除し、生成したアカウントを追加します。",
-      "modeIgnoreExisting": "既存を無視",
-      "modeReplaceExisting": "既存を置換",
-      "modeReplaceAll": "すべて置換",
+      "amount": "",
+      "nameFormat": "",
+      "nameFormatHelp": "",
+      "mode": "",
+      "modeHelp": "",
+      "modeIgnoreExisting": "",
+      "modeReplaceExisting": "",
+      "modeReplaceAll": "",
       "submit": "生成",
       "generating": "生成中...",
-      "progress": "アカウントを生成中... {{checked}}/{{total}}（成功：{{success}} 失敗：{{failed}}）",
-      "success": "{{count}}件のアカウントを生成しました",
-      "allFailed": "アカウントの生成にすべて失敗しました。",
-      "allExist": "すべてのユーザー名がすでに存在します。「既存を置換」を選ぶと再生成できます。",
-      "error": "アカウントの生成に失敗しました。",
-      "invalidAmount": "有効な件数（1以上）を入力してください。",
-      "missingPlaceholder": "名前フォーマットに%dプレースホルダーが含まれている必要があります。"
+      "progress": "",
+      "allFailed": "",
+      "allExist": "",
+      "error": "",
+      "amountOutOfRange": "",
+      "missingNameFormat": "",
+      "success_other": "",
+      "preview_other": ""
     },
     "import": {
       "javaEdition": "Java版",
       "bedrockEdition": "Bedrock版",
       "offline": "オフライン",
-      "microsoftCredentials": "Microsoft認証情報",
-      "microsoftDeviceCode": "Microsoftデバイスコード",
-      "microsoftRefreshToken": "Microsoftリフレッシュトークン",
-      "microsoftCookies": "Microsoftクッキー",
-      "microsoftAccessToken": "Microsoftアクセストークン",
-      "theAltening": "TheAltening トークン",
-      "altProviders": "代替プロバイダー",
+      "microsoftCredentials": "",
+      "microsoftDeviceCode": "",
+      "microsoftRefreshToken": "",
+      "microsoftCookies": "",
+      "microsoftAccessToken": "",
+      "theAltening": "",
+      "altProviders": "",
       "dialog": {
-        "title": "{{type}}アカウントをインポート",
-        "description": "ここにアカウントを1行ごとに貼り付けてください。"
+        "title": "{{type}}アカウントをインポート"
+      },
+      "demo": "",
+      "format": {
+        "offline": "",
+        "microsoftCredentials": "",
+        "refreshToken": "",
+        "cookies": "",
+        "accessToken": "",
+        "theAltening": ""
       }
     },
     "removeToast": {
       "loading": "アカウントを削除中...",
-      "success": "{{count}}件のアカウントを削除しました",
-      "error": "アカウントの削除に失敗しました。"
+      "error": "",
+      "success_other": ""
     },
     "table": {
       "type": "種類",
-      "profileId": "プロファイル ID",
+      "profileId": "",
       "lastKnownName": "ユーザー名",
       "searchProfileIds": "プロファイルIDを検索...",
-      "searchLastKnownNames": "最後に確認された名前を検索...",
+      "searchLastKnownNames": "ユーザー名で検索...",
       "actions": "操作"
     },
     "removeSelectedTooltip": "選択したアカウントを削除",
     "contextMenu": {
-      "openConfig": "設定を開く",
-      "openMetadata": "メタデータを開く",
-      "copyProfileId": "プロファイルIDをコピー",
-      "copyUsername": "ユーザー名をコピー"
+      "openConfig": "",
+      "openMetadata": "",
+      "copyProfileId": "",
+      "copyUsername": ""
     },
     "config": {
       "title": "{{name}}の設定を構成する",
-      "description": "このアカウントのボットごとの設定を構成します",
+      "description": "",
       "openButton": "アカウントを設定する",
-      "pageTitle": "{{name}} - {{page}}の設定",
       "noSettings": "このページには設定がありません",
       "search": "検索設定",
+      "pages": "",
       "overrides": "オーバーライド",
       "allSettings": "すべての設定",
       "noOverrides": "このボットにはまだ明示的なオーバーライドがありません。",
@@ -302,224 +296,194 @@
       "selectPage": "設定ページを選択",
       "noSearchResults": "この検索に一致する設定はありません。",
       "matchesInheritedValue": "継承された値と一致",
-      "instanceValue": "インスタンス値",
+      "instanceValue": "",
       "defaultValue": "デフォルト値",
       "resetOverride": "上書きをリセット",
       "value": {
-        "notSet": "未設定",
-        "on": "オン",
-        "off": "オフ",
-        "empty": "空",
-        "entries_other": "{{count}} 件",
-        "range": "範囲"
+        "notSet": "",
+        "on": "",
+        "off": "",
+        "empty": "",
+        "range": "",
+        "entries_other": "{{count}}件のエントリ"
       },
       "source": {
-        "bot": "ボット固有の値",
-        "instance": "インスタンスから継承",
-        "default": "デフォルトを使用中"
+        "bot": "",
+        "instance": "",
+        "default": ""
       }
     },
     "deviceCodeConfirmDialog": {
-      "title": "デバイスコード認証",
+      "title": "",
       "description": "デバイスコードフローを開始する前にオプションを設定してください。",
-      "start": "認証を開始"
+      "start": ""
     },
     "deviceCodeDialog": {
-      "title": "デバイスコード認証",
+      "title": "",
       "description": "Microsoft アカウントでサインインしてリンクします。",
-      "openInBrowser": "ブラウザで開く",
+      "openInBrowser": "",
       "orManually": "またはコードを手動で入力",
       "codeLabel": "あなたのコード",
-      "urlLabel": "アクセス先"
+      "urlLabel": "アクセス先",
+      "copyCode": "",
+      "copyUrl": ""
     },
     "ravealts": {
-      "button": "Ravealts",
-      "title": "Ravealts経由でアカウントを購入",
       "description": "Ravealts APIキーを使用してMinecraftアカウントを購入します。",
-      "apiKeyLabel": "APIキー",
       "apiKeyPlaceholder": "RavealtsのAPIキーを入力してください",
-      "validate": "認証",
-      "validating": "認証中...",
-      "keyValid": "キーが認証されました",
-      "keyInvalid": "無効なAPIキーです",
-      "credits": "クレジット: {{credits}}",
-      "stockTitle": "在庫数",
       "noStock": "在庫がありません",
-      "accountType": "アカウントの種類",
-      "amount": "数量 (1-10)",
-      "purchase": "購入＆インポート",
-      "purchasing": "購入中...",
-      "purchaseSuccess": "{{count}} 個のアカウントを購入し、インポート中...",
-      "purchaseError": "購入失敗: {{message}}",
-      "networkError": "Ravealts APIへの接続に失敗しました",
-      "outOfStock": "選択した種類は在庫切れです",
+      "accountType": "",
+      "networkError": "",
+      "outOfStock": "",
       "insufficientBalance": "クレジットが不足しています",
-      "rateLimited": "制限を超えました。しばらくしてから再試行してください"
+      "rateLimited": ""
     },
     "metadata": {
-      "openButton": "メタデータを編集する",
+      "openButton": "",
       "title": "メタデータ: {{name}}",
-      "description": "このアカウントの永続的なメタデータエントリを管理します。各エントリは名前空間、キー、JSON値を持ちます。",
-      "namespacePlaceholder": "名前空間",
-      "keyPlaceholder": "キー",
-      "valuePlaceholder": "値（JSON）",
-      "noEntries": "メタデータエントリがありません。上で追加してください。",
-      "loadError": "メタデータを読み込めませんでした",
-      "loadErrorDescription": "",
-      "retryLoad": "再試行する",
-      "addSuccess": "エントリが追加されました",
-      "addError": "エントリの追加に失敗しました",
-      "updateError": "エントリの更新に失敗しました",
-      "deleteSuccess": "エントリを削除しました",
-      "deleteError": "エントリの削除に失敗しました",
-      "duplicateError": "このネームスペースとキーを持つエントリは既に存在します",
-      "invalidJson": "無効なJSON値",
-      "namespaceLabel": "名前空間",
-      "keyLabel": "キー",
-      "valueLabel": "値",
-      "addEntryLegend": "メタデータエントリを追加",
-      "addEntryButton": "エントリを追加",
-      "entryLegend": "メタデータエントリ",
-      "removeEntryButton": "削除"
+      "description": "このアカウントの永続的なメタデータエントリを管理します。各エントリは名前空間、キー、JSON値を持ちます。"
     },
     "removeDialog": {
-      "title_other": "{{count}} 件のアカウントを削除しますか？",
-      "description": "選択したアカウント、保存済みの認証情報、そのボットをこのインスタンスから削除します。この操作は元に戻せません。",
-      "confirm": "アカウントを削除"
+      "description": "",
+      "confirm": "",
+      "title_other": ""
     }
   },
   "instanceMetadata": {
-    "title": "インスタンスメタデータ",
-    "description": "このインスタンスの永続的なメタデータエントリを管理します。各エントリにはネームスペース、キー、およびJSON値があります。",
-    "namespacePlaceholder": "名前空間",
-    "keyPlaceholder": "キー",
-    "valuePlaceholder": "値（JSON）",
-    "noEntries": "メタデータエントリがありません。上で追加してください。",
-    "loadError": "メタデータを読み込めませんでした",
-    "addSuccess": "エントリが追加されました",
-    "addError": "エントリの追加に失敗しました",
-    "updateError": "エントリの更新に失敗しました",
-    "deleteSuccess": "エントリを削除しました",
-    "deleteError": "エントリの削除に失敗しました",
-    "duplicateError": "このネームスペースとキーを持つエントリは既に存在します",
-    "invalidJson": "無効なJSON値",
-    "namespaceLabel": "名前空間",
-    "keyLabel": "キー",
+    "title": "",
+    "description": ""
+  },
+  "metadataEditor": {
+    "namespacePlaceholder": "",
+    "keyPlaceholder": "",
+    "valuePlaceholder": "",
+    "valueRequired": "",
+    "noEntries": "",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "再試行する",
+    "addSuccess": "",
+    "addError": "",
+    "updateError": "",
+    "deleteSuccess": "",
+    "deleteError": "",
+    "duplicateError": "",
+    "invalidJson": "",
+    "namespaceLabel": "",
+    "keyLabel": "",
     "valueLabel": "値",
-    "addEntryLegend": "メタデータエントリを追加",
-    "addEntryButton": "エントリを追加",
-    "entryLegend": "メタデータエントリ",
+    "addEntryLegend": "",
+    "addEntryButton": "",
+    "entryLegend": "",
     "removeEntryButton": "削除"
   },
   "bots": {
     "searchPlaceholder": "ボットを検索...",
-    "onlineCount": "接続済み {{online}} / 合計 {{total}}",
-    "noBots": "ボットが設定されていません。アカウント設定ページからアカウントを追加してください。",
+    "noBots": "",
     "noBotsFound": "検索条件に一致するボットが見つかりません。",
-    "loadingMore": "さらに読み込み中...",
     "showingCount": "{{loaded}}／{{total}}件を表示中",
     "allLoaded": "すべての{{total}}体のボットが読み込まれました",
-    "online": "接続済み",
-    "offline": "切断済み",
-    "notJoined": "未参加",
     "connectionPhase": {
       "connecting": "接続中",
-      "connected": "ログイン中",
+      "connected": "",
       "spawned": "接続済み",
       "died": "死亡",
-      "disconnected": "切断済み",
+      "disconnected": "",
       "ping": "{{ms}}ミリ秒"
     },
-    "runtimeState": {
-      "starting": "起動中",
-      "running": "稼働中",
-      "retrying": "再試行中",
-      "stopping": "停止中",
-      "failed": "失敗しました",
-      "waiting": "待機中",
-      "stopped": "停止済み"
-    },
-    "backToBots": "ボット一覧に戻る",
+    "backToBots": "",
+    "demoControls": "",
+    "notConnected": "",
     "tabs": {
-      "overview": "ボットビュー",
+      "overview": "",
       "inventory": "インベントリ",
-      "controls": "コントロール",
-      "terminal": "ターミナル"
+      "controls": "",
+      "terminal": "",
+      "label": ""
     },
-    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "プロキシ",
       "direct": "直接（プロキシなし）",
       "unavailable": "利用できません"
     },
     "positionPanel": {
-      "title": "位置 & 回転",
-      "position": "位置",
-      "rotation": "回転",
-      "offline": "ボットは切断されています。位置データはボットが接続中のみ利用可能です。"
+      "title": "",
+      "x": "",
+      "y": "",
+      "z": "",
+      "pitch": "",
+      "yaw": "",
+      "coordinates": "",
+      "offline": ""
     },
     "chatPanel": {
-      "title": "チャットメッセージ"
-    },
-    "commandPanel": {
-      "title": "ボットコマンド",
-      "placeholder": "このボットにコマンドを送信..."
-    },
-    "povPanel": {
-      "title": "ボット視点",
-      "capture": "キャプチャ",
-      "refresh": "更新",
-      "auto": "自動",
-      "startAutoRefresh": "自動更新を開始（1秒間隔）",
-      "stopAutoRefresh": "自動更新を停止",
-      "clickToCapture": "「キャプチャ」をクリックしてボットの視点を表示",
-      "offline": "ボットはオフラインです。視点表示はボットが接続中のみ利用できます。"
+      "title": "",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": "",
+      "sendErrorReason": "",
+      "cancelled": "",
+      "sending": "",
+      "sent": ""
     },
     "statsPanel": {
       "health": "体力",
+      "healthLabel": "",
+      "healthValue": "",
       "food": "食料",
-      "saturation": "満腹度",
+      "foodLabel": "",
+      "foodValue": "",
       "experience": "経験値",
-      "level": "レベル",
-      "toNextLevel": "次のレベルまで",
-      "gameMode": "ゲームモード",
+      "levelShort": "",
       "survival": "サバイバル",
       "creative": "クリエイティブ",
       "adventure": "アドベンチャー",
       "spectator": "スペクテイター",
-      "unknown": "不明",
-      "offline": "ボットは切断されています。統計はボットが接続中のみ利用できます。"
+      "unknown": "不明"
     },
     "inventoryPanel": {
       "title": "インベントリ",
       "actionRejected": "",
-      "hotbar": "ホットバー",
-      "main": "メインインベントリー",
-      "items": "アイテム",
+      "actionError": "",
+      "output": "",
+      "slotInfo": {
+        "slot": "",
+        "item": "",
+        "region": "",
+        "hotbar": ""
+      },
       "carrying": "所持中",
-      "dropOne": "1つ捨てる",
-      "dropAll": "すべて捨てる",
+      "dropOne": "",
+      "dropAll": "",
       "closeContainer": "閉じる",
-      "clickHint": "左クリック：取得／配置 ｜ 右クリック：半分／1つ ｜ Shift+クリック：すばやく移動 ｜ 中クリック：ホットバーのスロット選択",
-      "offline": "ボットは切断されています。インベントリーはボットが接続中のみ利用できます。",
+      "clickHint": "",
+      "offline": "",
+      "waiting": "",
+      "demo": "",
+      "heldSlot": "",
+      "holdSlot": "",
       "buttons": {
         "stonecutterRecipes": "レシピ",
         "enchantments": "エンチャント",
         "patterns": "パターン",
         "trades": "取引",
-        "beaconEffects": "ビーコン効果",
-        "crafterSlots": "スロット操作",
-        "lecternControls": "本の操作",
+        "beaconEffects": "",
+        "crafterSlots": "",
+        "lecternControls": "",
         "actions": "操作",
-        "creativeTabs": "クリエイティブタブ"
+        "creativeTabs": ""
       },
       "textInput": {
-        "title": "テキスト入力",
-        "anvilRename": "アイテム名を変更",
-        "creativeSearch": "アイテムを検索"
+        "title": "",
+        "anvilRename": "",
+        "creativeSearch": ""
       },
       "bookPages": {
-        "title": "本の内容",
+        "title": "",
         "emptyPage": "（空のページ）",
         "previousPage": "",
         "nextPage": "",
@@ -527,105 +491,200 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": "アイテムを破棄",
-      "clickHints": {
-        "left": "左クリック: 持つ／置く",
-        "right": "右クリック: 半分持つ／1 個置く",
-        "shift": "Shift+クリック: クイック移動",
-        "middle": "中クリック: アクティブスロットに選択"
-      }
+      "destroyItem": "",
+      "emptySlot": "",
+      "clickMode": {
+        "label": "",
+        "left": "",
+        "right": "",
+        "shift": "",
+        "middle": ""
+      },
+      "keyboardHint": "",
+      "stack_other": "",
+      "itemCount_other": ""
     },
     "visualPanel": {
-      "title": "向きとワールド",
-      "compass": "向いている方角",
-      "lookDirection": "視線の角度",
+      "title": "",
+      "compass": "",
+      "lookDirection": "",
       "lookingUp": "上を見ている",
       "lookingDown": "下を見ている",
       "lookingStraight": "まっすぐ見ている",
-      "worldInfo": "ワールド情報",
+      "directions": {
+        "n": "",
+        "ne": "",
+        "e": "",
+        "se": "",
+        "s": "",
+        "sw": "",
+        "w": "",
+        "nw": ""
+      },
+      "dimensions": {
+        "overworld": "",
+        "the_nether": "",
+        "the_end": ""
+      },
+      "worldInfo": "",
       "dimension": "ディメンション",
-      "biome": "バイオーム",
-      "offline": "ボットは切断されています。ビジュアルデータはボットが接続中のみ利用できます。"
+      "offline": ""
     },
     "actionsPanel": {
-      "title": "ボットのアクション",
-      "leftClick": "左クリック",
-      "rightClick": "右クリック",
+      "title": "",
+      "leftClick": "",
+      "rightClick": "",
       "leftClickDescription": "エンティティ攻撃またはブロックを壊す",
       "rightClickDescription": "アイテム使用または操作",
-      "offline": "ボットは切断されています。アクションはボットが接続されている時のみ可能です。"
+      "clickError": "",
+      "offline": ""
     },
     "movementPanel": {
       "updateServer": "",
-      "title": "移動コントロール",
+      "movementError": "",
+      "rotationError": "",
+      "title": "",
       "movement": "移動（WASD）",
-      "forward": "前進（W）",
-      "backward": "後退（S）",
-      "left": "左に移動（A）",
-      "right": "右に移動（D）",
+      "forward": "",
+      "backward": "",
+      "left": "",
+      "right": "",
       "jump": "ジャンプ",
       "sneak": "スニーク",
       "sprint": "スプリント",
       "stop": "停止",
-      "rotation": "視点方向",
-      "lookUp": "上を見る",
-      "lookDown": "下を見る",
-      "lookLeft": "左を見る",
-      "lookRight": "右を見る",
-      "offline": "ボットは切断されています。移動コントロールはボットが接続されている時のみ使用できます。"
+      "rotation": "",
+      "lookUp": "",
+      "lookDown": "",
+      "lookLeft": "",
+      "lookRight": "",
+      "offline": "",
+      "modifiers": ""
     },
     "dialogPanel": {
-      "title": "サーバーダイアログ",
+      "title": "",
       "noDialog": "現在表示されているサーバーダイアログはありません。",
-      "dialogType": "種類",
       "dialogId": "ダイアログID",
       "notice": "通知",
       "confirmation": "確認",
-      "multiAction": "マルチアクション",
-      "serverLinks": "サーバーリンク",
-      "dialogList": "ダイアログ一覧",
+      "multiAction": "",
+      "serverLinks": "",
+      "dialogList": "",
       "unknownType": "不明",
+      "submitError": "",
       "dismiss": "閉じる",
       "submit": "送信",
-      "offline": "ボットは切断されています。ダイアログはボットが接続されている時のみ利用できます。"
+      "offline": ""
+    },
+    "filterLabel": "",
+    "filterAll": "すべて",
+    "noBotsInState": "",
+    "displayState": {
+      "connected": "接続済み",
+      "starting": "起動中",
+      "retrying": "再試行中",
+      "failed": "失敗しました",
+      "stopping": "停止中",
+      "stopped": "停止済み"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
     },
     "pov": {
-      "title": "ボットビュー",
-      "touchControlling": "このボットを操作中です。やめるには「Release control」を使います。",
-      "popupBlocked": "ボットビューのウィンドウを切り離すには、ポップアップを許可してください。",
-      "windowTitle": "SoulFire ボットビュー",
-      "fullscreenUnavailable": "このウィンドウでは全画面表示を利用できません。",
-      "textInputLabel": "Minecraft テキスト入力",
-      "videoLabel": "ライブボットビュー",
-      "touchMove": "移動",
-      "audioError": "音声を開始できませんでした。",
-      "startError": "ボットビューを開始できませんでした。",
-      "releaseHint": "{{shortcut}} を押すとキーボードとマウスを解放します。",
-      "captureHint": "ビューをクリックし、キーボードとマウスのキャプチャを許可してください。",
-      "audioWaiting": "ボットビューの接続を待っています。",
-      "audioWatchFirst": "音声を使うにはボットを視聴してください。",
-      "audioUpdateServer": "ボットビューの音声を使うにはサーバーを更新してください。",
-      "muteAudio": "音声をミュート",
-      "unmuteAudio": "音声のミュートを解除",
-      "audioStarting": "音声を開始しています...",
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "reconnecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": "",
+      "popupBlocked": "",
+      "windowTitle": "",
+      "fullscreenUnavailable": "",
+      "textInputLabel": "",
+      "videoLabel": "",
+      "touchMove": "",
+      "audioError": "",
+      "startError": "",
+      "releaseHint": "",
+      "captureHint": "",
+      "capturing": "",
+      "captureCooldown": "",
+      "captureTimeout": "",
+      "audioWaiting": "",
+      "audioWatchFirst": "",
+      "audioUpdateServer": "",
+      "muteAudio": "",
+      "unmuteAudio": "",
+      "audioStarting": "",
       "mute": "ミュート",
       "unmute": "ミュート解除",
-      "audio": "音声",
-      "audioUnavailable": "音声は利用できません",
-      "volume": "ボットビューの音量",
-      "reconnect": "再接続",
-      "showWindow": "ボットビューのウィンドウを表示",
-      "attachWindow": "ボットビューのウィンドウを戻す",
+      "audio": "",
+      "audioUnavailable": "",
+      "volume": "",
+      "reconnect": "",
+      "showWindow": "",
+      "attachWindow": "",
       "touch": {
         "jump": "ジャンプ",
         "sneak": "スニーク",
-        "attack": "攻撃",
-        "use": "使う",
+        "attack": "",
+        "use": "",
         "inventory": "インベントリ",
-        "keyboard": "キーボード",
-        "closeMenu": "メニューを閉じる"
+        "keyboard": "",
+        "closeMenu": ""
       },
-      "needsServer": "ボットビューには接続済みの SoulFire サーバーが必要です。"
+      "needsServer": "",
+      "connectTimeout": "",
+      "reconnectFailed": "",
+      "inputUpdateServer": "",
+      "inputUnavailable": "",
+      "decoderUnsupported": "",
+      "videoUnsupportedBrowser": "",
+      "audioUnsupportedBrowser": "",
+      "audioDecodeUnsupported": "",
+      "audioBlocked": "",
+      "audioInvalidFrame": "",
+      "streamMetrics": {
+        "title": "",
+        "waitingForVideo": "",
+        "unknown": "",
+        "fps": "",
+        "video": "",
+        "target": "",
+        "decoder": "",
+        "decoderWaitingForKey": "",
+        "keyframes": ""
+      },
+      "step": {
+        "online": "",
+        "queued": "",
+        "starting": "",
+        "joining": "",
+        "retrying": "",
+        "failed": "",
+        "stopping": "",
+        "stopped": ""
+      }
     }
   },
   "metrics": {
@@ -633,21 +692,8 @@
       "noData": "データなし"
     },
     "summary": {
-      "online": "接続済み",
-      "packetsPerSecond": "Pkt/s",
       "traffic": "トラフィック",
-      "health": "体力",
       "tick": "ティック"
-    },
-    "botsOnline": {
-      "title": "接続中のボット",
-      "online": "接続済み",
-      "total": "合計"
-    },
-    "packets": {
-      "title": "パケット／秒",
-      "sent": "送信／秒",
-      "received": "受信／秒"
     },
     "bandwidth": {
       "title": "帯域幅",
@@ -655,88 +701,76 @@
       "download": "ダウンロード"
     },
     "tick": {
-      "title": "ティック時間",
+      "title": "",
       "avg": "平均（ms）",
       "max": "最大（ms）"
     },
-    "healthFood": {
-      "title": "ヘルス／フード",
-      "health": "平均ヘルス",
-      "food": "平均フード"
-    },
-    "chunksEntities": {
-      "title": "チャンク／エンティティ",
-      "chunks": "チャンク",
-      "entities": "エンティティ"
-    },
-    "connections": {
-      "title": "接続イベント",
-      "connections": "接続数",
-      "disconnections": "切断数"
-    },
-    "healthDistribution": {
-      "title": "ヘルス分布",
-      "bots": "ボットたち/ボット一覧（context: サイドバー、複数のボット管理）"
-    },
     "dimensions": {
-      "title": "ディメンション",
-      "bots": "ボットたち/ボット一覧（context: サイドバー、複数のボット管理）"
+      "title": "ディメンション"
     },
     "gameModes": {
-      "title": "ゲームモード",
-      "bots": "ボットたち/ボット一覧（context: サイドバー、複数のボット管理）"
+      "title": ""
     },
     "positions": {
-      "title": "ボット位置（XZ）",
+      "title": "",
       "bot": "ボット"
     }
   },
   "scripts": {
-    "title": "ビジュアルスクリプト",
-    "description": "ビジュアルノードベースのエディターを使って自動化スクリプトを作成しましょう。",
-    "experimentalTitle": "実験的機能",
-    "experimentalWarning": "この機能は実験的です。今後のアップデートで既存スクリプトが動作しなくなる可能性があります。ご注意ください。",
-    "createScript": "スクリプトを作成",
-    "createScriptTitle": "新しいスクリプトを作成",
-    "createScriptDescription": "このインスタンス用の新しいビジュアルスクリプトを作成します。スクリプトはボットの動作を自動化し、イベントに反応できます。",
-    "scriptName": "スクリプト名",
+    "title": "",
+    "description": "",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
+    "scriptName": "",
     "scriptNamePlaceholder": "スクリプト名を入力してください...",
     "scriptDescription": "説明",
     "scriptDescriptionPlaceholder": "このスクリプトが何をするか説明してください...",
     "create": "作成",
-    "createSuccess": "スクリプトが正常に作成されました",
-    "createError": "スクリプトの作成に失敗しました",
-    "noScripts": "まだスクリプトはありません",
-    "noScriptsDescription": "ビジュアルノードベースのエディターを使って、最初のスクリプトでボット動作を自動化しましょう。",
-    "createFirstScript": "スクリプトを作成",
-    "running": "稼働中",
-    "paused": "一時停止中",
-    "nodes": "ノード",
+    "createSuccess": "",
+    "createError": "",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "running": "",
+    "paused": "",
     "noDescription": "説明なし",
+    "edited": "",
+    "searchPlaceholder": "",
+    "filterLabel": "",
+    "filter": {
+      "all": "すべて",
+      "on": "",
+      "off": ""
+    },
+    "sort": {
+      "label": "",
+      "edited": "",
+      "name": "名前"
+    },
+    "noMatches": "",
     "edit": "編集",
-    "pause": "一時停止",
-    "pauseSuccess": "スクリプトが一時停止しました",
-    "pauseError": "スクリプトの一時停止に失敗しました",
-    "resume": "再開",
-    "resumeSuccess": "スクリプトが再開されました",
-    "resumeError": "スクリプトの再開に失敗しました",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "削除",
-    "deleteSuccess": "スクリプトが正常に削除されました",
-    "deleteError": "スクリプトの削除に失敗しました",
-    "saveSuccess": "スクリプトが正常に保存されました",
-    "saveError": "スクリプトの保存に失敗しました",
-    "activateSuccess": "スクリプトが有効化されました",
-    "activateError": "スクリプトの有効化に失敗しました",
-    "deactivateSuccess": "スクリプトが無効化されました",
-    "untitledScript": "無題のスクリプト",
-    "saveFirstBeforeActivating": "有効化する前に、まずスクリプトを保存してください",
-    "activating": "スクリプトを有効化しています…",
-    "activated": "スクリプトが有効化されました",
+    "deleteSuccess": "",
+    "deleteError": "",
+    "saveSuccess": "",
+    "saveError": "",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
+    "untitledScript": "",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "スクリプトが完了しました",
-    "executionCompletedSuccess": "スクリプトが正常に完了しました",
-    "deactivated": "スクリプトが無効化されました",
-    "deactivatedByUser": "ユーザーによってスクリプトが無効化されました",
-    "executionFailed": "スクリプト実行に失敗しました",
+    "executionCompletedSuccess": "スクリプトが完了しました",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionError": "実行エラー: {{error}}",
     "monitoringError": "",
     "monitoringDisconnected": "",
@@ -744,106 +778,127 @@
     "nodeCompleted": "ノード完了: {{nodeId}}",
     "nodeError": "ノードエラー: {{error}}",
     "contextMenu": {
-      "edit": "スクリプトを編集",
-      "pause": "一時停止",
-      "resume": "再開",
-      "delete": "スクリプトを削除する",
-      "copyScriptName": "スクリプト名をコピー",
-      "copyScriptId": "スクリプトIDをコピー"
+      "edit": "",
+      "pause": "",
+      "resume": "",
+      "delete": "",
+      "copyScriptName": "",
+      "copyScriptId": ""
     },
     "editor": {
       "toolbar": {
         "actions": "",
-        "backToScripts": "スクリプトへ戻る",
+        "backToScripts": "",
         "save": "保存する",
-        "saveTooltip": "スクリプトを保存",
-        "resume": "再開",
-        "resumeTooltip": "スクリプトの実行を再開",
-        "pause": "一時停止",
-        "pauseTooltip": "スクリプトの実行を一時停止",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "未保存",
         "unsavedChanges": "未保存の変更",
-        "clearCanvas": "キャンバスをクリア",
-        "zoomIn": "ズームイン",
-        "zoomOut": "ズームアウト",
-        "fit": "フィット",
         "export": "スクリプトをエクスポート",
         "import": "スクリプトをインポート",
-        "exportSuccess": "スクリプトのエクスポートに成功しました",
-        "importSuccess": "スクリプトのインポートに成功しました",
-        "importError": "スクリプトのインポートに失敗しました"
+        "exportSuccess": "",
+        "importSuccess": "",
+        "importError": "",
+        "resumeBlocked": "",
+        "undo": "",
+        "redo": "",
+        "resumeSaveFirst": "",
+        "scriptName": ""
       },
       "palette": {
-        "title": "ノードパレット",
+        "title": "",
         "search": "ノード検索...",
-        "noResults": "検索に一致するノードがありません",
-        "noResultsDescription": "別の語句を試すか、現在のフィルターをクリアしてください。"
+        "noResults": "",
+        "noResultsDescription": ""
       },
       "logs": {
-        "title": "実行ログ",
+        "title": "",
         "clearTitle": "ログをクリア",
-        "noLogs": "まだログはありません。スクリプトを実行してログをご確認ください。",
+        "noLogs": "",
+        "levels": {
+          "debug": "",
+          "info": "",
+          "warn": "",
+          "error": "エラー"
+        },
         "entries_other": "{{count}}件のエントリ"
       },
       "contextMenu": {
         "duplicate": "複製",
         "rename": "名前を変更",
-        "disconnectAll": "すべて切断",
+        "disconnectAll": "",
         "collapse": "折りたたむ",
         "expand": "展開",
         "mute": "ミュート",
         "unmute": "ミュート解除",
-        "showPreview": "プレビューを表示",
-        "hidePreview": "プレビューを非表示",
+        "showPreview": "",
+        "hidePreview": "",
+        "openGroup": "",
+        "ungroup": "",
         "delete": "削除"
+      },
+      "connection": {
+        "self": "",
+        "execution": "",
+        "type": ""
       },
       "node": {
         "expand": "ノードを展開",
         "collapse": "ノードを折りたたむ",
-        "avgTime": "平均実行時間: {{avg}} ms（直近 {{count}} 回）",
-        "preview": "プレビュー"
+        "avgTimeBadge": "",
+        "preview": "",
+        "muted": "",
+        "avgDuration_other": ""
       },
       "debug": {
         "copyValue": "現在の値をコピー",
         "clearHistory": "履歴をクリア",
-        "current": "現在（{{time}}）:",
-        "noValue": "まだ値を受け取っていません"
+        "current": "",
+        "noValue": "",
+        "input": "",
+        "output": "",
+        "history_other": ""
       },
       "edge": {
         "direction": "エッジの方向"
       },
       "note": {
-        "placeholder": "メモを入力..."
+        "placeholder": "メモを入力...",
+        "contentLabel": ""
       },
       "complexity": {
         "title": "スクリプト複雑度スコア"
       },
       "group": {
         "returnToRoot": "ルートに戻る（Tab）",
-        "root": "ルート",
-        "exitHint": "<key>Tab</key> を押して終了",
-        "editHint": "ダブルクリックで編集",
-        "noInputs": "入力が定義されていません",
-        "noOutputs": "出力が定義されていません"
+        "root": "",
+        "defaultLabel": "",
+        "exitHint": "",
+        "editHint": "",
+        "noInputs": "",
+        "noOutputs": ""
       },
       "quickAdd": {
         "menuLabel": "ノード追加メニュー",
         "searchPlaceholder": "ノード検索...",
-        "noResults": "ノードが見つかりません",
-        "noResultsDescription": "別の検索語句を試してください。",
-        "navigate": "移動",
-        "select": "Enter で選択",
-        "close": "Esc で閉じる"
+        "noResults": "",
+        "noResultsDescription": "別の検索語を試してください。",
+        "navigate": "",
+        "select": "",
+        "close": ""
       },
       "diff": {
         "tooltip": "変更を確認",
         "title": "未保存の変更",
-        "description": "前回の保存以降の変更です。",
-        "nodesAdded_other": "ノードを {{count}} 個追加",
-        "nodesRemoved_other": "ノードを {{count}} 個削除",
-        "nodesModified_other": "ノードを {{count}} 個変更",
-        "edgesAdded_other": "接続を {{count}} 件追加",
-        "edgesRemoved_other": "接続を {{count}} 件削除"
+        "description": "",
+        "nodesAdded_other": "",
+        "nodesRemoved_other": "",
+        "nodesModified_other": "",
+        "edgesAdded_other": "",
+        "edgesRemoved_other": ""
       },
       "dryRun": {
         "saveFirst": "",
@@ -856,54 +911,664 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "ドライラン",
-        "title": "ドライランスクリプト",
-        "description": "選択したトリガーからスクリプトをモック入力で実行します。",
-        "triggerNode": "トリガーノード",
+        "tooltip": "",
+        "title": "",
+        "description": "",
+        "triggerNode": "",
         "selectTrigger": "トリガーを選択...",
-        "triggerDescription": "モック入力値で実行するトリガーノードを選択してください。",
-        "mockInputs": "モック入力",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "{{type}}の値",
-        "start": "ドライラン開始",
+        "start": "",
+        "button": "",
         "stats_other": ""
       },
       "quotas": {
-        "tooltip": "スクリプトクォータ",
-        "title": "スクリプトクォータ",
+        "tooltip": "",
+        "title": "",
         "description": "このスクリプトのリソース制限を設定します。空欄はサーバーのデフォルトを使用します。",
-        "maxExecutionCount": "最大実行回数",
+        "maxExecutionCount": "",
         "maxExecutionCountPlaceholder": "100000",
-        "maxExecutionCountDescription": "トリガー1回実行ごとの最大ノード実行数",
-        "maxExecutionTime": "最大実行時間（ms）",
+        "maxExecutionCountDescription": "",
+        "maxExecutionTime": "",
         "maxExecutionTimePlaceholder": "30000",
-        "maxExecutionTimeDescription": "トリガー1回実行あたりの最大壁時計時間",
-        "maxConcurrentTriggers": "同時トリガー最大数",
+        "maxExecutionTimeDescription": "",
+        "maxConcurrentTriggers": "",
         "maxConcurrentTriggersPlaceholder": "1",
-        "maxConcurrentTriggersDescription": "同時実行可能なトリガー呼び出しの最大数",
-        "maxStateStoreEntries": "ステートストア最大エントリ数",
+        "maxConcurrentTriggersDescription": "",
+        "maxStateStoreEntries": "",
         "maxStateStoreEntriesPlaceholder": "無制限",
-        "maxStateStoreEntriesDescription": "スクリプト状態ストア内の最大エントリ数",
-        "disableTimeouts": "タイムアウト無効",
-        "disableTimeoutsDescription": "ノードごとおよびデータエッジごとのタイムアウトを無効化します",
-        "save": "クォータを保存",
+        "maxStateStoreEntriesDescription": "",
+        "disableTimeouts": "",
+        "disableTimeoutsDescription": "",
+        "save": "",
         "invalidInteger": ""
       },
       "multiInput": {
-        "reorder": "{{label}} を並べ替え",
-        "empty": "入力値がありません",
-        "title": "複数入力: 複数の接続を受け付けます",
-        "connectTo": "{{label}} に値を接続してください"
+        "reorder": "",
+        "empty": "",
+        "title": "",
+        "connectTo": ""
+      },
+      "shortcuts": {
+        "title": "",
+        "description": "",
+        "mouse": {
+          "drag": "",
+          "rightClick": ""
+        },
+        "actions": {
+          "quickAdd": "",
+          "quickAddAtCursor": "",
+          "selectAll": "",
+          "deselectAll": "",
+          "selectLinked": "",
+          "selectUpstream": "",
+          "selectDownstream": "",
+          "selectSimilar": "",
+          "duplicate": "",
+          "copy": "",
+          "paste": "",
+          "delete": "",
+          "rename": "",
+          "mute": "",
+          "collapse": "",
+          "hideSockets": "",
+          "preview": "",
+          "group": "",
+          "ungroup": "",
+          "enterGroup": "",
+          "frame": "",
+          "align": "",
+          "distribute": "",
+          "cutLinks": "",
+          "reroute": "",
+          "undo": "",
+          "redo": ""
+        }
+      },
+      "unsavedDialog": {
+        "title": "",
+        "description": "",
+        "stay": "",
+        "leave": ""
+      },
+      "layoutNodes": {
+        "category": {
+          "name": "",
+          "description": ""
+        },
+        "reroute": {
+          "label": "",
+          "description": ""
+        },
+        "frame": {
+          "label": "",
+          "description": ""
+        },
+        "group": {
+          "label": "",
+          "description": ""
+        },
+        "groupInput": {
+          "label": "",
+          "description": ""
+        },
+        "groupOutput": {
+          "label": "",
+          "description": ""
+        },
+        "debug": {
+          "label": "",
+          "description": ""
+        },
+        "note": {
+          "label": "",
+          "description": ""
+        }
+      }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_other": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
       }
     },
     "deleteDialog": {
-      "title": "スクリプトを削除しますか？",
-      "description": "「{{name}}」を完全に削除します。この操作は元に戻せません。",
-      "descriptionUnnamed": "スクリプトを完全に削除します。この操作は元に戻せません。"
+      "title": "",
+      "description": "",
+      "descriptionUnnamed": ""
     },
-    "executionStats": "実行統計: {{executed}}/{{max}} ノードを実行"
+    "executionStats": "",
+    "nodes_other": ""
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "アクション",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "接続",
+    "back": "戻る",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "すべて",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "接続",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "合計",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "なし",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_other": "",
+      "purchase_other": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "backupTitle": "",
+      "backupDescription": "",
+      "purchase_other": "",
+      "importing_other": "",
+      "copyCredentials_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_other": "",
+    "inStock_other": "",
+    "previewMore_other": "",
+    "preview_other": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_other": "",
+      "allConnected_other": "",
+      "partial_other": "",
+      "connecting_other": ""
+    },
+    "state": {
+      "connected": "接続済み",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_other": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "onlineAuth": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "blocked": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_other": "",
+    "restartRequested_other": "",
+    "namesMore_other": "",
+    "connectingHint_other": ""
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "オプション",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "すべての設定を開く",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "アカウント",
+      "reviewProxies": "プロキシ",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "addAccounts": "",
+      "error": "",
+      "noneStarted": "",
+      "action_other": "{{count}}体のボットを起動する",
+      "countLimit_other": "",
+      "countInvalid_other": ""
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

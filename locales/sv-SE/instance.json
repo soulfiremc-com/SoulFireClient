@@ -1,67 +1,19 @@
 {
   "overview": {
-    "logsDescription": "Rå instansutdata finns tillgänglig här när du behöver inspektera konsoldetaljer.",
-    "summary": {
-      "accounts": "Konton",
-      "proxies": "Proxies",
-      "configured": "{{count}} konfigurerade",
-      "configuredShort": "Konfigurerad",
-      "currentRate": "Aktuell takt",
-      "imported": "Importerad"
-    },
-    "readiness": {
-      "title": "Installation",
-      "accounts": "Konton",
-      "accountsValue": "{{count}} importerade för {{requested}} efterfrågade bottar",
-      "proxies": "Proxies",
-      "proxiesValue": "{{count}} konfigurerade",
-      "plugins": "Plugins",
-      "pluginsValue": "{{count}} tillgängliga"
-    },
-    "activity": {
-      "title": "Aktivitet",
-      "tick": "Tick",
-      "health": "Hälsa",
-      "world": "Värld",
-      "worldValue": "{{chunks}} regioner, {{entities}} enheter",
-      "connections": "Anslutningar",
-      "connectionsValue": "+{{connections}} / -{{disconnections}}",
-      "noDataTitle": "Mätvärden",
-      "noDataDescription": "Inga prestandamätningar ännu."
-    },
-    "metricsUnavailable": {
-      "title": "Mätvärden",
-      "inactive": "Starta en bot för att samla in live-mätvärden.",
-      "noPermission": "Du har inte behörighet att visa bott-mätvärden."
-    },
-    "status": {
-      "ready": "Klar",
-      "attention": "Behöver uppmärksamhet",
-      "configured": "Konfigurerad",
-      "optional": "Valfritt",
-      "available": "Tillgänglig",
-      "none": "Ingen"
-    },
-    "actions": {
-      "manage": "Hantera",
-      "open": "Öppna"
-    },
-    "spotlight": {
-      "noBots": "Inga bottar är konfigurerade än.",
-      "idle": "Overksam, väntar på instruktioner.",
-      "level": "Nivå {{level}}"
-    },
+    "logsDescription": "",
     "liveFeed": {
       "title": "Liveflöde",
-      "empty": "Väntar på instansaktivitet...",
+      "empty": "",
       "noPermission": "Du har inte behörighet att visa liveflödet.",
       "lifecycle": {
         "connecting": "ansluter",
         "connected": "ansluten",
         "spawned": "gick med i spelet",
         "died": "dog",
+        "diedWithReason": "",
         "respawned": "återuppstod",
         "disconnected": "frånkopplad",
+        "disconnectedWithReason": "",
         "unknown": "ändrade tillstånd"
       },
       "pause": "Pausa",
@@ -80,11 +32,12 @@
         "time": "Tid",
         "bot": "Bot",
         "message": "Meddelande"
-      }
+      },
+      "botCount_one": "",
+      "botCount_other": ""
     },
     "bots": {
       "title": "Bottar",
-      "viewAll": "Visa alla {{total}} bottar",
       "viewAllShort": "Visa alla",
       "detailsFor": "Botdetaljer för {{name}}"
     },
@@ -92,21 +45,20 @@
       "title": "Senaste åtgärder",
       "viewAll": "Visa historik",
       "empty": "Ingen aktivitet har registrerats än.",
-      "noPermission": "Du har inte behörighet att visa granskningsloggen.",
       "types": {
         "executeCommand": "körde ett kommando: {{data}}",
         "botDesiredStateChange": "ändrade önskat tillstånd för bot",
         "botRestart": "startade om bottar",
+        "pluginRpc": "",
         "unknown": "utförde en åtgärd"
       }
     },
     "plugins": {
       "title": "Plugins",
-      "empty": "Inga tillägg rapporterar statistik än.",
-      "noPermission": "Du har inte behörighet att se tilläggsstatistik.",
       "active": "Aktiv",
-      "activeBots": "{{count}} aktiva bottar",
-      "uptime": "uppe i {{time}}"
+      "uptime": "uppe i {{time}}",
+      "activeBots_one": "",
+      "activeBots_other": ""
     },
     "detailed": {
       "title": "Detaljerade mätvärden",
@@ -119,180 +71,244 @@
       "network": "Nätverksadress",
       "unix": "Unix-socket"
     },
-    "getProxies": "Proxyleverantörer",
-    "addProxies": "Lägg till proxies",
-    "filterPlaceholder": "Filtrera proxies...",
+    "getProxies": "",
+    "addProxies": "",
+    "settingsTitle": "",
     "listImportToast": {
-      "loading": "Importerar proxies...",
-      "success": "{{count}} proxies har importerats",
-      "error": "Misslyckades att importera proxies",
-      "noProxies": "Inga proxies att importera"
+      "success_one": "",
+      "success_other": "",
+      "skipped_one": "",
+      "skipped_other": "",
+      "duplicates_one": "",
+      "duplicates_other": ""
     },
     "import": {
-      "proxyType": "ProxytTyp",
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "importing": "Importerar proxies...",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_one": "",
+        "accepted_other": "",
+        "alreadyInProject_one": "",
+        "alreadyInProject_other": "",
+        "rejected_one": "",
+        "rejected_other": "",
+        "confirm_one": "",
+        "confirm_other": ""
+      },
+      "proxyType": "",
       "http": "HTTP",
       "socks4": "SOCKS4",
       "socks5": "SOCKS5",
       "uri": "URI",
       "dialog": {
         "title": "Importera {{type}} proxies",
-        "description": "Klistra in dina proxies här, en per rad"
+        "description": ""
       }
     },
     "removeToast": {
       "loading": "Tar bort proxies...",
-      "success": "{{count}} proxies har tagits bort",
-      "error": "Misslyckades att ta bort proxies"
+      "error": "",
+      "success_one": "",
+      "success_other": ""
     },
     "checkToast": {
-      "loading": "Kontrollerar proxies... {{checked}}/{{total}} (Lyckade: {{success}} Misslyckade: {{failed}})",
-      "success": "{{count}} trasiga proxies har tagits bort",
-      "error": "Misslyckades att kontrollera proxies",
-      "successKept": "{{failed}} av {{total}} proxies klarade inte kontrollen. Inga proxies togs bort."
+      "loading": "",
+      "error": "",
+      "success_one": "",
+      "success_other": "",
+      "successKept_one": "",
+      "successKept_other": ""
     },
     "checkDialog": {
-      "title": "Kontrollera proxysar",
-      "description": "Du är på väg att kontrollera {{count}} proxies.",
-      "confirm": "Starta kontroll",
-      "removeFailed": "Ta bort proxies som misslyckas",
-      "removeFailedHelp": "En proxy kan misslyckas på grund av ett tillfälligt nätverksproblem. Avmarkera alternativet för att behålla alla proxies och bara se resultatet."
+      "title": "",
+      "confirm": "",
+      "removeFailed": "",
+      "removeFailedHelp": "",
+      "description_one": "",
+      "description_other": ""
     },
-    "invalidFormat": "Ogiltigt proxyformat",
     "table": {
       "type": "Typ",
       "address": "Adress",
       "username": "Användarnamn",
       "password": "Lösenord",
       "searchAddresses": "Sök adresser...",
-      "searchUsernames": "Sök användarnamn...",
-      "searchPasswords": "Sök lösenord..."
+      "searchUsernames": "Sök användarnamn..."
     },
     "removeSelectedTooltip": "Ta bort valda proxies",
     "exportSelectedTooltip": "Exportera valda proxysar",
     "checkSelectedTooltip": "Kontrollera valda proxies",
     "contextMenu": {
-      "copyAddress": "Kopiera adress",
-      "copyUsername": "Kopiera användarnamn",
-      "copyPassword": "Kopiera lösenordet",
-      "deleteProxy": "Ta bort proxy"
+      "copyAddress": "",
+      "copyUsername": "",
+      "copyPassword": "",
+      "deleteProxy": ""
     },
     "postImportCheckDialog": {
       "title": "Vill du kontrollera importerade proxys?",
-      "description": "Du importerade {{count}} proxies. Kontrollera dem nu?",
-      "confirm": "Kontrollera proxysar",
-      "skip": "Hoppa över"
+      "confirm": "",
+      "skip": "Hoppa över",
+      "description_one": "",
+      "description_other": ""
     },
     "export": {
-      "format": "Exportformat",
-      "uri": "URI-format (alla typer)",
-      "http": "Endast HTTP (platt)",
-      "socks4": "Endast SOCKS4 (platt)",
-      "socks5": "Endast SOCKS5 (platt)",
+      "format": "",
+      "uri": "",
+      "http": "",
+      "socks4": "",
+      "socks5": "",
       "noProxies": "Inga proxys att exportera"
     },
     "removeDialog": {
-      "title_one": "Ta bort {{count}} proxy?",
-      "title_other": "Ta bort {{count}} proxies?",
-      "description": "Detta tar bort de valda proxies och deras inloggningsuppgifter från den här instansen. Det går inte att ångra.",
-      "confirm": "Ta bort proxies"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     },
-    "showPassword": "Visa lösenord",
-    "hidePassword": "Dölj lösenord"
+    "removeSingleDialog": {
+      "title": "",
+      "description": "",
+      "confirm": ""
+    },
+    "showPassword": "",
+    "hidePassword": ""
   },
   "account": {
-    "getAccounts": "Kontoleverantörer",
-    "addAccounts": "Lägg till konton",
-    "generateAccounts": "Generera konton",
-    "filterPlaceholder": "Filtrera konton...",
+    "getAccounts": "",
+    "addAccounts": "",
+    "settingsTitle": "",
+    "generateAccounts": "",
     "listImportToast": {
-      "loading": "Importerar konton... {{checked}}/{{total}} (Lyckade: {{success}} Misslyckade: {{failed}})",
-      "allFailed": "Misslyckades att importera några konton alls.",
-      "someFailed": "Importerade {{count}} konton, misslyckades att importera {{failed}} konton.",
-      "noneFailed": "{{count}} konton har importerats",
-      "error": "Misslyckades att importera konton.",
-      "noAccounts": "Inga konton att importera"
+      "loading": "",
+      "allFailed": "",
+      "cancelled": "",
+      "error": "",
+      "copyCredentials": "",
+      "noAccounts": "",
+      "errorReason": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      },
+      "someFailed_one": "",
+      "someFailed_other": "",
+      "noneFailed_one": "",
+      "noneFailed_other": "",
+      "cancelledSaved_one": "",
+      "cancelledSaved_other": "",
+      "errorSaved_one": "",
+      "errorSaved_other": ""
     },
-    "unknownError": "Okänt fel",
     "types": {
-      "OFFLINE": "Offline",
-      "MICROSOFT_JAVA_CREDENTIALS": "Java (autentiseringsuppgifter)",
-      "MICROSOFT_JAVA_DEVICE_CODE": "Java (enhetskod)",
-      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (uppfriskningstoken)",
-      "MICROSOFT_JAVA_COOKIES": "Java (kakor)",
-      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (åtkomsttoken)",
+      "OFFLINE": "",
+      "MICROSOFT_JAVA_CREDENTIALS": "",
+      "MICROSOFT_JAVA_DEVICE_CODE": "",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "",
+      "MICROSOFT_JAVA_COOKIES": "",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "",
       "THE_ALTENING": "Java (TheAltening)",
-      "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock (autentiseringsuppgifter)",
-      "MICROSOFT_BEDROCK_DEVICE_CODE": "Bedrock (enhetskod)"
+      "MICROSOFT_BEDROCK_CREDENTIALS": "",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": ""
     },
     "deviceCodeImportToast": {
       "loading": "Importerar konto...",
-      "success": "Konto importerat",
-      "error": "Misslyckades att importera konto"
+      "success": "",
+      "error": "",
+      "saving": "",
+      "saveError": "",
+      "retrySave": ""
     },
     "generate": {
-      "title": "Generera offline-konton",
+      "replaceAllDialog": {
+        "description": "",
+        "confirm": "",
+        "title_one": "",
+        "title_other": ""
+      },
+      "title": "",
       "description": "Generera offline Java-konton med ett anpassat namnmönster.",
-      "amount": "Antal",
-      "nameFormat": "Namnformat",
-      "nameFormatHelp": "Använd %d för kontonumret. Till exempel skapar Bot_%d namn som Bot_1 och Bot_2.",
-      "mode": "Befintliga konton",
-      "modeHelp": "Välj hur du vill hantera befintliga konton:\n\n• Ignorera befintliga: Generera bara konton med nya namn. Behåll alla befintliga konton.\n\n• Ersätt befintliga: Generera alla efterfrågade konton. Ersätt konton med matchande UUID. Behåll alla andra konton.\n\n• Ersätt alla: Ta bort alla befintliga konton. Lägg sedan till de genererade kontona.",
-      "modeIgnoreExisting": "Ignorera befintliga",
-      "modeReplaceExisting": "Ersätt befintliga",
-      "modeReplaceAll": "Ersätt alla",
+      "amount": "",
+      "nameFormat": "",
+      "nameFormatHelp": "",
+      "mode": "",
+      "modeHelp": "",
+      "modeIgnoreExisting": "",
+      "modeReplaceExisting": "",
+      "modeReplaceAll": "",
       "submit": "Generera",
       "generating": "Genererar...",
-      "progress": "Genererar konton... {{checked}}/{{total}} (Lyckade: {{success}} Misslyckade: {{failed}})",
-      "success": "{{count}} konton har genererats",
-      "allFailed": "Misslyckades att generera några konton alls",
-      "allExist": "Alla användarnamn finns redan. Välj ”Ersätt befintliga” för att generera dem igen.",
-      "error": "Misslyckades att generera konton",
-      "invalidAmount": "Ange ett giltigt antal (minst 1)",
-      "missingPlaceholder": "Namnformatet måste innehålla platshållaren %d"
+      "progress": "",
+      "allFailed": "",
+      "allExist": "",
+      "error": "",
+      "amountOutOfRange": "",
+      "missingNameFormat": "",
+      "success_one": "",
+      "success_other": "",
+      "preview_one": "",
+      "preview_other": ""
     },
     "import": {
       "javaEdition": "Java Edition",
       "bedrockEdition": "Bedrock Edition",
       "offline": "Offline",
-      "microsoftCredentials": "Microsoft-uppgifter",
-      "microsoftDeviceCode": "Microsoft Enhetskod",
-      "microsoftRefreshToken": "Microsoft Uppfriskningstoken",
-      "microsoftCookies": "Microsoft-cookies.",
-      "microsoftAccessToken": "Microsoft-åtkomsttoken",
-      "theAltening": "TheAltening-tokenen",
-      "altProviders": "Alternativa leverantörer",
+      "microsoftCredentials": "",
+      "microsoftDeviceCode": "",
+      "microsoftRefreshToken": "",
+      "microsoftCookies": "",
+      "microsoftAccessToken": "",
+      "theAltening": "",
+      "altProviders": "",
       "dialog": {
-        "title": "Importera {{type}} konton",
-        "description": "Klistra in dina konton här, ett per rad"
+        "title": "Importera {{type}} konton"
+      },
+      "demo": "",
+      "format": {
+        "offline": "",
+        "microsoftCredentials": "",
+        "refreshToken": "",
+        "cookies": "",
+        "accessToken": "",
+        "theAltening": ""
       }
     },
     "removeToast": {
       "loading": "Tar bort konton...",
-      "success": "{{count}} konton har tagits bort",
-      "error": "Misslyckades att ta bort konton"
+      "error": "",
+      "success_one": "",
+      "success_other": ""
     },
     "table": {
       "type": "Typ",
-      "profileId": "Profil-ID",
+      "profileId": "",
       "lastKnownName": "Användarnamn",
       "searchProfileIds": "Sök profil-ID:n...",
-      "searchLastKnownNames": "Sök senaste kända namn...",
+      "searchLastKnownNames": "Sök användarnamn...",
       "actions": "Åtgärder"
     },
     "removeSelectedTooltip": "Ta bort valda konton",
     "contextMenu": {
-      "openConfig": "Öppna inställningar",
-      "openMetadata": "Öppna metadata",
-      "copyProfileId": "Kopiera profil-ID",
-      "copyUsername": "Kopiera användarnamn"
+      "openConfig": "",
+      "openMetadata": "",
+      "copyProfileId": "",
+      "copyUsername": ""
     },
     "config": {
       "title": "Konfigurera {{name}}",
-      "description": "Konfigurera inställningar per bot för detta konto",
+      "description": "",
       "openButton": "Konfigurera konto",
-      "pageTitle": "{{name}} - {{page}} Inställningar",
       "noSettings": "Inga inställningar tillgängliga för denna sida",
       "search": "Sökinställningar",
+      "pages": "",
       "overrides": "Åsidosättningar",
       "allSettings": "Alla inställningar",
       "noOverrides": "Den här boten har ännu inga explicita åsidosättningar.",
@@ -303,226 +319,196 @@
       "selectPage": "Välj en inställningssida",
       "noSearchResults": "Inga inställningar matchar denna sökning.",
       "matchesInheritedValue": "Matchar ärvt värde",
-      "instanceValue": "Instansvärde",
+      "instanceValue": "",
       "defaultValue": "Standardvärde",
       "resetOverride": "Återställ överskridande",
       "value": {
-        "notSet": "Inte angivet",
-        "on": "På",
-        "off": "Av",
-        "empty": "Tomt",
+        "notSet": "",
+        "on": "",
+        "off": "",
+        "empty": "",
+        "range": "",
         "entries_one": "{{count}} post",
-        "entries_other": "{{count}} poster",
-        "range": "Intervall"
+        "entries_other": "{{count}} poster"
       },
       "source": {
-        "bot": "Bottens eget värde",
-        "instance": "Ärvt från instansen",
-        "default": "Standardvärde"
+        "bot": "",
+        "instance": "",
+        "default": ""
       }
     },
     "deviceCodeConfirmDialog": {
-      "title": "Enhetskodautentisering",
+      "title": "",
       "description": "Konfigurera alternativen innan du startar flödet för enhetskod.",
-      "start": "Starta autentisering"
+      "start": ""
     },
     "deviceCodeDialog": {
-      "title": "Enhetskodautentisering",
+      "title": "",
       "description": "Logga in med ditt Microsoft-konto för att länka det.",
-      "openInBrowser": "Öppna i webbläsare",
+      "openInBrowser": "",
       "orManually": "Eller ange kod manuellt",
       "codeLabel": "Din kod",
-      "urlLabel": "Gå till"
+      "urlLabel": "Gå till",
+      "copyCode": "",
+      "copyUrl": ""
     },
     "ravealts": {
-      "button": "Ravealts",
-      "title": "Köp konton via Ravealts",
       "description": "Köp Minecraft-konton med din Ravealts API-nyckel.",
-      "apiKeyLabel": "API-nyckel",
       "apiKeyPlaceholder": "Ange din Ravealts API-nyckel",
-      "validate": "Validera",
-      "validating": "Validerar...",
-      "keyValid": "Nyckel validerad",
-      "keyInvalid": "Ogiltig API-nyckel",
-      "credits": "Krediter: {{credits}}",
-      "stockTitle": "Tillgängligt lager",
       "noStock": "Inga konton i lager",
-      "accountType": "Kontotyp",
-      "amount": "Antal (1-10)",
-      "purchase": "Köp & importera",
-      "purchasing": "Köper...",
-      "purchaseSuccess": "Köpte {{count}} konto(n), importerar...",
-      "purchaseError": "Köp misslyckades: {{message}}",
-      "networkError": "Anslutningen till Ravealts API misslyckades",
-      "outOfStock": "Vald typ är slut i lager",
+      "accountType": "",
+      "networkError": "",
+      "outOfStock": "",
       "insufficientBalance": "Inte tillräckligt med krediter",
-      "rateLimited": "Hastighetsbegränsad, försök igen senare"
+      "rateLimited": ""
     },
     "metadata": {
-      "openButton": "Redigera metadata",
+      "openButton": "",
       "title": "Metadata: {{name}}",
-      "description": "Hantera beständiga metadata-poster för detta konto. Varje post har ett namnområde, en nyckel och ett JSON-värde.",
-      "namespacePlaceholder": "Namnområde",
-      "keyPlaceholder": "Nyckel",
-      "valuePlaceholder": "Värde (JSON)",
-      "noEntries": "Inga metadata-poster. Lägg till en ovan.",
-      "loadError": "Det gick inte att läsa in metadata",
-      "loadErrorDescription": "",
-      "retryLoad": "Försök igen",
-      "addSuccess": "Post tillagd",
-      "addError": "Misslyckades med att lägga till posten",
-      "updateError": "Misslyckades med att uppdatera posten",
-      "deleteSuccess": "Post borttagen",
-      "deleteError": "Misslyckades med att ta bort posten",
-      "duplicateError": "En post med detta namnrymd och nyckel finns redan",
-      "invalidJson": "Ogiltigt JSON-värde",
-      "namespaceLabel": "Namnområde",
-      "keyLabel": "Nyckel",
-      "valueLabel": "Värde",
-      "addEntryLegend": "Lägg till metadatapost",
-      "addEntryButton": "Lägg till post",
-      "entryLegend": "Metadatapost",
-      "removeEntryButton": "Ta bort"
+      "description": "Hantera beständiga metadata-poster för detta konto. Varje post har ett namnområde, en nyckel och ett JSON-värde."
     },
     "removeDialog": {
-      "title_one": "Ta bort {{count}} konto?",
-      "title_other": "Ta bort {{count}} konton?",
-      "description": "Detta tar bort de valda kontona, deras sparade inloggningsuppgifter och deras bottar från den här instansen. Det går inte att ångra.",
-      "confirm": "Ta bort konton"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     }
   },
   "instanceMetadata": {
-    "title": "Instansmetadata",
-    "description": "Hantera beständiga metadata-poster för denna instans. Varje post har ett namnrymd, en nyckel och ett JSON-värde.",
-    "namespacePlaceholder": "Namnområde",
-    "keyPlaceholder": "Nyckel",
-    "valuePlaceholder": "Värde (JSON)",
-    "noEntries": "Inga metadata-poster. Lägg till en ovan.",
-    "loadError": "Det gick inte att läsa in metadata",
-    "addSuccess": "Post tillagd",
-    "addError": "Misslyckades med att lägga till posten",
-    "updateError": "Misslyckades med att uppdatera posten",
-    "deleteSuccess": "Post borttagen",
-    "deleteError": "Misslyckades med att ta bort posten",
-    "duplicateError": "En post med detta namnrymd och nyckel finns redan",
-    "invalidJson": "Ogiltigt JSON-värde",
-    "namespaceLabel": "Namnområde",
-    "keyLabel": "Nyckel",
+    "title": "",
+    "description": ""
+  },
+  "metadataEditor": {
+    "namespacePlaceholder": "",
+    "keyPlaceholder": "",
+    "valuePlaceholder": "",
+    "valueRequired": "",
+    "noEntries": "",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Försök igen",
+    "addSuccess": "",
+    "addError": "",
+    "updateError": "",
+    "deleteSuccess": "",
+    "deleteError": "",
+    "duplicateError": "",
+    "invalidJson": "",
+    "namespaceLabel": "",
+    "keyLabel": "",
     "valueLabel": "Värde",
-    "addEntryLegend": "Lägg till metadatapost",
-    "addEntryButton": "Lägg till post",
-    "entryLegend": "Metadatapost",
+    "addEntryLegend": "",
+    "addEntryButton": "",
+    "entryLegend": "",
     "removeEntryButton": "Ta bort"
   },
   "bots": {
     "searchPlaceholder": "Sök bland botar...",
-    "onlineCount": "{{online}} anslutna / {{total}} totalt",
-    "noBots": "Inga botar konfigurerade. Lägg till konton från sidan Kontoinställningar.",
+    "noBots": "",
     "noBotsFound": "Inga botar matchar din sökning.",
-    "loadingMore": "Laddar mer...",
     "showingCount": "Visar {{loaded}} av {{total}}",
     "allLoaded": "Alla {{total}} bots laddade",
-    "online": "Ansluten",
-    "offline": "Frånkopplad",
-    "notJoined": "Inte ansluten",
     "connectionPhase": {
       "connecting": "Ansluter",
-      "connected": "Loggar in",
+      "connected": "",
       "spawned": "Ansluten",
       "died": "Död",
-      "disconnected": "Frånkopplad",
+      "disconnected": "",
       "ping": "{{ms}} ms"
     },
-    "runtimeState": {
-      "starting": "Startar",
-      "running": "Kör",
-      "retrying": "Försöker igen",
-      "stopping": "Stoppar",
-      "failed": "Misslyckades",
-      "waiting": "Väntar",
-      "stopped": "Stoppad"
-    },
-    "backToBots": "Tillbaka till Botar",
+    "backToBots": "",
+    "demoControls": "",
+    "notConnected": "",
     "tabs": {
-      "overview": "Bottvy",
+      "overview": "",
       "inventory": "Inventory",
-      "controls": "Kontroller",
-      "terminal": "Terminal"
+      "controls": "",
+      "terminal": "",
+      "label": ""
     },
-    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "Proxyserverenhet/Proxyserver",
       "direct": "Direkt (ingen proxy)",
       "unavailable": "Ej tillgänglig"
     },
     "positionPanel": {
-      "title": "Position and rotation",
-      "position": "Position",
-      "rotation": "Rotation",
-      "offline": "Botten är frånkopplad. Positionsdata är endast tillgänglig när boten är ansluten."
+      "title": "",
+      "x": "",
+      "y": "",
+      "z": "",
+      "pitch": "",
+      "yaw": "",
+      "coordinates": "",
+      "offline": ""
     },
     "chatPanel": {
-      "title": "Chattmeddelanden"
-    },
-    "commandPanel": {
-      "title": "Botkommandon",
-      "placeholder": "Skicka kommando till denna bot..."
-    },
-    "povPanel": {
-      "title": "Botens vy",
-      "capture": "Fånga",
-      "refresh": "Uppdatera",
-      "auto": "Auto",
-      "startAutoRefresh": "Starta auto-uppdatering (1 sekunds intervall)",
-      "stopAutoRefresh": "Stoppa auto-uppdatering",
-      "clickToCapture": "Klicka på Fånga för att visa botens synvinkel",
-      "offline": "Bot är offline. Renderingen av POV är endast tillgänglig när boten är ansluten."
+      "title": "",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": "",
+      "sendErrorReason": "",
+      "cancelled": "",
+      "sending": "",
+      "sent": ""
     },
     "statsPanel": {
       "health": "Hälsa",
+      "healthLabel": "",
+      "healthValue": "",
       "food": "Mat",
-      "saturation": "Mättnad",
+      "foodLabel": "",
+      "foodValue": "",
       "experience": "Erfarenhet",
-      "level": "Nivå",
-      "toNextLevel": "till nästa nivå",
-      "gameMode": "Spelläge",
+      "levelShort": "",
       "survival": "Överlevnad",
       "creative": "Kreativ",
       "adventure": "Äventyr",
       "spectator": "Åskådare",
-      "unknown": "Okänd",
-      "offline": "Botten är frånkopplad. Statistik är endast tillgänglig när boten är ansluten."
+      "unknown": "Okänd"
     },
     "inventoryPanel": {
       "title": "Inventory",
       "actionRejected": "",
-      "hotbar": "Verktygsrad",
-      "main": "Huvudinventarie",
-      "items": "föremål",
+      "actionError": "",
+      "output": "",
+      "slotInfo": {
+        "slot": "",
+        "item": "",
+        "region": "",
+        "hotbar": ""
+      },
       "carrying": "Bär",
-      "dropOne": "Släpp en",
-      "dropAll": "Släpp alla",
+      "dropOne": "",
+      "dropAll": "",
       "closeContainer": "Stäng",
-      "clickHint": "Vänsterklick: plocka upp/placera | Högerklick: halva/en | Skift+klick: snabbflytta | Mittenklick: välj snabbfältsplats",
-      "offline": "Botten är frånkopplad. Inventariet är endast tillgängligt när boten är ansluten.",
+      "clickHint": "",
+      "offline": "",
+      "waiting": "",
+      "demo": "",
+      "heldSlot": "",
+      "holdSlot": "",
       "buttons": {
         "stonecutterRecipes": "Recept",
         "enchantments": "Förtrollningar",
         "patterns": "Mönster",
         "trades": "Byten",
-        "beaconEffects": "Fyrkanseffekter",
-        "crafterSlots": "Slotkontroller",
-        "lecternControls": "Bokkontroller",
+        "beaconEffects": "",
+        "crafterSlots": "",
+        "lecternControls": "",
         "actions": "Åtgärder",
-        "creativeTabs": "Kreativa flikar"
+        "creativeTabs": ""
       },
       "textInput": {
-        "title": "Textinmatning",
-        "anvilRename": "Byt namn på föremål",
-        "creativeSearch": "Sök föremål"
+        "title": "",
+        "anvilRename": "",
+        "creativeSearch": ""
       },
       "bookPages": {
-        "title": "Bokinnehåll",
+        "title": "",
         "emptyPage": "(Tom sida)",
         "previousPage": "",
         "nextPage": "",
@@ -530,105 +516,202 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": "Förstör föremål",
-      "clickHints": {
-        "left": "Vänsterklick: plocka upp eller placera",
-        "right": "Högerklick: plocka upp hälften eller placera en",
-        "shift": "Skift+klick: snabbflytta",
-        "middle": "Mittenklick: välj som aktiv plats"
-      }
+      "destroyItem": "",
+      "emptySlot": "",
+      "clickMode": {
+        "label": "",
+        "left": "",
+        "right": "",
+        "shift": "",
+        "middle": ""
+      },
+      "keyboardHint": "",
+      "stack_one": "",
+      "stack_other": "",
+      "itemCount_one": "",
+      "itemCount_other": ""
     },
     "visualPanel": {
-      "title": "Riktning och värld",
-      "compass": "Riktning",
-      "lookDirection": "Vinkeln",
+      "title": "",
+      "compass": "",
+      "lookDirection": "",
       "lookingUp": "Tittar uppåt",
       "lookingDown": "Tittar nedåt",
       "lookingStraight": "Tittar rakt fram",
-      "worldInfo": "Världsinformation",
+      "directions": {
+        "n": "",
+        "ne": "",
+        "e": "",
+        "se": "",
+        "s": "",
+        "sw": "",
+        "w": "",
+        "nw": ""
+      },
+      "dimensions": {
+        "overworld": "",
+        "the_nether": "",
+        "the_end": ""
+      },
+      "worldInfo": "",
       "dimension": "Dimension",
-      "biome": "Biom",
-      "offline": "Botten är frånkopplad. Visuella data är endast tillgängliga när boten är ansluten."
+      "offline": ""
     },
     "actionsPanel": {
-      "title": "Botåtgärder",
-      "leftClick": "Vänsterklick",
-      "rightClick": "Högerklick",
+      "title": "",
+      "leftClick": "",
+      "rightClick": "",
       "leftClickDescription": "Attackera enhet eller bryt block",
       "rightClickDescription": "Använd föremål eller interagera",
-      "offline": "Botten är frånkopplad. Åtgärder är endast tillgängliga när boten är ansluten."
+      "clickError": "",
+      "offline": ""
     },
     "movementPanel": {
       "updateServer": "",
-      "title": "Rörelsekontroll",
+      "movementError": "",
+      "rotationError": "",
+      "title": "",
       "movement": "Rörelse (WASD)",
-      "forward": "Gå framåt (W)",
-      "backward": "Gå bakåt (S)",
-      "left": "Strafe vänster (A)",
-      "right": "Strafe höger (D)",
+      "forward": "",
+      "backward": "",
+      "left": "",
+      "right": "",
       "jump": "Hoppa",
       "sneak": "Smyg",
       "sprint": "Spring",
       "stop": "Stoppa",
-      "rotation": "Tittariktning",
-      "lookUp": "Titta upp",
-      "lookDown": "Titta ner",
-      "lookLeft": "Titta vänster",
-      "lookRight": "Titta höger",
-      "offline": "Botten är frånkopplad. Rörelsekontrollerna är bara tillgängliga när boten är ansluten."
+      "rotation": "",
+      "lookUp": "",
+      "lookDown": "",
+      "lookLeft": "",
+      "lookRight": "",
+      "offline": "",
+      "modifiers": ""
     },
     "dialogPanel": {
-      "title": "Serverdialog",
+      "title": "",
       "noDialog": "Ingen serverdialog visas för närvarande.",
-      "dialogType": "Typ",
       "dialogId": "Dialog ID",
       "notice": "Meddelande",
       "confirmation": "Bekräftelse",
-      "multiAction": "Flera åtgärder",
-      "serverLinks": "Serverlänkar",
-      "dialogList": "Dialoglista",
+      "multiAction": "",
+      "serverLinks": "",
+      "dialogList": "",
       "unknownType": "Okänd",
+      "submitError": "",
       "dismiss": "Avvisa",
       "submit": "Skicka",
-      "offline": "Botten är frånkopplad. Dialoger är endast tillgängliga när boten är ansluten."
+      "offline": ""
+    },
+    "filterLabel": "",
+    "filterAll": "Alla",
+    "noBotsInState": "",
+    "displayState": {
+      "connected": "Ansluten",
+      "starting": "Startar",
+      "retrying": "Försöker igen",
+      "failed": "Misslyckades",
+      "stopping": "Stoppar",
+      "stopped": "Stoppad"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
     },
     "pov": {
-      "title": "Bottvy",
-      "touchControlling": "Du styr den här botten. Använd ”Release control” för att sluta.",
-      "popupBlocked": "Tillåt popup-fönster för att koppla loss fönstret för bottvyn.",
-      "windowTitle": "SoulFire bottvy",
-      "fullscreenUnavailable": "Helskärm är inte tillgängligt i det här fönstret.",
-      "textInputLabel": "Textinmatning för Minecraft",
-      "videoLabel": "Bottvy i realtid",
-      "touchMove": "Rör dig",
-      "audioError": "Det gick inte att starta ljudet.",
-      "startError": "Det gick inte att starta bottvyn.",
-      "releaseHint": "Tryck på {{shortcut}} för att släppa tangentbordet och musen.",
-      "captureHint": "Klicka på vyn och tillåt att tangentbord och mus fångas.",
-      "audioWaiting": "Väntar på att bottvyn ska ansluta.",
-      "audioWatchFirst": "Titta på botten för att använda ljud.",
-      "audioUpdateServer": "Uppdatera servern för att använda ljud i bottvyn.",
-      "muteAudio": "Stäng av ljudet",
-      "unmuteAudio": "Slå på ljudet",
-      "audioStarting": "Startar ljud...",
-      "mute": "Stäng av ljud",
-      "unmute": "Slå på ljud",
-      "audio": "Ljud",
-      "audioUnavailable": "Ljud är inte tillgängligt",
-      "volume": "Volym för bottvyn",
-      "reconnect": "Återanslut",
-      "showWindow": "Visa fönstret för bottvyn",
-      "attachWindow": "Docka fönstret för bottvyn",
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "reconnecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": "",
+      "popupBlocked": "",
+      "windowTitle": "",
+      "fullscreenUnavailable": "",
+      "textInputLabel": "",
+      "videoLabel": "",
+      "touchMove": "",
+      "audioError": "",
+      "startError": "",
+      "releaseHint": "",
+      "captureHint": "",
+      "capturing": "",
+      "captureCooldown": "",
+      "captureTimeout": "",
+      "audioWaiting": "",
+      "audioWatchFirst": "",
+      "audioUpdateServer": "",
+      "muteAudio": "",
+      "unmuteAudio": "",
+      "audioStarting": "",
+      "mute": "Stäng av ljudet",
+      "unmute": "Slå på ljudet",
+      "audio": "",
+      "audioUnavailable": "",
+      "volume": "",
+      "reconnect": "",
+      "showWindow": "",
+      "attachWindow": "",
       "touch": {
         "jump": "Hoppa",
         "sneak": "Smyg",
-        "attack": "Attackera",
-        "use": "Använd",
+        "attack": "",
+        "use": "",
         "inventory": "Inventory",
-        "keyboard": "Tangentbord",
-        "closeMenu": "Stäng menyn"
+        "keyboard": "",
+        "closeMenu": ""
       },
-      "needsServer": "Bottvyn behöver en ansluten SoulFire-server."
+      "needsServer": "",
+      "connectTimeout": "",
+      "reconnectFailed": "",
+      "inputUpdateServer": "",
+      "inputUnavailable": "",
+      "decoderUnsupported": "",
+      "videoUnsupportedBrowser": "",
+      "audioUnsupportedBrowser": "",
+      "audioDecodeUnsupported": "",
+      "audioBlocked": "",
+      "audioInvalidFrame": "",
+      "streamMetrics": {
+        "title": "",
+        "waitingForVideo": "",
+        "unknown": "",
+        "fps": "",
+        "video": "",
+        "target": "",
+        "decoder": "",
+        "decoderWaitingForKey": "",
+        "keyframes": ""
+      },
+      "step": {
+        "online": "",
+        "queued": "",
+        "starting": "",
+        "joining": "",
+        "retrying": "",
+        "failed": "",
+        "stopping": "",
+        "stopped": ""
+      }
     }
   },
   "metrics": {
@@ -636,21 +719,8 @@
       "noData": "Ingen data"
     },
     "summary": {
-      "online": "Ansluten",
-      "packetsPerSecond": "Pkt/s",
       "traffic": "Trafik",
-      "health": "Hälsa",
       "tick": "Tick"
-    },
-    "botsOnline": {
-      "title": "Anslutna bottar",
-      "online": "Ansluten",
-      "total": "Totalt"
-    },
-    "packets": {
-      "title": "Pakets / sekund",
-      "sent": "Skickat/s",
-      "received": "Mottaget/s"
     },
     "bandwidth": {
       "title": "Bandbredd",
@@ -658,88 +728,76 @@
       "download": "Nedladdning"
     },
     "tick": {
-      "title": "Ticklängd",
+      "title": "",
       "avg": "Genomsnitt (ms)",
       "max": "Max (ms)"
     },
-    "healthFood": {
-      "title": "Hälsa / Mat",
-      "health": "Genomsnittlig hälsa",
-      "food": "Genomsnittlig mat"
-    },
-    "chunksEntities": {
-      "title": "Chunker / Enheter",
-      "chunks": "Chunker",
-      "entities": "Enheter"
-    },
-    "connections": {
-      "title": "Anslutningshändelser",
-      "connections": "Anslutningar",
-      "disconnections": "Frånkopplingar"
-    },
-    "healthDistribution": {
-      "title": "Hälsofördelning",
-      "bots": "Bottar"
-    },
     "dimensions": {
-      "title": "Dimensioner",
-      "bots": "Bottar"
+      "title": "Dimensioner"
     },
     "gameModes": {
-      "title": "Spellägen",
-      "bots": "Bottar"
+      "title": ""
     },
     "positions": {
-      "title": "Bottars positioner (XZ)",
+      "title": "",
       "bot": "Bot"
     }
   },
   "scripts": {
-    "title": "Visuella skript",
-    "description": "Skapa automationsskript med en visuell nodbaserad editor.",
-    "experimentalTitle": "Experimentell funktion",
-    "experimentalWarning": "Den här funktionen är experimentell. Framtida uppdateringar kan förstöra befintliga skript. Använd med försiktighet.",
-    "createScript": "Skapa skript",
-    "createScriptTitle": "Skapa nytt skript",
-    "createScriptDescription": "Skapa ett nytt visuellt skript för denna instans. Skript kan automatisera bottåtgärder och svara på händelser.",
-    "scriptName": "Skriptets namn",
+    "title": "",
+    "description": "",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
+    "scriptName": "",
     "scriptNamePlaceholder": "Ange skriptnamn...",
     "scriptDescription": "Beskrivning",
     "scriptDescriptionPlaceholder": "Beskriv vad detta skript gör...",
     "create": "Skapa",
-    "createSuccess": "Skriptet har skapats",
-    "createError": "Misslyckades med att skapa skriptet",
-    "noScripts": "Inga skript än",
-    "noScriptsDescription": "Skapa ditt första skript för att automatisera bottåtgärder med den visuella nodbaserade editorn.",
-    "createFirstScript": "Skapa skript",
-    "running": "Kör",
-    "paused": "Pausad",
-    "nodes": "noder",
+    "createSuccess": "",
+    "createError": "",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "running": "",
+    "paused": "",
     "noDescription": "Ingen beskrivning",
+    "edited": "",
+    "searchPlaceholder": "",
+    "filterLabel": "",
+    "filter": {
+      "all": "Alla",
+      "on": "",
+      "off": ""
+    },
+    "sort": {
+      "label": "",
+      "edited": "",
+      "name": "Namn"
+    },
+    "noMatches": "",
     "edit": "Redigera",
-    "pause": "Pausa",
-    "pauseSuccess": "Skript pausat",
-    "pauseError": "Misslyckades att pausa skriptet",
-    "resume": "Återuppta",
-    "resumeSuccess": "Skript återupptaget",
-    "resumeError": "Misslyckades att återuppta skriptet",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "Ta bort",
-    "deleteSuccess": "Skriptet har tagits bort",
-    "deleteError": "Misslyckades med att ta bort skriptet",
-    "saveSuccess": "Skriptet har sparats",
-    "saveError": "Misslyckades med att spara skriptet",
-    "activateSuccess": "Skript aktiverat",
-    "activateError": "Det gick inte att aktivera skriptet",
-    "deactivateSuccess": "Skript inaktiverat",
-    "untitledScript": "Namnlöst skript",
-    "saveFirstBeforeActivating": "Spara skriptet först innan du aktiverar",
-    "activating": "Aktiverar skript...",
-    "activated": "Skript aktiverat",
+    "deleteSuccess": "",
+    "deleteError": "",
+    "saveSuccess": "",
+    "saveError": "",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
+    "untitledScript": "",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "Skriptet slutfört",
-    "executionCompletedSuccess": "Skriptet slutfördes utan fel",
-    "deactivated": "Skript inaktiverat",
-    "deactivatedByUser": "Skript avaktiverat av användaren",
-    "executionFailed": "Skriptkörning misslyckades",
+    "executionCompletedSuccess": "Skriptet slutfört",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionError": "Körningsfel: {{error}}",
     "monitoringError": "",
     "monitoringDisconnected": "",
@@ -747,112 +805,135 @@
     "nodeCompleted": "Nod slutförd: {{nodeId}}",
     "nodeError": "Nodfel: {{error}}",
     "contextMenu": {
-      "edit": "Redigera skript",
-      "pause": "Pausa",
-      "resume": "Återuppta",
-      "delete": "Ta bort skript",
-      "copyScriptName": "Kopiera skriptnamn",
-      "copyScriptId": "Kopiera skript-ID"
+      "edit": "",
+      "pause": "",
+      "resume": "",
+      "delete": "",
+      "copyScriptName": "",
+      "copyScriptId": ""
     },
     "editor": {
       "toolbar": {
         "actions": "",
-        "backToScripts": "Tillbaka till skript",
+        "backToScripts": "",
         "save": "Spara",
-        "saveTooltip": "Spara skriptet",
-        "resume": "Återuppta",
-        "resumeTooltip": "Återuppta skriptexekvering",
-        "pause": "Pausa",
-        "pauseTooltip": "Pausa skriptkörning",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "Ej sparad",
         "unsavedChanges": "Osparade ändringar",
-        "clearCanvas": "Rensa arbetsyta",
-        "zoomIn": "Zooma in",
-        "zoomOut": "Zooma ut",
-        "fit": "Anpassa",
         "export": "Exportera skriptet",
         "import": "Importera skriptet",
-        "exportSuccess": "Skriptet har exporterats",
-        "importSuccess": "Skriptet har importerats",
-        "importError": "Det gick inte att importera skriptet"
+        "exportSuccess": "",
+        "importSuccess": "",
+        "importError": "",
+        "resumeBlocked": "",
+        "undo": "",
+        "redo": "",
+        "resumeSaveFirst": "",
+        "scriptName": ""
       },
       "palette": {
-        "title": "Nodpalett",
+        "title": "",
         "search": "Sök noder...",
-        "noResults": "Inga noder matchar din sökning",
-        "noResultsDescription": "Prova ett annat ord eller rensa det aktuella filtret."
+        "noResults": "",
+        "noResultsDescription": ""
       },
       "logs": {
-        "title": "Körloggar",
+        "title": "",
         "clearTitle": "Rensa loggar",
-        "noLogs": "Inga loggar än. Kör skriptet för att se körloggar.",
+        "noLogs": "",
+        "levels": {
+          "debug": "",
+          "info": "",
+          "warn": "",
+          "error": "Fel"
+        },
         "entries_one": "{{count}} post",
         "entries_other": "{{count}} poster"
       },
       "contextMenu": {
         "duplicate": "Duplicera",
         "rename": "Byt namn",
-        "disconnectAll": "Koppla från alla",
+        "disconnectAll": "",
         "collapse": "Fäll ihop",
         "expand": "Fäll ut",
         "mute": "Stäng av ljudet",
         "unmute": "Slå på ljudet",
-        "showPreview": "Visa förhandsgranskning",
-        "hidePreview": "Dölj förhandsgranskning",
+        "showPreview": "",
+        "hidePreview": "",
+        "openGroup": "",
+        "ungroup": "",
         "delete": "Ta bort"
+      },
+      "connection": {
+        "self": "",
+        "execution": "",
+        "type": ""
       },
       "node": {
         "expand": "Expandera nod",
         "collapse": "Dra ihop nod",
-        "avgTime": "Genomsnittlig körtid: {{avg}} ms (senaste {{count}} körningarna)",
-        "preview": "Förhandsvisning"
+        "avgTimeBadge": "",
+        "preview": "",
+        "muted": "",
+        "avgDuration_one": "",
+        "avgDuration_other": ""
       },
       "debug": {
         "copyValue": "Kopiera aktuellt värde",
         "clearHistory": "Rensa historik",
-        "current": "Aktuellt ({{time}}):",
-        "noValue": "Inget värde har tagits emot än"
+        "current": "",
+        "noValue": "",
+        "input": "",
+        "output": "",
+        "history_one": "",
+        "history_other": ""
       },
       "edge": {
         "direction": "Kantens riktning"
       },
       "note": {
-        "placeholder": "Skriv en anteckning..."
+        "placeholder": "Skriv en anteckning...",
+        "contentLabel": ""
       },
       "complexity": {
         "title": "Skriptkomplexitetspoäng"
       },
       "group": {
         "returnToRoot": "Återgå till rotnivån (Tab)",
-        "root": "Rot",
-        "exitHint": "Tryck på <key>Tab</key> för att lämna",
-        "editHint": "Dubbelklicka för att redigera",
-        "noInputs": "Inga ingångar definierade",
-        "noOutputs": "Inga utgångar definierade"
+        "root": "",
+        "defaultLabel": "",
+        "exitHint": "",
+        "editHint": "",
+        "noInputs": "",
+        "noOutputs": ""
       },
       "quickAdd": {
         "menuLabel": "Snabbmeny för att lägga till nod",
         "searchPlaceholder": "Sök noder...",
-        "noResults": "Inga noder hittades",
-        "noResultsDescription": "Prova ett annat sökord.",
-        "navigate": "Navigera",
-        "select": "Enter för att välja",
-        "close": "Esc för att stänga"
+        "noResults": "",
+        "noResultsDescription": "Försök med ett annat sökord.",
+        "navigate": "",
+        "select": "",
+        "close": ""
       },
       "diff": {
         "tooltip": "Granska ändringar",
         "title": "Osparade ändringar",
-        "description": "Ändringar sedan senaste sparningen.",
-        "nodesAdded_one": "{{count}} nod tillagd",
-        "nodesAdded_other": "{{count}} noder tillagda",
-        "nodesRemoved_one": "{{count}} nod borttagen",
-        "nodesRemoved_other": "{{count}} noder borttagna",
-        "nodesModified_one": "{{count}} nod ändrad",
-        "nodesModified_other": "{{count}} noder ändrade",
-        "edgesAdded_one": "{{count}} koppling tillagd",
-        "edgesAdded_other": "{{count}} kopplingar tillagda",
-        "edgesRemoved_one": "{{count}} koppling borttagen",
-        "edgesRemoved_other": "{{count}} kopplingar borttagna"
+        "description": "",
+        "nodesAdded_one": "",
+        "nodesAdded_other": "",
+        "nodesRemoved_one": "",
+        "nodesRemoved_other": "",
+        "nodesModified_one": "",
+        "nodesModified_other": "",
+        "edgesAdded_one": "",
+        "edgesAdded_other": "",
+        "edgesRemoved_one": "",
+        "edgesRemoved_other": ""
       },
       "dryRun": {
         "saveFirst": "",
@@ -865,55 +946,695 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "Testkörning",
-        "title": "Testkör skript",
-        "description": "Kör ett skript från en vald trigger med simulerad indata.",
-        "triggerNode": "Trigger-nod",
+        "tooltip": "",
+        "title": "",
+        "description": "",
+        "triggerNode": "",
         "selectTrigger": "Välj en trigger...",
-        "triggerDescription": "Välj trigger-noden att köra med simulerade indata.",
-        "mockInputs": "Simulerad indata",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "{{type}}-värde",
-        "start": "Starta testkörning",
+        "start": "",
+        "button": "",
         "stats_one": "",
         "stats_other": ""
       },
       "quotas": {
-        "tooltip": "Skriptkvoter",
-        "title": "Skriptkvoter",
+        "tooltip": "",
+        "title": "",
         "description": "Konfigurera resursgränser för detta skript. Tomma fält använder serverns standardvärden.",
-        "maxExecutionCount": "Maximalt antal körningar",
+        "maxExecutionCount": "",
         "maxExecutionCountPlaceholder": "100000",
-        "maxExecutionCountDescription": "Maximalt antal node-körningar per triggeranrop",
-        "maxExecutionTime": "Maximal körtid (ms)",
+        "maxExecutionCountDescription": "",
+        "maxExecutionTime": "",
         "maxExecutionTimePlaceholder": "30000",
-        "maxExecutionTimeDescription": "Maximal verklig tid per triggerkörning",
-        "maxConcurrentTriggers": "Maximalt antal samtidiga triggers",
+        "maxExecutionTimeDescription": "",
+        "maxConcurrentTriggers": "",
         "maxConcurrentTriggersPlaceholder": "1",
-        "maxConcurrentTriggersDescription": "Maximalt antal samtidiga triggeranrop",
-        "maxStateStoreEntries": "Maximalt antal poster i lagringsutrymmet",
+        "maxConcurrentTriggersDescription": "",
+        "maxStateStoreEntries": "",
         "maxStateStoreEntriesPlaceholder": "Obegränsad",
-        "maxStateStoreEntriesDescription": "Maximalt antal poster i skriptets lagringsutrymme",
-        "disableTimeouts": "Inaktivera timeout",
-        "disableTimeoutsDescription": "Inaktiverar timeout för varje nod och datakant",
-        "save": "Spara kvoter",
+        "maxStateStoreEntriesDescription": "",
+        "disableTimeouts": "",
+        "disableTimeoutsDescription": "",
+        "save": "",
         "invalidInteger": ""
       },
       "multiInput": {
-        "reorder": "Ändra ordning på {{label}}",
-        "empty": "Inga inkommande värden",
-        "title": "Multiingång: tar emot flera kopplingar",
-        "connectTo": "Anslut värden till {{label}}"
+        "reorder": "",
+        "empty": "",
+        "title": "",
+        "connectTo": ""
+      },
+      "shortcuts": {
+        "title": "",
+        "description": "",
+        "mouse": {
+          "drag": "",
+          "rightClick": ""
+        },
+        "actions": {
+          "quickAdd": "",
+          "quickAddAtCursor": "",
+          "selectAll": "",
+          "deselectAll": "",
+          "selectLinked": "",
+          "selectUpstream": "",
+          "selectDownstream": "",
+          "selectSimilar": "",
+          "duplicate": "",
+          "copy": "",
+          "paste": "",
+          "delete": "",
+          "rename": "",
+          "mute": "",
+          "collapse": "",
+          "hideSockets": "",
+          "preview": "",
+          "group": "",
+          "ungroup": "",
+          "enterGroup": "",
+          "frame": "",
+          "align": "",
+          "distribute": "",
+          "cutLinks": "",
+          "reroute": "",
+          "undo": "",
+          "redo": ""
+        }
+      },
+      "unsavedDialog": {
+        "title": "",
+        "description": "",
+        "stay": "",
+        "leave": ""
+      },
+      "layoutNodes": {
+        "category": {
+          "name": "",
+          "description": ""
+        },
+        "reroute": {
+          "label": "",
+          "description": ""
+        },
+        "frame": {
+          "label": "",
+          "description": ""
+        },
+        "group": {
+          "label": "",
+          "description": ""
+        },
+        "groupInput": {
+          "label": "",
+          "description": ""
+        },
+        "groupOutput": {
+          "label": "",
+          "description": ""
+        },
+        "debug": {
+          "label": "",
+          "description": ""
+        },
+        "note": {
+          "label": "",
+          "description": ""
+        }
+      }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_one": "",
+      "errors_other": "",
+      "warnings_one": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
       }
     },
     "deleteDialog": {
-      "title": "Ta bort skriptet?",
-      "description": "Detta tar permanent bort ”{{name}}”. Det går inte att ångra.",
-      "descriptionUnnamed": "Detta tar permanent bort skriptet. Det går inte att ångra."
+      "title": "",
+      "description": "",
+      "descriptionUnnamed": ""
     },
-    "executionStats": "Körstatistik: {{executed}}/{{max}} noder körda"
+    "executionStats": "",
+    "nodes_one": "",
+    "nodes_other": ""
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "Åtgärd",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "Anslut",
+    "back": "Tillbaka",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "Alla",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "Anslut",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "Totalt",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "Ingen",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_one": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_one": "",
+      "limit_other": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "delivered_one": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "backupTitle": "",
+      "backupDescription": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "importing_one": "",
+      "importing_other": "",
+      "copyCredentials_one": "",
+      "copyCredentials_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_one": "",
+    "importAccounts_other": "",
+    "inStock_one": "",
+    "inStock_other": "",
+    "previewMore_one": "",
+    "previewMore_other": "",
+    "preview_one": "",
+    "preview_other": "",
+    "importProxies_one": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_one": "",
+      "noneRunning_other": "",
+      "allConnected_one": "",
+      "allConnected_other": "",
+      "partial_one": "",
+      "partial_other": "",
+      "connecting_one": "",
+      "connecting_other": ""
+    },
+    "state": {
+      "connected": "ansluten",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_one": "",
+      "failed_other": "",
+      "retrying_one": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "onlineAuth": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "blocked": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_one": "",
+    "restartGroup_other": "",
+    "restartRequested_one": "",
+    "restartRequested_other": "",
+    "namesMore_one": "",
+    "namesMore_other": "",
+    "connectingHint_one": "",
+    "connectingHint_other": ""
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "Valfritt",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "Öppna alla inställningar",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "Konton",
+      "reviewProxies": "Proxies",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "addAccounts": "",
+      "error": "",
+      "noneStarted": "",
+      "action_one": "Starta {{count}} bot",
+      "action_other": "Starta {{count}} bottar",
+      "countLimit_one": "",
+      "countLimit_other": "",
+      "countInvalid_one": "",
+      "countInvalid_other": ""
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

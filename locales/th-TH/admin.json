@@ -1,80 +1,69 @@
 {
   "overview": {
-    "welcome": "ยินดีต้อนรับกลับ, {{name}} 🧙",
     "serverMetrics": {
-      "sectionTitle": "เมตริกเซิร์ฟเวอร์",
+      "sectionTitle": "",
       "summary": {
         "cpu": "หน่วยประมวลผลกลาง (CPU)",
-        "heapUsed": "หน่วยความจำ Heap ที่ใช้ไป",
+        "heapUsed": "",
         "threads": "เธรด",
-        "botsOnline": "บอทที่เชื่อมต่อ",
+        "botsOnline": "",
         "uptime": "ระยะเวลาทำงาน"
       },
       "cpuUsage": {
-        "title": "การใช้งาน CPU (%)"
+        "title": ""
       },
       "memoryUsage": {
-        "title": "หน่วยความจำฮีป (MB)"
+        "title": ""
       },
       "threadCount": {
-        "title": "จำนวนเธรด"
+        "title": ""
       },
       "aggregateBots": {
-        "title": "บอทที่เชื่อมต่อ (ทุกอินสแตนซ์)"
+        "title": ""
       },
       "legend": {
-        "process": "โปรเซส",
+        "process": "",
         "system": "ระบบ",
-        "used": "ใช้อยู่",
-        "committed": "จองไว้",
-        "max": "สูงสุด",
-        "total": "ทั้งหมด",
-        "daemon": "Daemon",
+        "used": "",
+        "committed": "",
+        "max": "",
+        "total": "รวม",
+        "daemon": "",
         "online": "เชื่อมต่อแล้ว"
-      }
+      },
+      "collecting": ""
     },
-    "instancesChart": {
-      "title": "อินสแตนซ์ทั้งหมดบนเซิร์ฟเวอร์นี้",
-      "instances": "อินสแตนซ์",
-      "label": {
-        "state": "สถานะ",
-        "active": "ใช้งานอยู่",
-        "stopped": "หยุดแล้ว",
-        "other": "อื่น ๆ"
-      }
-    },
-    "usersChart": {
-      "title": "ผู้ใช้ทั้งหมดบนเซิร์ฟเวอร์นี้",
+    "stats": {
       "users": "ผู้ใช้",
-      "label": {
-        "role": "บทบาท",
-        "user": "ผู้ใช้",
-        "admin": "แอดมิน",
-        "other": "อื่น ๆ"
-      }
+      "projects": "",
+      "admins_other": "",
+      "active_other": ""
     }
   },
   "users": {
-    "filterPlaceholder": "กรองผู้ใช้...",
+    "noPermission": {
+      "title": "",
+      "description": ""
+    },
     "baseUserDialog": {
       "form": {
         "username": {
-          "min": "ชื่อผู้ใช้ต้องมีอย่างน้อย 3 ตัวอักษร",
-          "max": "ชื่อผู้ใช้ต้องมีไม่เกิน 32 ตัวอักษร",
-          "regex": "ชื่อผู้ใช้ต้องเป็นตัวพิมพ์เล็ก เริ่มต้นด้วยอักขระตัวเลขหรือตัวอักษร ตามด้วยตัวเลข ตัวอักษร หรือขีดกลาง และลงท้ายด้วยตัวเลขหรือตัวอักษร",
+          "min": "",
+          "max": "",
+          "regex": "",
           "label": "ชื่อผู้ใช้",
           "placeholder": "กรอกชื่อผู้ใช้",
-          "description": "ชื่อผู้ใช้ที่ไม่ซ้ำกันเพื่อระบุตัวผู้ใช้"
+          "description": ""
         },
         "email": {
           "label": "อีเมล",
           "placeholder": "กรอกอีเมล",
-          "description": "ที่อยู่อีเมลของผู้ใช้สำหรับรับการแจ้งเตือนและเข้าสู่ระบบ"
+          "description": ""
         },
         "role": {
           "label": "บทบาท",
           "placeholder": "เลือกบทบาท",
-          "description": "บทบาทของผู้ใช้ ผู้ดูแลระบบสามารถจัดการผู้ใช้และอินสแตนซ์ทั้งหมด ผู้ใช้ปกติสามารถจัดการเฉพาะอินสแตนซ์ของตนเองได้",
+          "description": "",
           "user": "ผู้ใช้",
           "admin": "แอดมิน"
         }
@@ -82,69 +71,74 @@
     },
     "addUserDialog": {
       "title": "เพิ่มผู้ใช้ใหม่",
-      "description": "เพิ่มผู้ใช้ใหม่ในเซิร์ฟเวอร์นี้",
+      "description": "",
       "form": {
         "cancel": "ยกเลิก",
-        "add": "เพิ่มผู้ใช้"
+        "add": ""
       }
     },
     "updateUserDialog": {
-      "title": "อัปเดตผู้ใช้",
-      "description": "อัปเดตข้อมูลของผู้ใช้",
+      "title": "",
+      "description": "",
       "form": {
         "cancel": "ยกเลิก",
-        "update": "อัปเดตผู้ใช้"
+        "update": ""
       }
     },
     "profileConflict": "",
     "addToast": {
       "loading": "กำลังเพิ่มผู้ใช้...",
-      "success": "เพิ่มผู้ใช้แล้ว",
-      "error": "ไม่สามารถเพิ่มผู้ใช้ได้"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "กำลังอัปเดตผู้ใช้...",
-      "success": "อัปเดตผู้ใช้แล้ว",
-      "error": "ไม่สามารถอัปเดตผู้ใช้ได้"
+      "success": "",
+      "error": ""
     },
     "removeToast": {
       "loading": "กำลังลบผู้ใช้...",
-      "success": "ลบผู้ใช้แล้ว",
-      "error": "ไม่สามารถลบผู้ใช้ได้"
+      "partial": "",
+      "success_other": "",
+      "error_other": ""
     },
     "invalidateToast": {
-      "loading": "กำลังออกจากระบบผู้ใช้...",
-      "success": "ออกจากระบบผู้ใช้แล้ว",
-      "error": "ไม่สามารถออกจากระบบผู้ใช้ได้"
+      "loading": "",
+      "partial": "",
+      "success_other": "",
+      "error_other": ""
+    },
+    "impersonateToast": {
+      "error": ""
     },
     "table": {
       "username": "ชื่อผู้ใช้",
       "email": "อีเมล",
       "role": "บทบาท",
       "createdAt": "วันที่สร้าง",
-      "minIssuedAt": "เซสชันมีผลตั้งแต่",
+      "minIssuedAt": "",
       "actions": "การดำเนินการ",
       "searchUsernames": "ค้นหาชื่อผู้ใช้...",
       "searchEmails": "ค้นหาอีเมล...",
       "searchCreatedAts": "ค้นหาวันที่สร้าง...",
-      "searchMinIssuedAts": "ค้นหาวันที่ของเซสชัน..."
+      "searchMinIssuedAts": ""
     },
     "removeSelectedTooltip": "ลบผู้ใช้ที่เลือก",
-    "logOutSelectedTooltip": "ออกจากระบบผู้ใช้ที่เลือก",
+    "logOutSelectedTooltip": "",
     "contextMenu": {
-      "editUser": "แก้ไขผู้ใช้",
+      "editUser": "",
       "impersonate": "สวมรอยเป็นผู้ใช้นี้",
-      "copyUserId": "คัดลอก User ID"
+      "copyUserId": ""
     },
     "removeDialog": {
-      "title_other": "ลบผู้ใช้ {{count}} คนหรือไม่",
-      "description": "การดำเนินการนี้จะลบผู้ใช้ที่เลือกและสิทธิ์เข้าถึงอย่างถาวร คุณไม่สามารถย้อนกลับได้",
-      "confirm": "ลบผู้ใช้"
+      "description": "",
+      "confirm": "",
+      "title_other": ""
     },
     "invalidateDialog": {
-      "title_other": "ออกจากระบบผู้ใช้ {{count}} คนหรือไม่",
-      "description": "การดำเนินการนี้จะสิ้นสุดทุกเซสชันและโทเค็นของผู้ใช้ที่เลือก ผู้ใช้ต้องเข้าสู่ระบบอีกครั้ง",
-      "confirm": "ออกจากระบบผู้ใช้"
+      "description": "",
+      "confirm": "",
+      "title_other": ""
     }
   }
 }

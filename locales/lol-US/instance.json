@@ -1,67 +1,19 @@
 {
   "overview": {
-    "logsDescription": "Raw instanz output be rite heer if u haz inspectin teh consoel detalehz. kthx.",
-    "summary": {
-      "accounts": "Akkountz",
-      "proxies": "Proxiez",
-      "configured": "{{count}} confurged",
-      "configuredShort": "Confurged",
-      "currentRate": "Kurrent raet",
-      "imported": "Importd"
-    },
-    "readiness": {
-      "title": "Setzup",
-      "accounts": "Akkountz",
-      "accountsValue": "{{count}} importd 4 {{requested}} askd bottiezzz",
-      "proxies": "Proxiez",
-      "proxiesValue": "{{count}} confurged",
-      "plugins": "Plugins",
-      "pluginsValue": "{{count}} iz availabuls"
-    },
-    "activity": {
-      "title": "Aktivitee",
-      "tick": "Tick",
-      "health": "Helth",
-      "world": "Wurld",
-      "worldValue": "{{chunks}} chunkz, {{entities}} entityz",
-      "connections": "Connectshunz",
-      "connectionsValue": "+{{connections}} / -{{disconnections}}",
-      "noDataTitle": "Metrixxx",
-      "noDataDescription": "No runtyme metrix yetz."
-    },
-    "metricsUnavailable": {
-      "title": "Metrixxx",
-      "inactive": "Startz a bot to gib live metrikz, kthx!",
-      "noPermission": "U can no has permishun 2 seez bot metrix."
-    },
-    "status": {
-      "ready": "Reddy",
-      "attention": "Needz attenshuns",
-      "configured": "Confurged",
-      "optional": "Optionalz",
-      "available": "Availabuls",
-      "none": "NUN"
-    },
-    "actions": {
-      "manage": "Managz",
-      "open": "Openz"
-    },
-    "spotlight": {
-      "noBots": "No bots confygured yetz.",
-      "idle": "Idlez, waitin 4 instrkshunz.",
-      "level": "Lvl {{level}}"
-    },
+    "logsDescription": "",
     "liveFeed": {
       "title": "LIV FEEDZ",
-      "empty": "Waitin 4 instance aktivitee...",
+      "empty": "",
       "noPermission": "U can no has permishun 2 seez live feedz.",
       "lifecycle": {
         "connecting": "iz catwalking",
         "connected": "catnectd",
         "spawned": "joinz teh gamez",
         "died": "deded",
+        "diedWithReason": "",
         "respawned": "RESPAWNZ",
         "disconnected": "catzconnectd",
+        "disconnectedWithReason": "",
         "unknown": "changd st8"
       },
       "pause": "Pawse",
@@ -80,11 +32,12 @@
         "time": "Tiem",
         "bot": "Botteh",
         "message": "Mezage"
-      }
+      },
+      "botCount_one": "",
+      "botCount_other": ""
     },
     "bots": {
       "title": "BOTZ",
-      "viewAll": "Seez allz {{total}} bottiez",
       "viewAllShort": "Seez allz",
       "detailsFor": "Bot deetz for {{name}}"
     },
@@ -92,21 +45,20 @@
       "title": "Reecent Akshunz",
       "viewAll": "Show historeh",
       "empty": "No aktivitee iz record yetz.",
-      "noPermission": "U can no haz permishun 2 seez audit loag.",
       "types": {
         "executeCommand": "runned a commandz: {{data}}",
         "botDesiredStateChange": "bot desird st8 haz cheenged",
         "botRestart": "botz haz been restartd",
+        "pluginRpc": "",
         "unknown": "didz sumthang"
       }
     },
     "plugins": {
       "title": "Plugins",
-      "empty": "No pluginz givin statz yetz.",
-      "noPermission": "U can no has permishun 2 seez plugin statz.",
       "active": "Actiev",
-      "activeBots": "{{count}} aktivez bottiez",
-      "uptime": "upz {{time}}"
+      "uptime": "upz {{time}}",
+      "activeBots_one": "",
+      "activeBots_other": ""
     },
     "detailed": {
       "title": "Detayld metrixxx",
@@ -119,180 +71,244 @@
       "network": "Netwurk adres",
       "unix": "Unix soxket"
     },
-    "getProxies": "Proxy providerz",
-    "addProxies": "Add Proxyz!",
-    "filterPlaceholder": "Findz proxies...",
+    "getProxies": "",
+    "addProxies": "",
+    "settingsTitle": "",
     "listImportToast": {
-      "loading": "Importin proxyz... waitz plz!",
-      "success": "{{count}} proxies imported! Much wow!",
-      "error": "Proxyz import failz!",
-      "noProxies": "No proxyz here for importin, sry."
+      "success_one": "",
+      "success_other": "",
+      "skipped_one": "",
+      "skipped_other": "",
+      "duplicates_one": "",
+      "duplicates_other": ""
     },
     "import": {
-      "proxyType": "Proxy Typz",
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "importing": "Importin proxyz... waitz plz!",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_one": "",
+        "accepted_other": "",
+        "alreadyInProject_one": "",
+        "alreadyInProject_other": "",
+        "rejected_one": "",
+        "rejected_other": "",
+        "confirm_one": "",
+        "confirm_other": ""
+      },
+      "proxyType": "",
       "http": "HTTP",
       "socks4": "SOCKS4",
       "socks5": "SOCKS5",
       "uri": "URI",
       "dialog": {
         "title": "Import {{type}} proxyz",
-        "description": "Paste ur proxies here, putz one per line kthx."
+        "description": ""
       }
     },
     "removeToast": {
       "loading": "Remoovin proxies... hold ur kibble.",
-      "success": "Removed {{count}} proxyz!",
-      "error": "Cudnt remoov proxies, much sads."
+      "error": "",
+      "success_one": "",
+      "success_other": ""
     },
     "checkToast": {
-      "loading": "Chekin proxyz... {{checked}}/{{total}} (Success: {{success}} Failz: {{failed}})",
-      "success": "Removed {{count}} broked proxyz!",
-      "error": "Proxy check borked! No can haz check.",
-      "successKept": "{{failed}} ov {{total}} proxyz faild teh check. No proxyz wer remoovd."
+      "loading": "",
+      "error": "",
+      "success_one": "",
+      "success_other": "",
+      "successKept_one": "",
+      "successKept_other": ""
     },
     "checkDialog": {
-      "title": "Chek Proxyz",
-      "description": "U r about 2 check {{count}} proxyz.",
-      "confirm": "Start Chek",
-      "removeFailed": "Remoov proxyz dat fail",
-      "removeFailedHelp": "A proxy can fail cuz ov a temporary network problem. Cleer dis opshun 2 keep evry proxy an only see teh result."
+      "title": "",
+      "confirm": "",
+      "removeFailed": "",
+      "removeFailedHelp": "",
+      "description_one": "",
+      "description_other": ""
     },
-    "invalidFormat": "Proxy not rite format, no cheezburgerz.",
     "table": {
       "type": "Tyep",
       "address": "Addres",
       "username": "Usernamez",
       "password": "Passwurd",
       "searchAddresses": "SRSCH 4DDRESSEZ...",
-      "searchUsernames": "Seerch usernams...",
-      "searchPasswords": "SRSCH PAWZSWRDZ..."
+      "searchUsernames": "Seerch usernams..."
     },
     "removeSelectedTooltip": "RMVZ SLEKTEDZ PROXIEZ",
     "exportSelectedTooltip": "Eksport selekted proxiezz",
     "checkSelectedTooltip": "CHEK SLEKTEDZ PROXIEZ",
     "contextMenu": {
-      "copyAddress": "Coppy Adress",
-      "copyUsername": "Copy Usernamez",
-      "copyPassword": "Coppy Pawsswurdz!",
-      "deleteProxy": "DELET PROXY, KTHX!"
+      "copyAddress": "",
+      "copyUsername": "",
+      "copyPassword": "",
+      "deleteProxy": ""
     },
     "postImportCheckDialog": {
       "title": "Chek da ported proxeez, k?",
-      "description": "U imported {{count}} proxyz. Check dem nao?",
-      "confirm": "Chek Proxyz",
-      "skip": "SKIPZ"
+      "confirm": "",
+      "skip": "SKIPZ",
+      "description_one": "",
+      "description_other": ""
     },
     "export": {
-      "format": "Eksport Format",
-      "uri": "URI Format (all typz)",
-      "http": "HTTP only (flat)",
-      "socks4": "SOCKS4 only (flat)",
-      "socks5": "SOCKS5 only (flat)",
+      "format": "",
+      "uri": "",
+      "http": "",
+      "socks4": "",
+      "socks5": "",
       "noProxies": "No proxiez to eksport, kthx."
     },
     "removeDialog": {
-      "title_one": "Remoov {{count}} proxy?",
-      "title_other": "Remoov {{count}} proxyz?",
-      "description": "Dis remoovz teh picked proxyz an their credentialz frum dis instance. U cant undo dis.",
-      "confirm": "Remoov proxyz"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     },
-    "showPassword": "Show passwurd",
-    "hidePassword": "Hide passwurd"
+    "removeSingleDialog": {
+      "title": "",
+      "description": "",
+      "confirm": ""
+    },
+    "showPassword": "",
+    "hidePassword": ""
   },
   "account": {
-    "getAccounts": "Account providerz",
-    "addAccounts": "Add Accountz!",
-    "generateAccounts": "Genurayt Accountz!",
-    "filterPlaceholder": "Findz acountz...",
+    "getAccounts": "",
+    "addAccounts": "",
+    "settingsTitle": "",
+    "generateAccounts": "",
     "listImportToast": {
-      "loading": "Importin acountz... {{checked}}/{{total}} (Success: {{success}} Failz: {{failed}})",
-      "allFailed": "Oopsies, no acountz gotz importd, kthxbye.",
-      "someFailed": "{{count}} acountz imported, but {{failed}} acountz no werk. Oh noes!",
-      "noneFailed": "{{count}} acountz imported! Yayz!",
-      "error": "Oopsies, accountz no can haz importz",
-      "noAccounts": "No acountz here for importin, sry."
+      "loading": "",
+      "allFailed": "",
+      "cancelled": "",
+      "error": "",
+      "copyCredentials": "",
+      "noAccounts": "",
+      "errorReason": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      },
+      "someFailed_one": "",
+      "someFailed_other": "",
+      "noneFailed_one": "",
+      "noneFailed_other": "",
+      "cancelledSaved_one": "",
+      "cancelledSaved_other": "",
+      "errorSaved_one": "",
+      "errorSaved_other": ""
     },
-    "unknownError": "I dunno wut went wrongz",
     "types": {
-      "OFFLINE": "Offlyne",
-      "MICROSOFT_JAVA_CREDENTIALS": "Java (Cheezburgerz)",
-      "MICROSOFT_JAVA_DEVICE_CODE": "Java (Devize Kodz)",
-      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java (Refresh Toekn)",
-      "MICROSOFT_JAVA_COOKIES": "Java (Cookeez)",
-      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java (Akcess Toekn)",
+      "OFFLINE": "",
+      "MICROSOFT_JAVA_CREDENTIALS": "",
+      "MICROSOFT_JAVA_DEVICE_CODE": "",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "",
+      "MICROSOFT_JAVA_COOKIES": "",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "",
       "THE_ALTENING": "Java (TehAlteningz)",
-      "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrok (Cheezburgerz)",
-      "MICROSOFT_BEDROCK_DEVICE_CODE": "Bedrok (Devize Kodz)"
+      "MICROSOFT_BEDROCK_CREDENTIALS": "",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": ""
     },
     "deviceCodeImportToast": {
       "loading": "Importin accountz... plz wait (o rly?)",
-      "success": "Acount waz imported! Yamz!",
-      "error": "Import account failz!"
+      "success": "",
+      "error": "",
+      "saving": "",
+      "saveError": "",
+      "retrySave": ""
     },
     "generate": {
-      "title": "Genurayt Offline Accountz!",
+      "replaceAllDialog": {
+        "description": "",
+        "confirm": "",
+        "title_one": "",
+        "title_other": ""
+      },
+      "title": "",
       "description": "Genurayt offline Java accountz wif custom name formatz, kthx!",
-      "amount": "Amownt",
-      "nameFormat": "Naym Format",
-      "nameFormatHelp": "Use %d fur da akount numbr. Fur xample, Bot_%d makz namez like Bot_1 an Bot_2.",
-      "mode": "Alreddy Got Acowntz",
-      "modeHelp": "Chooz how yu treats alreddy existin' akountz:\n\n• Ignore Existin': Only spawns akountz wif nu namez. Keepz all da old akountz.\n\n• Replace Existin': Spawns all da wantd akountz. Swap akountz wif matchin' UUIDs. Keepz da rest.\n\n• Replace All: Deletez all da old akountz. Then adds da new ones.",
-      "modeIgnoreExisting": "Ignore Alreddy",
-      "modeReplaceExisting": "Replaze Alreddy",
-      "modeReplaceAll": "Replac ALL TEH FINGS",
+      "amount": "",
+      "nameFormat": "",
+      "nameFormatHelp": "",
+      "mode": "",
+      "modeHelp": "",
+      "modeIgnoreExisting": "",
+      "modeReplaceExisting": "",
+      "modeReplaceAll": "",
       "submit": "Genurayt",
       "generating": "Genuraytin...",
-      "progress": "Genuraytin accountz... {{checked}}/{{total}} (Succesz: {{success}} Failz: {{failed}})",
-      "success": "Genurayted {{count}} accountz!",
-      "allFailed": "Faild tu genurayt any accountz",
-      "allExist": "All usernamez already exist. Pick \"Replaze Alreddy\" 2 make dem agen.",
-      "error": "Faild tu genurayt accountz",
-      "invalidAmount": "Plz enterz valid amownt (at leest 1)",
-      "missingPlaceholder": "Naym format haz to haz %d placeholder"
+      "progress": "",
+      "allFailed": "",
+      "allExist": "",
+      "error": "",
+      "amountOutOfRange": "",
+      "missingNameFormat": "",
+      "success_one": "",
+      "success_other": "",
+      "preview_one": "",
+      "preview_other": ""
     },
     "import": {
       "javaEdition": "Java Editshun",
       "bedrockEdition": "Bedrock Editshun",
       "offline": "Offlyne",
-      "microsoftCredentials": "Microsoft Passwurdz",
-      "microsoftDeviceCode": "Microsoft Device Codez",
-      "microsoftRefreshToken": "Microsoft Refresh Tokenz",
-      "microsoftCookies": "Microsoft Cookeezz!",
-      "microsoftAccessToken": "Microsoft Accesz Tokenz",
-      "theAltening": "TehAltening Tokenz",
-      "altProviders": "Alt Providurz",
+      "microsoftCredentials": "",
+      "microsoftDeviceCode": "",
+      "microsoftRefreshToken": "",
+      "microsoftCookies": "",
+      "microsoftAccessToken": "",
+      "theAltening": "",
+      "altProviders": "",
       "dialog": {
-        "title": "Import {{type}} acountz",
-        "description": "Paste ur acountz here, one purr line kthx."
+        "title": "Import {{type}} acountz"
+      },
+      "demo": "",
+      "format": {
+        "offline": "",
+        "microsoftCredentials": "",
+        "refreshToken": "",
+        "cookies": "",
+        "accessToken": "",
+        "theAltening": ""
       }
     },
     "removeToast": {
       "loading": "Remoovin acountz... hold on kitteh.",
-      "success": "Removed {{count}} acountz!",
-      "error": "Remoovin acountz failed, no cheezburgerz."
+      "error": "",
+      "success_one": "",
+      "success_other": ""
     },
     "table": {
       "type": "Tyep",
-      "profileId": "Profil ID",
+      "profileId": "",
       "lastKnownName": "Usernamez",
       "searchProfileIds": "SRSCH PURRFILE IDS...",
-      "searchLastKnownNames": "SRSCH LAST KNOWN NAMES...",
+      "searchLastKnownNames": "Seerch usernams...",
       "actions": "Akshuns"
     },
     "removeSelectedTooltip": "RMVZ SLEKTEDZ ACCOUNTZ",
     "contextMenu": {
-      "openConfig": "Open settingz",
-      "openMetadata": "OPN METADEETA, WOW!",
-      "copyProfileId": "COPY PROFILE ID, SRSLY",
-      "copyUsername": "Copy Usernamez"
+      "openConfig": "",
+      "openMetadata": "",
+      "copyProfileId": "",
+      "copyUsername": ""
     },
     "config": {
       "title": "Configur teh {{name}}",
-      "description": "Configur pwoper bot settns fur dis account",
+      "description": "",
       "openButton": "Configur accownt",
-      "pageTitle": "{{name}} - {{page}} Settnz",
       "noSettings": "No settnz availabru fur dis page",
       "search": "Seerch settinzs!",
+      "pages": "",
       "overrides": "Overridzez",
       "allSettings": "All settinzs!",
       "noOverrides": "Dis bot haz no speshul ovverridzez yet, kthx.",
@@ -303,226 +319,196 @@
       "selectPage": "Pickz a settinz page, mebbe?",
       "noSearchResults": "No settinz match dis search. Oh noes!",
       "matchesInheritedValue": "Iz matchin' inherited valu, so fancy!",
-      "instanceValue": "Instance valu here, kitteh seez.",
+      "instanceValue": "",
       "defaultValue": "Defawlt valu! Naow u kno.",
       "resetOverride": "Reset teh overraide, kthxbai!",
       "value": {
-        "notSet": "Not set",
-        "on": "ON",
-        "off": "OFF",
-        "empty": "Empty",
-        "entries_one": "{{count}} entury",
-        "entries_other": "{{count}} enturiez",
-        "range": "Range"
+        "notSet": "",
+        "on": "",
+        "off": "",
+        "empty": "",
+        "range": "",
+        "entries_one": "{{count}} entry",
+        "entries_other": "{{count}} entriez"
       },
       "source": {
-        "bot": "Bot override",
-        "instance": "Inheritd frum instance",
-        "default": "Uzin default"
+        "bot": "",
+        "instance": "",
+        "default": ""
       }
     },
     "deviceCodeConfirmDialog": {
-      "title": "DEVIC COD AUTENTIKASHUNZ!11!",
+      "title": "",
       "description": "Settin ur opshuns b4 u start teh devize kode floh.",
-      "start": "STAWT AUTHENTICASHUN"
+      "start": ""
     },
     "deviceCodeDialog": {
-      "title": "DEVIC COD AUTENTIKASHUNZ!11!",
+      "title": "",
       "description": "SIGNS IN WIF UR MICROSFT AKOUNT TO LINKZ IT. KTHXBAI!1!",
-      "openInBrowser": "OPEN INZ BROWSR",
+      "openInBrowser": "",
       "orManually": "OR ENTER CODE MANUALS LOL",
       "codeLabel": "UR CODEZ",
-      "urlLabel": "GO 2"
+      "urlLabel": "GO 2",
+      "copyCode": "",
+      "copyUrl": ""
     },
     "ravealts": {
-      "button": "Ravealtz",
-      "title": "Purchez Accownts via Ravealtz",
       "description": "Buy Minecraft accowntz usin ur Ravealtz API kitteh key.",
-      "apiKeyLabel": "API Keyzorz",
       "apiKeyPlaceholder": "Enters ur Ravealts API keyzorz",
-      "validate": "Chekz!",
-      "validating": "Chekkin...",
-      "keyValid": "Keyzorz iz validz!",
-      "keyInvalid": "Dats invalid API keyzorz",
-      "credits": "Creditz: {{credits}}",
-      "stockTitle": "Stockz Availabul",
       "noStock": "No accowntz in stockz",
-      "accountType": "Accownt Typez",
-      "amount": "Amownt (1-10)",
-      "purchase": "Buyz & Importz",
-      "purchasing": "Buyinz...",
-      "purchaseSuccess": "Buyed {{count}} accowntz, importin...",
-      "purchaseError": "Buy failz: {{message}}",
-      "networkError": "Cunectshun tu da Ravealts API haz failed, oh noes!",
-      "outOfStock": "Dis type iz out of stockz",
+      "accountType": "",
+      "networkError": "",
+      "outOfStock": "",
       "insufficientBalance": "No haz enuff creditz",
-      "rateLimited": "Rate limitz, tryz agen laytur"
+      "rateLimited": ""
     },
     "metadata": {
-      "openButton": "Edit Metadaterz",
+      "openButton": "",
       "title": "Metadaterz: {{name}}",
-      "description": "Managz purrsistent metadata enturiez fur dis accownt. Each entury haz a namespace, key, an JSON valu. Meow!",
-      "namespacePlaceholder": "Namspace",
-      "keyPlaceholder": "Key",
-      "valuePlaceholder": "Valoo (JSON)",
-      "noEntries": "No metadata enturiez. Addz one up dere.",
-      "loadError": "Cud not load metadaterz",
-      "loadErrorDescription": "",
-      "retryLoad": "Try agin? kthx!",
-      "addSuccess": "Entury addzored",
-      "addError": "No can add entury, oh noes!",
-      "updateError": "No can updait entury, sry!",
-      "deleteSuccess": "Entry deletd, kthxbye!",
-      "deleteError": "O NOEZ! Couldn delet entry D:",
-      "duplicateError": "Dis entry already existz wit dat namespace an key!",
-      "invalidJson": "Dis JSON iz borked, fix plz!",
-      "namespaceLabel": "Namspace",
-      "keyLabel": "Key",
-      "valueLabel": "Valu",
-      "addEntryLegend": "Add metadata entury",
-      "addEntryButton": "Add entury",
-      "entryLegend": "Metadata entury",
-      "removeEntryButton": "Remoov"
+      "description": "Managz purrsistent metadata enturiez fur dis accownt. Each entury haz a namespace, key, an JSON valu. Meow!"
     },
     "removeDialog": {
-      "title_one": "Remoov {{count}} account?",
-      "title_other": "Remoov {{count}} accountz?",
-      "description": "Dis remoovz teh picked accountz, their saved credentialz, an their botz frum dis instance. U cant undo dis.",
-      "confirm": "Remoov accountz"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     }
   },
   "instanceMetadata": {
-    "title": "Instanz MetaDataz",
-    "description": "Manaj persiztent metadata entriez fur dis instanz. Each entry haz a namespaze, key, an JSON valu.",
-    "namespacePlaceholder": "Namspace",
-    "keyPlaceholder": "Key",
-    "valuePlaceholder": "Valoo (JSON)",
-    "noEntries": "No metadata enturiez. Addz one up dere.",
-    "loadError": "Cud not load metadaterz",
-    "addSuccess": "Entury addzored",
-    "addError": "No can add entury, oh noes!",
-    "updateError": "No can updait entury, sry!",
-    "deleteSuccess": "Entry deletd, kthxbye!",
-    "deleteError": "O NOEZ! Couldn delet entry D:",
-    "duplicateError": "Dis entry already existz wit dat namespace an key!",
-    "invalidJson": "Dis JSON iz borked, fix plz!",
-    "namespaceLabel": "Namspace",
-    "keyLabel": "Key",
-    "valueLabel": "Valu",
-    "addEntryLegend": "Add metadata entury",
-    "addEntryButton": "Add entury",
-    "entryLegend": "Metadata entury",
-    "removeEntryButton": "Remoov"
+    "title": "",
+    "description": ""
+  },
+  "metadataEditor": {
+    "namespacePlaceholder": "",
+    "keyPlaceholder": "",
+    "valuePlaceholder": "",
+    "valueRequired": "",
+    "noEntries": "",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "Try agin? kthx!",
+    "addSuccess": "",
+    "addError": "",
+    "updateError": "",
+    "deleteSuccess": "",
+    "deleteError": "",
+    "duplicateError": "",
+    "invalidJson": "",
+    "namespaceLabel": "",
+    "keyLabel": "",
+    "valueLabel": "Value",
+    "addEntryLegend": "",
+    "addEntryButton": "",
+    "entryLegend": "",
+    "removeEntryButton": "Exit stuff"
   },
   "bots": {
     "searchPlaceholder": "Serch bots...",
-    "onlineCount": "{{online}} catnectd / {{total}} totul",
-    "noBots": "No botz configgerd. Add acountz frum da Account Settin Page.",
+    "noBots": "",
     "noBotsFound": "No botz match ur search, kthx.",
-    "loadingMore": "Loadin moar...",
     "showingCount": "Showin {{loaded}} uv {{total}}",
     "allLoaded": "All {{total}} botz loaded",
-    "online": "Catnectd",
-    "offline": "Discatnectd",
-    "notJoined": "Nawt Joind",
     "connectionPhase": {
       "connecting": "Catwalkin",
-      "connected": "Loggin in",
+      "connected": "",
       "spawned": "Catnectd",
       "died": "DED",
-      "disconnected": "Discatnectd",
+      "disconnected": "",
       "ping": "{{ms}} ms"
     },
-    "runtimeState": {
-      "starting": "Strat-in",
-      "running": "Runnin",
-      "retrying": "Tryz agin",
-      "stopping": "Stoppin",
-      "failed": "FAILD",
-      "waiting": "WAITZ",
-      "stopped": "Stopped"
-    },
-    "backToBots": "Bak 2 Botz",
+    "backToBots": "",
+    "demoControls": "",
+    "notConnected": "",
     "tabs": {
-      "overview": "Bot view",
+      "overview": "",
       "inventory": "Inventoryz",
-      "controls": "Controlz",
-      "terminal": "Termenawl"
+      "controls": "",
+      "terminal": "",
+      "label": ""
     },
-    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "Proxeh",
       "direct": "Direct (no proxeh)",
       "unavailable": "Unavaiablez"
     },
     "positionPanel": {
-      "title": "Pozishun & Rotashun",
-      "position": "Pozishun",
-      "rotation": "Rotashun",
-      "offline": "Teh bot iz discatnectd. Pozishun data only availbul wen bot iz connekkted."
+      "title": "",
+      "x": "",
+      "y": "",
+      "z": "",
+      "pitch": "",
+      "yaw": "",
+      "coordinates": "",
+      "offline": ""
     },
     "chatPanel": {
-      "title": "Chat Meowsajes"
-    },
-    "commandPanel": {
-      "title": "Bot Commandses",
-      "placeholder": "Send command 2 dis bot..."
-    },
-    "povPanel": {
-      "title": "Bot POW!",
-      "capture": "CAPTURZ!",
-      "refresh": "REFRESH PLZ",
-      "auto": "Auto",
-      "startAutoRefresh": "Start auto-refresh (1 sekond interval)",
-      "stopAutoRefresh": "Stop auto-refresh",
-      "clickToCapture": "Klik CAPTURZ tu see bot'z point ov viewz",
-      "offline": "Bot iz offlinez. U c'n only see POW when bot iz connekktid, kthx."
+      "title": "",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": "",
+      "sendErrorReason": "",
+      "cancelled": "",
+      "sending": "",
+      "sent": ""
     },
     "statsPanel": {
       "health": "Helth",
+      "healthLabel": "",
+      "healthValue": "",
       "food": "FOODS",
-      "saturation": "Nomz Levl (Saturashun)",
+      "foodLabel": "",
+      "foodValue": "",
       "experience": "Eksperiencez",
-      "level": "Levelz",
-      "toNextLevel": "to nexteh levelz",
-      "gameMode": "Game mode",
+      "levelShort": "",
       "survival": "Survival",
       "creative": "Creative",
       "adventure": "Adventure",
       "spectator": "Spectator",
-      "unknown": "Unkownz",
-      "offline": "Teh bot iz discatnectd. Statzz seez only when bot iz connekktid, kthx."
+      "unknown": "Unkownz"
     },
     "inventoryPanel": {
       "title": "Inventoryz",
       "actionRejected": "",
-      "hotbar": "Hotbar (Iz Hot!)",
-      "main": "Main Inventoree",
-      "items": "itemz",
+      "actionError": "",
+      "output": "",
+      "slotInfo": {
+        "slot": "",
+        "item": "",
+        "region": "",
+        "hotbar": ""
+      },
       "carrying": "Carryingz",
-      "dropOne": "Drop Onez",
-      "dropAll": "Drop All Teh Thingz",
+      "dropOne": "",
+      "dropAll": "",
       "closeContainer": "Cloes",
-      "clickHint": "Left clik: pik up/places | Rite clik: half/one | Shift+clik: kwik mov | Middle clik: seleckt hotbar slot",
-      "offline": "Teh bot iz discatnectd. Inventoree showz only when bot iz connekktid, kthx.",
+      "clickHint": "",
+      "offline": "",
+      "waiting": "",
+      "demo": "",
+      "heldSlot": "",
+      "holdSlot": "",
       "buttons": {
         "stonecutterRecipes": "Recipiez",
         "enchantments": "Enchantmintz",
         "patterns": "Patternz",
         "trades": "Tradez",
-        "beaconEffects": "Beacon Effecktz",
-        "crafterSlots": "Slot Kontrolz",
-        "lecternControls": "Buk Kontrolz",
+        "beaconEffects": "",
+        "crafterSlots": "",
+        "lecternControls": "",
         "actions": "Akshuns",
-        "creativeTabs": "Creativ tabz"
+        "creativeTabs": ""
       },
       "textInput": {
-        "title": "Text Inpoot",
-        "anvilRename": "Rename Itum",
-        "creativeSearch": "Serch itemz"
+        "title": "",
+        "anvilRename": "",
+        "creativeSearch": ""
       },
       "bookPages": {
-        "title": "Buk Kontentz",
+        "title": "",
         "emptyPage": "(Emptiez page)",
         "previousPage": "",
         "nextPage": "",
@@ -530,105 +516,202 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": "Destroy item",
-      "clickHints": {
-        "left": "Left clik: pik up or place",
-        "right": "Right clik: pik up half or place one",
-        "shift": "Shift+clik: quik move",
-        "middle": "Middle clik: pik as activ slot"
-      }
+      "destroyItem": "",
+      "emptySlot": "",
+      "clickMode": {
+        "label": "",
+        "left": "",
+        "right": "",
+        "shift": "",
+        "middle": ""
+      },
+      "keyboardHint": "",
+      "stack_one": "",
+      "stack_other": "",
+      "itemCount_one": "",
+      "itemCount_other": ""
     },
     "visualPanel": {
-      "title": "Direkshun an world",
-      "compass": "Facin Direkshun",
-      "lookDirection": "Look Anglez",
+      "title": "",
+      "compass": "",
+      "lookDirection": "",
       "lookingUp": "Lookz up",
       "lookingDown": "Lookz downz",
       "lookingStraight": "Lookz STR8 ahd",
-      "worldInfo": "Wurld Infoz",
+      "directions": {
+        "n": "",
+        "ne": "",
+        "e": "",
+        "se": "",
+        "s": "",
+        "sw": "",
+        "w": "",
+        "nw": ""
+      },
+      "dimensions": {
+        "overworld": "",
+        "the_nether": "",
+        "the_end": ""
+      },
+      "worldInfo": "",
       "dimension": "Dimenshun",
-      "biome": "Biomez",
-      "offline": "Teh bot iz discatnectd. Visual data onlyz wen bot iz connekktid, kthx."
+      "offline": ""
     },
     "actionsPanel": {
-      "title": "Bot Actshunz",
-      "leftClick": "Left Clik",
-      "rightClick": "Rite Clik",
+      "title": "",
+      "leftClick": "",
+      "rightClick": "",
       "leftClickDescription": "Attack entitee or brek blok",
       "rightClickDescription": "Uze itum or interakt",
-      "offline": "Teh bot iz discatnectd. Actshunz only avaylbul wen bot iz connectd."
+      "clickError": "",
+      "offline": ""
     },
     "movementPanel": {
       "updateServer": "",
-      "title": "Moovmunt Kontrol",
+      "movementError": "",
+      "rotationError": "",
+      "title": "",
       "movement": "Moovmunt (WASD)",
-      "forward": "Moov Forward (W)",
-      "backward": "Moov Backward (S)",
-      "left": "Strafe left (A)",
-      "right": "Strafe Rite (D)",
+      "forward": "",
+      "backward": "",
+      "left": "",
+      "right": "",
       "jump": "Jumpz",
       "sneak": "Sneekz",
       "sprint": "Sprintz",
       "stop": "Stawp",
-      "rotation": "Look Direkshun",
-      "lookUp": "Lookz Up",
-      "lookDown": "Lookz Down",
-      "lookLeft": "Lookz Left",
-      "lookRight": "Lookz Rite",
-      "offline": "Teh bot iz discatnectd. Moovmunt kontrolz onli avaylbl wen bot iz connectd."
+      "rotation": "",
+      "lookUp": "",
+      "lookDown": "",
+      "lookLeft": "",
+      "lookRight": "",
+      "offline": "",
+      "modifiers": ""
     },
     "dialogPanel": {
-      "title": "Server Dialogz",
+      "title": "",
       "noDialog": "No server dialogz iz showin nao.",
-      "dialogType": "Tyep",
       "dialogId": "Dialog ID",
       "notice": "Notis",
       "confirmation": "Confirmashun",
-      "multiAction": "Multi Actshun",
-      "serverLinks": "Server Linkz",
-      "dialogList": "Dialog Listz",
+      "multiAction": "",
+      "serverLinks": "",
+      "dialogList": "",
       "unknownType": "Unkownz",
+      "submitError": "",
       "dismiss": "Dismizz",
       "submit": "Submitz",
-      "offline": "Teh bot iz discatnectd. Dialogz only avaylbul wen bot iz connectd."
+      "offline": ""
+    },
+    "filterLabel": "",
+    "filterAll": "ALL teh thingz",
+    "noBotsInState": "",
+    "displayState": {
+      "connected": "Catnectd",
+      "starting": "Strat-in",
+      "retrying": "Tryz agin",
+      "failed": "FAILD",
+      "stopping": "Stoppin",
+      "stopped": "Stopped"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
     },
     "pov": {
-      "title": "Bot view",
-      "touchControlling": "U control dis bot. Uze \"Release control\" 2 stop.",
-      "popupBlocked": "Allow popupz 2 detach teh bot view window.",
-      "windowTitle": "SoulFire bot view",
-      "fullscreenUnavailable": "Fullscreen iz not availabl in dis window.",
-      "textInputLabel": "Minecraft text input",
-      "videoLabel": "Live bot view",
-      "touchMove": "Move",
-      "audioError": "Cud not start audio.",
-      "startError": "Cud not start bot view.",
-      "releaseHint": "Press {{shortcut}} 2 release ur keybord an mouse.",
-      "captureHint": "Clik teh view an allow keybord an mouse capture.",
-      "audioWaiting": "Waitin 4 bot view 2 catnect.",
-      "audioWatchFirst": "Watch teh bot 2 uze audio.",
-      "audioUpdateServer": "Update teh server 2 uze bot view audio.",
-      "muteAudio": "Mute audio",
-      "unmuteAudio": "Unmute audio",
-      "audioStarting": "Startin audio...",
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "reconnecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": "",
+      "popupBlocked": "",
+      "windowTitle": "",
+      "fullscreenUnavailable": "",
+      "textInputLabel": "",
+      "videoLabel": "",
+      "touchMove": "",
+      "audioError": "",
+      "startError": "",
+      "releaseHint": "",
+      "captureHint": "",
+      "capturing": "",
+      "captureCooldown": "",
+      "captureTimeout": "",
+      "audioWaiting": "",
+      "audioWatchFirst": "",
+      "audioUpdateServer": "",
+      "muteAudio": "",
+      "unmuteAudio": "",
+      "audioStarting": "",
       "mute": "MUTEZ",
       "unmute": "UNMUTEZ",
-      "audio": "Audio",
-      "audioUnavailable": "No audio 4 u",
-      "volume": "Bot view volum",
-      "reconnect": "Recatnect",
-      "showWindow": "Show bot view window",
-      "attachWindow": "Attach bot view window",
+      "audio": "",
+      "audioUnavailable": "",
+      "volume": "",
+      "reconnect": "",
+      "showWindow": "",
+      "attachWindow": "",
       "touch": {
-        "jump": "Jump",
-        "sneak": "Sneak",
-        "attack": "Attak",
-        "use": "Uze",
+        "jump": "Jumpz",
+        "sneak": "Sneekz",
+        "attack": "",
+        "use": "",
         "inventory": "Inventoryz",
-        "keyboard": "Keybord",
-        "closeMenu": "Close menu"
+        "keyboard": "",
+        "closeMenu": ""
       },
-      "needsServer": "Bot view needz a catnectd SoulFire server."
+      "needsServer": "",
+      "connectTimeout": "",
+      "reconnectFailed": "",
+      "inputUpdateServer": "",
+      "inputUnavailable": "",
+      "decoderUnsupported": "",
+      "videoUnsupportedBrowser": "",
+      "audioUnsupportedBrowser": "",
+      "audioDecodeUnsupported": "",
+      "audioBlocked": "",
+      "audioInvalidFrame": "",
+      "streamMetrics": {
+        "title": "",
+        "waitingForVideo": "",
+        "unknown": "",
+        "fps": "",
+        "video": "",
+        "target": "",
+        "decoder": "",
+        "decoderWaitingForKey": "",
+        "keyframes": ""
+      },
+      "step": {
+        "online": "",
+        "queued": "",
+        "starting": "",
+        "joining": "",
+        "retrying": "",
+        "failed": "",
+        "stopping": "",
+        "stopped": ""
+      }
     }
   },
   "metrics": {
@@ -636,21 +719,8 @@
       "noData": "No dataz"
     },
     "summary": {
-      "online": "Catnectd",
-      "packetsPerSecond": "Pkt/s",
       "traffic": "Trafik",
-      "health": "Helth",
       "tick": "Tick"
-    },
-    "botsOnline": {
-      "title": "Botz catnectd",
-      "online": "Catnectd",
-      "total": "Totalz"
-    },
-    "packets": {
-      "title": "Packetz / Secondz",
-      "sent": "Sendz/s",
-      "received": "Recvz/s"
     },
     "bandwidth": {
       "title": "Bandwidf",
@@ -658,88 +728,76 @@
       "download": "Downlode"
     },
     "tick": {
-      "title": "Tick Lonng",
+      "title": "",
       "avg": "Avg (ms)",
       "max": "Max (ms)"
     },
-    "healthFood": {
-      "title": "Helth / Nomz",
-      "health": "Avg Helth",
-      "food": "Avg Nomz"
-    },
-    "chunksEntities": {
-      "title": "Chunks / Thingz",
-      "chunks": "Chunks",
-      "entities": "Thingz"
-    },
-    "connections": {
-      "title": "Connectshun Eventz",
-      "connections": "Connectshunz",
-      "disconnections": "Disconnexshunz"
-    },
-    "healthDistribution": {
-      "title": "Helth Sploshun",
-      "bots": "BOTZ"
-    },
     "dimensions": {
-      "title": "Dimensionz",
-      "bots": "BOTZ"
+      "title": "Dimensionz"
     },
     "gameModes": {
-      "title": "Game Modez",
-      "bots": "BOTZ"
+      "title": ""
     },
     "positions": {
-      "title": "Bot Spotz (XZ)",
+      "title": "",
       "bot": "Botteh"
     }
   },
   "scripts": {
-    "title": "Vizhul Skriptz",
-    "description": "Mak awtomaet skript using funneh nodez editor, kthx.",
-    "experimentalTitle": "XPERIMENTAL FEETURZ!!1!1!",
-    "experimentalWarning": "Dis feechur iz xperimentul. Futur updaets mite bork ur skripts. Proceed wif care, kthx.",
-    "createScript": "Make Skript",
-    "createScriptTitle": "Make Nu Skript",
-    "createScriptDescription": "Mak nub vizhul skript 4 diz instanz. Skriptz do teh bot stuf an respawn to evnts.",
-    "scriptName": "Skript Naym",
+    "title": "",
+    "description": "",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
+    "scriptName": "",
     "scriptNamePlaceholder": "Type skript naym heer...",
     "scriptDescription": "Deskripshun",
     "scriptDescriptionPlaceholder": "Say wut diz skript duz...",
     "create": "Makee Makee",
-    "createSuccess": "Skript creatd, so gud!",
-    "createError": "Failyure. Skript not created ;_;",
-    "noScripts": "No Skriptz Yetz",
-    "noScriptsDescription": "Mak ur first skript 2 automate bot stuf wit vizhul nodez editorz!",
-    "createFirstScript": "Make Skript",
-    "running": "Runnin",
-    "paused": "Pawzed",
-    "nodes": "nodez",
+    "createSuccess": "",
+    "createError": "",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "running": "",
+    "paused": "",
     "noDescription": "No has deskripshun",
+    "edited": "",
+    "searchPlaceholder": "",
+    "filterLabel": "",
+    "filter": {
+      "all": "ALL teh thingz",
+      "on": "",
+      "off": ""
+    },
+    "sort": {
+      "label": "",
+      "edited": "",
+      "name": "Naym"
+    },
+    "noMatches": "",
     "edit": "Editsie",
-    "pause": "Pawse",
-    "pauseSuccess": "Skript iz pausd, kthx!",
-    "pauseError": "Oh noez, faild tu paus skript!",
-    "resume": "Resoome",
-    "resumeSuccess": "Skript iz bak in accionz!",
-    "resumeError": "Oh noez, skript cant resoom!",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "DELEET",
-    "deleteSuccess": "Skript get deletd suksessleh, YAY!",
-    "deleteError": "NOOO! Skript not deletd!",
-    "saveSuccess": "Skript be saved, awesumz!",
-    "saveError": "Sadness. Skript didn save :(",
-    "activateSuccess": "Skript activ8d",
-    "activateError": "Oh noes, kan haz aktivaet skript",
-    "deactivateSuccess": "Skript deactiv8d",
-    "untitledScript": "Untitled Skriptz",
-    "saveFirstBeforeActivating": "Save teh skript furst b4 aktivaetin",
-    "activating": "Aktivatin scripty...",
-    "activated": "Skript activ8d",
+    "deleteSuccess": "",
+    "deleteError": "",
+    "saveSuccess": "",
+    "saveError": "",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
+    "untitledScript": "",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "Skript finished!",
-    "executionCompletedSuccess": "Skript finishd suksessfulleh! YUS!",
-    "deactivated": "Skript deactiv8d",
-    "deactivatedByUser": "Script waz deactivated by hooman",
-    "executionFailed": "Skript explodid, did not werk D;",
+    "executionCompletedSuccess": "Skript finished!",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionError": "Oh noes: {{error}}",
     "monitoringError": "",
     "monitoringDisconnected": "",
@@ -747,112 +805,135 @@
     "nodeCompleted": "Node completid: {{nodeId}}",
     "nodeError": "Node fail: {{error}}",
     "contextMenu": {
-      "edit": "EDIT SCRIPT, LETZ GO!",
-      "pause": "Pawse",
-      "resume": "Resoome",
-      "delete": "DELET SCRIPT, KTHXBYE!",
-      "copyScriptName": "Coppy Skript Naym!",
-      "copyScriptId": "Coppy Skript ID!"
+      "edit": "",
+      "pause": "",
+      "resume": "",
+      "delete": "",
+      "copyScriptName": "",
+      "copyScriptId": ""
     },
     "editor": {
       "toolbar": {
         "actions": "",
-        "backToScripts": "Bak to Skriptz",
+        "backToScripts": "",
         "save": "SAEV",
-        "saveTooltip": "Saev skriptz!",
-        "resume": "Resoome",
-        "resumeTooltip": "Resoom skript doin stufs",
-        "pause": "Pawse",
-        "pauseTooltip": "PAWZ skript runnin'",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "UNSAVEZ",
         "unsavedChanges": "Unsaved cheengez",
-        "clearCanvas": "Cleer doodle pad",
-        "zoomIn": "ZOOMZ IN",
-        "zoomOut": "ZOOMZ OWT",
-        "fit": "Fit ded!",
         "export": "XPORT SKRIPT!",
         "import": "IMPORT SKRIPT!",
-        "exportSuccess": "Skript has bin xported, kthx!",
-        "importSuccess": "Skript has bin importd, kthx!",
-        "importError": "Oh noes, failed 2 import skript!"
+        "exportSuccess": "",
+        "importSuccess": "",
+        "importError": "",
+        "resumeBlocked": "",
+        "undo": "",
+        "redo": "",
+        "resumeSaveFirst": "",
+        "scriptName": ""
       },
       "palette": {
-        "title": "Node Kitteh",
+        "title": "",
         "search": "Sersch nodez...",
-        "noResults": "No nodez match ur serch",
-        "noResultsDescription": "Try a different wurd or cleer teh current filtur."
+        "noResults": "",
+        "noResultsDescription": ""
       },
       "logs": {
-        "title": "Execushun Logz",
+        "title": "",
         "clearTitle": "Cleer logz",
-        "noLogs": "No logz yet! Run skript 2 sees what happuns.",
+        "noLogs": "",
+        "levels": {
+          "debug": "",
+          "info": "",
+          "warn": "",
+          "error": "Ewwow"
+        },
         "entries_one": "{{count}} entry",
         "entries_other": "{{count}} entriez"
       },
       "contextMenu": {
         "duplicate": "Copy dat",
         "rename": "Renaym",
-        "disconnectAll": "ALL DISCONNECT",
+        "disconnectAll": "",
         "collapse": "COLLAPZ",
         "expand": "EXPANDZ",
         "mute": "MUTEZ",
         "unmute": "UNMUTEZ",
-        "showPreview": "SHOW PREVYU",
-        "hidePreview": "HIDE PREVYU",
+        "showPreview": "",
+        "hidePreview": "",
+        "openGroup": "",
+        "ungroup": "",
         "delete": "DELEET"
+      },
+      "connection": {
+        "self": "",
+        "execution": "",
+        "type": ""
       },
       "node": {
         "expand": "Expand nodeh",
         "collapse": "Hidez nodeh",
-        "avgTime": "Average run tiem: {{avg}} ms (last {{count}} runz)",
-        "preview": "Preview"
+        "avgTimeBadge": "",
+        "preview": "",
+        "muted": "",
+        "avgDuration_one": "",
+        "avgDuration_other": ""
       },
       "debug": {
         "copyValue": "Copy dis value nao",
         "clearHistory": "Clearz hisstorry",
-        "current": "Current ({{time}}):",
-        "noValue": "No valu receivd yet"
+        "current": "",
+        "noValue": "",
+        "input": "",
+        "output": "",
+        "history_one": "",
+        "history_other": ""
       },
       "edge": {
         "direction": "Edge direcshun"
       },
       "note": {
-        "placeholder": "Rite a note..."
+        "placeholder": "Rite a note...",
+        "contentLabel": ""
       },
       "complexity": {
         "title": "Script komplixitee skor"
       },
       "group": {
         "returnToRoot": "Return to cheezburger base (Tab)",
-        "root": "Root",
-        "exitHint": "Press <key>Tab</key> 2 exit",
-        "editHint": "Double-clik 2 edit",
-        "noInputs": "No inputz defind",
-        "noOutputs": "No outputz defind"
+        "root": "",
+        "defaultLabel": "",
+        "exitHint": "",
+        "editHint": "",
+        "noInputs": "",
+        "noOutputs": ""
       },
       "quickAdd": {
         "menuLabel": "Qwik add node menoo",
         "searchPlaceholder": "Sersch nodez...",
-        "noResults": "No nodez found",
-        "noResultsDescription": "Try a different serch wurd.",
-        "navigate": "Navigate",
-        "select": "Enter 2 pik",
-        "close": "Esc 2 close"
+        "noResults": "",
+        "noResultsDescription": "Try sum othur seerch werd, kthx!",
+        "navigate": "",
+        "select": "",
+        "close": ""
       },
       "diff": {
         "tooltip": "Look at cheenz!",
-        "title": "Unsaved changez",
-        "description": "Changez sinz teh last save.",
-        "nodesAdded_one": "{{count}} node added",
-        "nodesAdded_other": "{{count}} nodez added",
-        "nodesRemoved_one": "{{count}} node remoovd",
-        "nodesRemoved_other": "{{count}} nodez remoovd",
-        "nodesModified_one": "{{count}} node changd",
-        "nodesModified_other": "{{count}} nodez changd",
-        "edgesAdded_one": "{{count}} edge added",
-        "edgesAdded_other": "{{count}} edgez added",
-        "edgesRemoved_one": "{{count}} edge remoovd",
-        "edgesRemoved_other": "{{count}} edgez remoovd"
+        "title": "Unsaved cheengez",
+        "description": "",
+        "nodesAdded_one": "",
+        "nodesAdded_other": "",
+        "nodesRemoved_one": "",
+        "nodesRemoved_other": "",
+        "nodesModified_one": "",
+        "nodesModified_other": "",
+        "edgesAdded_one": "",
+        "edgesAdded_other": "",
+        "edgesRemoved_one": "",
+        "edgesRemoved_other": ""
       },
       "dryRun": {
         "saveFirst": "",
@@ -865,55 +946,695 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "Dry Ploy",
-        "title": "Dry Ploy Scriptz",
-        "description": "Runn a script from a pikd triggur wif cheez inputs.",
-        "triggerNode": "Triggur Nodeh",
+        "tooltip": "",
+        "title": "",
+        "description": "",
+        "triggerNode": "",
         "selectTrigger": "Selekt a triggur...",
-        "triggerDescription": "Pik teh triggur nodeh to use wif cheez inputz.",
-        "mockInputs": "Mock Inputz",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "{{type}} valu",
-        "start": "START DRY PLOY!",
+        "start": "",
+        "button": "",
         "stats_one": "",
         "stats_other": ""
       },
       "quotas": {
-        "tooltip": "Script quotas",
-        "title": "Script quotas",
+        "tooltip": "",
+        "title": "",
         "description": "Configur teh resors limitz 4 dis script. Emptiez fieldz use servur defawltz.",
-        "maxExecutionCount": "Max Run Countz",
+        "maxExecutionCount": "",
         "maxExecutionCountPlaceholder": "100000",
-        "maxExecutionCountDescription": "Maximum nodeh runz per triggur push",
-        "maxExecutionTime": "Max Run Tyme (ms)",
+        "maxExecutionCountDescription": "",
+        "maxExecutionTime": "",
         "maxExecutionTimePlaceholder": "30000",
-        "maxExecutionTimeDescription": "Maxtimum wall-clawk tymez per triggur execushun",
-        "maxConcurrentTriggers": "Max Cat Triggurz at Once",
+        "maxExecutionTimeDescription": "",
+        "maxConcurrentTriggers": "",
         "maxConcurrentTriggersPlaceholder": "1",
-        "maxConcurrentTriggersDescription": "Biggest triggurz runnin togethur",
-        "maxStateStoreEntries": "Max Saved Stat Stuffz",
+        "maxConcurrentTriggersDescription": "",
+        "maxStateStoreEntries": "",
         "maxStateStoreEntriesPlaceholder": "Infinity",
-        "maxStateStoreEntriesDescription": "Biggest thingz in teh script stash box",
-        "disableTimeouts": "No Tiem Owtz",
-        "disableTimeoutsDescription": "Stopz tiem owtz for nodez and edgez",
-        "save": "Savez da Quota",
+        "maxStateStoreEntriesDescription": "",
+        "disableTimeouts": "",
+        "disableTimeoutsDescription": "",
+        "save": "",
         "invalidInteger": ""
       },
       "multiInput": {
-        "reorder": "Reorder {{label}}",
-        "empty": "No incomin valuz",
-        "title": "Multi-input: takez many catnectionz",
-        "connectTo": "Catnect valuz 2 {{label}}"
+        "reorder": "",
+        "empty": "",
+        "title": "",
+        "connectTo": ""
+      },
+      "shortcuts": {
+        "title": "",
+        "description": "",
+        "mouse": {
+          "drag": "",
+          "rightClick": ""
+        },
+        "actions": {
+          "quickAdd": "",
+          "quickAddAtCursor": "",
+          "selectAll": "",
+          "deselectAll": "",
+          "selectLinked": "",
+          "selectUpstream": "",
+          "selectDownstream": "",
+          "selectSimilar": "",
+          "duplicate": "",
+          "copy": "",
+          "paste": "",
+          "delete": "",
+          "rename": "",
+          "mute": "",
+          "collapse": "",
+          "hideSockets": "",
+          "preview": "",
+          "group": "",
+          "ungroup": "",
+          "enterGroup": "",
+          "frame": "",
+          "align": "",
+          "distribute": "",
+          "cutLinks": "",
+          "reroute": "",
+          "undo": "",
+          "redo": ""
+        }
+      },
+      "unsavedDialog": {
+        "title": "",
+        "description": "",
+        "stay": "",
+        "leave": ""
+      },
+      "layoutNodes": {
+        "category": {
+          "name": "",
+          "description": ""
+        },
+        "reroute": {
+          "label": "",
+          "description": ""
+        },
+        "frame": {
+          "label": "",
+          "description": ""
+        },
+        "group": {
+          "label": "",
+          "description": ""
+        },
+        "groupInput": {
+          "label": "",
+          "description": ""
+        },
+        "groupOutput": {
+          "label": "",
+          "description": ""
+        },
+        "debug": {
+          "label": "",
+          "description": ""
+        },
+        "note": {
+          "label": "",
+          "description": ""
+        }
+      }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_one": "",
+      "errors_other": "",
+      "warnings_one": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
       }
     },
     "deleteDialog": {
-      "title": "Delete skript?",
-      "description": "Dis deletz \"{{name}}\" 4evr. U cant undo dis.",
-      "descriptionUnnamed": "Dis deletz teh skript 4evr. U cant undo dis."
+      "title": "",
+      "description": "",
+      "descriptionUnnamed": ""
     },
-    "executionStats": "Run statz: {{executed}}/{{max}} nodez ran"
+    "executionStats": "",
+    "nodes_one": "",
+    "nodes_other": ""
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "Akshun",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "CONEKT",
+    "back": "Bak",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "ALL teh thingz",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "CONEKT",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "Totalz",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "NUN",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_one": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_one": "",
+      "limit_other": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "delivered_one": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "backupTitle": "",
+      "backupDescription": "",
+      "purchase_one": "",
+      "purchase_other": "",
+      "importing_one": "",
+      "importing_other": "",
+      "copyCredentials_one": "",
+      "copyCredentials_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_one": "",
+    "importAccounts_other": "",
+    "inStock_one": "",
+    "inStock_other": "",
+    "previewMore_one": "",
+    "previewMore_other": "",
+    "preview_one": "",
+    "preview_other": "",
+    "importProxies_one": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_one": "",
+      "noneRunning_other": "",
+      "allConnected_one": "",
+      "allConnected_other": "",
+      "partial_one": "",
+      "partial_other": "",
+      "connecting_one": "",
+      "connecting_other": ""
+    },
+    "state": {
+      "connected": "catnectd",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_one": "",
+      "failed_other": "",
+      "retrying_one": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "onlineAuth": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "blocked": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_one": "",
+    "restartGroup_other": "",
+    "restartRequested_one": "",
+    "restartRequested_other": "",
+    "namesMore_one": "",
+    "namesMore_other": "",
+    "connectingHint_one": "",
+    "connectingHint_other": ""
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "Optionalz",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "Opun ALL teh settinz, kthx!",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_one": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "Akkountz",
+      "reviewProxies": "Proxiez",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "addAccounts": "",
+      "error": "",
+      "noneStarted": "",
+      "action_one": "Stawt {{count}} bot",
+      "action_other": "Stawt {{count}} bots",
+      "countLimit_one": "",
+      "countLimit_other": "",
+      "countInvalid_one": "",
+      "countInvalid_other": ""
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

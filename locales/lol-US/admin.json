@@ -1,80 +1,71 @@
 {
   "overview": {
-    "welcome": "WELCUM BAK, {{name}} 🧙",
     "serverMetrics": {
-      "sectionTitle": "Servur Metrikzz!",
+      "sectionTitle": "",
       "summary": {
         "cpu": "CPUZ",
-        "heapUsed": "Heap UZED",
+        "heapUsed": "",
         "threads": "THR3DZ",
-        "botsOnline": "Botz catnectd",
+        "botsOnline": "",
         "uptime": "UPTAIM"
       },
       "cpuUsage": {
-        "title": "CPU Usaj (%)"
+        "title": ""
       },
       "memoryUsage": {
-        "title": "Heap Memry (MB)"
+        "title": ""
       },
       "threadCount": {
-        "title": "Thred Counz"
+        "title": ""
       },
       "aggregateBots": {
-        "title": "Botz catnectd (all instances)"
+        "title": ""
       },
       "legend": {
-        "process": "Process",
+        "process": "",
         "system": "Sistem",
-        "used": "Uzed",
-        "committed": "Committd",
-        "max": "Max",
-        "total": "Totul",
-        "daemon": "Daemon",
+        "used": "",
+        "committed": "",
+        "max": "",
+        "total": "Totalz",
+        "daemon": "",
         "online": "Catnectd"
-      }
+      },
+      "collecting": ""
     },
-    "instancesChart": {
-      "title": "Total instansz on dis server",
-      "instances": "Instances",
-      "label": {
-        "state": "Stait",
-        "active": "Actiev",
-        "stopped": "Stopped",
-        "other": "Othr"
-      }
-    },
-    "usersChart": {
-      "title": "Total hoomans on dis server",
+    "stats": {
       "users": "Hoomans",
-      "label": {
-        "role": "Roel",
-        "user": "Uzer",
-        "admin": "Admin",
-        "other": "Othr"
-      }
+      "projects": "",
+      "admins_one": "",
+      "admins_other": "",
+      "active_one": "",
+      "active_other": ""
     }
   },
   "users": {
-    "filterPlaceholder": "Filtur hoomans...",
+    "noPermission": {
+      "title": "",
+      "description": ""
+    },
     "baseUserDialog": {
       "form": {
         "username": {
-          "min": "Usernamez must be at leest 3 charactrz",
-          "max": "Usernamez must be at most 32 charactrz",
-          "regex": "Usernamez must bee lowercase, beginz wif alphanuumerik letter, moar alphanuumerik or dashes, endz wif alphanuumerik letter.",
+          "min": "",
+          "max": "",
+          "regex": "",
           "label": "Usernamez",
           "placeholder": "Enter usernamez",
-          "description": "A speshul usernamez dat markz da hooman"
+          "description": ""
         },
         "email": {
           "label": "EMAYL",
           "placeholder": "Enter emailz",
-          "description": "Da emailz adress of da hooman, used fur notifikayshuns an loginz"
+          "description": ""
         },
         "role": {
           "label": "Roel",
           "placeholder": "Pik a r0le",
-          "description": "Da roel of da hooman. Adminz kin manaj hoomans n all instansz. Hoomans kin only manaj their own instansz.",
+          "description": "",
           "user": "Uzer",
           "admin": "Admin"
         }
@@ -82,71 +73,80 @@
     },
     "addUserDialog": {
       "title": "Ad a new hooman",
-      "description": "Ad a new hooman to dis server",
+      "description": "",
       "form": {
         "cancel": "cancel k?",
-        "add": "AD Hooman"
+        "add": ""
       }
     },
     "updateUserDialog": {
-      "title": "Updet hooman",
-      "description": "Updet da hooman's info",
+      "title": "",
+      "description": "",
       "form": {
         "cancel": "cancel k?",
-        "update": "Updet Hooman"
+        "update": ""
       }
     },
     "profileConflict": "",
     "addToast": {
       "loading": "Addin hooman...",
-      "success": "Hooman added!",
-      "error": "Fayld to ad hooman"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "Updatin hooman...",
-      "success": "Hooman updatd!",
-      "error": "Fayld to updet hooman"
+      "success": "",
+      "error": ""
     },
     "removeToast": {
       "loading": "Remuvin hoomans...",
-      "success": "Hoomans remuved!",
-      "error": "Fayld to remuv hoomans"
+      "partial": "",
+      "success_one": "",
+      "success_other": "",
+      "error_one": "",
+      "error_other": ""
     },
     "invalidateToast": {
-      "loading": "Loggin hoomans owt...",
-      "success": "Hoomans loggd owt!",
-      "error": "Fayld to log owt hoomans"
+      "loading": "",
+      "partial": "",
+      "success_one": "",
+      "success_other": "",
+      "error_one": "",
+      "error_other": ""
+    },
+    "impersonateToast": {
+      "error": ""
     },
     "table": {
       "username": "Usernamez",
       "email": "EMAYL",
       "role": "Roel",
       "createdAt": "Makd",
-      "minIssuedAt": "Seshunz valid sinz",
+      "minIssuedAt": "",
       "actions": "Akshuns",
       "searchUsernames": "Seerch usernams...",
       "searchEmails": "Seerch emailz...",
       "searchCreatedAts": "Serch creashun datez...",
-      "searchMinIssuedAts": "Serch seshun datez..."
+      "searchMinIssuedAts": ""
     },
     "removeSelectedTooltip": "Remoov selekted users",
-    "logOutSelectedTooltip": "Logz owt selekted users",
+    "logOutSelectedTooltip": "",
     "contextMenu": {
-      "editUser": "Edits Usr",
+      "editUser": "",
       "impersonate": "Impurrrsonaet",
-      "copyUserId": "Coppy Usr ID"
+      "copyUserId": ""
     },
     "removeDialog": {
-      "title_one": "Remoov {{count}} hooman?",
-      "title_other": "Remoov {{count}} hoomanz?",
-      "description": "Dis deletz teh picked hoomanz an their access 4evr. U cant undo dis.",
-      "confirm": "Remoov hoomanz"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     },
     "invalidateDialog": {
-      "title_one": "Sign out {{count}} hooman?",
-      "title_other": "Sign out {{count}} hoomanz?",
-      "description": "Dis endz evry seshun an token ov teh picked hoomanz. Dey must sign in agen.",
-      "confirm": "Sign out hoomanz"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     }
   }
 }

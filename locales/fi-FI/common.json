@@ -4,16 +4,47 @@
   "cancel": "Peruuta",
   "save": "Tallenna",
   "saving": "Tallennetaan...",
+  "demoReadOnly": "",
+  "errorToast": {
+    "connection": "",
+    "authentication": "",
+    "permission": ""
+  },
+  "analyticsConsent": {
+    "title": "",
+    "description": "",
+    "cookieless": "",
+    "accept": "",
+    "decline": "",
+    "preferences": "",
+    "privacyPolicy": "",
+    "cookiePolicy": ""
+  },
   "error": {
     "noAddressOrToken": "Palvelimen osoitetta tai tokenia ei löytynyt",
     "page": {
-      "title": "Virhe",
-      "description": "Sivu ei latautunut. Avaa konsoli saadaksesi lisätietoja.",
-      "logOut": "Kirjaudu ulos",
+      "logOut": "",
       "reloadPage": "Lataa sivu uudelleen",
-      "showDetails": "Näytä tiedot"
-    },
-    "connectionFailed": "Yhteys SoulFire-palvelimeen epäonnistui."
+      "showDetails": "Näytä tiedot",
+      "connectionSettings": "",
+      "restartLocalServer": "",
+      "reconnecting": "",
+      "kindTitle": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": "Virhe"
+      },
+      "recovery": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      }
+    }
+  },
+  "navigation": {
+    "pending": ""
   },
   "queryStatus": {
     "failed": "",
@@ -24,12 +55,9 @@
     "page": {
       "title": "Ei löytynyt",
       "description": "Tällä osoitteella ei ole sivua",
-      "logOut": "Kirjaudu ulos",
+      "home": "",
       "reloadPage": "Lataa sivu uudelleen"
     }
-  },
-  "pending": {
-    "connecting": "Yhdistetään..."
   },
   "dialog": {
     "about": {
@@ -38,11 +66,11 @@
       "type": "Tyyppi",
       "value": "Arvo",
       "fields": {
-        "serverVersion": "Palvelimen versio",
-        "serverCommit": "Palvelimen commit",
-        "serverBranch": "Palvelimen haara",
-        "minecraftVersion": "Minecraft-versio",
-        "operatingSystem": "Käyttöjärjestelmä",
+        "serverVersion": "",
+        "serverCommit": "",
+        "serverBranch": "",
+        "minecraftVersion": "",
+        "operatingSystem": "",
         "platform": "Alusta",
         "locale": "Lokalisointi",
         "architecture": "Arkkitehtuuri",
@@ -53,42 +81,44 @@
     },
     "support": {
       "title": "Tue SoulFirea",
-      "description": "SoulFire on ilmainen ja avoimen lähdekoodin sovellus, jonka yhteisö on rakentanut rakkaudella.",
-      "body": "Jos SoulFiresta on ollut sinulle hyötyä, harkitse projektin tukemista. Panoksesi auttaa kattamaan palvelinkustannuksia, rahoittamaan kehitystä ja pitämään SoulFiren ilmaisena kaikille.",
+      "body": "",
       "dismiss": "Ehkä myöhemmin",
-      "action": "Tue SoulFirea"
+      "action": "Tue SoulFirea",
+      "alreadySupport": "",
+      "neverRemind": "",
+      "reminderFrequency": ""
     },
     "createInstance": {
-      "title": "Luo uusi instanssi",
-      "description": "Anna instanssille nimi, jonka tunnistat, esimerkiksi \"Oma Minecraft-botti\".",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "label": "Selkokielinen nimi",
-          "placeholder": "Oma Minecraft-bottini",
-          "description": "Nimi, jonka haluat antaa tälle instanssille."
+          "label": "",
+          "placeholder": "",
+          "description": ""
         },
         "cancel": "Peruuta",
-        "create": "Luo"
+        "create": ""
       },
       "createToast": {
-        "loading": "Luodaan instanssia...",
-        "success": "Instanssi luotu onnistuneesti",
-        "error": "Instanssin luominen epäonnistui"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "duplicateInstance": {
-      "title": "Luo kopio instanssista",
-      "description": "Luo uusi instanssi käyttämällä profiilia kohteesta \"{{name}}\".",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "description": "Kopioidun instanssin nimi."
+          "description": ""
         },
-        "duplicate": "Monista"
+        "duplicate": ""
       },
       "duplicateToast": {
-        "loading": "Kopioidaan instanssia...",
-        "success": "Instanssi kopioitu onnistuneesti",
-        "error": "Instanssin kopiointi epäonnistui"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "import": {
@@ -97,40 +127,56 @@
         "fromUrl": "URL-osoitteesta",
         "firstClipboardItem": "Leikepöydällä on useita kohteita. SoulFire käyttää ensimmäistä kohdetta.",
         "fromClipboard": "Leikepöydältä",
+        "clipboardError": "",
+        "fileError": "",
+        "emptyFile": "",
+        "unsupportedFile": "",
+        "emptyClipboard": "",
         "textarea": {
-          "placeholder": "Syötä teksti tähän...",
-          "submit": "Lataa tekstistä"
+          "label": "",
+          "placeholder": "",
+          "submit": "Lataa tekstistä",
+          "empty": ""
         }
       },
       "url": {
         "description": "SoulFire-palvelin lähettää GET-pyynnön tähän URL-osoitteeseen ja tuo vastauksen.",
         "form": {
           "url": {
-            "placeholder": "Syötä URL-osoite tähän...",
-            "empty": "Anna kelvollinen URL-osoite"
+            "placeholder": "",
+            "empty": ""
           }
         },
         "submit": "Lataa URL-osoitteesta",
         "toast": {
           "loading": "Ladataan tietoja...",
-          "success": "Tiedot ladattu",
-          "error": "Tietojen lataus epäonnistui",
+          "success": "",
+          "error": "",
           "httpError": "",
           "empty": ""
         }
       }
     },
     "deleteInstance": {
-      "title": "Poistetaanko instanssi?",
-      "description": "Tämä poistaa kohteen ”{{name}}” ja sen tiedot pysyvästi. Tätä ei voi kumota.",
-      "descriptionUnnamed": "Tämä poistaa tämän instanssin ja sen tiedot pysyvästi. Tätä ei voi kumota."
+      "title": "",
+      "description": "",
+      "descriptionUnnamed": ""
+    },
+    "importConfiguration": {
+      "title": "",
+      "description": "",
+      "confirm": ""
     }
   },
   "commandInput": {
-    "placeholder": "Syötä komento (kirjoita 'help' nähdäksesi luettelon)",
-    "emptySuggestions": "Kirjoita pyytääksesi ehdotuksia tai paina Tabulaattoria.",
+    "label": "",
+    "suggestions": "",
+    "placeholder": "",
     "noSuggestions": "Ei ehdotuksia saatavilla.",
-    "emptySuggestionsPrefix": "Kirjoita saadaksesi ehdotuksia tai paina"
+    "suggestionsUnavailable": "",
+    "botNotReady": "",
+    "connectionLost": "",
+    "demoUnavailable": ""
   },
   "controls": {
     "start": "Aloita",
@@ -141,25 +187,27 @@
     "startCount": "Käynnistettävien bottien määrä",
     "startToast": {
       "loading": "Käynnistetään botteja...",
-      "success": "Botin tila päivitetty",
-      "error": "Bottien käynnistäminen epäonnistui"
+      "success": "",
+      "error": ""
     },
     "restartToast": {
       "loading": "Käynnistetään botteja uudelleen...",
       "success": "Botit yhdistävät uudelleen",
-      "error": "Bottien uudelleenkäynnistys epäonnistui"
+      "error": ""
     },
     "stopToast": {
       "loading": "Pysäytetään botteja...",
       "success": "Botit pysäytetään",
-      "error": "Bottien pysäyttäminen epäonnistui"
+      "error": ""
     },
-    "permissionDenied": "Sinulla ei ole oikeutta käynnistää tai pysäyttää botteja tässä instanssissa.",
+    "permissionDenied": "",
     "serverUpdateRequired": "Palvelin ei ilmoittanut bottien hallinnan käyttöoikeuksista. Tarkista, että palvelimesi ja asiakkaasi versiot vastaavat toisiaan.",
     "startBots": "Käynnistä botit",
-    "moreActions": "Lisää bottitoimintoja",
-    "generateFirst": "Luo tilejä aloittaaksesi ensimmäiset bottisi.",
-    "startCountHelp": "Käynnistää lisää botteja. Käynnissä olevat botit pysyvät yhdistettynä.",
+    "allRunning": "",
+    "generateFirst": "",
+    "startCountHelp": "",
+    "target": "",
+    "changeTarget": "",
     "startAllCount": "Käynnistä kaikki {{count}}",
     "validCount": "Anna kokonaisluku välillä 1–{{count}}.",
     "positiveCount": "Anna kokonaisluku, joka on vähintään 1.",
@@ -172,14 +220,12 @@
     "restartCount_one": "Käynnistä {{count}} botti uudelleen",
     "restartCount_other": "Käynnistä {{count}} bottia uudelleen"
   },
-  "botFleetSummary": "{{online}} yhdistetty · {{desired}} asetettu käyntiin · {{total}} yhteensä",
-  "icon": {
-    "invalidName": "Virheellinen kuvakkeen nimi: {{name}}"
-  },
+  "botFleetSummary": "",
+  "botFleetSummaryEmpty": "",
   "dataTable": {
     "noResults": "Ei tuloksia.",
-    "rowsSelected": "{amount} / {total} rivi(ä) valittu",
     "rowsPerPage": "Rivejä per sivu",
+    "sliderLabel": "",
     "currentPage": "Sivu {{page}} / {{total}}",
     "goFirst": "Siirry ensimmäiselle sivulle",
     "goPrevious": "Siirry edelliselle sivulle",
@@ -187,7 +233,6 @@
     "goLast": "Siirry viimeiselle sivulle",
     "selectAll": "Valitse kaikki",
     "selectRow": "Valitse rivi",
-    "selected": "{count, plural, one {# valittu} other {# valittu}}",
     "clearSelection": "Tyhjennä valinta",
     "escape": "Esc",
     "filter": "Suodatin",
@@ -224,6 +269,8 @@
     "addSorting": "Lisää järjestys organisoidaksesi rivejäsi.",
     "addSort": "Lisää järjestys",
     "resetSorting": "Palauta järjestely",
+    "removeSort": "",
+    "reorderSort": "",
     "columnHeader": {
       "asc": "Nouseva",
       "desc": "Laskeva",
@@ -254,69 +301,153 @@
       "asc": "Nouseva",
       "desc": "Laskeva"
     },
-    "openFilterMenu": "Avaa suodatinvalikko",
-    "filterOperator": "Suodatinoperaattori",
-    "filterValue": "Suodattimen arvo",
-    "sortDirection": "Järjestyssuunta",
-    "selectJoinOperator": "Valitse liitosoperaattori",
-    "joinOperator": "Liitosoperaattori",
-    "escapeKey": "Escape",
-    "selectDate": "Valitse päivämäärä",
-    "selectDateRange": "Valitse päivämääräväli",
-    "clearFilter": "Tyhjennä suodatin {{title}}",
-    "clearFilters": "Tyhjennä suodattimet",
-    "clear": "Tyhjennä",
-    "from": "Alkaen",
-    "to": "Asti",
-    "sortDirectionFor": "Järjestyssuunta: {{column}}",
-    "minValue": "Vähimmäisarvo: {{label}}",
-    "maxValue": "Enimmäisarvo: {{label}}"
+    "openFilterMenu": "",
+    "filterOperator": "",
+    "filterValue": "",
+    "sortDirection": "",
+    "selectJoinOperator": "",
+    "joinOperator": "",
+    "escapeKey": "",
+    "selectDate": "",
+    "selectDateRange": "",
+    "clearFilter": "",
+    "clearFilters": "",
+    "clear": "",
+    "from": "",
+    "to": "",
+    "sortDirectionFor": "",
+    "minValue": "",
+    "maxValue": "",
+    "rowsSelected_one": "",
+    "rowsSelected_other": "",
+    "selected_one": "",
+    "selected_other": ""
   },
   "pluginCard": {
-    "version": "Versio: {{version}}",
-    "author": "Tekijä: {{author}}",
-    "license": "Lisenssi: {{license}}",
-    "website": "Sivusto"
+    "website": "Sivusto",
+    "meta": "",
+    "configure": "",
+    "enable": ""
   },
   "settingsPage": {
-    "saveError": "Kohdetta {{name}} ei voitu tallentaa",
-    "namespacesNotFound": "Asetusten nimiavaruuksia ei löytynyt",
+    "sections": {
+      "provider": {
+        "title": "",
+        "description": ""
+      },
+      "requests": {
+        "title": "",
+        "description": ""
+      },
+      "movement": {
+        "title": "",
+        "description": ""
+      },
+      "costs": {
+        "title": "",
+        "description": ""
+      },
+      "search": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "autoSave": "",
+    "saveError": "",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "Kohdetta {{name}} ei voitu tallentaa",
       "placeholder": "Lisää uusi merkintä...",
       "add": "Lisää",
-      "remove": "Poista"
+      "remove": "Poista",
+      "removeAll": "",
+      "undo": "",
+      "count_one": "{{count}} merkintä",
+      "count_other": "{{count}} merkintää",
+      "removedAll_one": "",
+      "removedAll_other": ""
     },
     "combo": {
-      "searchPlaceholder": "Hae arvoa..."
+      "searchPlaceholder": "Hae arvoa...",
+      "selectPlaceholder": "",
+      "empty": "",
+      "more_one": "",
+      "more_other": ""
     },
     "invalidNumberToast": {
-      "title": "Virheellinen numero",
-      "description": "Arvon tulee olla välillä {{min}} ja {{max}}"
+      "description": ""
     },
-    "minMaxLegend": "Vähimmäis- ja enimmäisasetukset"
+    "saving": "Tallennetaan...",
+    "saved": "",
+    "notSaved": "",
+    "defaultValue": "",
+    "resetToDefault": "",
+    "filter": "",
+    "filterPlaceholder": "",
+    "closeFilter": "",
+    "searchEverywhere": "",
+    "noMatches": "",
+    "otherPages": "",
+    "demoNotSaved": "",
+    "scope": {
+      "instance": "",
+      "server": ""
+    },
+    "minMaxLegend": "",
+    "rangeValue": "",
+    "advanced_one": "",
+    "advanced_other": ""
   },
   "terminal": {
+    "actions": {
+      "run_command": "",
+      "suggest_command": "",
+      "copy_to_clipboard": "Kopioi leikepöydälle",
+      "open_url": "",
+      "unavailable": ""
+    },
     "noLogs": "Ei vielä lokeja. Suorita komento luodaksesi lokitulosteen.",
-    "demo-1": "Tervetuloa demotilaan! 🧪",
-    "demo-2": "Tämä on SoulFiren vain-luku -instanssi",
-    "demo-3": "Tutustu kaikkiin valikoihin ja ominaisuuksiin ennen kuin päätät asentaa SoulFiren :D",
-    "demo-4": "Liity rohkeasti Discord-serverillemme, jos haluat ottaa yhteyttä: https://soulfiremc.com/discord"
+    "noLogsReadOnly": "",
+    "logsNoPermission": {
+      "title": "",
+      "description": ""
+    },
+    "logsDenied": "",
+    "botLogsNoPermission": {
+      "title": "",
+      "description": ""
+    },
+    "jumpToLatest": "",
+    "commandsNoPermission": {
+      "title": "",
+      "description": ""
+    },
+    "demo": {
+      "welcome": "",
+      "logs": "",
+      "commands": "",
+      "install": "",
+      "discord": ""
+    }
   },
-  "uiBreadcrumb": {
-    "more": "Lisää"
-  },
+  "skipToContent": "",
   "uiDialog": {
     "close": "Sulje"
   },
   "uiSheet": {
     "close": "Sulje"
   },
+  "updateReady": {
+    "title": "",
+    "description": "",
+    "restart": "",
+    "later": ""
+  },
   "uiSidebar": {
-    "toggle": "Näytä/piilota sivupalkki"
+    "toggle": "",
+    "title": "",
+    "description": ""
   },
   "window": {
     "minimize": "Pienennä",
@@ -337,93 +468,224 @@
   },
   "castMenu": {
     "title": "Cast",
-    "disconnected": "Yhteys laitteeseen {{device}} katkaistu",
-    "alreadyConnected": "Olet jo yhteydessä laitteeseen {{device}}",
     "connectToast": {
       "loading": "Yhdistetään laitteeseen {{device}}...",
       "success": "Yhdistetty laitteeseen {{device}}",
-      "error": "Yhdistäminen laitteeseen {{device}} epäonnistui"
+      "error": ""
     },
-    "noDevices": "Laitteita ei löytynyt",
     "broadcastToast": {
       "loading": "Lähetetään viestiä...",
-      "success": "Viestin lähetys onnistui",
-      "error": "Viestin lähetys epäonnistui"
+      "success": "",
+      "error": ""
     }
   },
   "commandPalette": {
+    "title": "",
+    "trigger": "",
+    "triggerLabel": "",
+    "shortcutHint": "",
+    "description": "",
+    "placeholder": "",
+    "emptyTitle": "",
+    "emptyHint": "",
+    "emptyTitlePartial": "",
+    "emptyHintPartial": "",
+    "loading": "",
+    "loadError": "",
+    "retry": "Yritä uudelleen",
+    "index": {
+      "progress": "",
+      "server": "",
+      "serverFailed": "",
+      "failed_one": "",
+      "failed_other": "",
+      "failedWithServer_one": "",
+      "failedWithServer_other": ""
+    },
+    "copyProjectId": "",
+    "copyUrl": "",
+    "copied": "",
+    "refresh": "",
+    "clearRecents": "",
+    "actionError": "",
+    "serverOverview": "",
+    "serverContext": "",
+    "browseProject": "",
+    "allProjects": "",
+    "changeScope": "",
+    "searchAllProjects": "",
+    "pickProjectPlaceholder": "",
+    "browsingPlaceholder": "",
+    "projectUnavailable": "",
+    "matchedBy": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "Kaikki",
+      "projects": "",
+      "bots": "Botit",
+      "scripts": "Skriptit",
+      "settings": "Asetukset",
+      "actions": "Toiminnot"
+    },
+    "pin": "",
+    "unpin": "",
+    "pinLabel": "",
+    "unpinLabel": "",
+    "confirm": {
+      "description": "",
+      "confirmStart": "Käynnistä botit",
+      "confirmStop": "",
+      "confirmRestart": "",
+      "cancel": "Peruuta",
+      "unavailable": "",
+      "start_one": "",
+      "start_other": "",
+      "stop_one": "",
+      "stop_other": "",
+      "restart_one": "",
+      "restart_other": ""
+    },
     "feedback": {
+      "start": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "stop": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "restart": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
       "activate": {
-        "loading": "Kytketään skriptiä päälle...",
-        "success": "Skripti kytketty päälle",
-        "error": "Skriptiä ei voitu kytkeä päälle. Yritä uudelleen."
+        "loading": "",
+        "success": "",
+        "error": ""
       },
       "deactivate": {
-        "loading": "Kytketään skriptiä pois päältä...",
-        "success": "Skripti kytketty pois päältä",
-        "error": "Skriptiä ei voitu kytkeä pois päältä. Yritä uudelleen."
-      }
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "busy": "",
+      "demo": ""
     },
     "operations": {
-      "activateScript": "Kytke skripti {{name}} päälle",
-      "deactivateScript": "Kytke skripti {{name}} pois päältä"
+      "startBot": "",
+      "stopBot": "",
+      "restartBot": "",
+      "activateScript": "",
+      "deactivateScript": "",
+      "startBots_one": "Käynnistä {{count}} botti",
+      "startBots_other": "Käynnistä {{count}} bottia",
+      "stopBots_one": "Pysäytä {{count}} botti",
+      "stopBots_other": "Pysäytä {{count}} bottia",
+      "retryBots_one": "",
+      "retryBots_other": ""
     },
     "status": {
-      "active": "Päällä",
-      "paused": "Pois"
-    }
+      "connected": "Yhdistetty",
+      "starting": "Käynnistetään",
+      "retrying": "Yritetään uudelleen",
+      "failed": "Epäonnistui",
+      "stopping": "Pysäytetään",
+      "stopped": "Pysäytetty",
+      "active": "",
+      "paused": ""
+    },
+    "theme": {
+      "light": "",
+      "dark": "",
+      "system": ""
+    },
+    "keys": {
+      "navigate": "",
+      "select": "",
+      "close": "Sulje",
+      "back": "Takaisin"
+    },
+    "groups": {
+      "pinned": "",
+      "recent": "",
+      "navigation": "",
+      "currentProject": "",
+      "projects": "",
+      "settings": "Asetukset",
+      "bots": "Botit",
+      "scripts": "Skriptit",
+      "admin": "",
+      "actions": "Toiminnot",
+      "results": "",
+      "projectPages": ""
+    },
+    "missingPin": {
+      "label": "",
+      "description": ""
+    },
+    "moreResults_one": "",
+    "moreResults_other": "",
+    "pinLimit_one": "",
+    "pinLimit_other": ""
   },
   "instanceSidebar": {
     "readDocumentation": "Lue dokumentaatio",
-    "backToDashboard": "Takaisin instansseihin",
+    "backToDashboard": "",
     "deleteToast": {
-      "loading": "Poistetaan instanssia...",
-      "success": "Instanssi poistettu",
-      "error": "Instanssin poistaminen epäonnistui"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "instancesGroup": "Instanssit",
-    "createInstance": "Luo instanssi",
+    "instancesGroup": "",
+    "createInstance": "",
     "loadProfileToast": {
-      "loading": "Ladataan profiilia...",
-      "success": "Profiili ladattu",
-      "error": "Profiilin lataus epäonnistui"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "loadProfile": "Lataa profiili",
+    "loadProfile": "",
     "loadFromFile": "Lataa tiedostosta",
-    "profileSaved": "Profiili tallennettu",
-    "saveProfile": "Tallenna profiili",
-    "deleteInstance": "Poista instanssi",
+    "profileSaved": "",
+    "profileSaveError": "",
+    "saveProfile": "",
+    "deleteInstance": "",
     "controlsGroup": "Ohjaimet",
     "overview": "Yleiskatsaus",
     "terminal": "Terminaali",
     "bots": "Botit",
-    "audit-log": "Audit-loki",
+    "audit-log": "",
     "settingsGroup": "Asetukset",
     "extensionsGroup": "Laajennukset",
-    "botSettings": "Botti-asetukset",
-    "accountSettings": "Tilit",
-    "metaSettings": "Instanssin asetukset",
-    "proxySettings": "Proxyt",
-    "aiSettings": "AI-asetukset",
-    "pathfindingSettings": "Polunhakuasetukset",
+    "accountSettings": "Tilillä",
+    "metaSettings": "",
+    "proxySettings": "Välityspalvelimet",
     "discoverPlugins": "Liitännäiset",
-    "instanceScripts": "Skriptit"
+    "togglePluginSettings": "",
+    "instanceScripts": "Skriptit",
+    "configurationFileType": "",
+    "exportWarning": "",
+    "fleetStatusEmpty": "",
+    "fleetStatus_one": "",
+    "fleetStatus_other": ""
   },
   "userSidebar": {
     "readDocumentation": "Lue dokumentaatio",
     "userGroup": "Käyttäjä",
-    "instances": "Instanssit",
+    "instances": "",
     "access": "Pääsy",
-    "createInstance": "Luo instanssi",
+    "createInstance": "",
     "settings": "Asetukset",
     "adminGroup": "Ylläpitäjä",
     "adminOverview": "Yleiskatsaus",
     "adminLogs": "Lokit",
     "adminTerminal": "Terminaali",
     "users": "Käyttäjät",
-    "adminScripts": "Skriptit",
-    "serverSettings": "Palvelinasetukset",
-    "devSettings": "Kehittäjäasetukset",
     "theme": {
       "title": "Teema",
       "system": "Järjestelmä",
@@ -437,11 +699,12 @@
     "dataDir": "Datakansio",
     "supportSoulFire": "Tue SoulFirea",
     "about": "Tietoja",
-    "logOut": "Kirjaudu ulos",
+    "logOut": "",
     "logOutToast": {
-      "loading": "Kirjaudutaan ulos...",
-      "success": "Kirjauduttu ulos",
-      "error": "Uloskirjautuminen epäonnistui"
+      "loading": "",
+      "success": "",
+      "error": "",
+      "stopError": ""
     },
     "exit": "Poistu",
     "stopImpersonating": "Lopeta esittäminen",
@@ -459,52 +722,51 @@
     "extensions": "Laajennukset",
     "bots": "Botit"
   },
-  "noInstancesFound": "Yhtään instanssia ei löytynyt",
+  "noInstancesFound": "",
+  "noInstancesDescription": "",
+  "noInstancesNoPermission": "",
   "pageName": {
     "terminal": "Terminaali",
     "logs": "Lokit",
-    "audit-log": "Audit-loki",
+    "audit-log": "",
     "bots": "Botit",
-    "botDetail": "Botin tiedot",
-    "instances": "Instanssit",
+    "botDetail": "",
+    "instances": "",
     "access": "Pääsy",
     "settings": "Asetukset",
-    "proxySettings": "Proxyt",
+    "proxySettings": "Välityspalvelimet",
     "overview": "Yleiskatsaus",
     "users": "Käyttäjät",
-    "accountSettings": "Tilit",
-    "metaSettings": "Instanssin asetukset",
+    "accountSettings": "Tilillä",
+    "metaSettings": "",
     "discoverPlugins": "Liitännäiset",
-    "adminScripts": "Skriptit",
     "instanceScripts": "Skriptit"
   },
   "access": {
     "webdav": {
-      "title": "WebDAV-pääsy",
-      "description": "WebDAV mahdollistaa pääsyn instanssin tiedostoihin, skripteihin ja muihin tiedostoihin.",
-      "publicAddress": "Julkinen WebDAV-osoite",
-      "personalToken": "Henkilökohtainen WebDAV-token",
-      "securityWarning": "Pidä henkilökohtainen WebDAV-tunnuksesi salassa. Se antaa pääsyn tiedostoihisi. Käytä tunnusta WebDAV-salasanana. Et tarvitse käyttäjätunnusta. Jos sovellus vaatii sellaisen, syötä mikä tahansa arvo, kuten 'soulfire'.",
-      "addressDescription": "Käytä tätä osoitetta päästäksesi tiedostoihisi. Jotkut asiakkaat vaativat dav:// tai davs:// http:// tai https:// sijaan."
+      "title": "",
+      "description": "",
+      "securityWarning": "",
+      "addressDescription": ""
     },
     "api": {
-      "title": "API-pääsy",
-      "description": "Hallitse instansseja omista ohjelmistasi SoulFire-API:n avulla.",
-      "publicAddress": "Julkinen API-osoite",
-      "personalToken": "Henkilökohtainen API-token",
-      "securityWarning": "Pidä henkilökohtainen API-tunnuksesi salassa. Se antaa pääsyn APIin.",
-      "addressDescription": "Käytä tätä osoitetta APIin pääsemiseksi."
+      "title": "",
+      "description": "",
+      "securityWarning": ""
     },
     "token": {
-      "generate": "Luo token",
-      "placeholder": "Valitse alta ”Luo token”",
+      "generate": "",
+      "placeholder": "",
       "generating": "Luodaan tokenia...",
-      "success": "Token luotu onnistuneesti",
-      "error": "Tokenin luonti epäonnistui",
-      "copy": "Kopioi token"
+      "success": "",
+      "error": "",
+      "copy": "",
+      "label": "",
+      "noPermission": ""
     },
     "address": {
-      "copy": "Kopioi osoite"
+      "copy": "",
+      "label": "Osoite"
     },
     "documentation": "Dokumentaatio",
     "howToConnect": "Kuinka yhdistää"
@@ -512,45 +774,45 @@
   "uploadToMcLogs": "Lataa mclo.gs-palveluun",
   "mcLogsUpload": {
     "loading": "Ladataan mclo.gs-palveluun...",
-    "success": "Ladattu mclo.gs-palveluun! Katso täältä: {{url}}",
-    "error": "Lataus mclo.gs:ään epäonnistui"
+    "success": "",
+    "error": ""
   },
   "searchWithGoogle": "Etsi Googlesta",
   "copyToClipboard": "Kopioi leikepöydälle",
   "clipboardCopy": {
-    "loading": "Kopioidaan leikepöydälle...",
     "success": "Kopioitiin \"{{content}}\" leikepöydälle",
-    "error": "Kopiointi leikepöydälle epäonnistui"
+    "error": "",
+    "sensitiveSuccess": ""
   },
   "instanceName": {
     "required": "",
     "max": "",
     "singleLine": "",
     "saved": "",
-    "saveError": "Instanssin nimeä ei voitu päivittää"
+    "saveError": ""
   },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
-      "description": "Käyttäjäsi avatar perustuu tilisi sähköpostiosoitteeseen. Voit vaihtaa sähköpostiosoitteesi avatarin osoitteessa",
-      "gravatar": "Gravatar"
+      "hint": ""
     },
     "username": {
       "uiName": "Käyttäjätunnus",
-      "description": "Käyttäjänimesi tunnistaa sinut käyttöliittymässä ja lokitiedoissa."
+      "description": ""
     },
     "email": {
       "uiName": "Sähköposti",
-      "description": "Sähköpostiasi käytetään kirjautumiseen ja ilmoituksiin."
+      "description": ""
     },
+    "autoSave": "",
+    "noPermission": "",
     "saved": "",
     "conflict": "",
-    "saveError": "Kenttää {{field}} ei voitu päivittää"
+    "saveError": ""
   },
   "auditLog": {
-    "filterPlaceholder": "Suodata audit-lokia...",
+    "refresh": "Päivitä",
     "user": "Käyttäjä",
-    "action": "Toiminto",
     "type": "Tyyppi",
     "timestamp": "Aikaleima",
     "searchUsers": "Etsi käyttäjiä...",
@@ -558,99 +820,69 @@
     "executedCommand": "Suoritettiin komento: {{data}}",
     "changedBotDesiredState": "Bottien tavoitetila muutettu",
     "restartedBots": "Botit käynnistetty uudelleen",
+    "calledPluginRpc": "",
+    "types": {
+      "EXECUTE_COMMAND": "",
+      "BOT_DESIRED_STATE_CHANGE": "",
+      "BOT_RESTART": "",
+      "PLUGIN_RPC": ""
+    },
     "contextMenu": {
-      "copyUsername": "Kopioi käyttäjätunnus",
-      "copyCommand": "Kopioi komento"
+      "copyUsername": "",
+      "copyCommand": ""
+    },
+    "noPermission": {
+      "title": "",
+      "description": ""
     }
   },
   "toggleTheme": "Vaihda teema",
-  "pickADate": "Valitse päivämäärä",
   "scripts": {
-    "filterPlaceholder": "Suodata skriptejä...",
-    "baseScriptDialog": {
-      "form": {
-        "scriptName": {
-          "min": "Skriptien nimen on oltava vähintään 3 merkkiä pitkä",
-          "max": "Skriptien nimen on oltava enintään 32 merkkiä pitkä",
-          "regex": "Käytä pienaakkosia, numeroita ja väliviivoja. Nimen tulee alkaa ja päättyä kirjaimeen tai numeroon.",
-          "label": "Nimi",
-          "placeholder": "Oma skripti",
-          "description": "Skriptin nimi."
-        },
-        "elevatedPermissions": {
-          "label": "Korkeat oikeudet",
-          "description": "Skripti suoritetaan korotetuilla oikeuksilla. Vain ylläpitäjät voivat ottaa tämän valinnan käyttöön."
-        }
-      }
-    },
-    "addScriptDialog": {
-      "title": "Lisää uusi skripti",
-      "description": "Skriptit ovat pienohjelmia, jotka automatisoivat tehtäviä ja muita toimintoja SoulFire-palvelimella.",
-      "form": {
-        "cancel": "Peruuta",
-        "add": "Lisää"
-      }
-    },
-    "updateScriptDialog": {
-      "title": "Päivitä skripti",
-      "description": "Päivitä skriptin tiedot.",
-      "form": {
-        "cancel": "Peruuta",
-        "update": "Päivitä"
-      }
-    },
     "removeToast": {
       "loading": "Poistetaan skriptejä...",
-      "success": "Skriptit poistettu",
-      "error": "Skriptien poistaminen epäonnistui"
+      "success": "",
+      "error": ""
     },
     "addToast": {
       "loading": "Lisätään skriptiä...",
-      "success": "Skripti lisätty",
-      "error": "Skriptin lisääminen epäonnistui"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "Päivitetään skriptiä...",
-      "success": "Skripti päivitetty",
-      "error": "Skriptin päivitys epäonnistui"
+      "success": "",
+      "error": ""
     },
     "restartToast": {
       "loading": "Käynnistetään skriptiä uudelleen...",
-      "success": "Skripti käynnistetty uudelleen",
-      "error": "Skriptin uudelleenkäynnistys epäonnistui"
-    },
-    "table": {
-      "type": "Tyyppi",
-      "scriptName": "Nimi",
-      "language": "Kieli",
-      "elevatedPermissions": "Korkeat oikeudet",
-      "createdAt": "Luotu",
-      "actions": "Toiminnot"
-    },
-    "globalScript": "Globaali",
-    "instanceScript": "Instanssi"
+      "success": "",
+      "error": ""
+    }
   },
   "contextMenu": {
+    "actions": "Toiminnot",
     "instance": {
-      "goToInstance": "Siirry instanssiin",
-      "duplicateInstance": "Kopioi instanssi",
-      "copyInstanceId": "Kopioi instanssin tunnus",
-      "copyInstanceName": "Kopioi instanssin nimi",
-      "deleteInstance": "Poista instanssi"
+      "goToInstance": "",
+      "duplicateInstance": "",
+      "copyInstanceId": "",
+      "copyInstanceName": "",
+      "actions": "",
+      "deleteInstance": ""
     },
     "bot": {
-      "goToBot": "Siirry bottiin",
-      "copyUsername": "Kopioi käyttäjätunnus",
-      "copyUuid": "Kopioi profiilin tunnus",
-      "copyCoordinates": "Kopioi koordinaatit"
+      "goToBot": "",
+      "actions": "",
+      "copyUsername": "",
+      "copyUuid": "",
+      "copyCoordinates": ""
     },
     "plugin": {
-      "enable": "Ota käyttöön",
-      "disable": "Poista käytöstä",
-      "openSettings": "Avaa asetukset",
-      "copyPluginName": "Kopioi lisäosan nimi",
-      "copyVersion": "Kopioi versio",
-      "openWebsite": "Avaa verkkosivusto"
+      "enable": "",
+      "disable": "",
+      "openSettings": "",
+      "copyPluginName": "",
+      "copyVersion": "",
+      "openWebsite": ""
     }
   },
   "integratedDiagnostics": {
@@ -659,7 +891,6 @@
     "openDirectory": "Avaa datakansio",
     "openDirectoryError": "Tietokansiota ei voitu avata",
     "elapsed": "{{count}} sekuntia kulunut",
-    "quiet": "Uutta tulostetta ei ole tullut {{count}} sekuntiin. Käynnistys voi silti olla käynnissä. Ota thread dump nähdäksesi mitä Java tekee.",
     "status": {
       "idle": "Ei käynnissä",
       "preparing": "Valmistellaan Java- ja palvelintiedostoja",
@@ -672,7 +903,7 @@
     "noOutput": "Odotetaan prosessin tulostetta...",
     "noMatches": "Ei vastaavaa tulostetta.",
     "java": "Java-suoritustiedosto",
-    "jar": "Palvelimen JAR",
+    "jar": "",
     "data": "Datakansio",
     "port": "RPC-portti",
     "exit": "Poistumiskoodi tai signaali",
@@ -687,32 +918,159 @@
     "jcmdHelp": "Thread dump vaatii JDK 25:n jcmd-työkalun. Mukana toimitettu Java-runtime ei sisällä sitä. Asenna JDK 25 ja valitse jcmd (Windowsissa jcmd.exe) sen bin-kansiosta.",
     "openDump": "Avaa thread dump",
     "filter": "Suodata prosessin tuloste",
-    "truncated": "{{count}} vanhempaa lokiriviä jätettiin pois. Kaikki palvelimen lokit löytyvät datakansiosta.",
-    "privacy": "Raportit sisältävät paikalliset polut ja viimeaikaiset lokit. Tarkista raportit ja thread dumpit henkilötietojen varalta ennen jakamista. Mitään ei ladata automaattisesti."
+    "privacy": "Raportit sisältävät paikalliset polut ja viimeaikaiset lokit. Tarkista raportit ja thread dumpit henkilötietojen varalta ennen jakamista. Mitään ei ladata automaattisesti.",
+    "quiet_one": "",
+    "quiet_other": "",
+    "truncated_one": "",
+    "truncated_other": ""
   },
   "instanceUnavailable": {
     "title": "",
-    "description": ""
+    "description": "",
+    "retry": ""
   },
   "botUnavailable": {
     "title": "",
     "description": ""
   },
+  "discover": {
+    "noPluginsTitle": "",
+    "noPluginsDescription": "",
+    "search": "",
+    "noMatches": "",
+    "filterLabel": "",
+    "scope": "",
+    "tasks": {
+      "all": "Kaikki",
+      "connect": "",
+      "survive": "",
+      "chat": "",
+      "diagnose": "",
+      "other": "Muu"
+    },
+    "enabledHeading": "",
+    "availableHeading": "Saatavilla",
+    "movesToAvailable": "",
+    "movesToEnabled": ""
+  },
   "sdk": {
+    "title": "",
+    "description": "",
+    "docs": "",
+    "connectionTitle": "",
+    "connectionDescription": "",
+    "serverUrl": "",
+    "noUrl": "",
+    "copyUrl": "",
+    "token": "",
+    "copyToken": "",
+    "tokenHelp": "",
+    "tokenSetupHelp": "",
+    "impersonatingHelp": "",
+    "generateToken": "",
+    "generating": "Luodaan tokenia...",
+    "tokenPermission": "",
+    "tokenError": "",
+    "tokenRetry": "",
+    "demoBody": "",
+    "demoBadge": "",
+    "localBadge": "",
+    "remoteBadge": "",
+    "unavailableBadge": "",
+    "missingUrlHelp": "",
+    "localHelp": "",
+    "integratedHelp": "",
+    "targetTitle": "",
+    "copyInstanceId": "",
+    "openBots": "",
+    "openAccounts": "",
+    "exampleTitle": "",
+    "language": "",
+    "recipe": "",
+    "bot": "Botti",
     "botOnline": "Yhdistetty",
-    "botOffline": "Ei yhteyttä"
+    "botOffline": "",
+    "noBotsTitle": "",
+    "noBotsBody": "",
+    "stoppedTitle": "",
+    "stoppedBody": "",
+    "copyScript": "",
+    "copyAgentPrompt": "",
+    "previewAgentPrompt": "",
+    "agentPrompt": "",
+    "saveScript": "",
+    "runTitle": "",
+    "pythonRequirement": "",
+    "typescriptRequirement": "",
+    "shell": "",
+    "install": "",
+    "run": "",
+    "copyInstall": "",
+    "copyRun": "",
+    "replaceToken": "",
+    "version": "",
+    "recipes": {
+      "list-bots": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "read-state": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "send-chat": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      }
+    },
+    "helpTitle": "",
+    "help": {
+      "connection": {
+        "title": "",
+        "body": ""
+      },
+      "authentication": {
+        "title": "",
+        "body": ""
+      },
+      "compatibility": {
+        "title": "",
+        "body": ""
+      }
+    },
+    "reference": "",
+    "moreExamples": ""
   },
   "minecraftActions": {
-    "copyError": "Tekstiä ei voitu kopioida. Käytä HTTPS:ää tai salli leikepöydän käyttö.",
-    "openError": "Linkkiä ei voitu avata.",
-    "popupBlocked": "Selaimesi esti uuden välilehden.",
-    "openLink": "Avaa linkki"
+    "copyError": "",
+    "openError": "",
+    "popupBlocked": "",
+    "openLink": ""
   },
   "instanceIcon": {
-    "label": "Kuvake",
-    "description": "Sovelluksessa näkyvä instanssin kuvake."
+    "label": "",
+    "description": "",
+    "searchPlaceholder": "",
+    "empty": "",
+    "saveError": "",
+    "more_one": "",
+    "more_other": ""
   },
   "unknown": "Tuntematon",
-  "minecraftHead": "Minecraft-pää",
-  "textFile": "Tekstitiedosto"
+  "minecraftHead": "",
+  "textFile": "",
+  "settingsPageName": {
+    "bot": "",
+    "account": "",
+    "proxy": "",
+    "ai": "",
+    "pathfinding": "",
+    "server": "",
+    "dev": ""
+  },
+  "instanceCount_one": "",
+  "instanceCount_other": ""
 }

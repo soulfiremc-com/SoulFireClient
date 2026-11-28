@@ -1,80 +1,71 @@
 {
   "overview": {
-    "welcome": "{{name}} xʞɔɐq ǝɯoɔlǝM",
     "serverMetrics": {
-      "sectionTitle": "sɔᴉɹʇǝɯ ɹǝʌɹǝS",
+      "sectionTitle": "",
       "summary": {
         "cpu": "",
-        "heapUsed": "pǝsn dɐǝH",
+        "heapUsed": "",
         "threads": "s",
-        "botsOnline": "pǝʇɔǝuuoɔ sʇoԐ",
+        "botsOnline": "",
         "uptime": ""
       },
       "cpuUsage": {
-        "title": ")%( ǝƃɐsn ∩ԀↃ"
+        "title": ""
       },
       "memoryUsage": {
-        "title": ")ԐW( ʎɹoɯǝɯ dɐǝH"
+        "title": ""
       },
       "threadCount": {
-        "title": "ʇunoɔ pɐǝɹɥ┴"
+        "title": ""
       },
       "aggregateBots": {
-        "title": ")sʇɔǝɐoɹd llɐ( pǝʇɔǝuuoɔ sʇoԐ"
+        "title": ""
       },
       "legend": {
-        "process": "ssǝɔoɹԀ",
+        "process": "",
         "system": "ɯǝʇsʎS",
-        "used": "pǝs∩",
-        "committed": "pǝʇʇᴉɯɯoↃ",
-        "max": "xɐW",
-        "total": "lɐʇo┴",
-        "daemon": "uoɯǝɐᗡ",
-        "online": "pǝʇɔǝuuoↃ"
-      }
+        "used": "",
+        "committed": "",
+        "max": "",
+        "total": "ןɐʇo⊥",
+        "daemon": "",
+        "online": "pǝʇɔǝuuoɔ"
+      },
+      "collecting": ""
     },
-    "instancesChart": {
-      "title": "\u00072\u00065\u00076\u00065\u00072\u00073\u00074\u00073 \u00073\u00073\u00074\u00074\u00073\u00074\u00073\u00074\u0006e\u00065\u00073 \u00073\u00069\u00068\u00074\u00074\u00073 \u00065\u00063\u00065\u00072\u00072\u00065\u00076\u00065",
-      "instances": "sǝɔuɐʇsᴉ",
-      "label": {
-        "state": "\u00045\u00074\u00061\u00074\u00073",
-        "active": "\u00065\u00076\u00069\u00074\u00063\u00041",
-        "stopped": "pǝddo┴S",
-        "other": "\u00072\u00065\u00068\u00065\u00072"
-      }
-    },
-    "usersChart": {
-      "title": "\u00072\u00065\u00076\u00065\u00073\u00026 \u00073\u00073\u00074\u00074\u00073 \u00065\u00063\u00065\u00072\u00072\u00065\u00076\u00065",
+    "stats": {
       "users": "\u00073\u00072\u00065\u00073",
-      "label": {
-        "role": "\u00065\u0006c\u0006f\u00072",
-        "user": "ɹǝs∩",
-        "admin": "uᴉɯp∀",
-        "other": "\u00072\u00065\u00068\u00065\u00072"
-      }
+      "projects": "",
+      "admins_one": "",
+      "admins_other": "",
+      "active_one": "",
+      "active_other": ""
     }
   },
   "users": {
-    "filterPlaceholder": "\u0002e\u0002e\u00047\u00065\u00073 \u00072\u00065\u00074\u00069\u0006c\u00046",
+    "noPermission": {
+      "title": "",
+      "description": ""
+    },
     "baseUserDialog": {
       "form": {
         "username": {
-          "min": "\u00073\u00072\u00065\u00061\u00072\u00065\u00073 \u00065\u00073\u00075\u00064\u00064\u00061 \u00074\u00073\u00073\u00061 \u00073\u00072\u00065\u00073\u00065\u00064 \u00073\u00072\u00065\u00073",
-          "max": "\u00073\u00072\u00065\u00061\u00072\u00065\u00073 \u00073\u00077\u00065\u00075\u00064\u00061 \u00074\u00073\u00073\u00061 \u00073\u00072\u00065\u00073 \u00073\u00075\u00065\u00064\u00065",
-          "regex": "\u00073\u00072\u00065\u00061\u00072\u00065\u00073 \u00073\u00076\u00065\u00073\u00073\u00065\u00064\u00065\u00075\u0006c\u00073 \u00071\u00073\u00065\u00062\u00065\u00025 \u00065\u00073\u00074\u00073 \u00073\u00065\u00064 \u00073\u00065\u00064 \u00061\u00075\u00066 \u00074\u0006e\u00065\u0006c\u00061\u0006e\u00064\u00066 \u00079\u00061 \u00076\u0006f\u00069\u00064\u00073\u0006d\u00061\u00065\u00044 \u00065\u00073\u00061\u00064\u00075\u00074\u00069\u00065\u00073\u00074\u00073\u00065\u0006d\u00074\u00069\u00073\u00064\u00065\u0006c\u00061\u00066 \u00073\u00065\u00066\u00065\u00025 \u00073\u00065\u00066 \u00073\u00065\u00062\u00065\u00062\u0006c\u00067",
+          "min": "",
+          "max": "",
+          "regex": "",
           "label": "ǝɯɐuɹǝs∩",
           "placeholder": "\u00072\u00002e\u00074\u00075\u00064\u00065\u00069\u0006e\u00065",
-          "description": "\u00072\u00065\u00064\u00064\u00075\u00064\u00061 \u00073\u00065\u00066\u00066\u00065\u00072 \u00073\u00065\u00066 \u00074\u00075\u00064\u00061 \u00072\u00065\u00076\u00068\u00064 \u00065\u00075\u00064\u00066\u00072\u00065\u00075\u00064\u00075"
+          "description": ""
         },
         "email": {
           "label": "lᴉɐɯǝ",
           "placeholder": "\u00002e\u0006c\u00069\u00064\u00062\u00064\u00075\u00061",
-          "description": "\u00073\u00065\u00076\u00069\u00062 \u00073\u00065\u00066 \u00074\u00075\u00064\u00061 \u00072\u00065\u00076\u00068\u00064 \u00065\u00075\u00064\u00072\u00075 \u00066\u00075\u00072 \u00074\u00075\u00072\u00064\u00065\u00065\u00073\u00064 \u00061\u00064 \u00065\u00076\u00064\u00075\u00066\u00072\u00065\u00075\u00064\u00075"
+          "description": ""
         },
         "role": {
           "label": "\u00065\u0006c\u0006f\u00072",
           "placeholder": "ǝloloɹ ɐ ʇɔǝlǝS",
-          "description": "\u00063\u00075\u00065\u00073 \u00074\u00075\u00064\u00061 \u00072\u00065\u00076\u00068\u00064 \u00065\u00075\u00064\u00066\u00072\u00065\u00075\u00064\u00075\u00051 \u00064\u00061\u0006d\u00075\u00064 \u00064\u00065\u0006d\u00069\u0006d\u00064 \u00073\u00065\u00066 \u00074\u00075\u00064\u00061 \u00072\u00065\u00076\u00068\u00064 \u00065\u00074\u00075\u00064 \u00061\u00076\u00074\u00068\u00074\u00075\u00064\u00061 \u00065\u00076\u00064\u00075\u00066\u00072\u00065\u00075\u00064\u00075 \u00073\u00065\u00066 \u00074\u00075\u00064\u00061 \u00072\u00065\u00076\u00068\u00064\u00065\u00076\u00064\u00075\u00066\u00072\u00065\u00075\u00064\u00075",
+          "description": "",
           "user": "ɹǝs∩",
           "admin": "uᴉɯp∀"
         }
@@ -82,71 +73,80 @@
     },
     "addUserDialog": {
       "title": "\u00072\u00065\u00076\u00065\u00073\u00026 \u00077\u00065\u0006e\u00065",
-      "description": "\u00072\u00065\u00076\u00065\u00073\u00026 \u00077\u00065\u0006e\u00065 \u00072\u00065\u00076\u00065\u00068\u00064 \u00065\u00063\u00065\u00072\u00072\u00065\u00076\u00065",
+      "description": "",
       "form": {
         "cancel": "˥˥ǝɔuɐↃ",
-        "add": "ɹǝsn pp∀"
+        "add": ""
       }
     },
     "updateUserDialog": {
-      "title": "\u00072\u00065\u00076\u00068\u00064 \u00065\u00075\u00064\u00066\u00072\u00075\u00064\u00075",
-      "description": "\u00072\u00065\u00076\u00068\u00064 \u00075\u00064\u00065\u00069\u00073\u00066 \u00065\u00075\u00064\u00066\u00072\u00075\u00064\u00075",
+      "title": "",
+      "description": "",
       "form": {
         "cancel": "˥˥ǝɔuɐↃ",
-        "update": "ɹǝsn ǝʇɐpd∩"
+        "update": ""
       }
     },
     "profileConflict": "",
     "addToast": {
       "loading": "\u0002e\u0002e\u00065\u00073\u00072\u00065\u00068 \u00072\u00065\u0006c\u0006c\u00061\u00064\u0006e\u00069\u00075\u00065",
-      "success": "pǝppɐ ɹǝs∩",
-      "error": "ɹǝsn ppɐ ʇou plnoↃ"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "\u0002e\u0002e\u00065\u00075\u00064\u00061\u00069\u00064 \u00072\u00065\u00076\u00068\u00064 \u00065\u00075\u00064\u00066\u00072\u00075\u00064\u00075",
-      "success": "pǝʇɐpdn ɹǝs∩",
-      "error": "ɹǝsn ǝʇɐpdn ʇou plnoↃ"
+      "success": "",
+      "error": ""
     },
     "removeToast": {
       "loading": "\u0002e\u0002e\u00072\u00065\u00073\u00072\u00065\u00064 \u00073\u00072\u00065\u00076\u00065\u00073",
-      "success": "pǝʌoɯǝɹ sɹǝs∩",
-      "error": "sɹǝsn ǝʌoɯǝɹ ʇou plnoↃ"
+      "partial": "",
+      "success_one": "",
+      "success_other": "",
+      "error_one": "",
+      "error_other": ""
     },
     "invalidateToast": {
-      "loading": "...ʇno sɹǝsn ƃuᴉuƃᴉS",
-      "success": "ʇno pǝuƃᴉs sɹǝs∩",
-      "error": "ʇno sɹǝsn uƃᴉs ʇou plnoↃ"
+      "loading": "",
+      "partial": "",
+      "success_one": "",
+      "success_other": "",
+      "error_one": "",
+      "error_other": ""
+    },
+    "impersonateToast": {
+      "error": ""
     },
     "table": {
       "username": "ǝɯɐuɹǝs∩",
       "email": "lᴉɐɯǝ",
       "role": "\u00065\u0006c\u0006f\u00072",
       "createdAt": "\u00064\u00065\u00074\u00061\u00065\u00072\u00043",
-      "minIssuedAt": "ǝɔuᴉs pᴉlɐʌ suoᴉssǝS",
+      "minIssuedAt": "",
       "actions": "\u00073\u0006e\u0006f\u00069\u00074\u00063\u00041\u00002e\u00072",
       "searchUsernames": "\u0002e\u0002e\u00073\u00072\u00065\u00061\u00072\u00065\u00073 \u00068\u00063\u00061\u00072\u00065\u00073\u00073\u00065\u00073\u00073\u00065\u00073",
       "searchEmails": "\u0002e\u0002e\u00046\u00069\u00064\u00061\u00073 \u00068\u00063\u00061\u00072\u00065\u00073\u00073\u00065\u00073\u00073\u00065\u00073",
       "searchCreatedAts": "...sʇɐp uoıʇɐǝɹɔ ɥɔɹɐǝS",
-      "searchMinIssuedAts": "...sǝʇɐp uoᴉssǝs ɥɔɹɐǝS"
+      "searchMinIssuedAts": ""
     },
     "removeSelectedTooltip": "\u00073\u00065\u00076\u00065\u00073 \u00064\u00065\u00074\u00063\u00065\u0006c\u00069\u0006e\u00064\u00065\u00073\u00073",
-    "logOutSelectedTooltip": "sɹǝsn pǝʇɔǝlǝs ʇno uƃᴉS",
+    "logOutSelectedTooltip": "",
     "contextMenu": {
-      "editUser": "ɹǝsn ʇᴉpƎ",
+      "editUser": "",
       "impersonate": "\u00065\u00074\u00061\u00074\u00063\u00049",
-      "copyUserId": "ᗡI ɹǝsn ʎdoↃ"
+      "copyUserId": ""
     },
     "removeDialog": {
-      "title_one": "¿ɹǝsn {{count}} ǝʌoɯǝᴚ",
-      "title_other": "¿sɹǝsn {{count}} ǝʌoɯǝᴚ",
-      "description": ".sᴉɥʇ opun ʇouuɐɔ no⅄ .ssǝɔɔɐ ɹᴉǝɥʇ puɐ sɹǝsn pǝʇɔǝlǝs ǝɥʇ sǝʇǝlǝp ʎlʇuǝuɐɯɹǝd sᴉɥ┴",
-      "confirm": "sɹǝsn ǝʌoɯǝᴚ"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     },
     "invalidateDialog": {
-      "title_one": "¿ɹǝsn {{count}} ʇno uƃᴉS",
-      "title_other": "¿sɹǝsn {{count}} ʇno uƃᴉS",
-      "description": ".uᴉɐƃɐ uᴉ uƃᴉs ʇsnɯ ʎǝɥ┴ .sɹǝsn pǝʇɔǝlǝs ǝɥʇ ɟo uǝʞoʇ puɐ uoᴉssǝs ʎɹǝʌǝ spuǝ sᴉɥ┴",
-      "confirm": "sɹǝsn ʇno uƃᴉS"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     }
   }
 }

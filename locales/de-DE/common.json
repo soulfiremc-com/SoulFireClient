@@ -4,16 +4,47 @@
   "cancel": "Abbrechen",
   "save": "Speichern",
   "saving": "Wird gespeichert...",
+  "demoReadOnly": "",
+  "errorToast": {
+    "connection": "",
+    "authentication": "",
+    "permission": ""
+  },
+  "analyticsConsent": {
+    "title": "",
+    "description": "",
+    "cookieless": "",
+    "accept": "",
+    "decline": "",
+    "preferences": "",
+    "privacyPolicy": "",
+    "cookiePolicy": ""
+  },
   "error": {
     "noAddressOrToken": "Keine Serveradresse oder Token gefunden",
     "page": {
-      "title": "Fehler",
-      "description": "Die Seite wurde nicht geladen. Öffnen Sie die Konsole für weitere Informationen.",
-      "logOut": "Ausloggen",
+      "logOut": "",
       "reloadPage": "Seite neu laden",
-      "showDetails": "Details anzeigen"
-    },
-    "connectionFailed": "Verbindung zum SoulFire-Server fehlgeschlagen."
+      "showDetails": "Details anzeigen",
+      "connectionSettings": "",
+      "restartLocalServer": "",
+      "reconnecting": "",
+      "kindTitle": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": "Fehler"
+      },
+      "recovery": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      }
+    }
+  },
+  "navigation": {
+    "pending": ""
   },
   "queryStatus": {
     "failed": "",
@@ -24,12 +55,9 @@
     "page": {
       "title": "Nicht gefunden",
       "description": "Unter dieser Adresse existiert keine Seite.",
-      "logOut": "Ausloggen",
+      "home": "",
       "reloadPage": "Seite neu laden"
     }
-  },
-  "pending": {
-    "connecting": "Verbinde..."
   },
   "dialog": {
     "about": {
@@ -38,11 +66,11 @@
       "type": "Typ",
       "value": "Wert",
       "fields": {
-        "serverVersion": "Server-Version",
-        "serverCommit": "Server-Commit",
-        "serverBranch": "Server-Branch",
-        "minecraftVersion": "Minecraft-Version",
-        "operatingSystem": "Betriebssystem",
+        "serverVersion": "",
+        "serverCommit": "",
+        "serverBranch": "",
+        "minecraftVersion": "",
+        "operatingSystem": "",
         "platform": "Plattform",
         "locale": "Sprache",
         "architecture": "Architektur",
@@ -53,42 +81,44 @@
     },
     "support": {
       "title": "SoulFire unterstützen",
-      "description": "SoulFire ist kostenlos und Open-Source und wird mit Liebe von der Community entwickelt.",
-      "body": "Wenn SoulFire dir geholfen hat, erwäge bitte, das Projekt zu unterstützen. Dein Beitrag hilft, die Serverkosten zu decken, die Entwicklung zu fördern und SoulFire für alle kostenlos zu halten.",
+      "body": "",
       "dismiss": "Vielleicht später",
-      "action": "SoulFire unterstützen"
+      "action": "SoulFire unterstützen",
+      "alreadySupport": "",
+      "neverRemind": "",
+      "reminderFrequency": ""
     },
     "createInstance": {
-      "title": "Neue Instanz erstellen",
-      "description": "Geben Sie der Instanz einen Namen, den Sie wiedererkennen, z.&nbsp;B. \"Mein Minecraft-Bot\".",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "label": "Anzeigename",
-          "placeholder": "Mein Minecraft-Bot",
-          "description": "Der Name, den Sie dieser Instanz geben möchten."
+          "label": "",
+          "placeholder": "",
+          "description": ""
         },
         "cancel": "Abbrechen",
-        "create": "Erstellen"
+        "create": ""
       },
       "createToast": {
-        "loading": "Instanz wird erstellt...",
-        "success": "Instanz erfolgreich erstellt",
-        "error": "Fehler beim Erstellen der Instanz"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "duplicateInstance": {
-      "title": "Instanz duplizieren",
-      "description": "Erstelle eine neue Instanz mit dem Profil von \"{{name}}\".",
+      "title": "",
+      "description": "",
       "form": {
         "friendlyName": {
-          "description": "Der Name für die duplizierte Instanz."
+          "description": ""
         },
-        "duplicate": "Duplizieren"
+        "duplicate": ""
       },
       "duplicateToast": {
-        "loading": "Instanz wird dupliziert...",
-        "success": "Instanz erfolgreich dupliziert",
-        "error": "Fehler beim Duplizieren der Instanz"
+        "loading": "",
+        "success": "",
+        "error": ""
       }
     },
     "import": {
@@ -97,40 +127,56 @@
         "fromUrl": "Von URL",
         "firstClipboardItem": "Die Zwischenablage enthält mehrere Elemente. SoulFire wird das erste Element verwenden.",
         "fromClipboard": "Aus Zwischenablage",
+        "clipboardError": "",
+        "fileError": "",
+        "emptyFile": "",
+        "unsupportedFile": "",
+        "emptyClipboard": "",
         "textarea": {
-          "placeholder": "Text hier eingeben...",
-          "submit": "Von Text laden"
+          "label": "",
+          "placeholder": "",
+          "submit": "Von Text laden",
+          "empty": ""
         }
       },
       "url": {
         "description": "Der SoulFire-Server sendet eine GET-Anfrage an diese URL und importiert die Antwort.",
         "form": {
           "url": {
-            "placeholder": "URL hier eingeben...",
-            "empty": "Bitte geben Sie eine gültige URL ein"
+            "placeholder": "",
+            "empty": ""
           }
         },
         "submit": "Von URL laden",
         "toast": {
           "loading": "Daten werden heruntergeladen...",
-          "success": "Daten geladen",
-          "error": "Fehler beim Herunterladen der Daten",
+          "success": "",
+          "error": "",
           "httpError": "",
           "empty": ""
         }
       }
     },
     "deleteInstance": {
-      "title": "Instanz löschen?",
-      "description": "Dies löscht „{{name}}“ und die zugehörigen Daten dauerhaft. Das lässt sich nicht rückgängig machen.",
-      "descriptionUnnamed": "Dies löscht diese Instanz und ihre Daten dauerhaft. Das lässt sich nicht rückgängig machen."
+      "title": "",
+      "description": "",
+      "descriptionUnnamed": ""
+    },
+    "importConfiguration": {
+      "title": "",
+      "description": "",
+      "confirm": ""
     }
   },
   "commandInput": {
-    "placeholder": "Befehl eingeben (\"help\" für Liste tippen)",
-    "emptySuggestions": "Tippen Sie, um Vorschläge anzufordern, oder drücken Sie die Tabulatortaste.",
+    "label": "",
+    "suggestions": "",
+    "placeholder": "",
     "noSuggestions": "Keine Vorschläge verfügbar.",
-    "emptySuggestionsPrefix": "Tippe, um Vorschläge anzufordern, oder drücke"
+    "suggestionsUnavailable": "",
+    "botNotReady": "",
+    "connectionLost": "",
+    "demoUnavailable": ""
   },
   "controls": {
     "start": "Start",
@@ -141,25 +187,27 @@
     "startCount": "Anzahl der zu startenden Bots",
     "startToast": {
       "loading": "Starte Bots...",
-      "success": "Bot-Status aktualisiert",
-      "error": "Fehler beim Starten der Bots"
+      "success": "",
+      "error": ""
     },
     "restartToast": {
       "loading": "Bots werden neu gestartet...",
       "success": "Bots stellen die Verbindung wieder her",
-      "error": "Fehler beim Neustart der Bots"
+      "error": ""
     },
     "stopToast": {
       "loading": "Bots werden gestoppt...",
       "success": "Bots werden gestoppt",
-      "error": "Fehler beim Stoppen der Bots"
+      "error": ""
     },
-    "permissionDenied": "Sie haben keine Berechtigung, Bots in dieser Instanz zu starten oder zu stoppen.",
+    "permissionDenied": "",
     "serverUpdateRequired": "Der Server hat keine Berechtigungen zur Bot-Steuerung gemeldet. Überprüfen Sie, ob Ihre Server- und Client-Versionen übereinstimmen.",
     "startBots": "Bots starten",
-    "moreActions": "Weitere Bot-Aktionen",
-    "generateFirst": "Erstellen Sie Konten, um Ihre ersten Bots zu starten.",
-    "startCountHelp": "Startet zusätzliche Bots. Laufende Bots bleiben verbunden.",
+    "allRunning": "",
+    "generateFirst": "",
+    "startCountHelp": "",
+    "target": "",
+    "changeTarget": "",
     "startAllCount": "Alle {{count}} starten",
     "validCount": "Geben Sie eine ganze Zahl zwischen 1 und {{count}} ein.",
     "positiveCount": "Geben Sie eine ganze Zahl von mindestens 1 ein.",
@@ -172,14 +220,12 @@
     "restartCount_one": "Starte {{count}} Bot neu",
     "restartCount_other": "Starte {{count}} Bots neu"
   },
-  "botFleetSummary": "{{online}} verbunden · {{desired}} sollen laufen · {{total}} gesamt",
-  "icon": {
-    "invalidName": "Ungültiger Symbolname: {{name}}"
-  },
+  "botFleetSummary": "",
+  "botFleetSummaryEmpty": "",
   "dataTable": {
     "noResults": "Keine Ergebnisse.",
-    "rowsSelected": "{{amount}} von {{total}} Zeile(n) ausgewählt",
     "rowsPerPage": "Zeilen pro Seite",
+    "sliderLabel": "",
     "currentPage": "Seite {{page}} von {{total}}",
     "goFirst": "Zur erste Seite gehen",
     "goPrevious": "Zur vorherigen Seite gehen",
@@ -187,7 +233,6 @@
     "goLast": "Zur letzten Seite gehen",
     "selectAll": "Alle auswählen",
     "selectRow": "Zeile auswählen",
-    "selected": "{count, plural, one {# ausgewählt} other {# ausgewählt}}",
     "clearSelection": "Auswahl löschen",
     "escape": "Esc",
     "filter": "Filter",
@@ -224,6 +269,8 @@
     "addSorting": "Fügen Sie eine Sortierung hinzu, um Ihre Zeilen zu ordnen.",
     "addSort": "Sortierung hinzufügen",
     "resetSorting": "Sortierung zurücksetzen",
+    "removeSort": "",
+    "reorderSort": "",
     "columnHeader": {
       "asc": "Aufsteigend",
       "desc": "Absteigend",
@@ -254,69 +301,153 @@
       "asc": "Aufsteigend",
       "desc": "Absteigend"
     },
-    "openFilterMenu": "Filtermenü öffnen",
-    "filterOperator": "Filteroperator",
-    "filterValue": "Filterwert",
-    "sortDirection": "Sortierrichtung",
-    "selectJoinOperator": "Verknüpfungsoperator auswählen",
-    "joinOperator": "Verknüpfungsoperator",
-    "escapeKey": "Escape",
-    "selectDate": "Datum auswählen",
-    "selectDateRange": "Zeitraum auswählen",
-    "clearFilter": "Filter „{{title}}“ löschen",
-    "clearFilters": "Filter löschen",
-    "clear": "Löschen",
-    "from": "Von",
-    "to": "Bis",
-    "sortDirectionFor": "Sortierrichtung für {{column}}",
-    "minValue": "Mindestwert für {{label}}",
-    "maxValue": "Höchstwert für {{label}}"
+    "openFilterMenu": "",
+    "filterOperator": "",
+    "filterValue": "",
+    "sortDirection": "",
+    "selectJoinOperator": "",
+    "joinOperator": "",
+    "escapeKey": "",
+    "selectDate": "",
+    "selectDateRange": "",
+    "clearFilter": "",
+    "clearFilters": "",
+    "clear": "",
+    "from": "",
+    "to": "",
+    "sortDirectionFor": "",
+    "minValue": "",
+    "maxValue": "",
+    "rowsSelected_one": "",
+    "rowsSelected_other": "",
+    "selected_one": "",
+    "selected_other": ""
   },
   "pluginCard": {
-    "version": "Version: {{version}}",
-    "author": "Autor: {{author}}",
-    "license": "Lizenz: {{license}}",
-    "website": "Webseite"
+    "website": "Webseite",
+    "meta": "",
+    "configure": "",
+    "enable": ""
   },
   "settingsPage": {
-    "saveError": "{{name}} konnte nicht gespeichert werden",
-    "namespacesNotFound": "Einstellungs-Namensräume nicht gefunden",
+    "sections": {
+      "provider": {
+        "title": "",
+        "description": ""
+      },
+      "requests": {
+        "title": "",
+        "description": ""
+      },
+      "movement": {
+        "title": "",
+        "description": ""
+      },
+      "costs": {
+        "title": "",
+        "description": ""
+      },
+      "search": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "autoSave": "",
+    "saveError": "",
     "stringList": {
       "newEntry": "",
       "entry": "",
       "removeEntry": "",
-      "saveError": "{{name}} konnte nicht gespeichert werden",
       "placeholder": "Neuen Eintrag hinzufügen...",
       "add": "Hinzufügen",
-      "remove": "Entfernen"
+      "remove": "Entfernen",
+      "removeAll": "",
+      "undo": "",
+      "count_one": "{{count}} Eintrag",
+      "count_other": "{{count}} Einträge",
+      "removedAll_one": "",
+      "removedAll_other": ""
     },
     "combo": {
-      "searchPlaceholder": "Suchwert..."
+      "searchPlaceholder": "Suchwert...",
+      "selectPlaceholder": "",
+      "empty": "",
+      "more_one": "",
+      "more_other": ""
     },
     "invalidNumberToast": {
-      "title": "Ungültige Zahl",
-      "description": "Der Wert muss zwischen {{min}} und {{max}} liegen"
+      "description": ""
     },
-    "minMaxLegend": "Mindest- und Höchstwert"
+    "saving": "Wird gespeichert...",
+    "saved": "",
+    "notSaved": "",
+    "defaultValue": "",
+    "resetToDefault": "",
+    "filter": "",
+    "filterPlaceholder": "",
+    "closeFilter": "",
+    "searchEverywhere": "",
+    "noMatches": "",
+    "otherPages": "",
+    "demoNotSaved": "",
+    "scope": {
+      "instance": "",
+      "server": ""
+    },
+    "minMaxLegend": "",
+    "rangeValue": "",
+    "advanced_one": "",
+    "advanced_other": ""
   },
   "terminal": {
+    "actions": {
+      "run_command": "",
+      "suggest_command": "",
+      "copy_to_clipboard": "In die Zwischenablage kopieren",
+      "open_url": "",
+      "unavailable": ""
+    },
     "noLogs": "Noch keine Protokolle vorhanden. Führen Sie einen Befehl aus, um Protokollausgaben zu erzeugen.",
-    "demo-1": "Willkommen im Demo Modus! 🧪",
-    "demo-2": "Dies ist eine schreibgeschützte Instanz von SoulFire",
-    "demo-3": "Schau dir alle Menüs und Funktionen an, bevor du SoulFire installierst :D",
-    "demo-4": "Du kannst unserem Discord Server beitreten, wenn du uns anschreiben möchtest: https://soulfiremc.com/discord"
+    "noLogsReadOnly": "",
+    "logsNoPermission": {
+      "title": "",
+      "description": ""
+    },
+    "logsDenied": "",
+    "botLogsNoPermission": {
+      "title": "",
+      "description": ""
+    },
+    "jumpToLatest": "",
+    "commandsNoPermission": {
+      "title": "",
+      "description": ""
+    },
+    "demo": {
+      "welcome": "",
+      "logs": "",
+      "commands": "",
+      "install": "",
+      "discord": ""
+    }
   },
-  "uiBreadcrumb": {
-    "more": "Mehr"
-  },
+  "skipToContent": "",
   "uiDialog": {
     "close": "Schließen"
   },
   "uiSheet": {
     "close": "Schließen"
   },
+  "updateReady": {
+    "title": "",
+    "description": "",
+    "restart": "",
+    "later": ""
+  },
   "uiSidebar": {
-    "toggle": "Seitenleiste umschalten"
+    "toggle": "",
+    "title": "",
+    "description": ""
   },
   "window": {
     "minimize": "Minimieren",
@@ -337,93 +468,224 @@
   },
   "castMenu": {
     "title": "Cast",
-    "disconnected": "Verbindung zu {{device}} getrennt",
-    "alreadyConnected": "Bereits mit {{device}} verbunden",
     "connectToast": {
       "loading": "Verbinde mit {{device}}...",
       "success": "Mit {{device}} verbunden",
-      "error": "Verbindung zu {{device}} fehlgeschlagen"
+      "error": ""
     },
-    "noDevices": "Keine Geräte gefunden",
     "broadcastToast": {
       "loading": "Nachricht wird übertragen...",
-      "success": "Nachricht verbreitet",
-      "error": "Senden der Nachricht fehlgeschlagen"
+      "success": "",
+      "error": ""
     }
   },
   "commandPalette": {
+    "title": "",
+    "trigger": "",
+    "triggerLabel": "",
+    "shortcutHint": "",
+    "description": "",
+    "placeholder": "",
+    "emptyTitle": "",
+    "emptyHint": "",
+    "emptyTitlePartial": "",
+    "emptyHintPartial": "",
+    "loading": "",
+    "loadError": "",
+    "retry": "Erneut versuchen",
+    "index": {
+      "progress": "",
+      "server": "",
+      "serverFailed": "",
+      "failed_one": "",
+      "failed_other": "",
+      "failedWithServer_one": "",
+      "failedWithServer_other": ""
+    },
+    "copyProjectId": "",
+    "copyUrl": "",
+    "copied": "",
+    "refresh": "",
+    "clearRecents": "",
+    "actionError": "",
+    "serverOverview": "",
+    "serverContext": "",
+    "browseProject": "",
+    "allProjects": "",
+    "changeScope": "",
+    "searchAllProjects": "",
+    "pickProjectPlaceholder": "",
+    "browsingPlaceholder": "",
+    "projectUnavailable": "",
+    "matchedBy": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "Alle",
+      "projects": "",
+      "bots": "Bots",
+      "scripts": "Skripte",
+      "settings": "Einstellungen",
+      "actions": "Aktionen"
+    },
+    "pin": "",
+    "unpin": "",
+    "pinLabel": "",
+    "unpinLabel": "",
+    "confirm": {
+      "description": "",
+      "confirmStart": "Bots starten",
+      "confirmStop": "",
+      "confirmRestart": "",
+      "cancel": "Abbrechen",
+      "unavailable": "",
+      "start_one": "",
+      "start_other": "",
+      "stop_one": "",
+      "stop_other": "",
+      "restart_one": "",
+      "restart_other": ""
+    },
     "feedback": {
+      "start": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "stop": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
+      "restart": {
+        "loading": "",
+        "error": "",
+        "success_one": "",
+        "success_other": ""
+      },
       "activate": {
-        "loading": "Skript wird eingeschaltet...",
-        "success": "Skript eingeschaltet",
-        "error": "Das Skript konnte nicht eingeschaltet werden. Versuche es erneut."
+        "loading": "",
+        "success": "",
+        "error": ""
       },
       "deactivate": {
-        "loading": "Skript wird ausgeschaltet...",
-        "success": "Skript ausgeschaltet",
-        "error": "Das Skript konnte nicht ausgeschaltet werden. Versuche es erneut."
-      }
+        "loading": "",
+        "success": "",
+        "error": ""
+      },
+      "busy": "",
+      "demo": ""
     },
     "operations": {
-      "activateScript": "Skript {{name}} einschalten",
-      "deactivateScript": "Skript {{name}} ausschalten"
+      "startBot": "",
+      "stopBot": "",
+      "restartBot": "",
+      "activateScript": "",
+      "deactivateScript": "",
+      "startBots_one": "{{count}} Bot starten",
+      "startBots_other": "{{count}} Bots starten",
+      "stopBots_one": "{{count}} Bot stoppen",
+      "stopBots_other": "{{count}} Bots stoppen",
+      "retryBots_one": "",
+      "retryBots_other": ""
     },
     "status": {
-      "active": "An",
-      "paused": "Aus"
-    }
+      "connected": "Verbunden",
+      "starting": "Starte",
+      "retrying": "Wiederholen",
+      "failed": "Fehlgeschlagen",
+      "stopping": "Stoppt",
+      "stopped": "Gestoppt",
+      "active": "",
+      "paused": ""
+    },
+    "theme": {
+      "light": "",
+      "dark": "",
+      "system": ""
+    },
+    "keys": {
+      "navigate": "",
+      "select": "",
+      "close": "Schließen",
+      "back": "Zurück"
+    },
+    "groups": {
+      "pinned": "",
+      "recent": "",
+      "navigation": "",
+      "currentProject": "",
+      "projects": "",
+      "settings": "Einstellungen",
+      "bots": "Bots",
+      "scripts": "Skripte",
+      "admin": "",
+      "actions": "Aktionen",
+      "results": "",
+      "projectPages": ""
+    },
+    "missingPin": {
+      "label": "",
+      "description": ""
+    },
+    "moreResults_one": "",
+    "moreResults_other": "",
+    "pinLimit_one": "",
+    "pinLimit_other": ""
   },
   "instanceSidebar": {
     "readDocumentation": "Dokumentation lesen",
-    "backToDashboard": "Zurück zu den Instanzen",
+    "backToDashboard": "",
     "deleteToast": {
-      "loading": "Instanz wird gelöscht...",
-      "success": "Instanz gelöscht",
-      "error": "Fehler beim Löschen der Instanz"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "instancesGroup": "Instanzen",
-    "createInstance": "Instanz erstellen",
+    "instancesGroup": "",
+    "createInstance": "",
     "loadProfileToast": {
-      "loading": "Lade Profil...",
-      "success": "Profil geladen",
-      "error": "Laden des Profils fehlgeschlagen"
+      "loading": "",
+      "success": "",
+      "error": ""
     },
-    "loadProfile": "Profil laden",
+    "loadProfile": "",
     "loadFromFile": "Aus Datei laden",
-    "profileSaved": "Profil gespeichert",
-    "saveProfile": "Profil speichern",
-    "deleteInstance": "Instanz löschen",
+    "profileSaved": "",
+    "profileSaveError": "",
+    "saveProfile": "",
+    "deleteInstance": "",
     "controlsGroup": "Steuerung",
     "overview": "Übersicht",
     "terminal": "Terminal",
     "bots": "Bots",
-    "audit-log": "Audit-Log",
+    "audit-log": "",
     "settingsGroup": "Einstellungen",
     "extensionsGroup": "Erweiterungen",
-    "botSettings": "Bot Einstellungen",
     "accountSettings": "Konten",
-    "metaSettings": "Instanzeinstellungen",
-    "proxySettings": "Proxies",
-    "aiSettings": "KI Einstellungen",
-    "pathfindingSettings": "Pathfinding-Einstellungen",
+    "metaSettings": "",
+    "proxySettings": "Proxys",
     "discoverPlugins": "Plugins",
-    "instanceScripts": "Skripte"
+    "togglePluginSettings": "",
+    "instanceScripts": "Skripte",
+    "configurationFileType": "",
+    "exportWarning": "",
+    "fleetStatusEmpty": "",
+    "fleetStatus_one": "",
+    "fleetStatus_other": ""
   },
   "userSidebar": {
     "readDocumentation": "Dokumentation lesen",
     "userGroup": "Nutzer",
-    "instances": "Instanzen",
+    "instances": "",
     "access": "Zugriff",
-    "createInstance": "Instanz erstellen",
+    "createInstance": "",
     "settings": "Einstellungen",
     "adminGroup": "Admin",
     "adminOverview": "Übersicht",
     "adminLogs": "Protokolle",
     "adminTerminal": "Terminal",
     "users": "Nutzer",
-    "adminScripts": "Skripte",
-    "serverSettings": "Server Einstellungen",
-    "devSettings": "Entwickler Einstellungen",
     "theme": {
       "title": "Farbschema",
       "system": "System",
@@ -437,11 +699,12 @@
     "dataDir": "Datenverzeichnis",
     "supportSoulFire": "SoulFire unterstützen",
     "about": "Über",
-    "logOut": "Ausloggen",
+    "logOut": "",
     "logOutToast": {
-      "loading": "Ausloggen...",
-      "success": "Ausgeloggt",
-      "error": "Ausloggen fehlgeschlagen"
+      "loading": "",
+      "success": "",
+      "error": "",
+      "stopError": ""
     },
     "exit": "Beenden",
     "stopImpersonating": "Imitieren beenden",
@@ -459,52 +722,51 @@
     "extensions": "Erweiterungen",
     "bots": "Bots"
   },
-  "noInstancesFound": "Keine Instanzen gefunden",
+  "noInstancesFound": "",
+  "noInstancesDescription": "",
+  "noInstancesNoPermission": "",
   "pageName": {
     "terminal": "Terminal",
     "logs": "Protokolle",
-    "audit-log": "Audit-Log",
+    "audit-log": "",
     "bots": "Bots",
-    "botDetail": "Botdetails",
-    "instances": "Instanzen",
+    "botDetail": "",
+    "instances": "",
     "access": "Zugriff",
     "settings": "Einstellungen",
-    "proxySettings": "Proxies",
+    "proxySettings": "Proxys",
     "overview": "Übersicht",
     "users": "Nutzer",
     "accountSettings": "Konten",
-    "metaSettings": "Instanzeinstellungen",
+    "metaSettings": "",
     "discoverPlugins": "Plugins",
-    "adminScripts": "Skripte",
     "instanceScripts": "Skripte"
   },
   "access": {
     "webdav": {
-      "title": "WebDAV-Zugriff",
-      "description": "WebDAV ermöglicht den Zugriff auf Instanzdateien, Skripte und andere Dateien.",
-      "publicAddress": "Öffentliche WebDAV-Adresse",
-      "personalToken": "Persönliches WebDAV-Token",
-      "securityWarning": "Bewahren Sie Ihren persönlichen WebDAV-Token geheim auf. Er gewährt Zugriff auf Ihre Dateien. Verwenden Sie den Token als Ihr WebDAV-Passwort. Ein Benutzername ist nicht erforderlich. Falls Ihre Anwendung dennoch einen benötigt, geben Sie beliebigen Wert ein, z.&nbsp;B. \"soulfire\".",
-      "addressDescription": "Verwenden Sie diese Adresse, um auf Ihre Dateien zuzugreifen. Einige Clients erfordern dav:// oder davs:// anstelle von http:// oder https://."
+      "title": "",
+      "description": "",
+      "securityWarning": "",
+      "addressDescription": ""
     },
     "api": {
-      "title": "API-Zugriff",
-      "description": "Verwalte Instanzen mit der SoulFire-API aus deinen eigenen Programmen.",
-      "publicAddress": "Öffentliche API-Adresse",
-      "personalToken": "Persönliches API-Token",
-      "securityWarning": "Bewahren Sie Ihren persönlichen API-Token geheim auf. Er gewährt Zugriff auf die API.",
-      "addressDescription": "Verwenden Sie diese Adresse, um auf die API zuzugreifen."
+      "title": "",
+      "description": "",
+      "securityWarning": ""
     },
     "token": {
-      "generate": "Token generieren",
-      "placeholder": "Wähle unten „Token generieren“",
+      "generate": "",
+      "placeholder": "",
       "generating": "Token wird generiert...",
-      "success": "Token erfolgreich generiert",
-      "error": "Token konnte nicht generiert werden",
-      "copy": "Token kopieren"
+      "success": "",
+      "error": "",
+      "copy": "",
+      "label": "",
+      "noPermission": ""
     },
     "address": {
-      "copy": "Adresse kopieren"
+      "copy": "",
+      "label": "Adresse"
     },
     "documentation": "Dokumentation",
     "howToConnect": "Verbindungsanleitung"
@@ -512,45 +774,45 @@
   "uploadToMcLogs": "Zu mclo.gs hochladen",
   "mcLogsUpload": {
     "loading": "Wird zu mclo.gs hochgeladen...",
-    "success": "Zu mclo.gs hochgeladen! Hier ansehen: {{url}}",
-    "error": "Hochladen zu mclo.gs fehlgeschlagen"
+    "success": "",
+    "error": ""
   },
   "searchWithGoogle": "Mit Google suchen",
   "copyToClipboard": "In die Zwischenablage kopieren",
   "clipboardCopy": {
-    "loading": "Wird in die Zwischenablage kopiert...",
     "success": "\"{{content}}\" wurde in die Zwischenablage kopiert",
-    "error": "Kopieren in die Zwischenablage fehlgeschlagen"
+    "error": "",
+    "sensitiveSuccess": ""
   },
   "instanceName": {
     "required": "",
     "max": "",
     "singleLine": "",
     "saved": "",
-    "saveError": "Der Instanzname konnte nicht aktualisiert werden"
+    "saveError": ""
   },
   "userSettings": {
     "avatar": {
       "title": "Avatar",
-      "description": "Ihr Benutzer-Avatar basiert auf Ihrer Kontoe-Mail. Sie können das Avatar-Bild für Ihre E-Mail-Adresse ändern bei",
-      "gravatar": "Gravatar"
+      "hint": ""
     },
     "username": {
       "uiName": "Benutzername",
-      "description": "Ihr Benutzername wird zur Identifikation in der Benutzeroberfläche und in Protokollen verwendet."
+      "description": ""
     },
     "email": {
       "uiName": "E-Mail",
-      "description": "Ihre E-Mail wird für die Anmeldung und Benachrichtigungen verwendet."
+      "description": ""
     },
+    "autoSave": "",
+    "noPermission": "",
     "saved": "",
     "conflict": "",
-    "saveError": "{{field}} konnte nicht aktualisiert werden"
+    "saveError": ""
   },
   "auditLog": {
-    "filterPlaceholder": "Audit-Logs filtern...",
+    "refresh": "Aktualisieren",
     "user": "Nutzer",
-    "action": "Aktion",
     "type": "Typ",
     "timestamp": "Zeitstempel",
     "searchUsers": "Benutzer suchen...",
@@ -558,99 +820,69 @@
     "executedCommand": "Ausgeführter Befehl: {{data}}",
     "changedBotDesiredState": "Gewünschten Bot-Zustand geändert",
     "restartedBots": "Bots neu gestartet",
+    "calledPluginRpc": "",
+    "types": {
+      "EXECUTE_COMMAND": "",
+      "BOT_DESIRED_STATE_CHANGE": "",
+      "BOT_RESTART": "",
+      "PLUGIN_RPC": ""
+    },
     "contextMenu": {
-      "copyUsername": "Benutzernamen kopieren",
-      "copyCommand": "Befehl kopieren"
+      "copyUsername": "",
+      "copyCommand": ""
+    },
+    "noPermission": {
+      "title": "",
+      "description": ""
     }
   },
   "toggleTheme": "Theme umschalten",
-  "pickADate": "Datum auswählen",
   "scripts": {
-    "filterPlaceholder": "Skripte filtern...",
-    "baseScriptDialog": {
-      "form": {
-        "scriptName": {
-          "min": "Skriptnamen müssen mindestens 3 Zeichen enthalten",
-          "max": "Skriptnamen dürfen höchstens 32 Zeichen enthalten",
-          "regex": "Verwenden Sie Kleinbuchstaben, Zahlen und Bindestriche. Der Name muss mit einem Buchstaben oder einer Zahl beginnen und enden.",
-          "label": "Name",
-          "placeholder": "Mein Skript",
-          "description": "Der Name des Skripts."
-        },
-        "elevatedPermissions": {
-          "label": "Erhöhte Berechtigungen",
-          "description": "Das Skript läuft mit erhöhten Berechtigungen. Nur Administratoren können diese Option aktivieren."
-        }
-      }
-    },
-    "addScriptDialog": {
-      "title": "Neues Skript hinzufügen",
-      "description": "Skripte sind kleine Programme, die Aufgaben und andere Aktionen auf dem SoulFire-Server automatisieren.",
-      "form": {
-        "cancel": "Abbrechen",
-        "add": "Hinzufügen"
-      }
-    },
-    "updateScriptDialog": {
-      "title": "Skript aktualisieren",
-      "description": "Aktualisiere die Informationen des Skripts.",
-      "form": {
-        "cancel": "Abbrechen",
-        "update": "Aktualisieren"
-      }
-    },
     "removeToast": {
       "loading": "Skripte werden entfernt...",
-      "success": "Skripte entfernt",
-      "error": "Fehler beim Entfernen der Skripte"
+      "success": "",
+      "error": ""
     },
     "addToast": {
       "loading": "Skript wird hinzugefügt...",
-      "success": "Skript hinzugefügt",
-      "error": "Fehler beim Hinzufügen des Skripts"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "Skript wird aktualisiert...",
-      "success": "Skript aktualisiert",
-      "error": "Fehler beim Aktualisieren des Skripts"
+      "success": "",
+      "error": ""
     },
     "restartToast": {
       "loading": "Skript wird neu gestartet...",
-      "success": "Skript neu gestartet",
-      "error": "Fehler beim Neustart des Skripts"
-    },
-    "table": {
-      "type": "Typ",
-      "scriptName": "Name",
-      "language": "Sprache",
-      "elevatedPermissions": "Erhöhte Berechtigungen",
-      "createdAt": "Erstellt",
-      "actions": "Aktionen"
-    },
-    "globalScript": "Global",
-    "instanceScript": "Instanz"
+      "success": "",
+      "error": ""
+    }
   },
   "contextMenu": {
+    "actions": "Aktionen",
     "instance": {
-      "goToInstance": "Zur Instanz gehen",
-      "duplicateInstance": "Instanz duplizieren",
-      "copyInstanceId": "Instanz-ID kopieren",
-      "copyInstanceName": "Instanznamen kopieren",
-      "deleteInstance": "Instanz löschen"
+      "goToInstance": "",
+      "duplicateInstance": "",
+      "copyInstanceId": "",
+      "copyInstanceName": "",
+      "actions": "",
+      "deleteInstance": ""
     },
     "bot": {
-      "goToBot": "Zum Bot gehen",
-      "copyUsername": "Benutzernamen kopieren",
-      "copyUuid": "Profil-ID kopieren",
-      "copyCoordinates": "Koordinaten kopieren"
+      "goToBot": "",
+      "actions": "",
+      "copyUsername": "",
+      "copyUuid": "",
+      "copyCoordinates": ""
     },
     "plugin": {
-      "enable": "Aktivieren",
-      "disable": "Deaktivieren",
-      "openSettings": "Einstellungen öffnen",
-      "copyPluginName": "Plugin-Namen kopieren",
-      "copyVersion": "Version kopieren",
-      "openWebsite": "Website öffnen"
+      "enable": "",
+      "disable": "",
+      "openSettings": "",
+      "copyPluginName": "",
+      "copyVersion": "",
+      "openWebsite": ""
     }
   },
   "integratedDiagnostics": {
@@ -659,7 +891,6 @@
     "openDirectory": "Datenverzeichnis öffnen",
     "openDirectoryError": "Das Datenverzeichnis konnte nicht geöffnet werden",
     "elapsed": "{{count}}s vergangen",
-    "quiet": "Keine neue Ausgabe seit {{count}} Sekunden. Der Startvorgang könnte noch laufen. Erzeuge einen Thread-Dump, um zu sehen, was Java macht.",
     "status": {
       "idle": "Nicht gestartet",
       "preparing": "Java- und Serverdateien werden vorbereitet",
@@ -672,7 +903,7 @@
     "noOutput": "Warte auf Prozessaussgabe...",
     "noMatches": "Keine passende Ausgabe.",
     "java": "Java-Ausführungsdatei",
-    "jar": "Server-JAR",
+    "jar": "",
     "data": "Datenverzeichnis",
     "port": "RPC-Port",
     "exit": "Exit-Code oder Signal",
@@ -687,32 +918,159 @@
     "jcmdHelp": "Thread-Dumps benötigen jcmd aus JDK 25. Die mitgelieferte Java-Laufzeit enthält dies nicht. Installiere ein JDK 25 und wähle jcmd (jcmd.exe unter Windows) im Bin-Verzeichnis aus.",
     "openDump": "Thread-Dump öffnen",
     "filter": "Prozessaussgabe filtern",
-    "truncated": "{{count}} ältere Protokollzeilen wurden ausgelassen. Die vollständigen Server-Logs befinden sich weiterhin im Datenverzeichnis.",
-    "privacy": "Berichte enthalten lokale Pfade und aktuelle Protokolle. Überprüfe Berichte und Thread-Dumps auf persönliche Informationen, bevor du sie weitergibst. Es wird nichts automatisch hochgeladen."
+    "privacy": "Berichte enthalten lokale Pfade und aktuelle Protokolle. Überprüfe Berichte und Thread-Dumps auf persönliche Informationen, bevor du sie weitergibst. Es wird nichts automatisch hochgeladen.",
+    "quiet_one": "",
+    "quiet_other": "",
+    "truncated_one": "",
+    "truncated_other": ""
   },
   "instanceUnavailable": {
     "title": "",
-    "description": ""
+    "description": "",
+    "retry": ""
   },
   "botUnavailable": {
     "title": "",
     "description": ""
   },
+  "discover": {
+    "noPluginsTitle": "",
+    "noPluginsDescription": "",
+    "search": "",
+    "noMatches": "",
+    "filterLabel": "",
+    "scope": "",
+    "tasks": {
+      "all": "Alle",
+      "connect": "",
+      "survive": "",
+      "chat": "",
+      "diagnose": "",
+      "other": "Andere"
+    },
+    "enabledHeading": "",
+    "availableHeading": "Verfügbar",
+    "movesToAvailable": "",
+    "movesToEnabled": ""
+  },
   "sdk": {
+    "title": "",
+    "description": "",
+    "docs": "",
+    "connectionTitle": "",
+    "connectionDescription": "",
+    "serverUrl": "",
+    "noUrl": "",
+    "copyUrl": "",
+    "token": "",
+    "copyToken": "",
+    "tokenHelp": "",
+    "tokenSetupHelp": "",
+    "impersonatingHelp": "",
+    "generateToken": "",
+    "generating": "Token wird generiert...",
+    "tokenPermission": "",
+    "tokenError": "",
+    "tokenRetry": "",
+    "demoBody": "",
+    "demoBadge": "",
+    "localBadge": "",
+    "remoteBadge": "",
+    "unavailableBadge": "",
+    "missingUrlHelp": "",
+    "localHelp": "",
+    "integratedHelp": "",
+    "targetTitle": "",
+    "copyInstanceId": "",
+    "openBots": "",
+    "openAccounts": "",
+    "exampleTitle": "",
+    "language": "",
+    "recipe": "",
+    "bot": "Bot",
     "botOnline": "Verbunden",
-    "botOffline": "Getrennt"
+    "botOffline": "",
+    "noBotsTitle": "",
+    "noBotsBody": "",
+    "stoppedTitle": "",
+    "stoppedBody": "",
+    "copyScript": "",
+    "copyAgentPrompt": "",
+    "previewAgentPrompt": "",
+    "agentPrompt": "",
+    "saveScript": "",
+    "runTitle": "",
+    "pythonRequirement": "",
+    "typescriptRequirement": "",
+    "shell": "",
+    "install": "",
+    "run": "",
+    "copyInstall": "",
+    "copyRun": "",
+    "replaceToken": "",
+    "version": "",
+    "recipes": {
+      "list-bots": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "read-state": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      },
+      "send-chat": {
+        "title": "",
+        "description": "",
+        "expected": ""
+      }
+    },
+    "helpTitle": "",
+    "help": {
+      "connection": {
+        "title": "",
+        "body": ""
+      },
+      "authentication": {
+        "title": "",
+        "body": ""
+      },
+      "compatibility": {
+        "title": "",
+        "body": ""
+      }
+    },
+    "reference": "",
+    "moreExamples": ""
   },
   "minecraftActions": {
-    "copyError": "Text konnte nicht kopiert werden. Nutze HTTPS oder erlaube den Zugriff auf die Zwischenablage.",
-    "openError": "Der Link konnte nicht geöffnet werden.",
-    "popupBlocked": "Dein Browser hat den neuen Tab blockiert.",
-    "openLink": "Link öffnen"
+    "copyError": "",
+    "openError": "",
+    "popupBlocked": "",
+    "openLink": ""
   },
   "instanceIcon": {
-    "label": "Symbol",
-    "description": "Das Symbol der Instanz in der App."
+    "label": "",
+    "description": "",
+    "searchPlaceholder": "",
+    "empty": "",
+    "saveError": "",
+    "more_one": "",
+    "more_other": ""
   },
   "unknown": "Unbekannt",
-  "minecraftHead": "Minecraft-Kopf",
-  "textFile": "Textdatei"
+  "minecraftHead": "",
+  "textFile": "",
+  "settingsPageName": {
+    "bot": "",
+    "account": "",
+    "proxy": "",
+    "ai": "",
+    "pathfinding": "",
+    "server": "",
+    "dev": ""
+  },
+  "instanceCount_one": "",
+  "instanceCount_other": ""
 }

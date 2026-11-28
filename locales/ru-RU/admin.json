@@ -1,80 +1,75 @@
 {
   "overview": {
-    "welcome": "С возвращением, {{name}}🧙",
     "serverMetrics": {
-      "sectionTitle": "Метрики сервера",
+      "sectionTitle": "",
       "summary": {
         "cpu": "ЦПУ",
-        "heapUsed": "Используемая куча",
+        "heapUsed": "",
         "threads": "Потоки",
-        "botsOnline": "Подключённые боты",
+        "botsOnline": "",
         "uptime": "Время работы"
       },
       "cpuUsage": {
-        "title": "Загрузка ЦП (%)"
+        "title": ""
       },
       "memoryUsage": {
-        "title": "Оперативная память (МБ)"
+        "title": ""
       },
       "threadCount": {
-        "title": "Количество потоков"
+        "title": ""
       },
       "aggregateBots": {
-        "title": "Подключённые боты (все экземпляры)"
+        "title": ""
       },
       "legend": {
-        "process": "Процесс",
-        "system": "Система",
-        "used": "Занято",
-        "committed": "Выделено",
-        "max": "Макс.",
+        "process": "",
+        "system": "Системная",
+        "used": "",
+        "committed": "",
+        "max": "",
         "total": "Всего",
-        "daemon": "Демоны",
+        "daemon": "",
         "online": "Подключён"
-      }
+      },
+      "collecting": ""
     },
-    "instancesChart": {
-      "title": "Общее количество экземпляров на сервере",
-      "instances": "Экземпляры",
-      "label": {
-        "state": "Состояние",
-        "active": "Активен",
-        "stopped": "Остановлен",
-        "other": "Другое"
-      }
-    },
-    "usersChart": {
-      "title": "Всего пользователей на этом сервере",
+    "stats": {
       "users": "Пользователи",
-      "label": {
-        "role": "Роли",
-        "user": "Пользователь",
-        "admin": "Администратор",
-        "other": "Другое"
-      }
+      "projects": "",
+      "admins_one": "",
+      "admins_few": "",
+      "admins_many": "",
+      "admins_other": "",
+      "active_one": "",
+      "active_few": "",
+      "active_many": "",
+      "active_other": ""
     }
   },
   "users": {
-    "filterPlaceholder": "Фильтровать пользователей...",
+    "noPermission": {
+      "title": "",
+      "description": ""
+    },
     "baseUserDialog": {
       "form": {
         "username": {
-          "min": "Имя пользователя должно содержать не менее 3 символов",
-          "max": "Имя пользователя должно содержать не более 32 символов",
-          "regex": "Имя пользователя может содержать строчные буквы, цифры и тире. Но тире не может быть в начале или конце.",
+          "min": "",
+          "max": "",
+          "regex": "",
           "label": "Имя пользователя",
           "placeholder": "Введите имя пользователя",
-          "description": "Уникальное имя пользователя, идентифицирующее пользователя"
+          "description": ""
         },
         "email": {
           "label": "E-mail",
           "placeholder": "Введите email",
-          "description": "Адрес электронной почты пользователя, используемый для уведомлений и входа"
+          "description": ""
         },
         "role": {
           "label": "Роли",
           "placeholder": "Выберите роль",
-          "description": "Роль пользователя. Администраторы могут управлять пользователями и всеми инстанциями. Пользователи могут управлять только своими экземплярами.",
+          "description": "",
           "user": "Пользователь",
           "admin": "Администратор"
         }
@@ -82,75 +77,92 @@
     },
     "addUserDialog": {
       "title": "Добавить нового пользователя",
-      "description": "Добавить нового пользователя на этот сервер",
+      "description": "",
       "form": {
         "cancel": "Отмена",
-        "add": "Добавить пользователя"
+        "add": ""
       }
     },
     "updateUserDialog": {
-      "title": "Обновление пользователя",
-      "description": "Обновить информацию о пользователе",
+      "title": "",
+      "description": "",
       "form": {
         "cancel": "Отмена",
-        "update": "Обновить пользователя"
+        "update": ""
       }
     },
     "profileConflict": "",
     "addToast": {
       "loading": "Добавление пользователя...",
-      "success": "Пользователь добавлен",
-      "error": "Ошибка добавления пользователя"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "Обновление пользователя...",
-      "success": "Пользователь обновлен",
-      "error": "Ошибка добавления пользователя"
+      "success": "",
+      "error": ""
     },
     "removeToast": {
       "loading": "Удаление пользователя...",
-      "success": "Пользователь удалён",
-      "error": "Не удалось удалить пользователя"
+      "partial": "",
+      "success_one": "",
+      "success_few": "",
+      "success_many": "",
+      "success_other": "",
+      "error_one": "",
+      "error_few": "",
+      "error_many": "",
+      "error_other": ""
     },
     "invalidateToast": {
-      "loading": "Выход из аккаунта...",
-      "success": "Вы вышли из аккаунта",
-      "error": "Не удалось выйти из аккаунта"
+      "loading": "",
+      "partial": "",
+      "success_one": "",
+      "success_few": "",
+      "success_many": "",
+      "success_other": "",
+      "error_one": "",
+      "error_few": "",
+      "error_many": "",
+      "error_other": ""
+    },
+    "impersonateToast": {
+      "error": ""
     },
     "table": {
       "username": "Имя пользователя",
       "email": "E-mail",
       "role": "Роли",
       "createdAt": "Дата создания",
-      "minIssuedAt": "Сеансы действительны с",
+      "minIssuedAt": "",
       "actions": "Действия",
       "searchUsernames": "Поиск имен пользователей...",
       "searchEmails": "Поиск адресов электронной почты...",
       "searchCreatedAts": "Поиск по датам создания...",
-      "searchMinIssuedAts": "Поиск по датам сеансов..."
+      "searchMinIssuedAts": ""
     },
     "removeSelectedTooltip": "Удалить выбранных пользователей",
-    "logOutSelectedTooltip": "Вывести из системы выбранных пользователей",
+    "logOutSelectedTooltip": "",
     "contextMenu": {
-      "editUser": "Редактировать пользователя",
+      "editUser": "",
       "impersonate": "Войти от имени пользователя",
-      "copyUserId": "Скопировать ID пользователя"
+      "copyUserId": ""
     },
     "removeDialog": {
-      "title_one": "Удалить {{count}} пользователя?",
-      "title_few": "Удалить {{count}} пользователей?",
-      "title_many": "Удалить {{count}} пользователей?",
-      "title_other": "Удалить {{count}} пользователя?",
-      "description": "Это навсегда удалит выбранных пользователей и их доступ. Отменить это нельзя.",
-      "confirm": "Удалить пользователей"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_few": "",
+      "title_many": "",
+      "title_other": ""
     },
     "invalidateDialog": {
-      "title_one": "Завершить сеансы {{count}} пользователя?",
-      "title_few": "Завершить сеансы {{count}} пользователей?",
-      "title_many": "Завершить сеансы {{count}} пользователей?",
-      "title_other": "Завершить сеансы {{count}} пользователя?",
-      "description": "Это завершит все сеансы и токены выбранных пользователей. Им придётся войти снова.",
-      "confirm": "Завершить сеансы пользователей"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_few": "",
+      "title_many": "",
+      "title_other": ""
     }
   }
 }

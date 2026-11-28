@@ -1,80 +1,71 @@
 {
   "overview": {
-    "welcome": "Hoş geldiniz, {{name}} 🧙",
     "serverMetrics": {
-      "sectionTitle": "Sunucu Metrikleri",
+      "sectionTitle": "",
       "summary": {
         "cpu": "CPU",
-        "heapUsed": "Kullanılan Yığın",
+        "heapUsed": "",
         "threads": "İş Parçacıkları",
-        "botsOnline": "Bağlı botlar",
+        "botsOnline": "",
         "uptime": "Çalışma Süresi"
       },
       "cpuUsage": {
-        "title": "CPU Kullanımı (%)"
+        "title": ""
       },
       "memoryUsage": {
-        "title": "Yığın Bellek (MB)"
+        "title": ""
       },
       "threadCount": {
-        "title": "İş Parçacığı Sayısı"
+        "title": ""
       },
       "aggregateBots": {
-        "title": "Bağlı botlar (tüm örnekler)"
+        "title": ""
       },
       "legend": {
-        "process": "İşlem",
+        "process": "",
         "system": "Sistem",
-        "used": "Kullanılan",
-        "committed": "Ayrılan",
-        "max": "Maks.",
+        "used": "",
+        "committed": "",
+        "max": "",
         "total": "Toplam",
-        "daemon": "Daemon",
-        "online": "Bağlı"
-      }
+        "daemon": "",
+        "online": "Bağlandı"
+      },
+      "collecting": ""
     },
-    "instancesChart": {
-      "title": "Bu sunucudaki toplam Olay sayısı",
-      "instances": "Örnekler",
-      "label": {
-        "state": "Durum",
-        "active": "Aktif",
-        "stopped": "Durduruldu",
-        "other": "Diğer"
-      }
-    },
-    "usersChart": {
-      "title": "Bu sunucudaki toplam kullanıcı sayısı",
+    "stats": {
       "users": "Kullanıcılar",
-      "label": {
-        "role": "Rol",
-        "user": "Kullanıcı",
-        "admin": "Yönetici",
-        "other": "Diğer"
-      }
+      "projects": "",
+      "admins_one": "",
+      "admins_other": "",
+      "active_one": "",
+      "active_other": ""
     }
   },
   "users": {
-    "filterPlaceholder": "Kullanıcıları filtrele...",
+    "noPermission": {
+      "title": "",
+      "description": ""
+    },
     "baseUserDialog": {
       "form": {
         "username": {
-          "min": "Kullanıcı adları en az 3 karakter olmalıdır",
-          "max": "Kullanıcı adları en fazla 32 karakter olmalıdır",
-          "regex": "Kullanıcı adları küçük harflerden oluşmalı, bir alfasayısal karakter ile başlamalı, devamında alfasayısal karakterler veya tireler kullanılmalı ve yine bir alfasayısal karakter ile bitmelidir.",
+          "min": "",
+          "max": "",
+          "regex": "",
           "label": "Kullanıcı Adı",
           "placeholder": "Kullanıcı adı girin",
-          "description": "Kullanıcıyı tanımlayan benzersiz bir kullanıcı adı"
+          "description": ""
         },
         "email": {
           "label": "Mail Adresi",
           "placeholder": "E-posta girin",
-          "description": "Kullanıcının bildirimler ve giriş yapmak için kullanılan e-posta adresi"
+          "description": ""
         },
         "role": {
           "label": "Rol",
           "placeholder": "Bir rol seçin",
-          "description": "Kullanıcının rolü. Yöneticiler kullanıcıları ve tüm örnekleri yönetebilir. Kullanıcılar yalnızca kendi örneklerini yönetebilir.",
+          "description": "",
           "user": "Kullanıcı",
           "admin": "Yönetici"
         }
@@ -82,71 +73,80 @@
     },
     "addUserDialog": {
       "title": "Yeni bir kullanıcı ekle",
-      "description": "Bu sunucuya yeni bir kullanıcı ekleyin",
+      "description": "",
       "form": {
         "cancel": "İptal",
-        "add": "Kullanıcı Ekle"
+        "add": ""
       }
     },
     "updateUserDialog": {
-      "title": "Kullanıcıyı güncelle",
-      "description": "Kullanıcının bilgilerini güncelleyin",
+      "title": "",
+      "description": "",
       "form": {
         "cancel": "İptal",
-        "update": "Kullanıcıyı Güncelle"
+        "update": ""
       }
     },
     "profileConflict": "",
     "addToast": {
       "loading": "Kullanıcı ekleniyor...",
-      "success": "Kullanıcı eklendi",
-      "error": "Kullanıcı eklenemedi"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "Kullanıcı güncelleniyor...",
-      "success": "Kullanıcı güncellendi",
-      "error": "Kullanıcı güncellenemedi"
+      "success": "",
+      "error": ""
     },
     "removeToast": {
       "loading": "Kullanıcılar kaldırılıyor...",
-      "success": "Kullanıcılar kaldırıldı",
-      "error": "Kullanıcılar kaldırılamadı"
+      "partial": "",
+      "success_one": "",
+      "success_other": "",
+      "error_one": "",
+      "error_other": ""
     },
     "invalidateToast": {
-      "loading": "Kullanıcılar çıkış yaptırılıyor...",
-      "success": "Kullanıcılar çıkış yaptı",
-      "error": "Kullanıcıların çıkışı yapılamadı"
+      "loading": "",
+      "partial": "",
+      "success_one": "",
+      "success_other": "",
+      "error_one": "",
+      "error_other": ""
+    },
+    "impersonateToast": {
+      "error": ""
     },
     "table": {
       "username": "Kullanıcı Adı",
       "email": "Mail Adresi",
       "role": "Rol",
       "createdAt": "Oluşturulma",
-      "minIssuedAt": "Oturumların geçerlilik başlangıcı",
+      "minIssuedAt": "",
       "actions": "İşlemler",
       "searchUsernames": "Kullanıcı adlarında ara...",
       "searchEmails": "E-postalarda ara...",
       "searchCreatedAts": "Oluşturulma tarihlerini ara...",
-      "searchMinIssuedAts": "Oturum tarihlerinde ara..."
+      "searchMinIssuedAts": ""
     },
     "removeSelectedTooltip": "Seçili kullanıcıları kaldır",
-    "logOutSelectedTooltip": "Seçili kullanıcıların oturumunu kapat",
+    "logOutSelectedTooltip": "",
     "contextMenu": {
-      "editUser": "Kullanıcıyı Düzenle",
+      "editUser": "",
       "impersonate": "Kimliğe Bürün",
-      "copyUserId": "Kullanıcı Kimliğini Kopyala"
+      "copyUserId": ""
     },
     "removeDialog": {
-      "title_one": "{{count}} kullanıcı kaldırılsın mı?",
-      "title_other": "{{count}} kullanıcı kaldırılsın mı?",
-      "description": "Bu işlem, seçilen kullanıcıları ve erişimlerini kalıcı olarak siler. Geri alınamaz.",
-      "confirm": "Kullanıcıları kaldır"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     },
     "invalidateDialog": {
-      "title_one": "{{count}} kullanıcının oturumu kapatılsın mı?",
-      "title_other": "{{count}} kullanıcının oturumu kapatılsın mı?",
-      "description": "Bu işlem, seçilen kullanıcıların tüm oturumlarını ve jetonlarını sonlandırır. Yeniden giriş yapmaları gerekir.",
-      "confirm": "Kullanıcıların oturumunu kapat"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     }
   }
 }

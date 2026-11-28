@@ -1,67 +1,19 @@
 {
   "overview": {
-    "logsDescription": "當您需要檢查主控台細節時，可在此查看原始實例輸出。",
-    "summary": {
-      "accounts": "帳號",
-      "proxies": "代理伺服器",
-      "configured": "已設定 {{count}} 項",
-      "configuredShort": "已設定",
-      "currentRate": "目前速率",
-      "imported": "已匯入"
-    },
-    "readiness": {
-      "title": "設定",
-      "accounts": "帳號",
-      "accountsValue": "已為 {{requested}} 個請求的機器人匯入 {{count}} 個帳號。",
-      "proxies": "代理伺服器",
-      "proxiesValue": "已設定 {{count}} 項",
-      "plugins": "插件",
-      "pluginsValue": "{{count}} 個可用"
-    },
-    "activity": {
-      "title": "活動",
-      "tick": "Tick",
-      "health": "生命值",
-      "world": "世界",
-      "worldValue": "{{chunks}} 區塊，{{entities}} 實體",
-      "connections": "連線數",
-      "connectionsValue": "+{{connections}} / -{{disconnections}}",
-      "noDataTitle": "指標",
-      "noDataDescription": "尚未有執行時指標。"
-    },
-    "metricsUnavailable": {
-      "title": "指標",
-      "inactive": "啟動一個機器人以收集即時指標。",
-      "noPermission": "你沒有權限查看機器人指標。"
-    },
-    "status": {
-      "ready": "就緒",
-      "attention": "需要注意",
-      "configured": "已設定",
-      "optional": "可選",
-      "available": "可用",
-      "none": "無"
-    },
-    "actions": {
-      "manage": "管理",
-      "open": "開啟"
-    },
-    "spotlight": {
-      "noBots": "尚未設定任何機器人。",
-      "idle": "閒置中，等待指令。",
-      "level": "等級 {{level}}"
-    },
+    "logsDescription": "",
     "liveFeed": {
       "title": "即時監控",
-      "empty": "正在等待實例活動...",
+      "empty": "",
       "noPermission": "你沒有權限查看即時監控。",
       "lifecycle": {
         "connecting": "正在連線",
         "connected": "已連線",
         "spawned": "已加入遊戲",
         "died": "已死亡",
+        "diedWithReason": "",
         "respawned": "已重生",
         "disconnected": "已斷線",
+        "disconnectedWithReason": "",
         "unknown": "狀態已變更"
       },
       "pause": "暫停",
@@ -80,11 +32,11 @@
         "time": "時間",
         "bot": "機器人",
         "message": "訊息"
-      }
+      },
+      "botCount_other": ""
     },
     "bots": {
       "title": "機器人群組/機器人列表/機器人",
-      "viewAll": "檢視全部 {{total}} 個機器人",
       "viewAllShort": "檢視全部",
       "detailsFor": "{{name}} 的機器人詳細資訊"
     },
@@ -92,21 +44,19 @@
       "title": "近期操作",
       "viewAll": "檢視歷史",
       "empty": "尚未有紀錄的活動。",
-      "noPermission": "你沒有權限查看稽核日誌。",
       "types": {
         "executeCommand": "執行了一個指令：{{data}}",
         "botDesiredStateChange": "已更改機器人目標狀態",
         "botRestart": "已重新啟動機器人",
+        "pluginRpc": "",
         "unknown": "執行了一個動作"
       }
     },
     "plugins": {
       "title": "插件",
-      "empty": "尚未有外掛回報統計。",
-      "noPermission": "你沒有權限查看外掛統計。",
       "active": "啟用中",
-      "activeBots": "{{count}} 個啟用中的機器人",
-      "uptime": "已運作 {{time}}"
+      "uptime": "已運作 {{time}}",
+      "activeBots_other": ""
     },
     "detailed": {
       "title": "詳細指標",
@@ -119,179 +69,223 @@
       "network": "網絡位址",
       "unix": "Unix 套接字"
     },
-    "getProxies": "代理伺服器供應商",
-    "addProxies": "新增代理伺服器",
-    "filterPlaceholder": "篩選代理伺服器...",
+    "getProxies": "",
+    "addProxies": "",
+    "settingsTitle": "",
     "listImportToast": {
-      "loading": "正在導入代理伺服器...",
-      "success": "已導入 {{count}} 個代理伺服器",
-      "error": "導入代理伺服器失敗",
-      "noProxies": "沒有可導入的代理伺服器"
+      "success_other": "",
+      "skipped_other": "",
+      "duplicates_other": ""
     },
     "import": {
-      "proxyType": "代理伺服器類型",
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "importing": "正在導入代理伺服器...",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_other": "",
+        "alreadyInProject_other": "",
+        "rejected_other": "",
+        "confirm_other": ""
+      },
+      "proxyType": "",
       "http": "HTTP",
       "socks4": "SOCKS4",
       "socks5": "SOCKS5",
       "uri": "URI",
       "dialog": {
         "title": "導入 {{type}} 代理伺服器",
-        "description": "請將您的代理伺服器貼在此處，每行一個"
+        "description": ""
       }
     },
     "removeToast": {
       "loading": "正在移除代理伺服器...",
-      "success": "已移除 {{count}} 個代理伺服器",
-      "error": "移除代理伺服器失敗"
+      "error": "",
+      "success_other": ""
     },
     "checkToast": {
-      "loading": "正在檢查代理伺服器... {{checked}}/{{total}}（成功：{{success}} 失敗：{{failed}}）",
-      "success": "已移除 {{count}} 個損壞的代理伺服器",
-      "error": "檢查代理伺服器失敗",
-      "successKept": "{{total}} 個代理伺服器中有 {{failed}} 個未通過檢查。沒有移除任何代理伺服器。"
+      "loading": "",
+      "error": "",
+      "success_other": "",
+      "successKept_other": ""
     },
     "checkDialog": {
-      "title": "檢查代理伺服器",
-      "description": "即將檢查 {{count}} 個代理伺服器。",
-      "confirm": "開始檢查",
-      "removeFailed": "移除未通過的代理伺服器",
-      "removeFailedHelp": "代理伺服器可能因暫時的網路問題而未通過。取消此選項可保留所有代理伺服器，只查看結果。"
+      "title": "",
+      "confirm": "",
+      "removeFailed": "",
+      "removeFailedHelp": "",
+      "description_other": ""
     },
-    "invalidFormat": "代理伺服器格式無效",
     "table": {
       "type": "類型",
       "address": "位址",
       "username": "使用者名稱",
       "password": "密碼",
       "searchAddresses": "搜尋位址...",
-      "searchUsernames": "搜尋使用者名稱...",
-      "searchPasswords": "搜尋密碼..."
+      "searchUsernames": "搜尋使用者名稱..."
     },
     "removeSelectedTooltip": "移除所選代理伺服器",
     "exportSelectedTooltip": "導出已選取的代理伺服器",
     "checkSelectedTooltip": "檢查所選代理伺服器",
     "contextMenu": {
-      "copyAddress": "複製位址",
-      "copyUsername": "複製用戶名稱",
-      "copyPassword": "複製密碼",
-      "deleteProxy": "刪除代理伺服器"
+      "copyAddress": "",
+      "copyUsername": "",
+      "copyPassword": "",
+      "deleteProxy": ""
     },
     "postImportCheckDialog": {
       "title": "要檢查已匯入的代理伺服器嗎？",
-      "description": "你匯入了 {{count}} 個代理伺服器。要現在檢查嗎？",
-      "confirm": "檢查代理伺服器",
-      "skip": "略過"
+      "confirm": "",
+      "skip": "略過",
+      "description_other": ""
     },
     "export": {
-      "format": "導出格式",
-      "uri": "URI 格式（所有類型）",
-      "http": "僅限 HTTP（平面）",
-      "socks4": "僅限 SOCKS4（平面）",
-      "socks5": "僅限 SOCKS5（平面）",
+      "format": "",
+      "uri": "",
+      "http": "",
+      "socks4": "",
+      "socks5": "",
       "noProxies": "無可匯出的代理伺服器"
     },
     "removeDialog": {
-      "title_other": "要移除 {{count}} 個代理伺服器嗎？",
-      "description": "這會從此實例移除所選代理伺服器及其憑證。此操作無法復原。",
-      "confirm": "移除代理伺服器"
+      "description": "",
+      "confirm": "",
+      "title_other": ""
     },
-    "showPassword": "顯示密碼",
-    "hidePassword": "隱藏密碼"
+    "removeSingleDialog": {
+      "title": "",
+      "description": "",
+      "confirm": ""
+    },
+    "showPassword": "",
+    "hidePassword": ""
   },
   "account": {
-    "getAccounts": "帳戶供應商",
-    "addAccounts": "新增帳戶",
-    "generateAccounts": "產生帳戶",
-    "filterPlaceholder": "篩選帳戶...",
+    "getAccounts": "",
+    "addAccounts": "",
+    "settingsTitle": "",
+    "generateAccounts": "",
     "listImportToast": {
-      "loading": "正在導入帳戶... {{checked}}/{{total}}（成功：{{success}} 失敗：{{failed}}）",
-      "allFailed": "未能導入任何帳戶",
-      "someFailed": "已導入 {{count}} 個帳戶，未能導入 {{failed}} 個帳戶",
-      "noneFailed": "已導入 {{count}} 個帳戶",
-      "error": "導入帳戶失敗",
-      "noAccounts": "沒有可導入的帳戶"
+      "loading": "",
+      "allFailed": "",
+      "cancelled": "",
+      "error": "",
+      "copyCredentials": "",
+      "noAccounts": "",
+      "errorReason": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      },
+      "someFailed_other": "",
+      "noneFailed_other": "",
+      "cancelledSaved_other": "",
+      "errorSaved_other": ""
     },
-    "unknownError": "未知錯誤",
     "types": {
-      "OFFLINE": "離線",
-      "MICROSOFT_JAVA_CREDENTIALS": "Java（憑證）",
-      "MICROSOFT_JAVA_DEVICE_CODE": "Java（裝置代碼）",
-      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java（刷新權杖）",
-      "MICROSOFT_JAVA_COOKIES": "Java（Cookies）",
-      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java（存取權杖）",
+      "OFFLINE": "",
+      "MICROSOFT_JAVA_CREDENTIALS": "",
+      "MICROSOFT_JAVA_DEVICE_CODE": "",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "",
+      "MICROSOFT_JAVA_COOKIES": "",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "",
       "THE_ALTENING": "Java（TheAltening）",
-      "MICROSOFT_BEDROCK_CREDENTIALS": "Bedrock（憑證）",
-      "MICROSOFT_BEDROCK_DEVICE_CODE": "Bedrock（裝置代碼）"
+      "MICROSOFT_BEDROCK_CREDENTIALS": "",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": ""
     },
     "deviceCodeImportToast": {
       "loading": "正在導入帳戶...",
-      "success": "帳戶已導入",
-      "error": "導入帳戶失敗"
+      "success": "",
+      "error": "",
+      "saving": "",
+      "saveError": "",
+      "retrySave": ""
     },
     "generate": {
-      "title": "產生離線帳戶",
+      "replaceAllDialog": {
+        "description": "",
+        "confirm": "",
+        "title_other": ""
+      },
+      "title": "",
       "description": "以自訂名稱格式產生離線 Java 帳戶。",
-      "amount": "數量",
-      "nameFormat": "名稱格式",
-      "nameFormatHelp": "請用 %d 作為帳號編號。例如，Bot_%d 會建立像是 Bot_1 和 Bot_2 這類名稱。",
-      "mode": "現有帳號",
-      "modeHelp": "請選擇如何處理現有帳號：\n\n• 忽略現有帳號：僅產生新名稱的帳號。保留所有現有帳號。\n\n• 取代現有帳號：產生所有請求的帳號。以相同 UUID 取代舊帳號。保留其他帳號。\n\n• 全部取代：移除所有現有帳號，然後加入新產生的帳號。",
-      "modeIgnoreExisting": "忽略現有",
-      "modeReplaceExisting": "替換現有",
-      "modeReplaceAll": "全部取代",
+      "amount": "",
+      "nameFormat": "",
+      "nameFormatHelp": "",
+      "mode": "",
+      "modeHelp": "",
+      "modeIgnoreExisting": "",
+      "modeReplaceExisting": "",
+      "modeReplaceAll": "",
       "submit": "產生",
       "generating": "正在產生...",
-      "progress": "正在產生帳戶... {{checked}}/{{total}}（成功：{{success}} 失敗：{{failed}}）",
-      "success": "已產生 {{count}} 個帳戶",
-      "allFailed": "未能產生任何帳戶",
-      "allExist": "所有使用者名稱都已存在。選擇「替換現有」即可重新產生。",
-      "error": "產生帳戶失敗",
-      "invalidAmount": "請輸入有效數量（至少 1）",
-      "missingPlaceholder": "名稱格式必須包含 %d 佔位符"
+      "progress": "",
+      "allFailed": "",
+      "allExist": "",
+      "error": "",
+      "amountOutOfRange": "",
+      "missingNameFormat": "",
+      "success_other": "",
+      "preview_other": ""
     },
     "import": {
       "javaEdition": "Java 版",
       "bedrockEdition": "Bedrock 版",
       "offline": "離線",
-      "microsoftCredentials": "Microsoft 憑證",
-      "microsoftDeviceCode": "Microsoft 裝置驗證碼",
-      "microsoftRefreshToken": "Microsoft 重新整理權杖",
-      "microsoftCookies": "Microsoft Cookie 檔案",
-      "microsoftAccessToken": "Microsoft 存取權杖",
-      "theAltening": "TheAltening 權杖（Token）",
-      "altProviders": "替代供應商",
+      "microsoftCredentials": "",
+      "microsoftDeviceCode": "",
+      "microsoftRefreshToken": "",
+      "microsoftCookies": "",
+      "microsoftAccessToken": "",
+      "theAltening": "",
+      "altProviders": "",
       "dialog": {
-        "title": "導入 {{type}} 帳戶",
-        "description": "請將您的帳戶貼在此處，每行一個"
+        "title": "導入 {{type}} 帳戶"
+      },
+      "demo": "",
+      "format": {
+        "offline": "",
+        "microsoftCredentials": "",
+        "refreshToken": "",
+        "cookies": "",
+        "accessToken": "",
+        "theAltening": ""
       }
     },
     "removeToast": {
       "loading": "正在移除帳戶...",
-      "success": "已移除 {{count}} 個帳戶",
-      "error": "移除帳戶失敗"
+      "error": "",
+      "success_other": ""
     },
     "table": {
       "type": "類型",
-      "profileId": "個人檔案 ID",
+      "profileId": "",
       "lastKnownName": "使用者名稱",
       "searchProfileIds": "搜尋個人檔案 ID...",
-      "searchLastKnownNames": "搜尋最後已知名稱...",
+      "searchLastKnownNames": "搜尋使用者名稱...",
       "actions": "動作"
     },
     "removeSelectedTooltip": "移除所選帳號",
     "contextMenu": {
-      "openConfig": "開啟設定",
-      "openMetadata": "打開中繼資料",
-      "copyProfileId": "複製個人檔案 ID",
-      "copyUsername": "複製用戶名稱"
+      "openConfig": "",
+      "openMetadata": "",
+      "copyProfileId": "",
+      "copyUsername": ""
     },
     "config": {
       "title": "設定 {{name}}",
-      "description": "為此帳號設定每個機器人專屬的設定",
+      "description": "",
       "openButton": "設定帳號",
-      "pageTitle": "{{name}} - {{page}} 設定",
       "noSettings": "此頁面沒有可用的設定",
       "search": "搜尋設定",
+      "pages": "",
       "overrides": "覆寫",
       "allSettings": "所有設定",
       "noOverrides": "此機器人尚未有任何明確的覆寫。",
@@ -302,224 +296,194 @@
       "selectPage": "選擇設定頁面",
       "noSearchResults": "沒有相關設定符合此搜尋。",
       "matchesInheritedValue": "符合繼承值",
-      "instanceValue": "實例值",
+      "instanceValue": "",
       "defaultValue": "預設值",
       "resetOverride": "重設覆蓋",
       "value": {
-        "notSet": "未設定",
-        "on": "開",
-        "off": "關",
-        "empty": "空白",
-        "entries_other": "{{count}} 個項目",
-        "range": "範圍"
+        "notSet": "",
+        "on": "",
+        "off": "",
+        "empty": "",
+        "range": "",
+        "entries_other": "{{count}} 筆紀錄"
       },
       "source": {
-        "bot": "機器人專屬值",
-        "instance": "繼承自實例",
-        "default": "使用預設值"
+        "bot": "",
+        "instance": "",
+        "default": ""
       }
     },
     "deviceCodeConfirmDialog": {
-      "title": "裝置代碼驗證",
+      "title": "",
       "description": "在開始裝置代碼流程前請先配置選項。",
-      "start": "開始驗證"
+      "start": ""
     },
     "deviceCodeDialog": {
-      "title": "裝置代碼驗證",
+      "title": "",
       "description": "使用您的 Microsoft 帳戶登入以進行連結。",
-      "openInBrowser": "在瀏覽器中開啟",
+      "openInBrowser": "",
       "orManually": "或手動輸入代碼",
       "codeLabel": "您的代碼",
-      "urlLabel": "前往"
+      "urlLabel": "前往",
+      "copyCode": "",
+      "copyUrl": ""
     },
     "ravealts": {
-      "button": "Ravealts",
-      "title": "透過 Ravealts 購買帳號",
       "description": "使用您的 Ravealts API 金鑰購買 Minecraft 帳號。",
-      "apiKeyLabel": "",
       "apiKeyPlaceholder": "請輸入您的 Ravealts API 金鑰",
-      "validate": "驗證",
-      "validating": "正在驗證...",
-      "keyValid": "金鑰已驗證",
-      "keyInvalid": "API 金鑰無效",
-      "credits": "點數：{{credits}}",
-      "stockTitle": "可用庫存",
       "noStock": "庫存中沒有帳號",
-      "accountType": "帳號類型",
-      "amount": "數量 (1-10)",
-      "purchase": "購買並導入",
-      "purchasing": "正在購買...",
-      "purchaseSuccess": "已購買 {{count}} 個帳號，正在導入...",
-      "purchaseError": "購買失敗：{{message}}",
-      "networkError": "連線至 Ravealts API 失敗",
-      "outOfStock": "所選類型已無庫存",
+      "accountType": "",
+      "networkError": "",
+      "outOfStock": "",
       "insufficientBalance": "點數不足",
-      "rateLimited": "受限頻率，請稍後再試"
+      "rateLimited": ""
     },
     "metadata": {
-      "openButton": "編輯中繼資料",
+      "openButton": "",
       "title": "中繼資料：{{name}}",
-      "description": "管理此帳戶的持久化中繼資料條目。每個條目都有命名空間、鍵和值（JSON 格式）。",
-      "namespacePlaceholder": "命名空間",
-      "keyPlaceholder": "鍵",
-      "valuePlaceholder": "值（JSON）",
-      "noEntries": "沒有中繼資料條目。請在上方新增一個。",
-      "loadError": "無法載入中繼資料",
-      "loadErrorDescription": "",
-      "retryLoad": "重試",
-      "addSuccess": "已新增條目",
-      "addError": "新增條目失敗",
-      "updateError": "更新條目失敗",
-      "deleteSuccess": "條目已刪除",
-      "deleteError": "刪除條目失敗",
-      "duplicateError": "具有相同命名空間和鍵的條目已存在",
-      "invalidJson": "無效的 JSON 值",
-      "namespaceLabel": "命名空間",
-      "keyLabel": "鍵",
-      "valueLabel": "值",
-      "addEntryLegend": "新增中繼資料項目",
-      "addEntryButton": "新增項目",
-      "entryLegend": "中繼資料項目",
-      "removeEntryButton": "移除"
+      "description": "管理此帳戶的持久化中繼資料條目。每個條目都有命名空間、鍵和值（JSON 格式）。"
     },
     "removeDialog": {
-      "title_other": "要移除 {{count}} 個帳戶嗎？",
-      "description": "這會從此實例移除所選帳戶、已儲存的憑證及其機器人。此操作無法復原。",
-      "confirm": "移除帳戶"
+      "description": "",
+      "confirm": "",
+      "title_other": ""
     }
   },
   "instanceMetadata": {
-    "title": "實例中繼資料（Metadata）",
-    "description": "管理此實例的持久中繼資料項目。每個項目都包含一個命名空間、鍵，以及 JSON 值。",
-    "namespacePlaceholder": "命名空間",
-    "keyPlaceholder": "鍵",
-    "valuePlaceholder": "值（JSON）",
-    "noEntries": "沒有中繼資料條目。請在上方新增一個。",
-    "loadError": "無法載入中繼資料",
-    "addSuccess": "已新增條目",
-    "addError": "新增條目失敗",
-    "updateError": "更新條目失敗",
-    "deleteSuccess": "條目已刪除",
-    "deleteError": "刪除條目失敗",
-    "duplicateError": "具有相同命名空間和鍵的條目已存在",
-    "invalidJson": "無效的 JSON 值",
-    "namespaceLabel": "命名空間",
-    "keyLabel": "鍵",
-    "valueLabel": "值",
-    "addEntryLegend": "新增中繼資料項目",
-    "addEntryButton": "新增項目",
-    "entryLegend": "中繼資料項目",
+    "title": "",
+    "description": ""
+  },
+  "metadataEditor": {
+    "namespacePlaceholder": "",
+    "keyPlaceholder": "",
+    "valuePlaceholder": "",
+    "valueRequired": "",
+    "noEntries": "",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "重試",
+    "addSuccess": "",
+    "addError": "",
+    "updateError": "",
+    "deleteSuccess": "",
+    "deleteError": "",
+    "duplicateError": "",
+    "invalidJson": "",
+    "namespaceLabel": "",
+    "keyLabel": "",
+    "valueLabel": "數值",
+    "addEntryLegend": "",
+    "addEntryButton": "",
+    "entryLegend": "",
     "removeEntryButton": "移除"
   },
   "bots": {
     "searchPlaceholder": "搜尋機器人...",
-    "onlineCount": "{{online}} 個已連線 / 共 {{total}} 個",
-    "noBots": "沒有已設定的機器人。請至帳戶設定頁面新增帳號。",
+    "noBots": "",
     "noBotsFound": "沒有符合搜尋條件的機器人。",
-    "loadingMore": "載入更多...",
     "showingCount": "正在顯示 {{loaded}} / {{total}} 筆資料",
     "allLoaded": "所有 {{total}} 個機器人已載入",
-    "online": "已連線",
-    "offline": "已中斷連線",
-    "notJoined": "未加入",
     "connectionPhase": {
       "connecting": "連線中",
-      "connected": "登入中",
+      "connected": "",
       "spawned": "已連線",
       "died": "死亡",
-      "disconnected": "已中斷連線",
+      "disconnected": "",
       "ping": "{{ms}} 毫秒"
     },
-    "runtimeState": {
-      "starting": "正在啟動",
-      "running": "執行中",
-      "retrying": "正在重試",
-      "stopping": "正在停止",
-      "failed": "失敗了",
-      "waiting": "等待中",
-      "stopped": "已停止"
-    },
-    "backToBots": "返回機器人列表",
+    "backToBots": "",
+    "demoControls": "",
+    "notConnected": "",
     "tabs": {
-      "overview": "機器人視角",
+      "overview": "",
       "inventory": "物品欄",
-      "controls": "控制項",
-      "terminal": "終端機"
+      "controls": "",
+      "terminal": "",
+      "label": ""
     },
-    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "代理伺服器",
       "direct": "直接（無代理伺服器）",
       "unavailable": "無法使用"
     },
     "positionPanel": {
-      "title": "位置與旋轉",
-      "position": "位置",
-      "rotation": "旋轉",
-      "offline": "機器人已中斷連線。位置資料僅在機器人連線時可用。"
+      "title": "",
+      "x": "",
+      "y": "",
+      "z": "",
+      "pitch": "",
+      "yaw": "",
+      "coordinates": "",
+      "offline": ""
     },
     "chatPanel": {
-      "title": "聊天訊息"
-    },
-    "commandPanel": {
-      "title": "機器人指令",
-      "placeholder": "傳送指令給此機器人..."
-    },
-    "povPanel": {
-      "title": "機器人視角",
-      "capture": "截圖",
-      "refresh": "重新整理",
-      "auto": "自動",
-      "startAutoRefresh": "開始自動刷新（每秒1次）",
-      "stopAutoRefresh": "停止自動刷新",
-      "clickToCapture": "點擊「截圖」以渲染機器人的視角",
-      "offline": "機器人離線。只有連線時才能渲染視角。"
+      "title": "",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": "",
+      "sendErrorReason": "",
+      "cancelled": "",
+      "sending": "",
+      "sent": ""
     },
     "statsPanel": {
       "health": "生命值",
+      "healthLabel": "",
+      "healthValue": "",
       "food": "飽食度",
-      "saturation": "飽和度",
+      "foodLabel": "",
+      "foodValue": "",
       "experience": "經驗值",
-      "level": "等級",
-      "toNextLevel": "距下個等級",
-      "gameMode": "遊戲模式",
+      "levelShort": "",
       "survival": "生存",
       "creative": "創造",
       "adventure": "冒險",
       "spectator": "旁觀",
-      "unknown": "未知",
-      "offline": "機器人已中斷連線。只有連線時才能查看統計數據。"
+      "unknown": "未知"
     },
     "inventoryPanel": {
       "title": "物品欄",
       "actionRejected": "",
-      "hotbar": "快捷欄",
-      "main": "主背包",
-      "items": "物品",
+      "actionError": "",
+      "output": "",
+      "slotInfo": {
+        "slot": "",
+        "item": "",
+        "region": "",
+        "hotbar": ""
+      },
       "carrying": "攜帶中",
-      "dropOne": "丟棄一個",
-      "dropAll": "全部丟棄",
+      "dropOne": "",
+      "dropAll": "",
       "closeContainer": "關閉",
-      "clickHint": "左鍵：拿取/放置 | 右鍵：一半/一個 | Shift+點擊：快速移動 | 滾輪鍵：選擇快捷欄欄位",
-      "offline": "機器人已中斷連線。只有連線時才能使用背包。",
+      "clickHint": "",
+      "offline": "",
+      "waiting": "",
+      "demo": "",
+      "heldSlot": "",
+      "holdSlot": "",
       "buttons": {
         "stonecutterRecipes": "配方",
         "enchantments": "附魔",
         "patterns": "圖樣",
         "trades": "交易",
-        "beaconEffects": "燈塔效果",
-        "crafterSlots": "格控",
-        "lecternControls": "書本控制",
+        "beaconEffects": "",
+        "crafterSlots": "",
+        "lecternControls": "",
         "actions": "動作",
-        "creativeTabs": "創造模式分頁"
+        "creativeTabs": ""
       },
       "textInput": {
-        "title": "文字輸入",
-        "anvilRename": "重新命名物品",
-        "creativeSearch": "搜尋物品"
+        "title": "",
+        "anvilRename": "",
+        "creativeSearch": ""
       },
       "bookPages": {
-        "title": "書本內容",
+        "title": "",
         "emptyPage": "（空白頁）",
         "previousPage": "",
         "nextPage": "",
@@ -527,105 +491,200 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": "銷毀物品",
-      "clickHints": {
-        "left": "左鍵：拿起或放下",
-        "right": "右鍵：拿起一半或放下一個",
-        "shift": "Shift+點擊：快速移動",
-        "middle": "中鍵：選為目前欄位"
-      }
+      "destroyItem": "",
+      "emptySlot": "",
+      "clickMode": {
+        "label": "",
+        "left": "",
+        "right": "",
+        "shift": "",
+        "middle": ""
+      },
+      "keyboardHint": "",
+      "stack_other": "",
+      "itemCount_other": ""
     },
     "visualPanel": {
-      "title": "方向和世界",
-      "compass": "朝向",
-      "lookDirection": "視角",
+      "title": "",
+      "compass": "",
+      "lookDirection": "",
       "lookingUp": "向上看",
       "lookingDown": "向下看",
       "lookingStraight": "平視",
-      "worldInfo": "世界資訊",
+      "directions": {
+        "n": "",
+        "ne": "",
+        "e": "",
+        "se": "",
+        "s": "",
+        "sw": "",
+        "w": "",
+        "nw": ""
+      },
+      "dimensions": {
+        "overworld": "",
+        "the_nether": "",
+        "the_end": ""
+      },
+      "worldInfo": "",
       "dimension": "維度",
-      "biome": "生物群系",
-      "offline": "機器人已中斷連線。只有連線時才能查看視覺資料。"
+      "offline": ""
     },
     "actionsPanel": {
-      "title": "機器人動作",
-      "leftClick": "左鍵點擊",
-      "rightClick": "右鍵點擊",
+      "title": "",
+      "leftClick": "",
+      "rightClick": "",
       "leftClickDescription": "攻擊實體或破壞方塊",
       "rightClickDescription": "使用物品或互動",
-      "offline": "機器人已中斷連線。只有當機器人連線時才能操作。"
+      "clickError": "",
+      "offline": ""
     },
     "movementPanel": {
       "updateServer": "",
-      "title": "移動控制",
+      "movementError": "",
+      "rotationError": "",
+      "title": "",
       "movement": "移動（WASD）",
-      "forward": "前進（W）",
-      "backward": "後退（S）",
-      "left": "左平移（A）",
-      "right": "右平移（D）",
+      "forward": "",
+      "backward": "",
+      "left": "",
+      "right": "",
       "jump": "跳躍",
       "sneak": "潛行",
       "sprint": "疾跑",
       "stop": "停止",
-      "rotation": "視角方向",
-      "lookUp": "向上看",
-      "lookDown": "向下看",
-      "lookLeft": "向左看",
-      "lookRight": "向右看",
-      "offline": "機器人已中斷連線。只有當機器人連線時才能移動。"
+      "rotation": "",
+      "lookUp": "",
+      "lookDown": "",
+      "lookLeft": "",
+      "lookRight": "",
+      "offline": "",
+      "modifiers": ""
     },
     "dialogPanel": {
-      "title": "伺服器對話框",
+      "title": "",
       "noDialog": "目前沒有顯示伺服器對話框。",
-      "dialogType": "類型",
       "dialogId": "對話框 ID",
       "notice": "通知",
       "confirmation": "確認",
-      "multiAction": "多重操作",
-      "serverLinks": "伺服器連結",
-      "dialogList": "對話框列表",
+      "multiAction": "",
+      "serverLinks": "",
+      "dialogList": "",
       "unknownType": "未知",
+      "submitError": "",
       "dismiss": "關閉",
       "submit": "提交",
-      "offline": "機器人已中斷連線。只有當機器人連線時才能顯示對話框。"
+      "offline": ""
+    },
+    "filterLabel": "",
+    "filterAll": "全部",
+    "noBotsInState": "",
+    "displayState": {
+      "connected": "已連線",
+      "starting": "正在啟動",
+      "retrying": "正在重試",
+      "failed": "失敗了",
+      "stopping": "正在停止",
+      "stopped": "已停止"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
     },
     "pov": {
-      "title": "機器人視角",
-      "touchControlling": "你正在控制這個機器人。使用「Release control」即可停止。",
-      "popupBlocked": "請允許彈出式視窗，以便分離機器人視角視窗。",
-      "windowTitle": "SoulFire 機器人視角",
-      "fullscreenUnavailable": "此視窗無法使用全螢幕。",
-      "textInputLabel": "Minecraft 文字輸入",
-      "videoLabel": "即時機器人視角",
-      "touchMove": "移動",
-      "audioError": "無法啟動音訊。",
-      "startError": "無法啟動機器人視角。",
-      "releaseHint": "按 {{shortcut}} 釋放鍵盤和滑鼠。",
-      "captureHint": "點擊視角並允許擷取鍵盤和滑鼠。",
-      "audioWaiting": "正在等待機器人視角連線。",
-      "audioWatchFirst": "觀看機器人後才能使用音訊。",
-      "audioUpdateServer": "更新伺服器後才能使用機器人視角音訊。",
-      "muteAudio": "將音訊靜音",
-      "unmuteAudio": "取消音訊靜音",
-      "audioStarting": "正在啟動音訊...",
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "reconnecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": "",
+      "popupBlocked": "",
+      "windowTitle": "",
+      "fullscreenUnavailable": "",
+      "textInputLabel": "",
+      "videoLabel": "",
+      "touchMove": "",
+      "audioError": "",
+      "startError": "",
+      "releaseHint": "",
+      "captureHint": "",
+      "capturing": "",
+      "captureCooldown": "",
+      "captureTimeout": "",
+      "audioWaiting": "",
+      "audioWatchFirst": "",
+      "audioUpdateServer": "",
+      "muteAudio": "",
+      "unmuteAudio": "",
+      "audioStarting": "",
       "mute": "靜音",
       "unmute": "取消靜音",
-      "audio": "音訊",
-      "audioUnavailable": "無法使用音訊",
-      "volume": "機器人視角音量",
-      "reconnect": "重新連線",
-      "showWindow": "顯示機器人視角視窗",
-      "attachWindow": "重新附加機器人視角視窗",
+      "audio": "",
+      "audioUnavailable": "",
+      "volume": "",
+      "reconnect": "",
+      "showWindow": "",
+      "attachWindow": "",
       "touch": {
         "jump": "跳躍",
         "sneak": "潛行",
-        "attack": "攻擊",
-        "use": "使用",
+        "attack": "",
+        "use": "",
         "inventory": "物品欄",
-        "keyboard": "鍵盤",
-        "closeMenu": "關閉選單"
+        "keyboard": "",
+        "closeMenu": ""
       },
-      "needsServer": "機器人視角需要已連線的 SoulFire 伺服器。"
+      "needsServer": "",
+      "connectTimeout": "",
+      "reconnectFailed": "",
+      "inputUpdateServer": "",
+      "inputUnavailable": "",
+      "decoderUnsupported": "",
+      "videoUnsupportedBrowser": "",
+      "audioUnsupportedBrowser": "",
+      "audioDecodeUnsupported": "",
+      "audioBlocked": "",
+      "audioInvalidFrame": "",
+      "streamMetrics": {
+        "title": "",
+        "waitingForVideo": "",
+        "unknown": "",
+        "fps": "",
+        "video": "",
+        "target": "",
+        "decoder": "",
+        "decoderWaitingForKey": "",
+        "keyframes": ""
+      },
+      "step": {
+        "online": "",
+        "queued": "",
+        "starting": "",
+        "joining": "",
+        "retrying": "",
+        "failed": "",
+        "stopping": "",
+        "stopped": ""
+      }
     }
   },
   "metrics": {
@@ -633,21 +692,8 @@
       "noData": "無數據"
     },
     "summary": {
-      "online": "已連線",
-      "packetsPerSecond": "封包/秒",
       "traffic": "流量",
-      "health": "生命值",
       "tick": "Tick"
-    },
-    "botsOnline": {
-      "title": "已連線的機器人",
-      "online": "已連線",
-      "total": "總計"
-    },
-    "packets": {
-      "title": "封包 / 秒",
-      "sent": "發送/秒",
-      "received": "接收/秒"
     },
     "bandwidth": {
       "title": "頻寬",
@@ -655,88 +701,76 @@
       "download": "下載"
     },
     "tick": {
-      "title": "Tick 持續時間",
+      "title": "",
       "avg": "平均（毫秒）",
       "max": "最大（毫秒）"
     },
-    "healthFood": {
-      "title": "生命值 / 飲食",
-      "health": "平均生命值",
-      "food": "平均飲食值"
-    },
-    "chunksEntities": {
-      "title": "區塊 / 實體",
-      "chunks": "區塊",
-      "entities": "實體"
-    },
-    "connections": {
-      "title": "連線事件",
-      "connections": "連線數",
-      "disconnections": "斷線數"
-    },
-    "healthDistribution": {
-      "title": "生命值分布",
-      "bots": "機器人群組/機器人列表/機器人"
-    },
     "dimensions": {
-      "title": "維度",
-      "bots": "機器人群組/機器人列表/機器人"
+      "title": "維度"
     },
     "gameModes": {
-      "title": "遊戲模式",
-      "bots": "機器人群組/機器人列表/機器人"
+      "title": ""
     },
     "positions": {
-      "title": "機器人位置 (XZ)",
+      "title": "",
       "bot": "機器人"
     }
   },
   "scripts": {
-    "title": "視覺腳本",
-    "description": "使用可視化節點編輯器建立自動化腳本。",
-    "experimentalTitle": "實驗性功能",
-    "experimentalWarning": "此功能為實驗性質。未來的更新可能會導致現有腳本無法運作，請小心使用。",
-    "createScript": "建立腳本",
-    "createScriptTitle": "建立新腳本",
-    "createScriptDescription": "為此實例建立新的視覺腳本。腳本可自動化機器人行為並回應事件。",
-    "scriptName": "腳本名稱",
+    "title": "",
+    "description": "",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
+    "scriptName": "",
     "scriptNamePlaceholder": "輸入腳本名稱...",
     "scriptDescription": "描述",
     "scriptDescriptionPlaceholder": "描述此腳本的功能...",
     "create": "建立",
-    "createSuccess": "腳本建立成功",
-    "createError": "腳本建立失敗",
-    "noScripts": "尚無腳本",
-    "noScriptsDescription": "建立您的第一個腳本，透過可視化節點編輯器自動化機器人動作。",
-    "createFirstScript": "建立腳本",
-    "running": "執行中",
-    "paused": "已暫停",
-    "nodes": "節點",
+    "createSuccess": "",
+    "createError": "",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "running": "",
+    "paused": "",
     "noDescription": "無描述",
+    "edited": "",
+    "searchPlaceholder": "",
+    "filterLabel": "",
+    "filter": {
+      "all": "全部",
+      "on": "",
+      "off": ""
+    },
+    "sort": {
+      "label": "",
+      "edited": "",
+      "name": "名稱"
+    },
+    "noMatches": "",
     "edit": "編輯",
-    "pause": "暫停",
-    "pauseSuccess": "指令碼已暫停",
-    "pauseError": "暫停指令碼失敗",
-    "resume": "繼續",
-    "resumeSuccess": "指令碼已恢復運行",
-    "resumeError": "恢復指令碼失敗",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "刪除",
-    "deleteSuccess": "腳本刪除成功",
-    "deleteError": "腳本刪除失敗",
-    "saveSuccess": "腳本儲存成功",
-    "saveError": "腳本儲存失敗",
-    "activateSuccess": "指令碼已啟用",
-    "activateError": "啟用指令碼失敗",
-    "deactivateSuccess": "指令碼已停用",
-    "untitledScript": "未命名腳本",
-    "saveFirstBeforeActivating": "請先儲存指令碼再啟用",
-    "activating": "正在啟用腳本...",
-    "activated": "指令碼已啟用",
+    "deleteSuccess": "",
+    "deleteError": "",
+    "saveSuccess": "",
+    "saveError": "",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
+    "untitledScript": "",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "腳本完成",
-    "executionCompletedSuccess": "腳本順利完成",
-    "deactivated": "指令碼已停用",
-    "deactivatedByUser": "腳本已由使用者停用",
-    "executionFailed": "腳本執行失敗",
+    "executionCompletedSuccess": "腳本完成",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionError": "執行錯誤：{{error}}",
     "monitoringError": "",
     "monitoringDisconnected": "",
@@ -744,106 +778,127 @@
     "nodeCompleted": "節點完成：{{nodeId}}",
     "nodeError": "節點錯誤：{{error}}",
     "contextMenu": {
-      "edit": "編輯腳本",
-      "pause": "暫停",
-      "resume": "繼續",
-      "delete": "刪除腳本",
-      "copyScriptName": "複製腳本名稱",
-      "copyScriptId": "複製腳本 ID"
+      "edit": "",
+      "pause": "",
+      "resume": "",
+      "delete": "",
+      "copyScriptName": "",
+      "copyScriptId": ""
     },
     "editor": {
       "toolbar": {
         "actions": "",
-        "backToScripts": "返回腳本",
+        "backToScripts": "",
         "save": "儲存",
-        "saveTooltip": "儲存腳本",
-        "resume": "繼續",
-        "resumeTooltip": "恢復執行指令碼",
-        "pause": "暫停",
-        "pauseTooltip": "暫停腳本執行",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "未儲存",
         "unsavedChanges": "尚未儲存變更",
-        "clearCanvas": "清除畫布",
-        "zoomIn": "放大",
-        "zoomOut": "縮小",
-        "fit": "適合",
         "export": "匯出腳本",
         "import": "導入腳本",
-        "exportSuccess": "腳本匯出成功",
-        "importSuccess": "腳本導入成功",
-        "importError": "導入腳本失敗"
+        "exportSuccess": "",
+        "importSuccess": "",
+        "importError": "",
+        "resumeBlocked": "",
+        "undo": "",
+        "redo": "",
+        "resumeSaveFirst": "",
+        "scriptName": ""
       },
       "palette": {
-        "title": "節點面板",
+        "title": "",
         "search": "搜尋節點...",
-        "noResults": "沒有符合搜尋的節點",
-        "noResultsDescription": "換一個詞試試，或清除目前的篩選。"
+        "noResults": "",
+        "noResultsDescription": ""
       },
       "logs": {
-        "title": "執行紀錄",
+        "title": "",
         "clearTitle": "清除紀錄",
-        "noLogs": "尚無紀錄。執行腳本以查看執行紀錄。",
+        "noLogs": "",
+        "levels": {
+          "debug": "",
+          "info": "",
+          "warn": "",
+          "error": "錯誤"
+        },
         "entries_other": "{{count}} 筆紀錄"
       },
       "contextMenu": {
         "duplicate": "複製",
         "rename": "重新命名",
-        "disconnectAll": "全部斷開連線",
+        "disconnectAll": "",
         "collapse": "收合",
         "expand": "展開",
         "mute": "靜音",
         "unmute": "取消靜音",
-        "showPreview": "顯示預覽",
-        "hidePreview": "隱藏預覽",
+        "showPreview": "",
+        "hidePreview": "",
+        "openGroup": "",
+        "ungroup": "",
         "delete": "刪除"
+      },
+      "connection": {
+        "self": "",
+        "execution": "",
+        "type": ""
       },
       "node": {
         "expand": "展開節點",
         "collapse": "收合節點",
-        "avgTime": "平均執行時間：{{avg}} ms（最近 {{count}} 次執行）",
-        "preview": "預覽"
+        "avgTimeBadge": "",
+        "preview": "",
+        "muted": "",
+        "avgDuration_other": ""
       },
       "debug": {
         "copyValue": "複製目前值",
         "clearHistory": "清除歷史紀錄",
-        "current": "目前（{{time}}）：",
-        "noValue": "尚未收到值"
+        "current": "",
+        "noValue": "",
+        "input": "",
+        "output": "",
+        "history_other": ""
       },
       "edge": {
         "direction": "邊緣方向"
       },
       "note": {
-        "placeholder": "寫個註記..."
+        "placeholder": "寫個註記...",
+        "contentLabel": ""
       },
       "complexity": {
         "title": "腳本複雜度評分"
       },
       "group": {
         "returnToRoot": "返回根目錄 (Tab)",
-        "root": "根",
-        "exitHint": "按 <key>Tab</key> 離開",
-        "editHint": "按兩下即可編輯",
-        "noInputs": "未定義輸入",
-        "noOutputs": "未定義輸出"
+        "root": "",
+        "defaultLabel": "",
+        "exitHint": "",
+        "editHint": "",
+        "noInputs": "",
+        "noOutputs": ""
       },
       "quickAdd": {
         "menuLabel": "快速新增節點選單",
         "searchPlaceholder": "搜尋節點...",
-        "noResults": "找不到節點",
-        "noResultsDescription": "換一個搜尋詞試試。",
-        "navigate": "瀏覽",
-        "select": "Enter 選擇",
-        "close": "Esc 關閉"
+        "noResults": "",
+        "noResultsDescription": "請嘗試其他搜尋詞。",
+        "navigate": "",
+        "select": "",
+        "close": ""
       },
       "diff": {
         "tooltip": "檢視變更",
-        "title": "未儲存的變更",
-        "description": "自上次儲存以來的變更。",
-        "nodesAdded_other": "新增 {{count}} 個節點",
-        "nodesRemoved_other": "移除 {{count}} 個節點",
-        "nodesModified_other": "修改 {{count}} 個節點",
-        "edgesAdded_other": "新增 {{count}} 條連線",
-        "edgesRemoved_other": "移除 {{count}} 條連線"
+        "title": "尚未儲存變更",
+        "description": "",
+        "nodesAdded_other": "",
+        "nodesRemoved_other": "",
+        "nodesModified_other": "",
+        "edgesAdded_other": "",
+        "edgesRemoved_other": ""
       },
       "dryRun": {
         "saveFirst": "",
@@ -856,54 +911,664 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "模擬運行",
-        "title": "模擬運行腳本",
-        "description": "以模擬輸入從已選觸發器運行腳本。",
-        "triggerNode": "觸發節點",
+        "tooltip": "",
+        "title": "",
+        "description": "",
+        "triggerNode": "",
         "selectTrigger": "選擇觸發器...",
-        "triggerDescription": "選擇要以模擬輸入值執行的觸發節點。",
-        "mockInputs": "模擬輸入",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "{{type}}值",
-        "start": "開始模擬運行",
+        "start": "",
+        "button": "",
         "stats_other": ""
       },
       "quotas": {
-        "tooltip": "腳本額度",
-        "title": "腳本額度",
+        "tooltip": "",
+        "title": "",
         "description": "為此腳本配置資源限制。空欄將使用伺服器預設值。",
-        "maxExecutionCount": "最大執行次數",
+        "maxExecutionCount": "",
         "maxExecutionCountPlaceholder": "100000",
-        "maxExecutionCountDescription": "每次觸發調用的最大節點執行次數",
-        "maxExecutionTime": "最大執行時間（毫秒）",
+        "maxExecutionCountDescription": "",
+        "maxExecutionTime": "",
         "maxExecutionTimePlaceholder": "30000",
-        "maxExecutionTimeDescription": "每次觸發執行的最長時鐘時間",
-        "maxConcurrentTriggers": "最大同時觸發數",
+        "maxExecutionTimeDescription": "",
+        "maxConcurrentTriggers": "",
         "maxConcurrentTriggersPlaceholder": "1",
-        "maxConcurrentTriggersDescription": "最大同時觸發次數",
-        "maxStateStoreEntries": "最大狀態存儲項目數",
+        "maxConcurrentTriggersDescription": "",
+        "maxStateStoreEntries": "",
         "maxStateStoreEntriesPlaceholder": "無限制",
-        "maxStateStoreEntriesDescription": "腳本狀態存儲中的最大項目數",
-        "disableTimeouts": "停用逾時",
-        "disableTimeoutsDescription": "停用每節點及資料邊緣的逾時",
-        "save": "儲存額度",
+        "maxStateStoreEntriesDescription": "",
+        "disableTimeouts": "",
+        "disableTimeoutsDescription": "",
+        "save": "",
         "invalidInteger": ""
       },
       "multiInput": {
-        "reorder": "調整 {{label}} 的順序",
-        "empty": "沒有傳入的值",
-        "title": "多重輸入：可接受多個連線",
-        "connectTo": "將值連接到 {{label}}"
+        "reorder": "",
+        "empty": "",
+        "title": "",
+        "connectTo": ""
+      },
+      "shortcuts": {
+        "title": "",
+        "description": "",
+        "mouse": {
+          "drag": "",
+          "rightClick": ""
+        },
+        "actions": {
+          "quickAdd": "",
+          "quickAddAtCursor": "",
+          "selectAll": "",
+          "deselectAll": "",
+          "selectLinked": "",
+          "selectUpstream": "",
+          "selectDownstream": "",
+          "selectSimilar": "",
+          "duplicate": "",
+          "copy": "",
+          "paste": "",
+          "delete": "",
+          "rename": "",
+          "mute": "",
+          "collapse": "",
+          "hideSockets": "",
+          "preview": "",
+          "group": "",
+          "ungroup": "",
+          "enterGroup": "",
+          "frame": "",
+          "align": "",
+          "distribute": "",
+          "cutLinks": "",
+          "reroute": "",
+          "undo": "",
+          "redo": ""
+        }
+      },
+      "unsavedDialog": {
+        "title": "",
+        "description": "",
+        "stay": "",
+        "leave": ""
+      },
+      "layoutNodes": {
+        "category": {
+          "name": "",
+          "description": ""
+        },
+        "reroute": {
+          "label": "",
+          "description": ""
+        },
+        "frame": {
+          "label": "",
+          "description": ""
+        },
+        "group": {
+          "label": "",
+          "description": ""
+        },
+        "groupInput": {
+          "label": "",
+          "description": ""
+        },
+        "groupOutput": {
+          "label": "",
+          "description": ""
+        },
+        "debug": {
+          "label": "",
+          "description": ""
+        },
+        "note": {
+          "label": "",
+          "description": ""
+        }
+      }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_other": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
       }
     },
     "deleteDialog": {
-      "title": "要刪除腳本嗎？",
-      "description": "這會永久刪除「{{name}}」。此操作無法復原。",
-      "descriptionUnnamed": "這會永久刪除該腳本。此操作無法復原。"
+      "title": "",
+      "description": "",
+      "descriptionUnnamed": ""
     },
-    "executionStats": "執行統計：已執行 {{executed}}/{{max}} 個節點"
+    "executionStats": "",
+    "nodes_other": ""
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "動作",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "連接",
+    "back": "返回",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "全部",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "連接",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "總計",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "無",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_other": "",
+      "purchase_other": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "backupTitle": "",
+      "backupDescription": "",
+      "purchase_other": "",
+      "importing_other": "",
+      "copyCredentials_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_other": "",
+    "inStock_other": "",
+    "previewMore_other": "",
+    "preview_other": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_other": "",
+      "allConnected_other": "",
+      "partial_other": "",
+      "connecting_other": ""
+    },
+    "state": {
+      "connected": "已連線",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_other": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "onlineAuth": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "blocked": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_other": "重新啟動 {{count}} 個機器人",
+    "restartRequested_other": "",
+    "namesMore_other": "",
+    "connectingHint_other": ""
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "可選",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "打開所有設定頁面。 ",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "帳號",
+      "reviewProxies": "代理伺服器",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "addAccounts": "",
+      "error": "",
+      "noneStarted": "",
+      "action_other": "啟動 {{count}} 個機器人",
+      "countLimit_other": "",
+      "countInvalid_other": ""
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

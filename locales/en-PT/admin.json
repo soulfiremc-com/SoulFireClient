@@ -1,80 +1,71 @@
 {
   "overview": {
-    "welcome": "Ahoy, {{name}}, ye be back! 🧙",
     "serverMetrics": {
-      "sectionTitle": "Server metrics",
+      "sectionTitle": "",
       "summary": {
         "cpu": "CPU",
-        "heapUsed": "Heap Plundered",
+        "heapUsed": "",
         "threads": "Threads",
-        "botsOnline": "Crew aboard",
+        "botsOnline": "",
         "uptime": "Uptime"
       },
       "cpuUsage": {
-        "title": "CPU usage (%)"
+        "title": ""
       },
       "memoryUsage": {
-        "title": "Heap memory (MB)"
+        "title": ""
       },
       "threadCount": {
-        "title": "Thread count"
+        "title": ""
       },
       "aggregateBots": {
-        "title": "Crew aboard (all fleets)"
+        "title": ""
       },
       "legend": {
-        "process": "Process",
-        "system": "System",
-        "used": "Used",
-        "committed": "Committed",
-        "max": "Max",
-        "total": "Total",
-        "daemon": "Daemon",
-        "online": "Aboard"
-      }
+        "process": "",
+        "system": "Ship's Wheel",
+        "used": "",
+        "committed": "",
+        "max": "",
+        "total": "All Hands On Deck",
+        "daemon": "",
+        "online": "Tied to the mast"
+      },
+      "collecting": ""
     },
-    "instancesChart": {
-      "title": "Total booty o' instances on this ship",
-      "instances": "Fleets",
-      "label": {
-        "state": "State o' affairs",
-        "active": "Active n' sailin'",
-        "stopped": "Ship at rest",
-        "other": "The rest o' 'em"
-      }
-    },
-    "usersChart": {
-      "title": "Total crew aboard this ship",
+    "stats": {
       "users": "Crewmates",
-      "label": {
-        "role": "Rank",
-        "user": "Buccaneer",
-        "admin": "Admiral",
-        "other": "The rest o' 'em"
-      }
+      "projects": "",
+      "admins_one": "",
+      "admins_other": "",
+      "active_one": "",
+      "active_other": ""
     }
   },
   "users": {
-    "filterPlaceholder": "Be searchin' fer crew...",
+    "noPermission": {
+      "title": "",
+      "description": ""
+    },
     "baseUserDialog": {
       "form": {
         "username": {
-          "min": "Crew names be at least 3 marks long",
-          "max": "Crew names be at most 32 marks long",
-          "regex": "Crew names be lowercase, start with a shipshape mark, sail on with more shipshape marks or dashes, and end with a shipshape mark.",
+          "min": "",
+          "max": "",
+          "regex": "",
           "label": "Name o' the Mate",
           "placeholder": "Type in crew name",
-          "description": "A unique moniker for the matey"
+          "description": ""
         },
         "email": {
           "label": "Parrot mail",
           "placeholder": "Type in the sea-mail",
-          "description": "The matey's sea-mail used fer messages an' boardin'"
+          "description": ""
         },
         "role": {
           "label": "Rank",
           "placeholder": "Pick a role, matey!",
-          "description": "The matey rank. Cap'ns may command all, swabs tend only their own ships.",
+          "description": "",
           "user": "Buccaneer",
           "admin": "Admiral"
         }
@@ -82,71 +73,80 @@
     },
     "addUserDialog": {
       "title": "Add a fresh crew matey",
-      "description": "Add a new matey to this ship",
+      "description": "",
       "form": {
         "cancel": "Lower anchor",
-        "add": "Add Matey"
+        "add": ""
       }
     },
     "updateUserDialog": {
-      "title": "Give a matey an update",
-      "description": "Change the matey's info",
+      "title": "",
+      "description": "",
       "form": {
         "cancel": "Lower anchor",
-        "update": "Update Matey"
+        "update": ""
       }
     },
     "profileConflict": "",
     "addToast": {
       "loading": "Addin' matey...",
-      "success": "Matey be added!",
-      "error": "Couldn't bring aboard matey"
+      "success": "",
+      "error": ""
     },
     "updateToast": {
       "loading": "Update in progress...",
-      "success": "Matey spruced up!",
-      "error": "Couldn't update matey"
+      "success": "",
+      "error": ""
     },
     "removeToast": {
       "loading": "Castin' off mateys...",
-      "success": "Cast off mateys from the crew!",
-      "error": "Failed t' cast off crew"
+      "partial": "",
+      "success_one": "",
+      "success_other": "",
+      "error_one": "",
+      "error_other": ""
     },
     "invalidateToast": {
-      "loading": "Loggin' out crew...",
-      "success": "Crew be logged out!",
-      "error": "Couldn't log out crew"
+      "loading": "",
+      "partial": "",
+      "success_one": "",
+      "success_other": "",
+      "error_one": "",
+      "error_other": ""
+    },
+    "impersonateToast": {
+      "error": ""
     },
     "table": {
       "username": "Name o' the Mate",
       "email": "Parrot mail",
       "role": "Rank",
       "createdAt": "Set afloat",
-      "minIssuedAt": "Sessions good since",
+      "minIssuedAt": "",
       "actions": "Duties",
       "searchUsernames": "Seek crew names...",
       "searchEmails": "Seek sea-mails...",
       "searchCreatedAts": "Be huntin' fer creation dates...",
-      "searchMinIssuedAts": "Search session dates..."
+      "searchMinIssuedAts": ""
     },
     "removeSelectedTooltip": "Send selected crew off the plank",
-    "logOutSelectedTooltip": "Make selected crew disembark",
+    "logOutSelectedTooltip": "",
     "contextMenu": {
-      "editUser": "Edit Matey",
+      "editUser": "",
       "impersonate": "Sail in another matey's boots",
-      "copyUserId": "Copy Matey ID"
+      "copyUserId": ""
     },
     "removeDialog": {
-      "title_one": "Make {{count}} scallywag walk the plank?",
-      "title_other": "Make {{count}} scallywags walk the plank?",
-      "description": "This sends the chosen scallywags an' their access to Davy Jones fer good. Ye cannot undo this.",
-      "confirm": "Walk the plank"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     },
     "invalidateDialog": {
-      "title_one": "Send {{count}} scallywag ashore?",
-      "title_other": "Send {{count}} scallywags ashore?",
-      "description": "This ends every session an' token o' the chosen scallywags. They must sign aboard again.",
-      "confirm": "Send these scallywags ashore"
+      "description": "",
+      "confirm": "",
+      "title_one": "",
+      "title_other": ""
     }
   }
 }

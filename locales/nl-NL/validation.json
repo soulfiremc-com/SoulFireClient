@@ -1,39 +1,42 @@
 {
   "string": {
-    "undefined": "Voer een waarde in.",
-    "null": "Voer een waarde in.",
-    "number": "Voer een waarde in.",
-    "boolean": "Voer een waarde in.",
-    "array": "Voer een waarde in.",
-    "object": "Voer een waarde in.",
-    "nan": "Voer een waarde in.",
-    "infinity": "Voer een waarde in."
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "number": {
-    "undefined": "Voer een getal in.",
-    "null": "Voer een getal in.",
-    "string": "Voer een getal in.",
-    "boolean": "Voer een getal in.",
-    "array": "Voer een getal in.",
-    "object": "Voer een getal in.",
-    "nan": "Voer een getal in.",
-    "infinity": "Voer een getal in."
+    "undefined": "",
+    "null": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "object": {
-    "undefined": "Voer een geldige waarde in.",
-    "null": "Voer een geldige waarde in.",
-    "number": "Voer een geldige waarde in.",
-    "string": "Voer een geldige waarde in.",
-    "boolean": "Voer een geldige waarde in.",
-    "array": "Voer een geldige waarde in.",
-    "nan": "Voer een geldige waarde in.",
-    "infinity": "Voer een geldige waarde in."
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "nan": "",
+    "infinity": ""
   },
-  "email": "Voer een geldig e-mailadres in.",
-  "url": "Voer een geldige URL in.",
-  "jwt": "Voer een geldig token in.",
-  "emailTooLong": "Gebruik maximaal 255 tekens.",
-  "jarSource": "Kies de officiële server of een aangepaste jar.",
-  "generationMode": "Kies hoe bestaande accounts worden behandeld.",
-  "userRole": "Kies een rol."
+  "email": "",
+  "url": "",
+  "jwt": "",
+  "emailTooLong": "",
+  "generationMode": "",
+  "userRole": "",
+  "serverUrl": "",
+  "pattern": "",
+  "minLength_one": "",
+  "minLength_other": ""
 }

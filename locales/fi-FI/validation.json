@@ -1,39 +1,42 @@
 {
   "string": {
-    "undefined": "Anna arvo.",
-    "null": "Anna arvo.",
-    "number": "Anna arvo.",
-    "boolean": "Anna arvo.",
-    "array": "Anna arvo.",
-    "object": "Anna arvo.",
-    "nan": "Anna arvo.",
-    "infinity": "Anna arvo."
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "number": {
-    "undefined": "Anna numero.",
-    "null": "Anna numero.",
-    "string": "Anna numero.",
-    "boolean": "Anna numero.",
-    "array": "Anna numero.",
-    "object": "Anna numero.",
-    "nan": "Anna numero.",
-    "infinity": "Anna numero."
+    "undefined": "",
+    "null": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "object": {
-    "undefined": "Anna kelvollinen arvo.",
-    "null": "Anna kelvollinen arvo.",
-    "number": "Anna kelvollinen arvo.",
-    "string": "Anna kelvollinen arvo.",
-    "boolean": "Anna kelvollinen arvo.",
-    "array": "Anna kelvollinen arvo.",
-    "nan": "Anna kelvollinen arvo.",
-    "infinity": "Anna kelvollinen arvo."
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "nan": "",
+    "infinity": ""
   },
-  "email": "Anna kelvollinen sähköpostiosoite.",
-  "url": "Anna kelvollinen URL-osoite.",
-  "jwt": "Anna kelvollinen token.",
-  "emailTooLong": "Käytä enintään 255 merkkiä.",
-  "jarSource": "Valitse virallinen palvelin tai mukautettu jar.",
-  "generationMode": "Valitse, miten olemassa olevia tilejä käsitellään.",
-  "userRole": "Valitse rooli."
+  "email": "",
+  "url": "",
+  "jwt": "",
+  "emailTooLong": "",
+  "generationMode": "",
+  "userRole": "",
+  "serverUrl": "",
+  "pattern": "",
+  "minLength_one": "",
+  "minLength_other": ""
 }

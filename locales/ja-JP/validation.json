@@ -1,39 +1,41 @@
 {
   "string": {
-    "undefined": "値を入力してください。",
-    "null": "値を入力してください。",
-    "number": "値を入力してください。",
-    "boolean": "値を入力してください。",
-    "array": "値を入力してください。",
-    "object": "値を入力してください。",
-    "nan": "値を入力してください。",
-    "infinity": "値を入力してください。"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "number": {
-    "undefined": "数値を入力してください。",
-    "null": "数値を入力してください。",
-    "string": "数値を入力してください。",
-    "boolean": "数値を入力してください。",
-    "array": "数値を入力してください。",
-    "object": "数値を入力してください。",
-    "nan": "数値を入力してください。",
-    "infinity": "数値を入力してください。"
+    "undefined": "",
+    "null": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "object": {
-    "undefined": "有効な値を入力してください。",
-    "null": "有効な値を入力してください。",
-    "number": "有効な値を入力してください。",
-    "string": "有効な値を入力してください。",
-    "boolean": "有効な値を入力してください。",
-    "array": "有効な値を入力してください。",
-    "nan": "有効な値を入力してください。",
-    "infinity": "有効な値を入力してください。"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "nan": "",
+    "infinity": ""
   },
-  "email": "有効なメールアドレスを入力してください。",
-  "url": "有効な URL を入力してください。",
-  "jwt": "有効なトークンを入力してください。",
-  "emailTooLong": "255 文字以内で入力してください。",
-  "jarSource": "公式サーバーかカスタム jar を選択してください。",
-  "generationMode": "既存のアカウントの扱い方を選択してください。",
-  "userRole": "ロールを選択してください。"
+  "email": "",
+  "url": "",
+  "jwt": "",
+  "emailTooLong": "",
+  "generationMode": "",
+  "userRole": "",
+  "serverUrl": "",
+  "pattern": "",
+  "minLength_other": ""
 }

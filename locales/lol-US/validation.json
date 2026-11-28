@@ -1,39 +1,42 @@
 {
   "string": {
-    "undefined": "Enter a valu.",
-    "null": "Enter a valu.",
-    "number": "Enter a valu.",
-    "boolean": "Enter a valu.",
-    "array": "Enter a valu.",
-    "object": "Enter a valu.",
-    "nan": "Enter a valu.",
-    "infinity": "Enter a valu."
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "number": {
-    "undefined": "Enter a numbr.",
-    "null": "Enter a numbr.",
-    "string": "Enter a numbr.",
-    "boolean": "Enter a numbr.",
-    "array": "Enter a numbr.",
-    "object": "Enter a numbr.",
-    "nan": "Enter a numbr.",
-    "infinity": "Enter a numbr."
+    "undefined": "",
+    "null": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "object": {
-    "undefined": "Enter a valid valu.",
-    "null": "Enter a valid valu.",
-    "number": "Enter a valid valu.",
-    "string": "Enter a valid valu.",
-    "boolean": "Enter a valid valu.",
-    "array": "Enter a valid valu.",
-    "nan": "Enter a valid valu.",
-    "infinity": "Enter a valid valu."
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "nan": "",
+    "infinity": ""
   },
-  "email": "Enter a valid email addres.",
-  "url": "Enter a valid URL.",
-  "jwt": "Enter a valid token.",
-  "emailTooLong": "Uze 255 letterz or fewer.",
-  "jarSource": "Pick teh official server or a custom jar.",
-  "generationMode": "Pick how 2 handle existin accountz.",
-  "userRole": "Pick a role."
+  "email": "",
+  "url": "",
+  "jwt": "",
+  "emailTooLong": "",
+  "generationMode": "",
+  "userRole": "",
+  "serverUrl": "",
+  "pattern": "",
+  "minLength_one": "",
+  "minLength_other": ""
 }

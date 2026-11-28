@@ -1,67 +1,19 @@
 {
   "overview": {
-    "logsDescription": "当您需要检查控制台详情时，可以在此查看原始实例输出。",
-    "summary": {
-      "accounts": "账户",
-      "proxies": "代理",
-      "configured": "已配置 {{count}} 个",
-      "configuredShort": "已配置",
-      "currentRate": "当前速率",
-      "imported": "已导入"
-    },
-    "readiness": {
-      "title": "设置",
-      "accounts": "账户",
-      "accountsValue": "{{count}} 个账号已导入，满足 {{requested}} 个所需机器人需求。",
-      "proxies": "代理",
-      "proxiesValue": "已配置 {{count}} 个",
-      "plugins": "插件",
-      "pluginsValue": "{{count}} 个可用"
-    },
-    "activity": {
-      "title": "活动",
-      "tick": "刻",
-      "health": "生命值",
-      "world": "世界",
-      "worldValue": "{{chunks}} 个区块，{{entities}} 个实体",
-      "connections": "连接数",
-      "connectionsValue": "+{{connections}} / -{{disconnections}}",
-      "noDataTitle": "指标",
-      "noDataDescription": "尚无运行时指标。"
-    },
-    "metricsUnavailable": {
-      "title": "指标",
-      "inactive": "启动一个机器人以收集实时指标。",
-      "noPermission": "您没有权限查看机器人指标。"
-    },
-    "status": {
-      "ready": "就绪",
-      "attention": "需要关注",
-      "configured": "已配置",
-      "optional": "可选",
-      "available": "可用",
-      "none": "无"
-    },
-    "actions": {
-      "manage": "管理",
-      "open": "打开"
-    },
-    "spotlight": {
-      "noBots": "尚未配置机器人。",
-      "idle": "空闲，等待指令。",
-      "level": "等级 {{level}}"
-    },
+    "logsDescription": "",
     "liveFeed": {
       "title": "实时推送",
-      "empty": "正在等待实例活动...",
+      "empty": "",
       "noPermission": "您没有权限查看实时推送。",
       "lifecycle": {
         "connecting": "正在连接",
         "connected": "已连接",
         "spawned": "已加入游戏",
         "died": "死亡",
+        "diedWithReason": "",
         "respawned": "已重生",
         "disconnected": "已断开连接",
+        "disconnectedWithReason": "",
         "unknown": "状态已更改"
       },
       "pause": "暂停",
@@ -80,11 +32,11 @@
         "time": "时间",
         "bot": "机器人",
         "message": "消息"
-      }
+      },
+      "botCount_other": ""
     },
     "bots": {
       "title": "机器人",
-      "viewAll": "查看全部 {{total}} 个机器人",
       "viewAllShort": "查看全部",
       "detailsFor": "{{name}} 的机器人详情"
     },
@@ -92,21 +44,19 @@
       "title": "最近操作",
       "viewAll": "查看历史记录",
       "empty": "尚无记录的活动。",
-      "noPermission": "您没有权限查看审计日志。",
       "types": {
         "executeCommand": "执行了命令：{{data}}",
         "botDesiredStateChange": "更改了机器人期望状态",
         "botRestart": "已重启机器人",
+        "pluginRpc": "",
         "unknown": "执行了一个操作"
       }
     },
     "plugins": {
       "title": "插件",
-      "empty": "暂无插件报告统计信息。",
-      "noPermission": "您没有权限查看插件统计信息。",
       "active": "活跃",
-      "activeBots": "{{count}} 个活跃机器人",
-      "uptime": "已运行 {{time}}"
+      "uptime": "已运行 {{time}}",
+      "activeBots_other": ""
     },
     "detailed": {
       "title": "详细指标",
@@ -119,179 +69,223 @@
       "network": "网络地址",
       "unix": "Unix 套接字"
     },
-    "getProxies": "代理提供商",
-    "addProxies": "添加代理服务器",
-    "filterPlaceholder": "过滤代理服务器...",
+    "getProxies": "",
+    "addProxies": "",
+    "settingsTitle": "",
     "listImportToast": {
-      "loading": "正在导入代理...",
-      "success": "成功导入 {{count}} 个代理",
-      "error": "导入代理失败",
-      "noProxies": "没有代理可导入"
+      "success_other": "",
+      "skipped_other": "",
+      "duplicates_other": ""
     },
     "import": {
-      "proxyType": "代理连接类型",
+      "review": {
+        "title": "",
+        "description": "",
+        "input": "",
+        "importing": "正在导入代理...",
+        "error": {
+          "connection": "",
+          "authentication": "",
+          "permission": "",
+          "unexpected": ""
+        },
+        "accepted_other": "",
+        "alreadyInProject_other": "",
+        "rejected_other": "",
+        "confirm_other": ""
+      },
+      "proxyType": "",
       "http": "HTTP",
       "socks4": "SOCKS4",
       "socks5": "SOCKS5",
       "uri": "URI",
       "dialog": {
         "title": "导入 {{type}} 个代理",
-        "description": "在这里粘贴您的代理，每行一个"
+        "description": ""
       }
     },
     "removeToast": {
       "loading": "正在删除代理...",
-      "success": "删除了 {{count}} 个代理",
-      "error": "删除代理失败"
+      "error": "",
+      "success_other": ""
     },
     "checkToast": {
-      "loading": "检查代理中… {{checked}}/{{total}}（成功：{{success}} 失败：{{failed}}）",
-      "success": "删除了 {{count}} 个无效的代理",
-      "error": "无法检查代理",
-      "successKept": "{{total}} 个代理中有 {{failed}} 个未通过检查。没有移除任何代理。"
+      "loading": "",
+      "error": "",
+      "success_other": "",
+      "successKept_other": ""
     },
     "checkDialog": {
-      "title": "检查代理服务器",
-      "description": "即将检查 {{count}} 个代理。",
-      "confirm": "开始检查",
-      "removeFailed": "移除未通过的代理",
-      "removeFailedHelp": "代理可能因临时网络问题而未通过。取消此选项可保留所有代理，只查看结果。"
+      "title": "",
+      "confirm": "",
+      "removeFailed": "",
+      "removeFailedHelp": "",
+      "description_other": ""
     },
-    "invalidFormat": "无效的代理格式",
     "table": {
       "type": "类型",
       "address": "地址",
       "username": "用户名",
       "password": "密码",
       "searchAddresses": "搜索地址...",
-      "searchUsernames": "搜索用户名...",
-      "searchPasswords": "搜索密码..."
+      "searchUsernames": "搜索用户名..."
     },
     "removeSelectedTooltip": "移除所选代理",
     "exportSelectedTooltip": "导出所选代理",
     "checkSelectedTooltip": "检测所选代理",
     "contextMenu": {
-      "copyAddress": "复制地址",
-      "copyUsername": "复制用户名",
-      "copyPassword": "复制密码",
-      "deleteProxy": "删除代理"
+      "copyAddress": "",
+      "copyUsername": "",
+      "copyPassword": "",
+      "deleteProxy": ""
     },
     "postImportCheckDialog": {
       "title": "检查已导入的代理？",
-      "description": "你导入了 {{count}} 个代理。现在检查吗？",
-      "confirm": "检查代理服务器",
-      "skip": "跳过"
+      "confirm": "",
+      "skip": "跳过",
+      "description_other": ""
     },
     "export": {
-      "format": "导出格式",
-      "uri": "URI 格式（所有类型）",
-      "http": "仅限HTTP（扁平）",
-      "socks4": "仅限SOCKS4（扁平）",
-      "socks5": "仅限SOCKS5（扁平）",
+      "format": "",
+      "uri": "",
+      "http": "",
+      "socks4": "",
+      "socks5": "",
       "noProxies": "没有代理可导出"
     },
     "removeDialog": {
-      "title_other": "移除 {{count}} 个代理？",
-      "description": "这会从此实例移除所选代理及其凭据。此操作无法撤销。",
-      "confirm": "移除代理"
+      "description": "",
+      "confirm": "",
+      "title_other": ""
     },
-    "showPassword": "显示密码",
-    "hidePassword": "隐藏密码"
+    "removeSingleDialog": {
+      "title": "",
+      "description": "",
+      "confirm": ""
+    },
+    "showPassword": "",
+    "hidePassword": ""
   },
   "account": {
-    "getAccounts": "账户提供商",
-    "addAccounts": "添加账户",
-    "generateAccounts": "生成账户",
-    "filterPlaceholder": "筛选账户...",
+    "getAccounts": "",
+    "addAccounts": "",
+    "settingsTitle": "",
+    "generateAccounts": "",
     "listImportToast": {
-      "loading": "导入账户中… {{checked}}/{{total}}（成功：{{success}} 失败：{{failed}}）",
-      "allFailed": "导入账户失败",
-      "someFailed": "成功导入 {{count}} 个账户,  {{failed}} 个账户导入失败",
-      "noneFailed": "已导入 {{count}} 个账户",
-      "error": "导入帐户失败",
-      "noAccounts": "没有账户可导入"
+      "loading": "",
+      "allFailed": "",
+      "cancelled": "",
+      "error": "",
+      "copyCredentials": "",
+      "noAccounts": "",
+      "errorReason": {
+        "connection": "",
+        "authentication": "",
+        "permission": "",
+        "unexpected": ""
+      },
+      "someFailed_other": "",
+      "noneFailed_other": "",
+      "cancelledSaved_other": "",
+      "errorSaved_other": ""
     },
-    "unknownError": "未知错误",
     "types": {
-      "OFFLINE": "离线",
-      "MICROSOFT_JAVA_CREDENTIALS": "Java（凭据）",
-      "MICROSOFT_JAVA_DEVICE_CODE": "Java（设备代码）",
-      "MICROSOFT_JAVA_REFRESH_TOKEN": "Java（刷新令牌）",
-      "MICROSOFT_JAVA_COOKIES": "Java（Cookies）",
-      "MICROSOFT_JAVA_ACCESS_TOKEN": "Java（访问令牌）",
+      "OFFLINE": "",
+      "MICROSOFT_JAVA_CREDENTIALS": "",
+      "MICROSOFT_JAVA_DEVICE_CODE": "",
+      "MICROSOFT_JAVA_REFRESH_TOKEN": "",
+      "MICROSOFT_JAVA_COOKIES": "",
+      "MICROSOFT_JAVA_ACCESS_TOKEN": "",
       "THE_ALTENING": "Java（TheAltening）",
-      "MICROSOFT_BEDROCK_CREDENTIALS": "基岩版（凭据）",
-      "MICROSOFT_BEDROCK_DEVICE_CODE": "基岩版（设备代码）"
+      "MICROSOFT_BEDROCK_CREDENTIALS": "",
+      "MICROSOFT_BEDROCK_DEVICE_CODE": ""
     },
     "deviceCodeImportToast": {
       "loading": "导入帐户...",
-      "success": "帐户已导入",
-      "error": "导入帐户失败"
+      "success": "",
+      "error": "",
+      "saving": "",
+      "saveError": "",
+      "retrySave": ""
     },
     "generate": {
-      "title": "生成离线账户",
+      "replaceAllDialog": {
+        "description": "",
+        "confirm": "",
+        "title_other": ""
+      },
+      "title": "",
       "description": "使用自定义名称格式生成离线 Java 账户。",
-      "amount": "数量",
-      "nameFormat": "名称格式",
-      "nameFormatHelp": "使用 %d 作为账号编号。例如，Bot_%d 会生成 Bot_1、Bot_2 等名称。",
-      "mode": "已有帐户",
-      "modeHelp": "请选择如何处理已有账号：\n\n• 忽略已有：仅生成新名称的账号，保留所有已有账号。\n\n• 替换已有：生成所有请求的账号，用相同 UUID 的账号替换已有账号，保留其它账号。\n\n• 全部替换：删除所有已有账号，然后添加生成的新账号。",
-      "modeIgnoreExisting": "忽略已有",
-      "modeReplaceExisting": "替换已有",
-      "modeReplaceAll": "全部替换",
+      "amount": "",
+      "nameFormat": "",
+      "nameFormatHelp": "",
+      "mode": "",
+      "modeHelp": "",
+      "modeIgnoreExisting": "",
+      "modeReplaceExisting": "",
+      "modeReplaceAll": "",
       "submit": "生成",
       "generating": "正在生成...",
-      "progress": "正在生成账户... {{checked}}/{{total}}（成功：{{success}} 失败：{{failed}}）",
-      "success": "已生成 {{count}} 个账户",
-      "allFailed": "未能生成任何账户",
-      "allExist": "所有用户名都已存在。选择“替换已有”可重新生成。",
-      "error": "生成账户失败",
-      "invalidAmount": "请输入有效的数量（至少为 1）",
-      "missingPlaceholder": "名称格式必须包含 %d 占位符"
+      "progress": "",
+      "allFailed": "",
+      "allExist": "",
+      "error": "",
+      "amountOutOfRange": "",
+      "missingNameFormat": "",
+      "success_other": "",
+      "preview_other": ""
     },
     "import": {
       "javaEdition": "Java 版",
       "bedrockEdition": "基岩版",
       "offline": "离线",
-      "microsoftCredentials": "Microsoft 账户",
-      "microsoftDeviceCode": "Microsoft 设备代码",
-      "microsoftRefreshToken": "Microsoft 刷新令牌",
-      "microsoftCookies": "Microsoft cookies",
-      "microsoftAccessToken": "Microsoft 访问令牌",
-      "theAltening": "TheAltening 令牌",
-      "altProviders": "备用提供方",
+      "microsoftCredentials": "",
+      "microsoftDeviceCode": "",
+      "microsoftRefreshToken": "",
+      "microsoftCookies": "",
+      "microsoftAccessToken": "",
+      "theAltening": "",
+      "altProviders": "",
       "dialog": {
-        "title": "导入 {{type}} 个账户",
-        "description": "在这里粘贴您的帐户，每行一个"
+        "title": "导入 {{type}} 个账户"
+      },
+      "demo": "",
+      "format": {
+        "offline": "",
+        "microsoftCredentials": "",
+        "refreshToken": "",
+        "cookies": "",
+        "accessToken": "",
+        "theAltening": ""
       }
     },
     "removeToast": {
       "loading": "正在删除帐户...",
-      "success": "删除了 {{count}} 个账户",
-      "error": "删除帐户失败"
+      "error": "",
+      "success_other": ""
     },
     "table": {
       "type": "类型",
-      "profileId": "档案 ID",
+      "profileId": "",
       "lastKnownName": "用户名",
       "searchProfileIds": "搜索档案ID...",
-      "searchLastKnownNames": "搜索上次已知名称...",
+      "searchLastKnownNames": "搜索用户名...",
       "actions": "操作"
     },
     "removeSelectedTooltip": "移除所选账户",
     "contextMenu": {
-      "openConfig": "打开设置",
-      "openMetadata": "打开元数据",
-      "copyProfileId": "复制配置文件ID",
-      "copyUsername": "复制用户名"
+      "openConfig": "",
+      "openMetadata": "",
+      "copyProfileId": "",
+      "copyUsername": ""
     },
     "config": {
       "title": "配置 {{name}}",
-      "description": "为此账号配置每个机器人的设置",
+      "description": "",
       "openButton": "配置账号",
-      "pageTitle": "{{name}} - {{page}} 设置",
       "noSettings": "此页面暂无可用设置",
       "search": "搜索设置",
+      "pages": "",
       "overrides": "覆盖项",
       "allSettings": "所有设置",
       "noOverrides": "此机器人尚未有任何明确的覆盖项。",
@@ -302,224 +296,194 @@
       "selectPage": "选择一个设置页面",
       "noSearchResults": "没有与此搜索匹配的设置。",
       "matchesInheritedValue": "与继承值匹配",
-      "instanceValue": "实例值",
+      "instanceValue": "",
       "defaultValue": "默认值",
       "resetOverride": "重置覆盖",
       "value": {
-        "notSet": "未设置",
-        "on": "开",
-        "off": "关",
-        "empty": "空",
-        "entries_other": "{{count}} 项",
-        "range": "范围"
+        "notSet": "",
+        "on": "",
+        "off": "",
+        "empty": "",
+        "range": "",
+        "entries_other": "{{count}} 个条目"
       },
       "source": {
-        "bot": "机器人专属值",
-        "instance": "继承自实例",
-        "default": "使用默认值"
+        "bot": "",
+        "instance": "",
+        "default": ""
       }
     },
     "deviceCodeConfirmDialog": {
-      "title": "设备代码认证",
+      "title": "",
       "description": "在开始设备码流程前请先配置选项。",
-      "start": "开始认证"
+      "start": ""
     },
     "deviceCodeDialog": {
-      "title": "设备代码认证",
+      "title": "",
       "description": "使用您的 Microsoft 账户登录以进行绑定。",
-      "openInBrowser": "在浏览器中打开",
+      "openInBrowser": "",
       "orManually": "或手动输入代码",
       "codeLabel": "您的代码",
-      "urlLabel": "前往"
+      "urlLabel": "前往",
+      "copyCode": "",
+      "copyUrl": ""
     },
     "ravealts": {
-      "button": "Ravealts",
-      "title": "通过 Ravealts 购买账户",
       "description": "使用您的 Ravealts API 密钥购买 Minecraft 账户。",
-      "apiKeyLabel": "API 密钥",
       "apiKeyPlaceholder": "请输入您的 Ravealts API 密钥",
-      "validate": "验证",
-      "validating": "正在验证...",
-      "keyValid": "密钥已验证",
-      "keyInvalid": "API 密钥无效",
-      "credits": "积分：{{credits}}",
-      "stockTitle": "可用库存",
       "noStock": "没有可用账户",
-      "accountType": "账户类型",
-      "amount": "数量（1-10）",
-      "purchase": "购买并导入",
-      "purchasing": "正在购买...",
-      "purchaseSuccess": "已购买 {{count}} 个账户，正在导入...",
-      "purchaseError": "购买失败：{{message}}",
-      "networkError": "连接 Ravealts API 失败",
-      "outOfStock": "所选类型已售罄",
+      "accountType": "",
+      "networkError": "",
+      "outOfStock": "",
       "insufficientBalance": "积分不足",
-      "rateLimited": "请求过于频繁，请稍后重试"
+      "rateLimited": ""
     },
     "metadata": {
-      "openButton": "编辑元数据",
+      "openButton": "",
       "title": "元数据：{{name}}",
-      "description": "管理此账户的持久元数据条目。每个条目包含命名空间、键和值（JSON）。",
-      "namespacePlaceholder": "命名空间",
-      "keyPlaceholder": "键",
-      "valuePlaceholder": "值（JSON）",
-      "noEntries": "没有元数据条目。请在上方添加。",
-      "loadError": "无法加载元数据",
-      "loadErrorDescription": "",
-      "retryLoad": "重试",
-      "addSuccess": "条目已添加",
-      "addError": "添加条目失败",
-      "updateError": "更新条目失败",
-      "deleteSuccess": "条目已删除",
-      "deleteError": "删除条目失败",
-      "duplicateError": "具有此命名空间和键的条目已存在",
-      "invalidJson": "无效的JSON值",
-      "namespaceLabel": "命名空间",
-      "keyLabel": "键",
-      "valueLabel": "值",
-      "addEntryLegend": "添加元数据条目",
-      "addEntryButton": "添加条目",
-      "entryLegend": "元数据条目",
-      "removeEntryButton": "移除"
+      "description": "管理此账户的持久元数据条目。每个条目包含命名空间、键和值（JSON）。"
     },
     "removeDialog": {
-      "title_other": "移除 {{count}} 个账户？",
-      "description": "这会从此实例移除所选账户、已保存的凭据及其机器人。此操作无法撤销。",
-      "confirm": "移除账户"
+      "description": "",
+      "confirm": "",
+      "title_other": ""
     }
   },
   "instanceMetadata": {
-    "title": "实例元数据​​.",
-    "description": "管理此实例的持久元数据条目。每条条目包含命名空间、键和值（JSON格式）。",
-    "namespacePlaceholder": "命名空间",
-    "keyPlaceholder": "键",
-    "valuePlaceholder": "值（JSON）",
-    "noEntries": "没有元数据条目。请在上方添加。",
-    "loadError": "无法加载元数据",
-    "addSuccess": "条目已添加",
-    "addError": "添加条目失败",
-    "updateError": "更新条目失败",
-    "deleteSuccess": "条目已删除",
-    "deleteError": "删除条目失败",
-    "duplicateError": "具有此命名空间和键的条目已存在",
-    "invalidJson": "无效的JSON值",
-    "namespaceLabel": "命名空间",
-    "keyLabel": "键",
+    "title": "",
+    "description": ""
+  },
+  "metadataEditor": {
+    "namespacePlaceholder": "",
+    "keyPlaceholder": "",
+    "valuePlaceholder": "",
+    "valueRequired": "",
+    "noEntries": "",
+    "loadError": "",
+    "loadErrorDescription": "",
+    "retryLoad": "重试",
+    "addSuccess": "",
+    "addError": "",
+    "updateError": "",
+    "deleteSuccess": "",
+    "deleteError": "",
+    "duplicateError": "",
+    "invalidJson": "",
+    "namespaceLabel": "",
+    "keyLabel": "",
     "valueLabel": "值",
-    "addEntryLegend": "添加元数据条目",
-    "addEntryButton": "添加条目",
-    "entryLegend": "元数据条目",
-    "removeEntryButton": "移除"
+    "addEntryLegend": "",
+    "addEntryButton": "",
+    "entryLegend": "",
+    "removeEntryButton": "删除"
   },
   "bots": {
     "searchPlaceholder": "搜索机器人...",
-    "onlineCount": "{{online}} 个已连接 / 共 {{total}} 个",
-    "noBots": "未配置机器人。请在账户设置页面添加账户。",
+    "noBots": "",
     "noBotsFound": "没有与您的搜索匹配的机器人。",
-    "loadingMore": "正在加载更多...",
     "showingCount": "已显示 {{loaded}} / {{total}}",
     "allLoaded": "已加载全部 {{total}} 个机器人",
-    "online": "已连接",
-    "offline": "已断开",
-    "notJoined": "未加入",
     "connectionPhase": {
       "connecting": "正在连接",
-      "connected": "正在登录",
+      "connected": "",
       "spawned": "已连接",
       "died": "已死亡",
-      "disconnected": "已断开",
+      "disconnected": "",
       "ping": "{{ms}} 毫秒"
     },
-    "runtimeState": {
-      "starting": "正在启动",
-      "running": "正在运行",
-      "retrying": "正在重试",
-      "stopping": "正在停止",
-      "failed": "失败了",
-      "waiting": "等待中",
-      "stopped": "已停止"
-    },
-    "backToBots": "返回机器人列表",
+    "backToBots": "",
+    "demoControls": "",
+    "notConnected": "",
     "tabs": {
-      "overview": "机器人视图",
+      "overview": "",
       "inventory": "背包",
-      "controls": "控制",
-      "terminal": "终端"
+      "controls": "",
+      "terminal": "",
+      "label": ""
     },
-    "terminalPanel": {},
     "connectionPanel": {
       "proxy": "代理服务器",
       "direct": "直接（无代理）",
       "unavailable": "不可用"
     },
     "positionPanel": {
-      "title": "位置与朝向",
-      "position": "位置",
-      "rotation": "朝向",
-      "offline": "机器人已断开连接。仅在机器人连接时可用位置信息。"
+      "title": "",
+      "x": "",
+      "y": "",
+      "z": "",
+      "pitch": "",
+      "yaw": "",
+      "coordinates": "",
+      "offline": ""
     },
     "chatPanel": {
-      "title": "聊天消息"
-    },
-    "commandPanel": {
-      "title": "机器人指令",
-      "placeholder": "发送指令到该机器人..."
-    },
-    "povPanel": {
-      "title": "Bot视角",
-      "capture": "捕捉",
-      "refresh": "刷新",
-      "auto": "自动",
-      "startAutoRefresh": "启动自动刷新（1秒间隔）",
-      "stopAutoRefresh": "停止自动刷新",
-      "clickToCapture": "点击“捕捉”以渲染Bot的视角",
-      "offline": "Bot已离线。只有连接时才能渲染视角。"
+      "title": "",
+      "label": "",
+      "placeholder": "",
+      "send": "",
+      "help": "",
+      "offlineHint": "",
+      "demo": "",
+      "sendError": "",
+      "sendErrorReason": "",
+      "cancelled": "",
+      "sending": "",
+      "sent": ""
     },
     "statsPanel": {
       "health": "生命值",
+      "healthLabel": "",
+      "healthValue": "",
       "food": "食物值",
-      "saturation": "饱食度",
+      "foodLabel": "",
+      "foodValue": "",
       "experience": "经验值",
-      "level": "等级",
-      "toNextLevel": "距离下一级还需",
-      "gameMode": "游戏模式",
+      "levelShort": "",
       "survival": "生存模式",
       "creative": "创造模式",
       "adventure": "冒险模式",
       "spectator": "旁观者模式",
-      "unknown": "未知",
-      "offline": "机器人已断开连接。只有连接时才能显示状态。"
+      "unknown": "未知"
     },
     "inventoryPanel": {
       "title": "背包",
       "actionRejected": "",
-      "hotbar": "快捷栏",
-      "main": "主物品栏",
-      "items": "物品",
+      "actionError": "",
+      "output": "",
+      "slotInfo": {
+        "slot": "",
+        "item": "",
+        "region": "",
+        "hotbar": ""
+      },
       "carrying": "携带中",
-      "dropOne": "丢弃一个",
-      "dropAll": "全部丢弃",
+      "dropOne": "",
+      "dropAll": "",
       "closeContainer": "关闭",
-      "clickHint": "左键：拾取/放置 | 右键：分半/单个 | Shift+点击：快速移动 | 中键：选择快捷栏格",
-      "offline": "机器人已断开连接。只有连接时才能管理物品栏。",
+      "clickHint": "",
+      "offline": "",
+      "waiting": "",
+      "demo": "",
+      "heldSlot": "",
+      "holdSlot": "",
       "buttons": {
         "stonecutterRecipes": "配方",
         "enchantments": "附魔",
         "patterns": "图案",
         "trades": "交易",
-        "beaconEffects": "信标效果",
-        "crafterSlots": "槽位控制",
-        "lecternControls": "书本控制",
+        "beaconEffects": "",
+        "crafterSlots": "",
+        "lecternControls": "",
         "actions": "操作",
-        "creativeTabs": "创造模式标签页"
+        "creativeTabs": ""
       },
       "textInput": {
-        "title": "文本输入",
-        "anvilRename": "重命名物品",
-        "creativeSearch": "搜索物品"
+        "title": "",
+        "anvilRename": "",
+        "creativeSearch": ""
       },
       "bookPages": {
-        "title": "书本内容",
+        "title": "",
         "emptyPage": "（空白页）",
         "previousPage": "",
         "nextPage": "",
@@ -527,105 +491,200 @@
       },
       "creativeCatalogHint": "",
       "creativeTrashHint": "",
-      "destroyItem": "销毁物品",
-      "clickHints": {
-        "left": "左键：拿起或放下",
-        "right": "右键：拿起一半或放下一个",
-        "shift": "Shift+点击：快速移动",
-        "middle": "中键：选为当前槽位"
-      }
+      "destroyItem": "",
+      "emptySlot": "",
+      "clickMode": {
+        "label": "",
+        "left": "",
+        "right": "",
+        "shift": "",
+        "middle": ""
+      },
+      "keyboardHint": "",
+      "stack_other": "",
+      "itemCount_other": ""
     },
     "visualPanel": {
-      "title": "方向和世界",
-      "compass": "朝向",
-      "lookDirection": "视角角度",
+      "title": "",
+      "compass": "",
+      "lookDirection": "",
       "lookingUp": "向上看",
       "lookingDown": "向下看",
       "lookingStraight": "平视",
-      "worldInfo": "世界信息",
+      "directions": {
+        "n": "",
+        "ne": "",
+        "e": "",
+        "se": "",
+        "s": "",
+        "sw": "",
+        "w": "",
+        "nw": ""
+      },
+      "dimensions": {
+        "overworld": "",
+        "the_nether": "",
+        "the_end": ""
+      },
+      "worldInfo": "",
       "dimension": "维度",
-      "biome": "生物群系",
-      "offline": "机器人已断开连接。只有连接时才能显示视觉数据。"
+      "offline": ""
     },
     "actionsPanel": {
-      "title": "机器人操作",
-      "leftClick": "左键点击",
-      "rightClick": "右键点击",
+      "title": "",
+      "leftClick": "",
+      "rightClick": "",
       "leftClickDescription": "攻击实体或破坏方块",
       "rightClickDescription": "使用物品或交互",
-      "offline": "机器人已断开连接。仅在机器人连接时可用操作。"
+      "clickError": "",
+      "offline": ""
     },
     "movementPanel": {
       "updateServer": "",
-      "title": "移动控制",
+      "movementError": "",
+      "rotationError": "",
+      "title": "",
       "movement": "移动（WASD）",
-      "forward": "前进（W）",
-      "backward": "后退（S）",
-      "left": "左移（A）",
-      "right": "右移（D）",
+      "forward": "",
+      "backward": "",
+      "left": "",
+      "right": "",
       "jump": "跳跃",
       "sneak": "潜行",
       "sprint": "疾跑",
       "stop": "停止",
-      "rotation": "视角方向",
-      "lookUp": "向上看",
-      "lookDown": "向下看",
-      "lookLeft": "向左看",
-      "lookRight": "向右看",
-      "offline": "机器人已断开连接。只有当机器人已连接时，移动控制可用。"
+      "rotation": "",
+      "lookUp": "",
+      "lookDown": "",
+      "lookLeft": "",
+      "lookRight": "",
+      "offline": "",
+      "modifiers": ""
     },
     "dialogPanel": {
-      "title": "服务器对话框",
+      "title": "",
       "noDialog": "当前没有显示服务器对话框。",
-      "dialogType": "类型",
       "dialogId": "对话框ID",
       "notice": "通知",
       "confirmation": "确认",
-      "multiAction": "多重操作",
-      "serverLinks": "服务器链接",
-      "dialogList": "对话框列表",
+      "multiAction": "",
+      "serverLinks": "",
+      "dialogList": "",
       "unknownType": "未知",
+      "submitError": "",
       "dismiss": "关闭",
       "submit": "提交",
-      "offline": "机器人已断开连接。只有当机器人已连接时对话框可用。"
+      "offline": ""
+    },
+    "filterLabel": "",
+    "filterAll": "全部",
+    "noBotsInState": "",
+    "displayState": {
+      "connected": "已连接",
+      "starting": "正在启动",
+      "retrying": "正在重试",
+      "failed": "失败了",
+      "stopping": "正在停止",
+      "stopped": "已停止"
+    },
+    "detailsToggle": "",
+    "profileId": "",
+    "notice": {
+      "starting": "",
+      "stopped": "",
+      "failed": "",
+      "retrying": "",
+      "dialogOpen": {
+        "title": "",
+        "description": "",
+        "action": ""
+      }
     },
     "pov": {
-      "title": "机器人视图",
-      "touchControlling": "你正在控制这个机器人。使用“Release control”可停止。",
-      "popupBlocked": "请允许弹出窗口，以便分离机器人视图窗口。",
-      "windowTitle": "SoulFire 机器人视图",
-      "fullscreenUnavailable": "此窗口无法使用全屏。",
-      "textInputLabel": "Minecraft 文本输入",
-      "videoLabel": "实时机器人视图",
-      "touchMove": "移动",
-      "audioError": "无法启动音频。",
-      "startError": "无法启动机器人视图。",
-      "releaseHint": "按 {{shortcut}} 释放键盘和鼠标。",
-      "captureHint": "点击视图并允许捕获键盘和鼠标。",
-      "audioWaiting": "正在等待机器人视图连接。",
-      "audioWatchFirst": "观看机器人后才能使用音频。",
-      "audioUpdateServer": "更新服务器后才能使用机器人视图音频。",
-      "muteAudio": "将音频静音",
-      "unmuteAudio": "取消音频静音",
-      "audioStarting": "正在启动音频...",
+      "title": "",
+      "watch": "",
+      "stopWatching": "",
+      "watchBot": "",
+      "takeControl": "",
+      "release": "",
+      "fullscreen": "",
+      "detach": "",
+      "offline": "",
+      "connecting": "",
+      "reconnecting": "",
+      "idle": "",
+      "watching": "",
+      "controlling": "",
+      "touchHint": "",
+      "touchControlling": "",
+      "popupBlocked": "",
+      "windowTitle": "",
+      "fullscreenUnavailable": "",
+      "textInputLabel": "",
+      "videoLabel": "",
+      "touchMove": "",
+      "audioError": "",
+      "startError": "",
+      "releaseHint": "",
+      "captureHint": "",
+      "capturing": "",
+      "captureCooldown": "",
+      "captureTimeout": "",
+      "audioWaiting": "",
+      "audioWatchFirst": "",
+      "audioUpdateServer": "",
+      "muteAudio": "",
+      "unmuteAudio": "",
+      "audioStarting": "",
       "mute": "静音",
       "unmute": "取消静音",
-      "audio": "音频",
-      "audioUnavailable": "音频不可用",
-      "volume": "机器人视图音量",
-      "reconnect": "重新连接",
-      "showWindow": "显示机器人视图窗口",
-      "attachWindow": "重新附加机器人视图窗口",
+      "audio": "",
+      "audioUnavailable": "",
+      "volume": "",
+      "reconnect": "",
+      "showWindow": "",
+      "attachWindow": "",
       "touch": {
         "jump": "跳跃",
         "sneak": "潜行",
-        "attack": "攻击",
-        "use": "使用",
+        "attack": "",
+        "use": "",
         "inventory": "背包",
-        "keyboard": "键盘",
-        "closeMenu": "关闭菜单"
+        "keyboard": "",
+        "closeMenu": ""
       },
-      "needsServer": "机器人视图需要已连接的 SoulFire 服务器。"
+      "needsServer": "",
+      "connectTimeout": "",
+      "reconnectFailed": "",
+      "inputUpdateServer": "",
+      "inputUnavailable": "",
+      "decoderUnsupported": "",
+      "videoUnsupportedBrowser": "",
+      "audioUnsupportedBrowser": "",
+      "audioDecodeUnsupported": "",
+      "audioBlocked": "",
+      "audioInvalidFrame": "",
+      "streamMetrics": {
+        "title": "",
+        "waitingForVideo": "",
+        "unknown": "",
+        "fps": "",
+        "video": "",
+        "target": "",
+        "decoder": "",
+        "decoderWaitingForKey": "",
+        "keyframes": ""
+      },
+      "step": {
+        "online": "",
+        "queued": "",
+        "starting": "",
+        "joining": "",
+        "retrying": "",
+        "failed": "",
+        "stopping": "",
+        "stopped": ""
+      }
     }
   },
   "metrics": {
@@ -633,21 +692,8 @@
       "noData": "无数据"
     },
     "summary": {
-      "online": "已连接",
-      "packetsPerSecond": "包/秒",
       "traffic": "流量",
-      "health": "生命值",
       "tick": "刻"
-    },
-    "botsOnline": {
-      "title": "已连接的机器人",
-      "online": "已连接",
-      "total": "总计"
-    },
-    "packets": {
-      "title": "数据包 / 秒",
-      "sent": "发送/秒",
-      "received": "接收/秒"
     },
     "bandwidth": {
       "title": "带宽",
@@ -655,88 +701,76 @@
       "download": "下载"
     },
     "tick": {
-      "title": "刻持续时间",
+      "title": "",
       "avg": "平均值（毫秒）",
       "max": "最大值（毫秒）"
     },
-    "healthFood": {
-      "title": "生命值 / 饱食度",
-      "health": "平均生命值",
-      "food": "平均饱食度"
-    },
-    "chunksEntities": {
-      "title": "区块 / 实体",
-      "chunks": "区块",
-      "entities": "实体"
-    },
-    "connections": {
-      "title": "连接事件",
-      "connections": "连接数",
-      "disconnections": "断开连接数"
-    },
-    "healthDistribution": {
-      "title": "生命值分布",
-      "bots": "机器人"
-    },
     "dimensions": {
-      "title": "维度",
-      "bots": "机器人"
+      "title": "维度"
     },
     "gameModes": {
-      "title": "游戏模式",
-      "bots": "机器人"
+      "title": ""
     },
     "positions": {
-      "title": "机器人位置（XZ）",
+      "title": "",
       "bot": "机器人"
     }
   },
   "scripts": {
-    "title": "可视化脚本",
-    "description": "使用可视化节点编辑器创建自动化脚本。",
-    "experimentalTitle": "实验性功能",
-    "experimentalWarning": "此功能为实验性功能。未来的更新可能会导致现有脚本失效。请谨慎使用。",
-    "createScript": "创建脚本",
-    "createScriptTitle": "创建新脚本",
-    "createScriptDescription": "为此实例创建新的可视化脚本。脚本可以自动化机器人操作并响应事件。",
-    "scriptName": "脚本名称",
+    "title": "",
+    "description": "",
+    "createScript": "",
+    "createScriptTitle": "",
+    "createScriptDescription": "",
+    "scriptName": "",
     "scriptNamePlaceholder": "输入脚本名称...",
     "scriptDescription": "描述",
     "scriptDescriptionPlaceholder": "描述此脚本的作用...",
     "create": "创建",
-    "createSuccess": "脚本创建成功",
-    "createError": "创建脚本失败",
-    "noScripts": "尚无脚本",
-    "noScriptsDescription": "使用可视化节点编辑器创建第一个脚本来自动化机器人操作。",
-    "createFirstScript": "创建脚本",
-    "running": "正在运行",
-    "paused": "已暂停",
-    "nodes": "节点",
+    "createSuccess": "",
+    "createError": "",
+    "noScripts": "",
+    "noScriptsDescription": "",
+    "running": "",
+    "paused": "",
     "noDescription": "无描述",
+    "edited": "",
+    "searchPlaceholder": "",
+    "filterLabel": "",
+    "filter": {
+      "all": "全部",
+      "on": "",
+      "off": ""
+    },
+    "sort": {
+      "label": "",
+      "edited": "",
+      "name": "名称"
+    },
+    "noMatches": "",
     "edit": "编辑",
-    "pause": "暂停",
-    "pauseSuccess": "脚本已暂停",
-    "pauseError": "暂停脚本失败",
-    "resume": "继续",
-    "resumeSuccess": "脚本已恢复",
-    "resumeError": "恢复脚本失败",
+    "pause": "",
+    "pauseSuccess": "",
+    "pauseError": "",
+    "resume": "",
+    "resumeSuccess": "",
+    "resumeError": "",
     "delete": "删除",
-    "deleteSuccess": "脚本删除成功",
-    "deleteError": "删除脚本失败",
-    "saveSuccess": "脚本保存成功",
-    "saveError": "保存脚本失败",
-    "activateSuccess": "脚本已激活",
-    "activateError": "激活脚本失败",
-    "deactivateSuccess": "脚本已停用",
-    "untitledScript": "无标题脚本",
-    "saveFirstBeforeActivating": "请先保存脚本再激活",
-    "activating": "正在激活脚本...",
-    "activated": "脚本已激活",
+    "deleteSuccess": "",
+    "deleteError": "",
+    "saveSuccess": "",
+    "saveError": "",
+    "activateSuccess": "",
+    "activateError": "",
+    "deactivateSuccess": "",
+    "untitledScript": "",
+    "saveFirstBeforeActivating": "",
+    "activating": "",
+    "activated": "",
     "executionCompleted": "脚本已完成",
-    "executionCompletedSuccess": "脚本成功完成",
-    "deactivated": "脚本已停用",
-    "deactivatedByUser": "脚本已被用户停用",
-    "executionFailed": "脚本执行失败",
+    "executionCompletedSuccess": "脚本已完成",
+    "deactivated": "",
+    "deactivatedByUser": "",
     "executionError": "执行错误：{{error}}",
     "monitoringError": "",
     "monitoringDisconnected": "",
@@ -744,106 +778,127 @@
     "nodeCompleted": "节点已完成：{{nodeId}}",
     "nodeError": "节点错误：{{error}}",
     "contextMenu": {
-      "edit": "编辑脚本",
-      "pause": "暂停",
-      "resume": "继续",
-      "delete": "删除脚本",
-      "copyScriptName": "复制脚本名称",
-      "copyScriptId": "复制脚本ID"
+      "edit": "",
+      "pause": "",
+      "resume": "",
+      "delete": "",
+      "copyScriptName": "",
+      "copyScriptId": ""
     },
     "editor": {
       "toolbar": {
         "actions": "",
-        "backToScripts": "返回脚本",
+        "backToScripts": "",
         "save": "保存",
-        "saveTooltip": "保存脚本",
-        "resume": "继续",
-        "resumeTooltip": "恢复脚本执行",
-        "pause": "暂停",
-        "pauseTooltip": "暂停脚本执行",
+        "saveTooltip": "",
+        "resume": "",
+        "resumeTooltip": "",
+        "pause": "",
+        "pauseTooltip": "",
         "unsaved": "未保存",
         "unsavedChanges": "有未保存的更改",
-        "clearCanvas": "清除画布",
-        "zoomIn": "放大",
-        "zoomOut": "缩小",
-        "fit": "适配",
         "export": "导出脚本",
         "import": "导入脚本",
-        "exportSuccess": "脚本导出成功",
-        "importSuccess": "脚本导入成功",
-        "importError": "导入脚本失败"
+        "exportSuccess": "",
+        "importSuccess": "",
+        "importError": "",
+        "resumeBlocked": "",
+        "undo": "",
+        "redo": "",
+        "resumeSaveFirst": "",
+        "scriptName": ""
       },
       "palette": {
-        "title": "节点面板",
+        "title": "",
         "search": "搜索节点...",
-        "noResults": "没有与搜索匹配的节点",
-        "noResultsDescription": "换一个词试试，或清除当前筛选。"
+        "noResults": "",
+        "noResultsDescription": ""
       },
       "logs": {
-        "title": "执行日志",
+        "title": "",
         "clearTitle": "清除日志",
-        "noLogs": "暂无日志。请运行脚本以查看执行日志。",
+        "noLogs": "",
+        "levels": {
+          "debug": "",
+          "info": "",
+          "warn": "",
+          "error": "出错"
+        },
         "entries_other": "{{count}} 个条目"
       },
       "contextMenu": {
         "duplicate": "复制",
         "rename": "重命名",
-        "disconnectAll": "全部断开连接",
+        "disconnectAll": "",
         "collapse": "折叠",
         "expand": "展开",
         "mute": "静音",
         "unmute": "取消静音",
-        "showPreview": "显示预览",
-        "hidePreview": "隐藏预览",
+        "showPreview": "",
+        "hidePreview": "",
+        "openGroup": "",
+        "ungroup": "",
         "delete": "删除"
+      },
+      "connection": {
+        "self": "",
+        "execution": "",
+        "type": ""
       },
       "node": {
         "expand": "展开节点",
         "collapse": "折叠节点",
-        "avgTime": "平均执行时间：{{avg}} ms（最近 {{count}} 次运行）",
-        "preview": "预览"
+        "avgTimeBadge": "",
+        "preview": "",
+        "muted": "",
+        "avgDuration_other": ""
       },
       "debug": {
         "copyValue": "复制当前值",
         "clearHistory": "清空历史记录",
-        "current": "当前（{{time}}）：",
-        "noValue": "尚未收到值"
+        "current": "",
+        "noValue": "",
+        "input": "",
+        "output": "",
+        "history_other": ""
       },
       "edge": {
         "direction": "边方向"
       },
       "note": {
-        "placeholder": "写备注..."
+        "placeholder": "写备注...",
+        "contentLabel": ""
       },
       "complexity": {
         "title": "脚本复杂度评分"
       },
       "group": {
         "returnToRoot": "返回根目录（Tab）",
-        "root": "根",
-        "exitHint": "按 <key>Tab</key> 退出",
-        "editHint": "双击进行编辑",
-        "noInputs": "未定义输入",
-        "noOutputs": "未定义输出"
+        "root": "",
+        "defaultLabel": "",
+        "exitHint": "",
+        "editHint": "",
+        "noInputs": "",
+        "noOutputs": ""
       },
       "quickAdd": {
         "menuLabel": "快速添加节点菜单",
         "searchPlaceholder": "搜索节点...",
-        "noResults": "未找到节点",
-        "noResultsDescription": "换一个搜索词试试。",
-        "navigate": "导航",
-        "select": "Enter 选择",
-        "close": "Esc 关闭"
+        "noResults": "",
+        "noResultsDescription": "请尝试其他搜索词。",
+        "navigate": "",
+        "select": "",
+        "close": ""
       },
       "diff": {
         "tooltip": "查看更改",
-        "title": "未保存的更改",
-        "description": "自上次保存以来的更改。",
-        "nodesAdded_other": "新增 {{count}} 个节点",
-        "nodesRemoved_other": "移除 {{count}} 个节点",
-        "nodesModified_other": "修改 {{count}} 个节点",
-        "edgesAdded_other": "新增 {{count}} 条连线",
-        "edgesRemoved_other": "移除 {{count}} 条连线"
+        "title": "有未保存的更改",
+        "description": "",
+        "nodesAdded_other": "",
+        "nodesRemoved_other": "",
+        "nodesModified_other": "",
+        "edgesAdded_other": "",
+        "edgesRemoved_other": ""
       },
       "dryRun": {
         "saveFirst": "",
@@ -856,54 +911,664 @@
         "failed": "",
         "cancelled": "",
         "incomplete": "",
-        "tooltip": "模拟运行",
-        "title": "模拟运行脚本",
-        "description": "从选定触发器用模拟输入运行脚本。",
-        "triggerNode": "触发节点",
+        "tooltip": "",
+        "title": "",
+        "description": "",
+        "triggerNode": "",
         "selectTrigger": "选择一个触发器...",
-        "triggerDescription": "选择用于模拟输入值执行的触发节点。",
-        "mockInputs": "模拟输入",
+        "triggerDescription": "",
+        "mockInputs": "",
         "valuePlaceholder": "{{type}}值",
-        "start": "开始模拟运行",
+        "start": "",
+        "button": "",
         "stats_other": ""
       },
       "quotas": {
-        "tooltip": "脚本配额",
-        "title": "脚本配额",
+        "tooltip": "",
+        "title": "",
         "description": "为此脚本配置资源限制。留空的字段将使用服务器默认值。",
-        "maxExecutionCount": "最大执行次数",
+        "maxExecutionCount": "",
         "maxExecutionCountPlaceholder": "100000",
-        "maxExecutionCountDescription": "每次触发调用时节点最大执行次数",
-        "maxExecutionTime": "最大执行时间（毫秒）",
+        "maxExecutionCountDescription": "",
+        "maxExecutionTime": "",
         "maxExecutionTimePlaceholder": "30000",
-        "maxExecutionTimeDescription": "每次触发执行的最大时钟时间",
-        "maxConcurrentTriggers": "最大并发触发器数",
+        "maxExecutionTimeDescription": "",
+        "maxConcurrentTriggers": "",
         "maxConcurrentTriggersPlaceholder": "1",
-        "maxConcurrentTriggersDescription": "最大并发触发调用数",
-        "maxStateStoreEntries": "最大状态存储条目数",
+        "maxConcurrentTriggersDescription": "",
+        "maxStateStoreEntries": "",
         "maxStateStoreEntriesPlaceholder": "无限制",
-        "maxStateStoreEntriesDescription": "脚本状态存储中的最大条目数",
-        "disableTimeouts": "禁用超时",
-        "disableTimeoutsDescription": "禁用每节点和数据边的超时时间",
-        "save": "保存配额",
+        "maxStateStoreEntriesDescription": "",
+        "disableTimeouts": "",
+        "disableTimeoutsDescription": "",
+        "save": "",
         "invalidInteger": ""
       },
       "multiInput": {
-        "reorder": "调整 {{label}} 的顺序",
-        "empty": "没有传入的值",
-        "title": "多重输入：可接受多个连接",
-        "connectTo": "将值连接到 {{label}}"
+        "reorder": "",
+        "empty": "",
+        "title": "",
+        "connectTo": ""
+      },
+      "shortcuts": {
+        "title": "",
+        "description": "",
+        "mouse": {
+          "drag": "",
+          "rightClick": ""
+        },
+        "actions": {
+          "quickAdd": "",
+          "quickAddAtCursor": "",
+          "selectAll": "",
+          "deselectAll": "",
+          "selectLinked": "",
+          "selectUpstream": "",
+          "selectDownstream": "",
+          "selectSimilar": "",
+          "duplicate": "",
+          "copy": "",
+          "paste": "",
+          "delete": "",
+          "rename": "",
+          "mute": "",
+          "collapse": "",
+          "hideSockets": "",
+          "preview": "",
+          "group": "",
+          "ungroup": "",
+          "enterGroup": "",
+          "frame": "",
+          "align": "",
+          "distribute": "",
+          "cutLinks": "",
+          "reroute": "",
+          "undo": "",
+          "redo": ""
+        }
+      },
+      "unsavedDialog": {
+        "title": "",
+        "description": "",
+        "stay": "",
+        "leave": ""
+      },
+      "layoutNodes": {
+        "category": {
+          "name": "",
+          "description": ""
+        },
+        "reroute": {
+          "label": "",
+          "description": ""
+        },
+        "frame": {
+          "label": "",
+          "description": ""
+        },
+        "group": {
+          "label": "",
+          "description": ""
+        },
+        "groupInput": {
+          "label": "",
+          "description": ""
+        },
+        "groupOutput": {
+          "label": "",
+          "description": ""
+        },
+        "debug": {
+          "label": "",
+          "description": ""
+        },
+        "note": {
+          "label": "",
+          "description": ""
+        }
+      }
+    },
+    "lifecycle": {
+      "title": "",
+      "saved": {
+        "term": "",
+        "description": ""
+      },
+      "on": {
+        "term": "",
+        "description": ""
+      },
+      "run": {
+        "term": "",
+        "description": ""
+      },
+      "test": {
+        "term": "",
+        "description": ""
+      }
+    },
+    "firstUse": {
+      "title": "",
+      "description": "",
+      "trigger": "",
+      "browse": "",
+      "template": "",
+      "connectHint": ""
+    },
+    "health": {
+      "title": "",
+      "description": "",
+      "empty": "",
+      "ok": "",
+      "noProblems": "",
+      "errors_other": "",
+      "warnings_other": ""
+    },
+    "templates": {
+      "greet-on-join": {
+        "title": "",
+        "description": ""
+      },
+      "respawn-on-death": {
+        "title": "",
+        "description": ""
+      },
+      "reply-to-chat": {
+        "title": "",
+        "description": ""
+      },
+      "health-report": {
+        "title": "",
+        "description": ""
       }
     },
     "deleteDialog": {
-      "title": "删除脚本？",
-      "description": "这会永久删除“{{name}}”。此操作无法撤销。",
-      "descriptionUnnamed": "这会永久删除该脚本。此操作无法撤销。"
+      "title": "",
+      "description": "",
+      "descriptionUnnamed": ""
     },
-    "executionStats": "执行统计：已执行 {{executed}}/{{max}} 个节点"
+    "executionStats": "",
+    "nodes_other": ""
   },
   "metadataValidation": {
     "invalidNamespace": "",
     "invalidKey": ""
+  },
+  "providers": {
+    "provider": "",
+    "action": "操作",
+    "product": "",
+    "protocol": "",
+    "progress": "",
+    "openShop": "",
+    "connectionHelp": "",
+    "openCheckout": "",
+    "createAccount": "",
+    "connectBuy": "",
+    "connectImport": "",
+    "connect": "连接",
+    "back": "返回",
+    "allProvidersBack": "",
+    "reviewOrder": "",
+    "refresh": "",
+    "done": "",
+    "buyMore": "",
+    "affiliateDisclosure": "",
+    "accountsDescription": "",
+    "proxiesDescription": "",
+    "accountFileImport": "",
+    "proxyFileImport": "",
+    "allProviders": "",
+    "demo": "",
+    "filterLabel": "",
+    "filters": {
+      "all": "全部",
+      "buy": "",
+      "import": "",
+      "checkout": ""
+    },
+    "capabilityShort": {
+      "buy": "",
+      "import": "",
+      "recover": "",
+      "checkout": ""
+    },
+    "capability": {
+      "buy": "",
+      "import": "",
+      "recover": ""
+    },
+    "inSoulFire": "",
+    "youNeed": "",
+    "requirement": {
+      "apiKey": "",
+      "proxyLogin": "",
+      "accountSign": "",
+      "orderId": "",
+      "subaccountId": "",
+      "balance": ""
+    },
+    "listedOffer": "",
+    "tags": {
+      "residential": "",
+      "datacenter": "",
+      "isp": "",
+      "ipv6": "",
+      "mobile": "",
+      "freeTier": "",
+      "cookieAccounts": "",
+      "fullAccess": "",
+      "instantDelivery": ""
+    },
+    "catalog": {
+      "webshare": {
+        "summary": ""
+      },
+      "proxy-seller": {
+        "summary": "",
+        "offer": ""
+      },
+      "proxyscrape": {
+        "summary": ""
+      },
+      "iproyal": {
+        "summary": ""
+      },
+      "decodo": {
+        "summary": ""
+      },
+      "oxylabs": {
+        "summary": ""
+      },
+      "thordata": {
+        "summary": "",
+        "offer": ""
+      },
+      "bright-data": {
+        "summary": ""
+      },
+      "legionproxy": {
+        "summary": ""
+      },
+      "plainproxies": {
+        "summary": ""
+      },
+      "flameproxies": {
+        "summary": ""
+      },
+      "flashproxy": {
+        "summary": ""
+      },
+      "ravealts": {
+        "summary": "",
+        "offer": ""
+      },
+      "fernan": {
+        "summary": "",
+        "offer": ""
+      },
+      "localts": {
+        "summary": "",
+        "offer": ""
+      },
+      "alts-fast": {
+        "summary": "",
+        "offer": ""
+      },
+      "kynoselling": {
+        "summary": "",
+        "offer": ""
+      }
+    },
+    "steps": {
+      "connect": "连接",
+      "choose": "",
+      "review": "",
+      "import": ""
+    },
+    "noAccountTitle": "",
+    "noAccountBody": "",
+    "modeBuy": "",
+    "modeRecover": "",
+    "recentOrders": "",
+    "noRecentOrders": "",
+    "orderId": "",
+    "loadOrder": "",
+    "importFormat": "",
+    "checkDelivery": "",
+    "balance": "",
+    "balanceAfter": "",
+    "total": "总计",
+    "unitPrice": "",
+    "outOfStock": "",
+    "onCooldown": "",
+    "noProducts": "",
+    "liveCatalog": "",
+    "lowBalanceTitle": "",
+    "lowBalanceBody": "",
+    "addFunds": "",
+    "purchaseComplete": "",
+    "orderLoaded": "",
+    "placedRefresh": "",
+    "uncertainTitle": "",
+    "checkOrders": "",
+    "referralCode": "",
+    "noCode": "无",
+    "removeCode": "",
+    "showValue": "",
+    "hideValue": "",
+    "decrease": "",
+    "increase": "",
+    "copyLabel": "",
+    "importExisting": "",
+    "buyWithBalance": "",
+    "direct": "",
+    "backbone": "",
+    "sharedDatacenter": "",
+    "dedicatedDatacenter": "",
+    "proxyscrapeCredentials": "",
+    "fields": {
+      "apiKey": "",
+      "username": "",
+      "password": "",
+      "resourceId": "",
+      "sign": "",
+      "limit": "",
+      "country": ""
+    },
+    "resourceHelp": {
+      "proxyscrape": "",
+      "iproyal": "",
+      "oxylabs": ""
+    },
+    "scope": {
+      "webshare": "",
+      "proxy-seller": "",
+      "proxyscrape": "",
+      "iproyal": "",
+      "decodo": "",
+      "oxylabs": "",
+      "thordata": ""
+    },
+    "continue": "",
+    "loadProxies": "",
+    "alreadyImported": "",
+    "orderCountry": "",
+    "quantity": "",
+    "coupon": "",
+    "sellerPurchaseHelp": "",
+    "checkPrice": "",
+    "purchase": "",
+    "period": "",
+    "oneMonth": "",
+    "orderCreatedTitle": "",
+    "orderCreated": "",
+    "optionalOrderId": "",
+    "optionalOrderHelp": "",
+    "purchaseUncertain": "",
+    "keyPrivacy": "",
+    "errors": {
+      "network": "",
+      "authentication": "",
+      "rejected": "",
+      "response": "",
+      "empty": "",
+      "limit": "",
+      "priceChanged": "",
+      "save": ""
+    },
+    "proxy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": ""
+      }
+    },
+    "sellerBuy": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      }
+    },
+    "localts": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "credits": "",
+      "priceStock": "",
+      "perAccount": "",
+      "discountTier": "",
+      "reviewNote": "",
+      "purchase": "",
+      "purchased": "",
+      "cookieTokens": "",
+      "packagingTitle": "",
+      "packagingBody": "",
+      "refundedTitle": "",
+      "refundedBody": "",
+      "quantityHelp": "",
+      "orderStatus_other": ""
+    },
+    "fernan": {
+      "description": "",
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "perAccount": "",
+      "listedTotal": "",
+      "referralHelp": "",
+      "total": "",
+      "paid": "",
+      "limit_other": "",
+      "purchase_other": "",
+      "delivered_other": ""
+    },
+    "ravealts": {
+      "stage": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "stageHelp": {
+        "connect": "",
+        "choose": "",
+        "review": "",
+        "import": ""
+      },
+      "keyHelp": "",
+      "quantityHelp": "",
+      "priceNote": "",
+      "backupTitle": "",
+      "backupDescription": "",
+      "purchase_other": "",
+      "importing_other": "",
+      "copyCredentials_other": ""
+    },
+    "keyPrivacySaved": "",
+    "importAccounts_other": "",
+    "inStock_other": "",
+    "previewMore_other": "",
+    "preview_other": "",
+    "importProxies_other": ""
+  },
+  "fleet": {
+    "headline": {
+      "noneRunning_other": "",
+      "allConnected_other": "",
+      "partial_other": "",
+      "connecting_other": ""
+    },
+    "state": {
+      "connected": "已连接",
+      "starting": "",
+      "retrying": "",
+      "failed": "",
+      "stopping": "",
+      "stopped": ""
+    },
+    "attention": "",
+    "groupTitle": {
+      "failed_other": "",
+      "retrying_other": ""
+    },
+    "kind": {
+      "unreachable": {
+        "title": "",
+        "description": ""
+      },
+      "onlineAuth": {
+        "title": "",
+        "description": ""
+      },
+      "account": {
+        "title": "",
+        "description": ""
+      },
+      "blocked": {
+        "title": "",
+        "description": ""
+      },
+      "throttled": {
+        "title": "",
+        "description": ""
+      },
+      "version": {
+        "title": "",
+        "description": ""
+      },
+      "proxy": {
+        "title": "",
+        "description": ""
+      },
+      "other": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "fix": {
+      "checkServer": "",
+      "slowDown": "",
+      "accounts": "",
+      "proxies": ""
+    },
+    "restartError": "",
+    "startHint": "",
+    "startHintNoPermission": "",
+    "restartGroup_other": "重启 {{count}} 个机器人",
+    "restartRequested_other": "",
+    "namesMore_other": "",
+    "connectingHint_other": ""
+  },
+  "setup": {
+    "title": "",
+    "description": "",
+    "later": "",
+    "optional": "可选",
+    "continue": "",
+    "stepDone": "",
+    "noPermission": "",
+    "expert": "",
+    "expertLink": "打开所有设置​​",
+    "server": {
+      "title": "",
+      "description": "",
+      "summary": "",
+      "versionHint": ""
+    },
+    "accounts": {
+      "title": "",
+      "description": "",
+      "summaryEmpty": "",
+      "offline": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "existing": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "provider": {
+        "title": "",
+        "description": "",
+        "action": ""
+      },
+      "summary_other": ""
+    },
+    "proxies": {
+      "title": "",
+      "description": "",
+      "summaryNone": "",
+      "skip": "",
+      "add": "",
+      "provider": "",
+      "summary_other": ""
+    },
+    "start": {
+      "title": "",
+      "summary": "",
+      "reviewServer": "",
+      "reviewVersion": "",
+      "reviewAccounts": "账户",
+      "reviewProxies": "代理",
+      "defaultAddress": "",
+      "needAccounts": "",
+      "count": "",
+      "help": "",
+      "addAccounts": "",
+      "error": "",
+      "noneStarted": "",
+      "action_other": "启动 {{count}} 个机器人",
+      "countLimit_other": "",
+      "countInvalid_other": ""
+    },
+    "connecting": {
+      "title": "",
+      "description": "",
+      "seeStatus": ""
+    },
+    "connected": {
+      "title": "",
+      "description": "",
+      "open": "",
+      "done": ""
+    },
+    "backToSetup": ""
   }
 }

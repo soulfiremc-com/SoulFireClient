@@ -1,39 +1,42 @@
 {
   "string": {
-    "undefined": ".ǝnlɐʌ ɐ ɹǝʇuƎ",
-    "null": ".ǝnlɐʌ ɐ ɹǝʇuƎ",
-    "number": ".ǝnlɐʌ ɐ ɹǝʇuƎ",
-    "boolean": ".ǝnlɐʌ ɐ ɹǝʇuƎ",
-    "array": ".ǝnlɐʌ ɐ ɹǝʇuƎ",
-    "object": ".ǝnlɐʌ ɐ ɹǝʇuƎ",
-    "nan": ".ǝnlɐʌ ɐ ɹǝʇuƎ",
-    "infinity": ".ǝnlɐʌ ɐ ɹǝʇuƎ"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "number": {
-    "undefined": ".ɹǝqɯnu ɐ ɹǝʇuƎ",
-    "null": ".ɹǝqɯnu ɐ ɹǝʇuƎ",
-    "string": ".ɹǝqɯnu ɐ ɹǝʇuƎ",
-    "boolean": ".ɹǝqɯnu ɐ ɹǝʇuƎ",
-    "array": ".ɹǝqɯnu ɐ ɹǝʇuƎ",
-    "object": ".ɹǝqɯnu ɐ ɹǝʇuƎ",
-    "nan": ".ɹǝqɯnu ɐ ɹǝʇuƎ",
-    "infinity": ".ɹǝqɯnu ɐ ɹǝʇuƎ"
+    "undefined": "",
+    "null": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "object": "",
+    "nan": "",
+    "infinity": ""
   },
   "object": {
-    "undefined": ".ǝnlɐʌ pᴉlɐʌ ɐ ɹǝʇuƎ",
-    "null": ".ǝnlɐʌ pᴉlɐʌ ɐ ɹǝʇuƎ",
-    "number": ".ǝnlɐʌ pᴉlɐʌ ɐ ɹǝʇuƎ",
-    "string": ".ǝnlɐʌ pᴉlɐʌ ɐ ɹǝʇuƎ",
-    "boolean": ".ǝnlɐʌ pᴉlɐʌ ɐ ɹǝʇuƎ",
-    "array": ".ǝnlɐʌ pᴉlɐʌ ɐ ɹǝʇuƎ",
-    "nan": ".ǝnlɐʌ pᴉlɐʌ ɐ ɹǝʇuƎ",
-    "infinity": ".ǝnlɐʌ pᴉlɐʌ ɐ ɹǝʇuƎ"
+    "undefined": "",
+    "null": "",
+    "number": "",
+    "string": "",
+    "boolean": "",
+    "array": "",
+    "nan": "",
+    "infinity": ""
   },
-  "email": ".ssǝɹppɐ lᴉɐɯǝ pᴉlɐʌ ɐ ɹǝʇuƎ",
-  "url": ".˥ᴚ∩ pᴉlɐʌ ɐ ɹǝʇuƎ",
-  "jwt": ".uǝʞoʇ pᴉlɐʌ ɐ ɹǝʇuƎ",
-  "emailTooLong": ".ɹǝʍǝɟ ɹo sɹǝʇɔɐɹɐɥɔ 552 ǝs∩",
-  "jarSource": ".ɹɐɐ ɯoʇsnɔ ɐ ɹo ɹǝʌɹǝs lɐᴉɔᴉɟɟo ǝɥʇ ǝsooɥↃ",
-  "generationMode": ".sʇunoɔɔɐ ƃuᴉʇsᴉxǝ ǝlpuɐɥ oʇ ʍoɥ ǝsooɥↃ",
-  "userRole": ".ǝloɹ ɐ ǝsooɥↃ"
+  "email": "",
+  "url": "",
+  "jwt": "",
+  "emailTooLong": "",
+  "generationMode": "",
+  "userRole": "",
+  "serverUrl": "",
+  "pattern": "",
+  "minLength_one": "",
+  "minLength_other": ""
 }
